@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+
+	<!-- 
+		DB연결 정보
+		=> DB등록정보는 서버가 실행됨과 동시에 이루어져야 하는 작업임
+		서버가 켜지면 바로 읽히는 root-context.xml에 작성 예정 ==> Spring Bean등록
+	 -->
+	 
+
+</configuration>

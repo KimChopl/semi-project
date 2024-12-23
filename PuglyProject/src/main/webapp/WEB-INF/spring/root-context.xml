@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 
+		root-context
+		서버 구동과 동시에 web.xml파일을 거쳐서 바로 로딩되는 문서 == preloading
+		=> 서버 구동과 동시에 바로 세팅(Bean등록)해야하는 내용들을 작성
+		=> DB접속, 트랜잭션처리, 외부모듈연결 등등
+	 -->
+	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
+	 	<!-- 어떤 DB에 접속할건지 -->
+	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	 	<property name="url" value="jdbc:oracle:thin:@192.168.20.212:1521:xe" />
+	 	<property name="username" value="PUGLY" />
+	 	<property name="password" value="PUGLY" />
+	 </bean>
+	 
+	 
+	 
+	 
+</beans>
