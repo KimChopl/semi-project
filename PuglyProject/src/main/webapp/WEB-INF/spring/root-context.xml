@@ -22,7 +22,33 @@
 	 	<property name="password" value="PUGLY" />
 	 </bean>
 	 
+	 <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
+	 	<!-- MyBatis 설정 파일 위치를 지정해서 설정값들을 가져와야함 -->
+	 	<property name="configLocation" value="classpath:mybatis-config.xml" />
+	 	<property name="dataSource" ref="dataSource" /> <!-- 객체를 넣어줌 -> setter injection(property) -->
+	 </bean>
 	 
+	 <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession" >
+	 	<!-- 임마는 기본 생성자가 없어서 매개변수 생성자 참조 설정을 해야함 -> constructor injection -->
+	 	<constructor-arg ref="sqlSessionFactory"/>
+	 </bean>
+	 
+	 <bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="transactionManager">
+	 	<property name="dataSource" ref="dataSource" />
+	 </bean>
+	 
+	 <tx:annotation-driven transaction-manager="transactionManager"/>
+	 
+	 <!--  
+	 	@Mapping 사용하기 위한 과정
+	 -->
+ 	<mybatis-spring:scan base-package="com.kh/pugly"/>
+ 	
+ 	<!--  File Upload Bean Regist -->
+ 	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+ 		<property name="maxUploadSize" value="100000000" />
+ 		<property name="maxInMemorySize" value="10000000" />
+ 	</bean>
 	 
 	 
 </beans>

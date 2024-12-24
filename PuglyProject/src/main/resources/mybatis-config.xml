@@ -14,9 +14,15 @@
 		서버가 켜지면 바로 읽히는 root-context.xml에 작성 예정 ==> Spring Bean등록
 	 -->
 	 <typeAliases>
-		<typeAlias type="com.kh.pugly.member.model.vo.Member"
-			alias="member" />
+		<typeAlias type="com.kh.pugly.member.model.vo.Member" alias="member" />
+		<typeAlias type="com.kh.pugly.farm.model.vo.Farm" alias="farm"/>
+		<typeAlias type="com.kh.pugly.farm.model.vo.FarmProduct" alias="farmProduct"/>
+		<typeAlias type="com.kh.pugly.farm.model.vo.StateCategory" alias="stateCategory"/>
+		<typeAlias type="com.kh.pugly.common.model.vo.Image"/ alias="image">
 	</typeAliases>
 	 
+	 <mappers>
+	 	<mapper resource="/mapper/farm-mppaer.xml"/>
+	 </mappers>
 
 </configuration>
