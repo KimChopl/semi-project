@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.dao.ImageMapper;
 import com.kh.pugly.common.model.dto.FarmKeyword;
-import com.kh.pugly.common.model.service.ReplaceXss;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
+import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;

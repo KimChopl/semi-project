@@ -1,10 +1,10 @@
-package com.kh.pugly.common.model.service;
+package com.kh.pugly.common.template;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class ReplaceXss {
 
