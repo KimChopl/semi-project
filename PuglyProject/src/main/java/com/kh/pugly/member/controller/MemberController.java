@@ -35,5 +35,10 @@ public class MemberController {
 		return mv;
 	}
 	
+	@GetMapping("my_page.member")
+	public String myPage() {
+		return "member/my_page";
+	}
+	
 	
 }

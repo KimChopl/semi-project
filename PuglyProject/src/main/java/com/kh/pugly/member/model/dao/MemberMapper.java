@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.vo.Member;
 
 @Mapper
@@ -16,5 +17,7 @@ public interface MemberMapper {
 	int updateMember(Member member);
 	
 	int deleteMember(Map<String, Object> map);
+	
+	Address selectAddress(Long memberNo);
 	
 }
