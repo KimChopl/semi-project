@@ -1,13 +1,14 @@
 package com.kh.pugly.member.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,6 +20,11 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		return mapper.selectMember(member);
+	}
+	
+	@Override
+	public List<Address> selectAdresses(Long memberNo) {
+		return mapper.selectAddresses(memberNo);
 	}
 
 	@Override
@@ -38,5 +44,6 @@ public class MemberServiceImpi implements MemberService {
 		// TODO Auto-generated method stub
 
 	}
+
 
 }

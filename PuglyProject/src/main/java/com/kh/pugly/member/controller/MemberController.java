@@ -1,5 +1,7 @@
 package com.kh.pugly.member.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.vo.Member;
 
@@ -29,8 +32,11 @@ public class MemberController {
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
 		Member loginUser = memberService.selectMember(member);
+		List<Address> addresses = memberService.selectAdresses(loginUser.getMemberNo());
 		session.setAttribute("loginUser", loginUser);
-		log.info("{}", loginUser);
+		session.setAttribute("addresses", addresses);
+		//log.info("{}", loginUser);
+		//log.info("{}", addresses);
 		mv.setViewName("redirect:/");
 		return mv;
 	}
@@ -38,6 +44,11 @@ public class MemberController {
 	@GetMapping("my_page.member")
 	public String myPage() {
 		return "member/my_page";
+	}
+	
+	@GetMapping("enroll-form.address")
+	public String updateFormAddress() {
+		
 	}
 	
 	

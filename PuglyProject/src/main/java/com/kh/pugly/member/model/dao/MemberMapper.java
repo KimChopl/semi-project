@@ -1,5 +1,6 @@
 package com.kh.pugly.member.model.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,6 @@ public interface MemberMapper {
 	
 	int deleteMember(Map<String, Object> map);
 	
-	Address selectAddress(Long memberNo);
+	List<Address> selectAddresses(Long memberNo);
 	
 }
