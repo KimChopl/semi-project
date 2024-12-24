@@ -1,6 +1,7 @@
 package com.kh.pugly.common.model.dto;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

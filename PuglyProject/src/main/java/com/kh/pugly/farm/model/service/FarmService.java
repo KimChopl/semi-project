@@ -5,9 +5,10 @@ import java.util.Map;
 
 import com.kh.pugly.common.model.dto.FarmKeyword;
 import com.kh.pugly.common.model.vo.Image;
-import com.kh.pugly.farm.model.dto.ImageBrige;
+import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
+import com.kh.pugly.member.model.vo.Member;
 
 public interface FarmService {
 	
@@ -17,7 +18,7 @@ public interface FarmService {
 	
 	List<Farm> suchByKeyword(FarmKeyword keyword);
 
-	int insertFarm(Farm farm, Image img);
+	void insertFarm(Farm farm, Image img, Member member);
 	
 	int likeFarm(LikeAndAttention like);
 

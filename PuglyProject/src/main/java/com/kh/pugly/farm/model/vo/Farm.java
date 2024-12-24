@@ -20,6 +20,7 @@ public class Farm {
 	private Long farmNo;
 	private String seller;
 	private String categoryName;
+	private int categoryNo;
 	private String productName;
 	private String farmTitile;
 	private String farmContent;
