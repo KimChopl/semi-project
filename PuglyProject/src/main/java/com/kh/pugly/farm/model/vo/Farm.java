@@ -1,6 +1,9 @@
 package com.kh.pugly.farm.model.vo;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.kh.pugly.common.model.vo.Image;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,4 +30,5 @@ public class Farm {
 	private int farmPrice;
 	private Date farmModifyDate;
 	private String address;
+	private List<Image> imgList;
 }
