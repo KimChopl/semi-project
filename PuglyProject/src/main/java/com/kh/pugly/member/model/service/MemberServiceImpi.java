@@ -8,21 +8,17 @@ import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberServiceImpi implements MemberService {
 
-	private MemberMapper mapper;
+	private final MemberMapper mapper;
 	
 	@Override
 	public Member selectMember(Member member) {
-		if("".equals(member.getMemberId()){
-			
-		}
-		
-		Member loginMember = mapper.selectMember(member); 
-		return loginMember;
+		return mapper.selectMember(member);
 	}
 
 	@Override

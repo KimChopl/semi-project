@@ -10,13 +10,15 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.vo.Member;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberController {
 	
-	private MemberService memberService;
+	private final MemberService memberService;
 	
 	
 	@GetMapping("login_form.member")
@@ -28,6 +30,7 @@ public class MemberController {
 	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
 		Member loginUser = memberService.selectMember(member);
 		session.setAttribute("loginUser", loginUser);
+		log.info("{}", loginUser);
 		mv.setViewName("redirect:/");
 		return mv;
 	}
