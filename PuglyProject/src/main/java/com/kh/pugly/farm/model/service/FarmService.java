@@ -1,8 +1,7 @@
 package com.kh.pugly.farm.model.service;
 
 import java.util.List;
-
-import org.apache.ibatis.session.RowBounds;
+import java.util.Map;
 
 import com.kh.pugly.common.model.dto.FarmKeyword;
 import com.kh.pugly.common.model.vo.Image;
@@ -12,7 +11,7 @@ import com.kh.pugly.farm.model.vo.Farm;
 
 public interface FarmService {
 	
-	List<Farm> selectFarmList(RowBounds rowNum);
+	Map<String, Object> selectFarmList(int plusNo);
 	
 	Farm selectDetailFarm(Long farmNo);
 	

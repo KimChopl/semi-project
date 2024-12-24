@@ -14,7 +14,6 @@ public class PageInfo {
 	private int currentPage;
 	private int baordLimit;
 	private int pageLimit;
-	
 	private int maxPage;
 	private int startPage;
 	private int endPage;
