@@ -20,7 +20,7 @@ public class MyStore {
 	private Long storeNo;			// 내상점 번호
 	private String storeTitle;		// 상점 이름
 	private String storeContent;	// 상점 소개
-	private String storeCount;		// 상점 조회수
+	private int storeCount;		// 상점 조회수
 	
 
 }

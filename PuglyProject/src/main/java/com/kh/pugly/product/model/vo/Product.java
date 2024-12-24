@@ -21,7 +21,7 @@ public class Product {
 	private String productPrice;			// 상품 가격
 	private String productContent;			// 상품 설명
 	private String productQuantity;			// 상품 수량
-	private String productCount;			// 상품 카운트
+	private int productCount;				// 상품 조회수
 	private String productStatus;			// 상품 상태
 	private Date productDate;				// 상품 등록일
 	
