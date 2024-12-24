@@ -1,4 +1,4 @@
-package com.kh.pugly.farm.model.dto;
+package com.kh.pugly.common.model.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class ImageBrige {
 	
-	private int imgNo;
+	private int brigeNo;
 	private int farmNo;
 	private int categoryNo;
 
