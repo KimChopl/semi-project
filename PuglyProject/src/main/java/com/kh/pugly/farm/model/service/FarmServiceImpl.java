@@ -15,6 +15,7 @@ import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
+import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -28,6 +29,7 @@ public class FarmServiceImpl implements FarmService {
 
 	private final FarmMapper fm;
 	private final ImageMapper im;
+	private final ReplaceXss rx;
 	
 	private int countFarm() {
 		return fm.countFarm();
@@ -90,7 +92,6 @@ public class FarmServiceImpl implements FarmService {
 	public Farm selectDetailFarm(Long farmNo) {
 		checkedFarmNo(farmNo);
 		checkedFarm(farmNo);
-		
 		return checkedDetailFarm(farmNo);
 	}
 	
@@ -161,12 +162,26 @@ public class FarmServiceImpl implements FarmService {
 			// Exception
 		}
 	}
+	
+	private void checkedVacuum(Farm farm) {
+		if(farm.getFarmTitile().trim().equals("") || farm.getFarmContent().trim().equals("")) {
+			//Exception
+		}
+	}
+	
+	private Farm replaceContent(Farm farm) {
+		checkedVacuum(farm);
+		farm.setFarmTitile(rx.replaceXss(farm.getFarmTitile()));
+		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
+		return farm;
+	}
 
 	@Override
-	public void insertFarm(Farm farm, Image img, Member member) { // 글자 변환 안했음
+	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
 		checkedFarmContent(farm, member);
-		int farmNo = checkedInsertFarm(farm);
-		ImageBrige ib = makedImageBrige(farmNo, farm, img);
+		Farm newFarm = replaceContent(farm);
+		int farmNo = checkedInsertFarm(newFarm);
+		ImageBrige ib = makedImageBrige(farmNo, newFarm, img);
 		int brigeNo = cehckedInsertImageBrige(ib);
 		img.setBrigeNo(brigeNo);
 		checkedInsertImage(img);
