@@ -23,6 +23,25 @@
            AND
                FK_CATEGORY_NO = #{categoryNo}
 	</select>
+	<select id="selectAddresses" parameterType="long" resultType="com.kh.pugly.common.model.vo.Address">
+		SELECT
+               ADDRESS_NO addressNo,
+               SC.STATE_CODE stateCode,
+               STATE_NAME stateName,
+               ADDRESS_TYPE addressType,
+               DISTRICT district
+          FROM
+               TB_ADDRESS AD
+          JOIN
+               TB_STATE_CATEGORY SC ON(SC.STATE_CODE = AD.STATE_CODE)
+          JOIN
+               TB_MEMBER ME ON(AD.MEMBER_NO = ME.MEMBER_NO)
+         WHERE
+               ME.MEMBER_NO = #{memberNo}
+         ORDER
+            BY
+               ADDRESS_NO DESC
+	</select>
 
 
 </mapper>

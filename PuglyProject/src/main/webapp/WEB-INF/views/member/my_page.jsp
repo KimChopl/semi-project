@@ -157,7 +157,7 @@
         </div>
         <div id="memberInfo">
             <div id="info">
-                <div id="img"><img src="프로필 사진(없으면 기본사진)" alt=""></div>
+                <div id="img"><img src="" alt=""></div>
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
@@ -177,10 +177,12 @@
                 <br>
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
                 <br>
-                <br>
-                <br>
-                <div id="address">주소 : <label>서울</label><br>
-                                            <label>상세주소</label></div>
+                
+                <c:forEach var="address" items="${ sessionScope.addresses }">
+                <div id="address">주소 : 
+            							<label>${ address.stateName }</label><br>
+                                        <label>${ address.district }</label></div>
+                </c:forEach>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 
                 <br>
