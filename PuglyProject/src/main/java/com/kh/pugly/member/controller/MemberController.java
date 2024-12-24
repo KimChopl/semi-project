@@ -46,9 +46,12 @@ public class MemberController {
 		return "member/my_page";
 	}
 	
-	@GetMapping("enroll-form.address")
-	public String updateFormAddress() {
-		
+	@GetMapping("update.member")
+	public ModelAndView updateFormAddress(ModelAndView mv) {
+		List<Address> category = memberService.selectStateCategory();
+		mv.addObject("stateCategory", category);
+		mv.setViewName("member/update_enroll_form");
+		return mv;
 	}
 	
 	

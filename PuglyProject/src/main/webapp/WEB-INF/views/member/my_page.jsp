@@ -184,7 +184,6 @@
                                         <label>${ address.district }</label></div>
                 </c:forEach>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
-                
                 <br>
                 <button id="address-update">주소 수정</button>
             </div>
@@ -194,10 +193,14 @@
     <script>
 
         $(function(){
-
-            $('li').eq(0).on('click', function(){
-                location.href = 'update.memberInfo'
-            });
+        	
+        	
+        	
+        	
+        		
+        	$('li').eq(0).on('click', function(){
+                location.href = 'update.member'
+            });    
             $('li').eq(1).on('click', function(){
                 location.href = 'select.cart'
             });
@@ -225,6 +228,7 @@
             $('li').eq(9).on('click', function(){
                 location.href = 'update.seller'
             });
+        	
             $('#address-update').on('click', function(){
                 location.href = 'enroll-form.address'
             });

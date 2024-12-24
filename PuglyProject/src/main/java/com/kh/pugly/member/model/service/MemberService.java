@@ -18,4 +18,6 @@ public interface MemberService {
 
 	List<Address> selectAdresses(Long memberNo);
 	
+	List<Address> selectStateCategory();
+	
 }

@@ -40,7 +40,18 @@
                ME.MEMBER_NO = #{memberNo}
          ORDER
             BY
-               ADDRESS_NO DESC
+               ADDRESS_TYPE
+	</select>
+	
+	<select id="selectStateCategory" resultType="com.kh.pugly.common.model.vo.Address">
+		SELECT
+		       STATE_CODE stateCode,
+		       STATE_NAME stateName
+		  FROM
+		       TB_STATE_CATEGORY
+		 ORDER
+		    BY
+		       STATE_CODE
 	</select>
 
 
