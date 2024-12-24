@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 public class MemberController {
 	
 	private MemberService memberService;
-	private ModelAndView mv;
+	
 	
 	@GetMapping("login_form.member")
 	public String loginEnrollForm() {
@@ -25,7 +25,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("login.member")
-	public ModelAndView selectMember(Member member, HttpSession session) {
+	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
 		Member loginUser = memberService.selectMember(member);
 		session.setAttribute("loginUser", loginUser);
 		mv.setViewName("redirect:/");
