@@ -188,26 +188,38 @@ public class FarmServiceImpl implements FarmService {
 	}
 
 	@Override
-	public int likeFarm(LikeAndAttention like) {
-		return 0;
+	public void likeFarm(LikeAndAttention like) {
+		Farm farm = fm.selectDetailFarm(like.getFarmNo());
+		if(farm == null) {
+			// Exception
+		}
+		List<LikeAndAttention> list = fm.checkLike(like.getMemberNo());
+		if(!!!list.isEmpty()) {
+			fm.deleteLike(like);
+		}
+		fm.likeFarm(like);
 	}
 
 	@Override
-	public int attetionFarm(LikeAndAttention attention) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void attetionFarm(LikeAndAttention attention) {
+		Farm farm = fm.selectDetailFarm(attention.getFarmNo());
+		if(farm == null) {
+			// Exception
+		}
+		List<LikeAndAttention> list = fm.checkLike(attention.getMemberNo());
+		if(!!!list.isEmpty()) {
+			fm.deleteLike(attention);
+		}
+		fm.likeFarm(attention);
 	}
 
 	@Override
-	public int deleteFarm(ImageBrige ib) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteFarm(ImageBrige ib, Member member) {
+		
 	}
 
 	@Override
-	public int updateFarm(ImageBrige ib) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void updateFarm(ImageBrige ib, Member member) {
 	}
 
 }

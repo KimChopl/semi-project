@@ -10,6 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikeAndAttention {
-	private int FarmNo;
-	private int memberNo;
+	private Long FarmNo;
+	private Long memberNo;
 }

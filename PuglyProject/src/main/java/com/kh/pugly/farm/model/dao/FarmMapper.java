@@ -36,4 +36,10 @@ public interface FarmMapper {
 	
 	int updateFarm(Farm farm);
 	
+	List<LikeAndAttention> checkLike(Long memberNo);
+	
+	int deleteLike(LikeAndAttention like);
+	
+	int delteAttention(LikeAndAttention attention);
+	
 }

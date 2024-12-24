@@ -20,12 +20,12 @@ public interface FarmService {
 
 	void insertFarm(Farm farm, Image img, Member member);
 	
-	int likeFarm(LikeAndAttention like);
+	void likeFarm(LikeAndAttention like);
 
-	int attetionFarm(LikeAndAttention attention);
+	void attetionFarm(LikeAndAttention attention);
 	
-	int deleteFarm(ImageBrige ib);
+	void deleteFarm(ImageBrige ib, Member member);
 	
-	int updateFarm(ImageBrige ib);
+	void updateFarm(ImageBrige ib, Member member);
 
 }
