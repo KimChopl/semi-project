@@ -16,6 +16,7 @@ public class ReplaceXss {
 	public String replaceCrlf(String content) {
 		String newContent = content.replaceAll("\n", "<br>");
 		return newContent;
+		
 	}
 	
 	public String replaceBr(String content) {

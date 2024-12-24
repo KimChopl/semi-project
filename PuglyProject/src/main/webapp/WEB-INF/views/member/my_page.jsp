@@ -46,14 +46,19 @@
             font-weight: 600;
             margin:20px;
         }
-
-        #page-bar > ul > li:hover{
+        
+        a{
+        	text-decoration: none;
+        }
+        
+        a:hover{
             list-style: none;
             font-family: 'Courier New', Courier, monospace;
             color: rgb(121, 121, 121);
             cursor: pointer;
             text-decoration: underline;
         }
+
 
         #info{
             width: 80%;
@@ -124,33 +129,33 @@
 <body>
     <div id="body">
         <div id="page-bar">
-            <ul>
-                <li>내 정보 수정</li>
+            <ul id="menu">
+                <li><a href="update.member">내 정보 수정</a></li>
                 
-                <li>장바구니</li>
+                <li><a href="select.cart">장바구니</a></li>
                 
-                <li>내 예약 목록</li>
+                <li><a href="select.myBook">내 예약 목록</a></li>
                 
-                <li>내 주문 목록</li>
+                <li><a href="select.myOrder">내 주문 목록</a></li>
                 
-                <li>찜 목록</li>
+                <li><a href="select.attention">찜 목록</a></li>
                 
-                <li>내 게시글</li>
+                <li><a href="select.myBoardList">내 게시글</a></li>
                 
-                <li>내 댓글</li>
+                <li><a href="select.myReplyList">내 댓글</a></li>
                 <c:choose>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
                         
                         <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li>내 농장</li>
+                        <li><a href="select.myFarmList">내 농장</a></li>
                         
-                        <li>내 판매 목록</li>
+                        <li><a href="select.myProductList">내 판매 목록</a></li>
                         <!-- 여기까지 판매자 -->
                     </c:when>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
                         
                         <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li>판매자 신청하기</li>   
+                        <li><a href="update.seller">판매자 신청하기</a></li>   
                     </c:when>
                 </c:choose>
             </ul>
@@ -184,7 +189,6 @@
                                         <label>${ address.district }</label></div>
                 </c:forEach>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
-                
                 <br>
                 <button id="address-update">주소 수정</button>
             </div>
@@ -194,37 +198,7 @@
     <script>
 
         $(function(){
-
-            $('li').eq(0).on('click', function(){
-                location.href = 'update.memberInfo'
-            });
-            $('li').eq(1).on('click', function(){
-                location.href = 'select.cart'
-            });
-            $('li').eq(2).on('click', function(){
-                location.href = 'select.myBook'
-            });
-            $('li').eq(3).on('click', function(){
-                location.href = 'select.myOrder'
-            });
-            $('li').eq(4).on('click', function(){
-                location.href = 'select.attention'
-            });
-            $('li').eq(5).on('click', function(){
-                location.href = 'select.myBoardList'
-            });
-            $('li').eq(6).on('click', function(){
-                location.href = 'select.myReplyList'
-            });
-            $('li').eq(7).on('click', function(){
-                location.href = 'select.myFarmList'
-            });
-            $('li').eq(8).on('click', function(){
-                location.href = 'select.myProductList'
-            });
-            $('li').eq(9).on('click', function(){
-                location.href = 'update.seller'
-            });
+        	
             $('#address-update').on('click', function(){
                 location.href = 'enroll-form.address'
             });

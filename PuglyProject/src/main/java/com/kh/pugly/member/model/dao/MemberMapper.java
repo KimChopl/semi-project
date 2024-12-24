@@ -21,4 +21,6 @@ public interface MemberMapper {
 	
 	List<Address> selectAddresses(Long memberNo);
 	
+	List<Address> selectStateCategory();
+	
 }

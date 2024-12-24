@@ -26,7 +26,12 @@ public class MemberServiceImpi implements MemberService {
 	public List<Address> selectAdresses(Long memberNo) {
 		return mapper.selectAddresses(memberNo);
 	}
-
+	
+	@Override
+	public List<Address> selectStateCategory() {
+		return mapper.selectStateCategory();
+	}
+	
 	@Override
 	public void insertMember(Member member) {
 		// TODO Auto-generated method stub
