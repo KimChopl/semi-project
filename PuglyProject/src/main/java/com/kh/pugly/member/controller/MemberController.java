@@ -74,7 +74,11 @@ public class MemberController {
 	
 	@GetMapping("insert_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
+<<<<<<< HEAD
 		return mv.setViewNameAndData("member/join_enroll_form", null);
+=======
+		return null;
+>>>>>>> 6995fa3e436364bbe5eef7a9a981b71ed2596952
 	}
 	
 	@PostMapping("update.memberInfo")

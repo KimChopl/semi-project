@@ -32,7 +32,7 @@
 </head>
 <body>
     
-    <jsp:include page="" />
+    <!--<jsp:include page="" /> -->
 
     <div class="content">
         <br>
@@ -116,7 +116,7 @@
         
     </div>
 
-    <jsp:include page="" />
+    <!--<jsp:include page="" /> -->
     
 </body>
 </html>
