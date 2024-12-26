@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.exception.TooLargeValueException;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
@@ -22,7 +23,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
-			throw new 
+			throw new TooLargeValueException("지나치게 큰 값");
 		}
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
