@@ -47,7 +47,7 @@ public class ProductController {
 		log.info("게시글 정보 : {}, 파일정보 : {}", product, upfile);
 		
 		
-		productService.insertProduct(product, upfile);
+		productService.insertProduct(product, upfile, null);
 		
 		session.setAttribute("alertMsg", "상품 등록완료!");
 		

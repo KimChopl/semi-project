@@ -1,4 +1,4 @@
-package com.kh.pugly.exception.controller;
+package com.kh.pugly.exception;
 
 public class ProductValueException extends RuntimeException {
 	
