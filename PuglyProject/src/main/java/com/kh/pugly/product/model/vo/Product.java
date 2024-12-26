@@ -35,5 +35,7 @@ public class Product {
 	private String categoryName;			// 상품 카테고리 타입
 	
 	
+	
+	
 
 }

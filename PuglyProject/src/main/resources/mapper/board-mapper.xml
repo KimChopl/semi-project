@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kh.hyper.board.model.dao.BoardMapper">
+
+	<sql id="boardColumn">
+		SELECT
+			   BOARD_NO boardNo,
+			   BOARD_TITLE boardTitle,
+			   BOARD_CONTENT boardContent,
+			   NICKNAME nickName,
+			   COUNT,
+			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
+		 FROM
+		 	  TB_BOARD
+		 JOIN
+		 	  TB_MEMBER ON (MEMBER_NO = BAORD_WRITER) 
+		WHERE
+			  STATUS = 'Y'
+	      
+	</sql>
+	
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM	
+		       TB_BOARD
+		 WHERE
+		       STATUS = 'Y'
+	</select>
+
+	
+	<select id="selectBoardList" resultType="board">
+		SELECT
+			   BOARD_NO boardNO,
+			   BOARD_TITLE boardTitle,
+			   NICNAME nickName,
+			   COUNT,
+			   TO_CHAR(CREATE_DATE,'YYYY-MM-DD') as createDate
+		  FROM
+		       TB_BOARD
+		  JOIN
+		  	   TB_MEMBER ON (MEMBER_NO = BOARD_WRITER)
+		 WHERE
+		  	   TB_BOARD.STATUS = 'Y'
+		 ORDER
+		 	BY
+		       BOARD_NO DESC
+	</select>
+	
+	<update id="increaseCount" parameterType="long">
+		UPDATE
+			   TB_BOARD
+		   SET
+		   	   COUNT1 = COUNT + 1
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		  	   BOARD_NO = #{boardNO}
+	</update>
+	
+	<select id="selectById" resultType="board" parameterType="long">
+		<include refid="boardColumn" />
+		AND
+		    BOARD_NO = #{boardNo}
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		INSERT
+		  INTO
+		  	   TB_BOARD
+		  	   (
+		  	   BOARD_NO,
+		  	
+		  	   BOARD_TITLE,
+		  	   BOARD_CONTENT,
+		  	   
+		  	   
+		  	   )
+	
+	</insert>		    
+
+</mapper>

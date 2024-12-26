@@ -6,7 +6,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.NoExistentMemberException;
+import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 import com.kh.pugly.exception.ValidateProductException;
 
@@ -50,6 +52,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(ProductValueException.class)
 	protected ModelAndView novalueError(ProductValueException e) {
 		return createErrorResponse("필수 입력사항을 모두 입력해주세요", e);
+	}
+	
+	@ExceptionHandler(FailToFileUploadException.class)
+	protected ModelAndView failtoFileupload(FailToFileUploadException e) {
+		return createErrorResponse("파일 업로드에 실패했습니다.", e);
 	}
 	
 	

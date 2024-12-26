@@ -14,6 +14,7 @@ import com.kh.pugly.farm.model.vo.StateCategory;
 @Mapper
 public interface FarmMapper {
 
+	
 	int countFarm();
 	
 	List<Farm> selectFarmList(RowBounds rowNum);
@@ -49,3 +50,5 @@ public interface FarmMapper {
 
 	
 }
+	
+
