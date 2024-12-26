@@ -58,6 +58,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+
+	<jsp:include page="../common/menubar.jsp" />
     
     <div id="wrap">
         <form action="insert.member" method="post">
@@ -71,17 +73,20 @@
                 <input type="text" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div>
-                <input type="text" placeholder="닉네임" name="nickname" />
+                <input type="text" placeholder="닉네임(생략가능)" name="nickname" />
             </div>
             <div>
                 <input type="text" placeholder="전화번호 (-포함)" required/>
             </div>
             <div>
                 <select name="stateCode">
-                    <option value=""></option>
+                <c:forEach var="sc" items="${ stateCategory }">
+                    <option value="${ sc.stateCode }">${ sc.stateName }</option>
+                </c:forEach>
                 </select>
                 <input type="text" placeholder="상세주소" required />
             </div>
+            
             <div>
                 <button>회원가입</button>
                 <select name="categoryNo">
@@ -90,10 +95,11 @@
                     <option value="1">관리자</option>
                 </select>
         	</div>
-            </form>
+       </form>
+        
     </div>
 
-
+	<jsp:include page="../common/footer.jsp" />
 
 
     

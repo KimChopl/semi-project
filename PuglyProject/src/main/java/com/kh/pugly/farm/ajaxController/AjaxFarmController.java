@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AjaxFarmController {
 
+
 	private final FarmService fs;
 	
 	@GetMapping(value="plus", produces="application/json; charset=UTF-8")
@@ -27,5 +28,6 @@ public class AjaxFarmController {
 		log.info("{} : " , map);
 		return map;
 	}
+
 
 }

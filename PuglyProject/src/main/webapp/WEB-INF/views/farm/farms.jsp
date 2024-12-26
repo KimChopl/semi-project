@@ -11,6 +11,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 	<input type="hidden" id="plusNo" name="pulsNo" value="${ mi.plusNo }" >
 	<button id="btn">더보기</button>
 	
@@ -43,6 +44,7 @@
 			}
 	}
 	
+
 	</script>
 	
 </body>

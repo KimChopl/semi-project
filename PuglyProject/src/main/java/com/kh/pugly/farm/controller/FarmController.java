@@ -35,8 +35,4 @@ public class FarmController {
 		
 		return mv.setViewNameAndData("/farm/farms", farm);
 	}
-	
-		
-
-	
 }
