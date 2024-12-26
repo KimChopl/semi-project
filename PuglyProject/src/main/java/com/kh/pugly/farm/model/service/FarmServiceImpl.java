@@ -33,9 +33,7 @@ public class FarmServiceImpl implements FarmService {
 
 
 	private final FarmMapper fm;
-	
 	private final ImageMapper im;
-	
 	private final ReplaceXss rx;
 	
 	private int countFarm() {
@@ -148,7 +146,7 @@ public class FarmServiceImpl implements FarmService {
 			// 예외처리
 		}
 	}
-	
+	/*
 	private ImageBrige makedImageBrige(int farmNo, Farm farm, Image img) {
 		checkedImg(img);
 		ImageBrige ib = new ImageBrige();
@@ -156,7 +154,7 @@ public class FarmServiceImpl implements FarmService {
 		ib.setCategoryNo(farm.getCategoryNo());
 		return ib;
 	}
-	
+	*/
 	private int cehckedInsertImageBrige(ImageBrige ib) {
 		int brigeNo = im.insertImageBrige(ib);
 		if(brigeNo < 1) {
@@ -184,7 +182,7 @@ public class FarmServiceImpl implements FarmService {
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
-
+/*
 	@Override
 	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
 		checkedFarmContent(farm, member);
@@ -195,7 +193,7 @@ public class FarmServiceImpl implements FarmService {
 		img.setBrigeNo(brigeNo);
 		checkedInsertImage(img);
 	}
-
+*/
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
@@ -240,6 +238,12 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public FarmPrice selectMmPrice() {
 		return fm.selectPrice();
+	}
+
+	@Override
+	public void insertFarm(Farm farm, Image img, Member member) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	

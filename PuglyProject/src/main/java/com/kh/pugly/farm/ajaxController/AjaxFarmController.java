@@ -10,7 +10,8 @@ import com.kh.pugly.farm.model.service.FarmService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+/*
+ * 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -31,3 +32,4 @@ public class AjaxFarmController {
 
 
 }
+ */
