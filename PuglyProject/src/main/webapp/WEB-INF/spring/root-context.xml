@@ -17,7 +17,7 @@
 	 <bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">
 	 	<!-- 어떤 DB에 접속할건지 -->
 	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-	 	<property name="url" value="jdbc:oracle:thin:@jdbc:oracle:thin:@192.168.20.212:1521:xe" />
+	 	<property name="url" value="jdbc:oracle:thin:@192.168.20.212:1521:xe" />
 	 	<property name="username" value="PUGLY" />
 	 	<property name="password" value="PUGLY" />
 	 </bean>
@@ -43,10 +43,8 @@
 	 	@Mapping 사용하기 위한 과정
 	 -->
 
-	<!-- 
+	
  	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>
-
-	 -->
  	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.pugly.farm.model.dao"/>
 
