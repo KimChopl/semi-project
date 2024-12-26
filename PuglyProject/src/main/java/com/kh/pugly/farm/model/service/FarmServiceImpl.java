@@ -33,7 +33,9 @@ public class FarmServiceImpl implements FarmService {
 
 
 	private final FarmMapper fm;
+	
 	private final ImageMapper im;
+	
 	private final ReplaceXss rx;
 	
 	private int countFarm() {
