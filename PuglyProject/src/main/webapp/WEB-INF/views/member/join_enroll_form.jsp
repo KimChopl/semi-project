@@ -73,7 +73,7 @@
                 <input type="text" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div>
-                <input type="text" placeholder="닉네임(생략가능)" name="nickname" />
+                <input type="text" placeholder="닉네임" name="nickname" />
             </div>
             <div>
                 <input type="text" placeholder="전화번호 (-포함)" required/>
