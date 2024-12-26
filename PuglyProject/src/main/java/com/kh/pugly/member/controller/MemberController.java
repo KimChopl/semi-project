@@ -23,8 +23,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+
 public class MemberController {
-	
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
 	private final PasswordEncoder passEncrypt;
@@ -73,12 +73,17 @@ public class MemberController {
 	}
 	
 	@GetMapping("insert_enroll_form.member")
+
 	public ModelAndView insertEnrollForm() {
-<<<<<<< HEAD
+
 		return mv.setViewNameAndData("member/join_enroll_form", null);
-=======
+
 		return null;
->>>>>>> 6995fa3e436364bbe5eef7a9a981b71ed2596952
+
+
+	public ModelAndView insertEnrollForm(ModelAndView mav) {
+		return mav;	
+
 	}
 	
 	@PostMapping("update.memberInfo")
