@@ -72,8 +72,8 @@ public class MemberController {
 	}
 	
 	@GetMapping("insert_enroll_form.member")
-	public ModelAndView insertEnrollForm(ModelAndView mav) {
-		return mav;	
+	public ModelAndView insertEnrollForm() {
+		return null;	
 	}
 	
 	@PostMapping("update.memberInfo")
