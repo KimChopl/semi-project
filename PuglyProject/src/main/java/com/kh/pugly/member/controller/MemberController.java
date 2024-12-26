@@ -53,11 +53,17 @@ public class MemberController {
 		return "member/my_page";
 	}
 	
-	@GetMapping("update.member")
+	@GetMapping("enroll_form.address")
 	public ModelAndView updateFormAddress(ModelAndView mv) {
 		List<Address> category = memberService.selectStateCategory();
 		mv.addObject("stateCategory", category);
 		mv.setViewName("member/update_enroll_form");
+		return mv;
+	}
+	
+	@PostMapping("update.memberInfo")
+	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+		memberService.updateMember(member, session);
 		return mv;
 	}
 	

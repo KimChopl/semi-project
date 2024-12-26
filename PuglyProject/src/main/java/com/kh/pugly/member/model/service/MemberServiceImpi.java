@@ -3,6 +3,8 @@ package com.kh.pugly.member.model.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.vo.Address;
@@ -19,6 +21,12 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	public Member selectMember(Member member) {
+		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
+			throw new 
+		}
+		// 아이디가 20자가 넘는다.
+		// 비밀번호가 25자가 넘는다.
+		
 		return mapper.selectMember(member);
 	}
 	
@@ -39,9 +47,9 @@ public class MemberServiceImpi implements MemberService {
 	}
 
 	@Override
-	public void updateMember(Member member) {
-		// TODO Auto-generated method stub
-
+	public void updateMember(Member member, HttpSession session) {
+		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
+		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
 	}
 
 	@Override
