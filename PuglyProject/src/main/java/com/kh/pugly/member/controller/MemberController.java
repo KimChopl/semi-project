@@ -77,8 +77,7 @@ public class MemberController {
 	public ModelAndView insertEnrollForm() {
 
 		return mv.setViewNameAndData("member/join_enroll_form", null);
-
-		return null;
+	}
 
 
 	public ModelAndView insertEnrollForm(ModelAndView mav) {
