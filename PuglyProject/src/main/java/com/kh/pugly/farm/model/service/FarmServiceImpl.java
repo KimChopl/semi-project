@@ -17,8 +17,10 @@ import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
+import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
+import com.kh.pugly.farm.model.vo.StateCategory;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -50,7 +52,7 @@ public class FarmServiceImpl implements FarmService {
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mif){
 		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-			map.put("plusNo", mif.getLastNo());
+			map.put("mi", mif.getLastNo());
 			map.put("farm", farm);
 			return map;
 		} else {
@@ -62,11 +64,11 @@ public class FarmServiceImpl implements FarmService {
 	public Map<String, Object> selectFarmList(int plusNo) {
 			
 		MoreInfo mi = getPageInfo(plusNo);
-		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getLastNo());
+		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getBoardLimit());
+		log.info("{} : {}", rowNum.getOffset(), rowNum.getLimit());
 		List<Farm> farm = fm.selectFarmList(rowNum);
 		log.info("{}", farm);
 		Map<String, Object> map = checkedMap(farm, mi);
-		
 		return map;
 	}
 	
@@ -224,5 +226,7 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public void updateFarm(ImageBrige ib, Member member) {
 	}
+
+
 
 }

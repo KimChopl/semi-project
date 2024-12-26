@@ -85,6 +85,24 @@
 		       ADDRESS_TYPE = 1
 		 ORDER
 		    BY
-		       farmCreateDate DESC
+		       FARM_CREATE_DATE DESC
+	</select>
+	
+	<select id="selectPrice" resultType="farmPrice">
+		SELECT
+		      MIN(FARM_PRICE) minPrice,
+		      MAX(FARM_PRICE) maxPrice
+		 FROM
+		      TB_FARM
+		WHERE
+		      DELETE_ASK = 'N'
+	</select>
+	
+	<select id="selectState" resultType="stateCategory">
+		SELECT
+		       STATE_CODE AS stateCode,
+		       STATE_NAME stateName
+		  FROM
+		       TB_STATE_CATEGORY
 	</select>
 </mapper>
