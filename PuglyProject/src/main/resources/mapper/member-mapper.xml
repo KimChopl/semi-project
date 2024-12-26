@@ -76,6 +76,26 @@
                #{phone}
                )
 	</insert>
+	<insert id="insertAddress" parameterType="com.kh.pugly.common.model.vo.Address">
+		INSERT
+          INTO
+               TB_ADDRESS
+               (
+               ADDRESS_NO,
+               STATE_CODE,
+               MEMBER_NO,
+               ADDRESS_TYPE,
+               DISTRICT
+               )
+        VALUES
+               (
+               SEQ_ANO.NEXTVAL,
+               #{stateCode},
+               SEQ_MNO.CURRVAL,
+               1,
+               #{district}
+               )
+	</insert>
 
 
 </mapper>
