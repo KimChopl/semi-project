@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
@@ -12,7 +13,8 @@ import com.kh.pugly.product.model.service.ProductService;
 import com.kh.pugly.product.model.vo.Product;
 
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class ProductController {
@@ -40,9 +42,11 @@ public class ProductController {
 	}
 	
 	@PostMapping("insert.pro")
-	public ModelAndView insertProduct(Product product, HttpSession session) {
+	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session) {
 		
-		return "";
+		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
+		
+		return mv.setViewNameAndData("redirect:testmain", null);
 	}
 	
 	// 상품리스트 화면 호출

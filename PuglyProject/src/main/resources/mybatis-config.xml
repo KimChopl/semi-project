@@ -19,6 +19,8 @@
 		<typeAlias type="com.kh.pugly.farm.model.vo.FarmProduct" alias="farmProduct"/>
 		<typeAlias type="com.kh.pugly.farm.model.vo.StateCategory" alias="stateCategory"/>
 		<typeAlias type="com.kh.pugly.common.model.vo.Image" alias="image" />
+		<typeAlias type="com.kh.pugly.farm.model.dto.FarmPrice" alias="farmPrice"/>
+		<typeAlias type="com.kh.pugly.farm.model.dto.LikeAndAttention" alias="likeAndAtt" />
 	</typeAliases>
 	 
 	 <mappers>

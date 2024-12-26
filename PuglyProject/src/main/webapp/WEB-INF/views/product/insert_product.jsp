@@ -14,7 +14,6 @@
             width:65%;
             margin:auto;
         }
-
         .main-img{
             width: 200px;
             height: 200px;
@@ -80,7 +79,7 @@
                 <span>/ 5 )</span>
             </div>
             <br>
-        <form action="upload" method="post" enctype="multipart/form-data">
+        <form action="insert.pro" method="post" enctype="multipart/form-data">
             <div>                
             <div class="img-fom">
                 <label>대표이미지</label><br>
