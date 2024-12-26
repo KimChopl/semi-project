@@ -1,6 +1,6 @@
 package com.kh.pugly.member.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
-import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
