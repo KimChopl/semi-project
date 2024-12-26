@@ -41,6 +41,13 @@ public class MemberController {
 		return mv;
 	}
 	
+	@GetMapping("logout.member")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		session.removeAttribute("addresses");
+		return "redirect:/";
+	}
+	
 	@GetMapping("my_page.member")
 	public String myPage() {
 		return "member/my_page";
