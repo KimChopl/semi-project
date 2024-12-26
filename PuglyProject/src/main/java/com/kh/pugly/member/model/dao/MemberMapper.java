@@ -15,6 +15,8 @@ public interface MemberMapper {
 	
 	int insertMember(Member member);
 	
+	int insertAddress(Address address);
+	
 	int updateMember(Member member);
 	
 	int deleteMember(Map<String, Object> map);

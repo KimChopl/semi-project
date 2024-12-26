@@ -64,7 +64,6 @@
 </head>
 <body>
 
-    <jsp:include page="" />
 
     <div class="content">
         <div>
@@ -205,7 +204,6 @@
          <br><br><br>
     </div>
 
-    <jsp:include page="" />
 
 </body>
 </html>

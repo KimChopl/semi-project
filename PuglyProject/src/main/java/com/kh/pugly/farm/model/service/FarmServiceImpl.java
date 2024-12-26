@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FarmServiceImpl implements FarmService {
 
+
 	private final FarmMapper fm;
 	private final ImageMapper im;
 	private final ReplaceXss rx;
@@ -49,10 +50,12 @@ public class FarmServiceImpl implements FarmService {
 	
 	}
 	
-	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mif){
+	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
 		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-			map.put("mi", mif.getLastNo());
+
+			map.put("mi", mi);
+
 			map.put("farm", farm);
 			return map;
 		} else {
@@ -62,12 +65,11 @@ public class FarmServiceImpl implements FarmService {
 	
 	@Override
 	public Map<String, Object> selectFarmList(int plusNo) {
-			
+		//log.info("{}", plusNo);
 		MoreInfo mi = getPageInfo(plusNo);
-		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getBoardLimit());
-		log.info("{} : {}", rowNum.getOffset(), rowNum.getLimit());
+		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
 		List<Farm> farm = fm.selectFarmList(rowNum);
-		log.info("{}", farm);
+		//log.info("{}", plusNo);
 		Map<String, Object> map = checkedMap(farm, mi);
 		return map;
 	}
@@ -144,7 +146,7 @@ public class FarmServiceImpl implements FarmService {
 			// 예외처리
 		}
 	}
-	
+	/*
 	private ImageBrige makedImageBrige(int farmNo, Farm farm, Image img) {
 		checkedImg(img);
 		ImageBrige ib = new ImageBrige();
@@ -152,7 +154,7 @@ public class FarmServiceImpl implements FarmService {
 		ib.setCategoryNo(farm.getCategoryNo());
 		return ib;
 	}
-	
+	*/
 	private int cehckedInsertImageBrige(ImageBrige ib) {
 		int brigeNo = im.insertImageBrige(ib);
 		if(brigeNo < 1) {
@@ -180,7 +182,7 @@ public class FarmServiceImpl implements FarmService {
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
-
+/*
 	@Override
 	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
 		checkedFarmContent(farm, member);
@@ -191,7 +193,7 @@ public class FarmServiceImpl implements FarmService {
 		img.setBrigeNo(brigeNo);
 		checkedInsertImage(img);
 	}
-
+*/
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
@@ -226,6 +228,26 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public void updateFarm(ImageBrige ib, Member member) {
 	}
+
+
+	@Override
+	public List<StateCategory> selectState() {
+		return fm.selectState();
+	}
+
+	@Override
+	public FarmPrice selectMmPrice() {
+		return fm.selectPrice();
+	}
+
+	@Override
+	public void insertFarm(Farm farm, Image img, Member member) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 
 
 
