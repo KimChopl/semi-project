@@ -88,9 +88,9 @@
             <input type="file" id="file" name="img"/>
             <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName"/>
             <!-- ajax를 사용해서 비밀번호가 같은지 검사 -->
-            <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password"/>
+            <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required />
             <br>
-            <input type="password" placeholder="새 비밀번호" name="memberPwd"/>
+            <input type="password" placeholder="새 비밀번호" name="memberPwd" required />
             <br>
             <input type="text" value="${ sessionScope.loginUser.phone }" name="phone"/>
             <br>

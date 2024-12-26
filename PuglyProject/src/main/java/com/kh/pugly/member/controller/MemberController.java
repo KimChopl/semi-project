@@ -32,11 +32,12 @@ public class MemberController {
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
 		Member loginUser = memberService.selectMember(member);
-		List<Address> addresses = memberService.selectAdresses(loginUser.getMemberNo());
-		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", addresses);
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
+		
+		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
+		
 		mv.setViewName("redirect:/");
 		return mv;
 	}
@@ -53,11 +54,17 @@ public class MemberController {
 		return "member/my_page";
 	}
 	
-	@GetMapping("update.member")
+	@GetMapping("enroll_form.address")
 	public ModelAndView updateFormAddress(ModelAndView mv) {
 		List<Address> category = memberService.selectStateCategory();
 		mv.addObject("stateCategory", category);
 		mv.setViewName("member/update_enroll_form");
+		return mv;
+	}
+	
+	@PostMapping("update.memberInfo")
+	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+		memberService.updateMember(member, session);
 		return mv;
 	}
 	
