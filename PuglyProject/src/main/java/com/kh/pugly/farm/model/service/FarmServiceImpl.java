@@ -31,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FarmServiceImpl implements FarmService {
 
+
 	private final FarmMapper fm;
 	private final ImageMapper im;
 	private final ReplaceXss rx;
@@ -49,10 +50,12 @@ public class FarmServiceImpl implements FarmService {
 	
 	}
 	
-	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mif){
+	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
 		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-			map.put("mi", mif.getLastNo());
+
+			map.put("mi", mi);
+
 			map.put("farm", farm);
 			return map;
 		} else {
@@ -62,12 +65,11 @@ public class FarmServiceImpl implements FarmService {
 	
 	@Override
 	public Map<String, Object> selectFarmList(int plusNo) {
-			
+		//log.info("{}", plusNo);
 		MoreInfo mi = getPageInfo(plusNo);
-		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getBoardLimit());
-		log.info("{} : {}", rowNum.getOffset(), rowNum.getLimit());
+		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
 		List<Farm> farm = fm.selectFarmList(rowNum);
-		log.info("{}", farm);
+		//log.info("{}", plusNo);
 		Map<String, Object> map = checkedMap(farm, mi);
 		return map;
 	}
@@ -226,6 +228,20 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public void updateFarm(ImageBrige ib, Member member) {
 	}
+
+
+	@Override
+	public List<StateCategory> selectState() {
+		return fm.selectState();
+	}
+
+	@Override
+	public FarmPrice selectMmPrice() {
+		return fm.selectPrice();
+	}
+
+	
+
 
 
 

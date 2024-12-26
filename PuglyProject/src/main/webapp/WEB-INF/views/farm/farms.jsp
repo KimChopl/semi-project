@@ -11,28 +11,40 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<input type="hidden" id="plusNo" name="pulsNo" value="${ plusNo }" >
+
+	<input type="hidden" id="plusNo" name="pulsNo" value="${ mi.plusNo }" >
 	<button id="btn">더보기</button>
 	
 	<script>
+	window.onload = () =>{
+		
+		const plusNo = document.getElementById('plusNo');
+		let no = plusNo.value;
+		
 		const btn = document.getElementById('btn');
-		btn.onclick = () => {
-			const plusNo = document.getElementById('plusNo');
-			console.log(plusNo.value)
-			$.ajax({
-				url : "plus",
-				type : "get",
-				data : {
-					plusNo : plusNo.value
-				},
-				success : function(r){
-					console.log(r);
-					plusNo.value += 1;
-					console.log(plusNo.value)
-				}
-			
-			})
-		}
+		
+			btn.onclick = () => {
+				console.log(plusNo.value)
+				$.ajax({
+					url : "plus",
+					type : "get",
+					data : {
+						plusNo : plusNo.value
+					},
+					success : function(r){
+						document.getElementById('plusNo').value = r.mi.plusNo;
+						if(r.mi.lastNo === r.mi.listCount){
+							btn.style.display = 'none';
+						}
+						//console.log(btn);
+						
+					}
+				
+				})
+			}
+	}
+	
+
 	</script>
 	
 </body>
