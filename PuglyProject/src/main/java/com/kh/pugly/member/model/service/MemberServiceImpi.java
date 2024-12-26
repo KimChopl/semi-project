@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
@@ -22,7 +23,7 @@ public class MemberServiceImpi implements MemberService {
 	private final MemberMapper mapper;
 	
 	@Override
-	public Member selectMember(Member member, HttpSession session) {
+	public Member selectMember(Member member) {
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
 			// 다른 클래스로 뺄 것
 			throw new TooLargeValueException("지나치게 큰 값");
@@ -31,16 +32,15 @@ public class MemberServiceImpi implements MemberService {
 		Member loginUser = mapper.selectMember(member);
 		
 		if(loginUser == null) {
-			throw new NoMemberException
+			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
 		}
 		
-		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", selectAdresses(loginUser.getMemberNo()));
+		
 		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		
-		return 
+		return loginUser;
 	}
 	
 	@Override

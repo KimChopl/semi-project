@@ -19,8 +19,6 @@
            AND
                MEMBER_ID = #{memberId}
            AND
-               MEMBER_PWD = #{memberPwd}
-           AND
                FK_CATEGORY_NO = #{categoryNo}
 	</select>
 	<select id="selectAddresses" parameterType="long" resultType="com.kh.pugly.common.model.vo.Address">

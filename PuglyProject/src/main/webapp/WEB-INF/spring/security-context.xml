@@ -6,6 +6,6 @@
 		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.5.xsd">
 	
 	<!-- 암호화 하기 위한 라이브러리를 bean 등록을 위한 xml파일 -->
-	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEmcofer" />
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcryptPasswordEncoder" />
 	
 </beans>
