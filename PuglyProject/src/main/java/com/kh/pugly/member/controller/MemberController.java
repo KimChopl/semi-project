@@ -37,18 +37,19 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
-		//Member loginUser = memberService.selectMember(member);
+		Member loginUser = memberService.selectMember(member);
 		
-		String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		log.info("{}", memberPwd);
+		
+		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		//log.info("평문 : {}, {}", memberPwd1, memberPwd);
 		
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
-		/*
+		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		*/
+		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -65,25 +66,18 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress(ModelAndView mav) {
-		List<Address> category = memberService.selectStateCategory();
-		mav.setViewName("member/update_enroll_form");
-		mav.addObject("stateCategory", category);
-		return mav;
+	public ModelAndView updateFormAddress() {
+		Map<String, Object> responseData = memberService.selectStateCategory();
+		
+		return mv.setViewNameAndData("member/enroll_form_address", responseData);
 	}
 	
-	@GetMapping("insert_enroll_form.member")
-
+	@GetMapping("join_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
-
-		return mv.setViewNameAndData("member/join_enroll_form", null);
+		Map<String, Object> responseData = memberService.selectStateCategory();
+		return mv.setViewNameAndData("member/join_enroll_form", responseData);
 	}
-
-
-	public ModelAndView insertEnrollForm(ModelAndView mav) {
-		return mav;	
-
-	}
+	
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
