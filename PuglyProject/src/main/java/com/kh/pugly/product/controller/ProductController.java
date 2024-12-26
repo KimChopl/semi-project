@@ -44,7 +44,7 @@ public class ProductController {
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session) {
 		
-		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
+		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile.toString());
 		
 		productService.insertProduct(product, upfile);
 		
