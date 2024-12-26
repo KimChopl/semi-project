@@ -24,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-	
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
 	private final PasswordEncoder passEncrypt;
@@ -68,12 +67,14 @@ public class MemberController {
 	public ModelAndView updateFormAddress(ModelAndView mav) {
 		List<Address> category = memberService.selectStateCategory();
 		mav.setViewName("member/update_enroll_form");
-		mav.addObject("stateCategory", category)
+		mav.addObject("stateCategory", category);
 		return mav;
 	}
 	
 	@GetMapping("insert_enroll_form.member")
-	public ModelAndView insertEnrollForm()
+	public ModelAndView insertEnrollForm(ModelAndView mav) {
+		return mav;	
+	}
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
