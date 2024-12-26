@@ -44,20 +44,14 @@
 	 -->
 
 	
- 	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>
 
 
- 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao, com.kh.pugly.farm.model.dao, com.kh.pugly.product.model.dao"/>
 
-	 
- 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao"/>
-	<mybatis-spring:scan base-package="com.kh.pugly.farm.model.dao"/>
-
-
- 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao, com.kh.pugly.farm.model.dao, com.kh.pugly.board.model.dao"/>
-
-
- 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao, com.kh.pugly.farm.model.dao, com.kh.pugly.board.model.dao, com.kh.pugly.common.model.dao"/>
+ 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao, 
+ 	com.kh.pugly.farm.model.dao, 
+ 	com.kh.pugly.board.model.dao, 
+ 	com.kh.pugly.common.model.dao, 
+ 	com.kh.pugly.product.model.dao"/>
 
  	
  	<!--  File Upload Bean Regist -->

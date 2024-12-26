@@ -6,11 +6,9 @@ import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.product.model.vo.Product;
 
 @Mapper
-public class ProductMapper {
+public interface ProductMapper {
 
 	// 상품등록
-	public void insertProduct(Product product, Image image) {
-		
-	}
+	public void insertProduct(Product product, Image image);
 
 }
