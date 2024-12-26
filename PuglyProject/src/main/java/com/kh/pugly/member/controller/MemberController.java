@@ -68,12 +68,14 @@ public class MemberController {
 	public ModelAndView updateFormAddress(ModelAndView mav) {
 		List<Address> category = memberService.selectStateCategory();
 		mav.setViewName("member/update_enroll_form");
-		mav.addObject("stateCategory", category)
+		mav.addObject("stateCategory", category);
 		return mav;
 	}
 	
 	@GetMapping("insert_enroll_form.member")
-	public ModelAndView insertEnrollForm()
+	public ModelAndView insertEnrollForm() {
+		return mv.setViewNameAndData("member/join_enroll_form", null);
+	}
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
