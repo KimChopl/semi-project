@@ -31,10 +31,7 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
-		Member loginUser = memberService.selectMember(member);
-		List<Address> addresses = memberService.selectAdresses(loginUser.getMemberNo());
-		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", addresses);
+		memberService.selectMember(member, session);
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		mv.setViewName("redirect:/");

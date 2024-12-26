@@ -10,7 +10,7 @@ import com.kh.pugly.member.model.vo.Member;
 
 public interface MemberService {
 
-	Member selectMember(Member member);
+	Member selectMember(Member member, HttpSession session);
 	
 	void insertMember(Member member);
 	
@@ -21,6 +21,7 @@ public interface MemberService {
 	List<Address> selectAdresses(Long memberNo);
 	
 	List<Address> selectStateCategory();
+
 
 	
 }

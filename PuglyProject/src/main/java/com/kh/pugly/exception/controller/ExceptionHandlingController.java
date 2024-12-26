@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.TooLargeValueException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,10 @@ public class ExceptionHandlingController {
 		return createErrorResponse("지나치게 많은 값을 입력하셨습니다", e);
 	}
 	
+	@ExceptionHandler(ExistingMemberIdException.class)
+	protected ModelAndView ExistingMemberIdError(ExistingMemberIdException e) {
+		return createErrorResponse("이미 존재하는 아이디입니다.", e);
+	}
 	
 	
 	

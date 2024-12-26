@@ -53,6 +53,31 @@
 		    BY
 		       STATE_CODE
 	</select>
+	
+	<insert id="insertMember" parameterType="member">
+		INSERT
+          INTO
+	           TB_MEMBER
+	           (
+	           MEMBER_NO,
+	           FK_CATEGORY_NO,
+	           MEMBER_ID,
+	           MEMBER_PWD,
+	           NICKNAME,
+	           MEMBER_NAME,
+	           PHONE 
+	           )
+        VALUES
+               (
+               SEQ_MNO.NEXTVAL,
+               #{categoryNo},
+               #{memberId},
+               #{memberPwd},
+               #{nickName},
+               #{memberName},
+               #{phone}
+               )
+	</insert>
 
 
 </mapper>

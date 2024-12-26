@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.TooLargeValueException;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
@@ -21,14 +22,25 @@ public class MemberServiceImpi implements MemberService {
 	private final MemberMapper mapper;
 	
 	@Override
-	public Member selectMember(Member member) {
+	public Member selectMember(Member member, HttpSession session) {
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
+			// 다른 클래스로 뺄 것
 			throw new TooLargeValueException("지나치게 큰 값");
 		}
+		
+		Member loginUser = mapper.selectMember(member);
+		
+		if(loginUser == null) {
+			throw new NoMemberException
+		}
+		
+		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("addresses", selectAdresses(loginUser.getMemberNo()));
+		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		
-		return mapper.selectMember(member);
+		return 
 	}
 	
 	@Override
@@ -43,7 +55,15 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	public void insertMember(Member member) {
-		// TODO Auto-generated method stub
+		// 아이디가 20자가 넘는다.
+		// 비밀번호가 25자가 넘는다.
+		// 닉네임을 입력하지 않았다.
+		Member checkMember = selectMember(member);
+		if(checkMember != null) {
+			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
+		}
+		
+		
 
 	}
 
