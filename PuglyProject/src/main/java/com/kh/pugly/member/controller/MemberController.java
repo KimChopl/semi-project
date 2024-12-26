@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
+import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private final MemberService memberService;
+	private final ModelAndViewUtil mv;
+	private final PasswordEncoder passEncrypt;
 	
 	
 	@GetMapping("login_form.member")
@@ -30,16 +34,20 @@ public class MemberController {
 	}
 	
 	@PostMapping("login.member")
-	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
-		Member loginUser = memberService.selectMember(member);
+	public ModelAndView selectMember(Member member, HttpSession session) {
+		//Member loginUser = memberService.selectMember(member);
+		
+		String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		log.info("{}", memberPwd);
+		
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
+		/*
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		
-		mv.setViewName("redirect:/");
-		return mv;
+		*/
+		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
 	@GetMapping("logout.member")
