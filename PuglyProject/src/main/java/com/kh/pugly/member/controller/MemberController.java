@@ -1,6 +1,8 @@
 package com.kh.pugly.member.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
+import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	
 	private final MemberService memberService;
+	private final ModelAndViewUtil mv;
+	private final PasswordEncoder passEncrypt;
 	
 	
 	@GetMapping("login_form.member")
@@ -30,15 +36,27 @@ public class MemberController {
 	}
 	
 	@PostMapping("login.member")
-	public ModelAndView selectMember(Member member, HttpSession session, ModelAndView mv) {
-		Member loginUser = memberService.selectMember(member);
-		List<Address> addresses = memberService.selectAdresses(loginUser.getMemberNo());
-		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", addresses);
+	public ModelAndView selectMember(Member member, HttpSession session) {
+		//Member loginUser = memberService.selectMember(member);
+		
+		String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		log.info("{}", memberPwd);
+		
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
-		mv.setViewName("redirect:/");
-		return mv;
+		
+		/*
+		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
+		*/
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@GetMapping("logout.member")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginUser");
+		session.removeAttribute("addresses");
+		return "redirect:/";
 	}
 	
 	@GetMapping("my_page.member")
@@ -46,11 +64,20 @@ public class MemberController {
 		return "member/my_page";
 	}
 	
-	@GetMapping("update.member")
-	public ModelAndView updateFormAddress(ModelAndView mv) {
+	@GetMapping("enroll_form.address")
+	public ModelAndView updateFormAddress(ModelAndView mav) {
 		List<Address> category = memberService.selectStateCategory();
-		mv.addObject("stateCategory", category);
-		mv.setViewName("member/update_enroll_form");
+		mav.setViewName("member/update_enroll_form");
+		mav.addObject("stateCategory", category)
+		return mav;
+	}
+	
+	@GetMapping("insert_enroll_form.member")
+	public ModelAndView insertEnrollForm()
+	
+	@PostMapping("update.memberInfo")
+	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+		memberService.updateMember(member, session);
 		return mv;
 	}
 	

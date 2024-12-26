@@ -200,7 +200,7 @@
         $(function(){
         	
             $('#address-update').on('click', function(){
-                location.href = 'enroll-form.address'
+                location.href = 'enroll_form.address'
             });
             
         })

@@ -1,9 +1,14 @@
 package com.kh.pugly.farm.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
+import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.service.FarmService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,8 +22,11 @@ public class FarmController {
 	private final ModelAndViewUtil mv;
 	
 	@GetMapping("farms")
-	public String farmsPage() {
+	public ModelAndView farmsPage() {
+		Map<String, Object> farm = fs.selectFarmList(0);
+		//log.info("{}", list);
 		
-		return "farms";
+		
+		return mv.setViewNameAndData("/farm/farms", farm);
 	}
 }

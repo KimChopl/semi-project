@@ -6,12 +6,14 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.common.model.dto.FarmKeyword;
+import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.StateCategory;
 
 @Mapper
 public interface FarmMapper {
+	
 	int countFarm();
 	
 	List<Farm> selectFarmList(RowBounds rowNum);
@@ -41,5 +43,9 @@ public interface FarmMapper {
 	int deleteLike(LikeAndAttention like);
 	
 	int delteAttention(LikeAndAttention attention);
+	
+	FarmPrice selectPrice();
+	
+
 	
 }

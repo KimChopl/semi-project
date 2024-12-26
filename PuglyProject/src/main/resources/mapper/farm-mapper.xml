@@ -1,3 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.pugly.model.dao.FarmDao"></mapper>
+<mapper namespace="com.kh.pugly.farm.model.dao.FarmMapper">
+	<select id="countFarm" resultType="_int">
+		SELECT
+		       COUNT(FARM_NO)
+		  FROM
+		       TB_FARM
+		 WHERE
+		       DELETE_ASK = 'N'
+	</select>
+	<resultMap id="farmList" type="farm">
+	<constructor>
+	</constructor>
+		<id property="farmNo" column="farmNo" />
+		<result property="seller" column="seller" />
+		<result property="attention" column="ATT" />
+		<result property="like" column="FARM_LIKE" />
+		<result property="farmTitle" column="farmTitle" />
+		<result property="farmCount" column="farmCount" />
+		<result property="farmPrice" column="farmPrice" />
+		<result property="address" column="address" />
+		<result property="productName" column="productName" />
+		<result property="farmCreateDate" column="farmCreateDate" />
+		<result property="farmModifyDate" column="farmModifyDate" />
+		<collection property="imgList"  ofType="Image">
+			<result property="originImgName" column="originImgName" />
+			<result property="changeImgName" column="changeImgName" />
+			<result property="imgNo" column="imgNo" />
+		</collection>
+	</resultMap>
+	<select id="selectFarmList" resultMap="farmList">
+		SELECT
+		       FARM_NO farmNo,
+		       NICKNAME seller,
+		       FARM_TITLE farmTitle,
+		       (SELECT
+		               COUNT(ATT_BY_FARM)
+		          FROM
+		               TB_FARM_ATTENTION
+		          WHERE
+		               ATT_BY_FARM = TB_FARM.FARM_NO
+		         GROUP
+		            BY
+		               ATT_BY_FARM) ATT,
+		        (SELECT
+		               COUNT(LIKE_BY_FARM)
+		          FROM
+		               TB_FARM_LIKE
+		          WHERE
+		               LIKE_BY_FARM = TB_FARM.FARM_NO
+		         GROUP
+		            BY
+		               LIKE_BY_FARM) AS "FARM_LIKE",
+		        FARM_COUNT farmCount,
+		        DISTRICT address,
+		        PRODUCT_NAME productName,
+		        FARM_CREATE_DATE farmCreateDate,
+		        FARM_MODIFY_DATE farmModifyDate,
+		        FARM_PRICE farmPrice,
+		        ORIGIN_IMG_NAME originImgName,
+		        CHANGE_IMG_NAME changeImgName,
+        		IMG_NO imgNo
+		  FROM
+		       TB_FARM
+		  JOIN
+		       TB_MEMBER M ON(SELLER_NO = M.MEMBER_NO)
+		  LEFT
+		  JOIN
+		       TB_IMAGE_BRIGE ON (IMG_POST_NO = FARM_NO)
+		  LEFT
+		  JOIN
+		       TB_IMAGE ON(IMG_NO = IMG_BRIGE_NO)
+		  JOIN
+		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
+		  JOIN
+		       TB_FARM_PRODUCT ON(PRODUCT_NO = FARM_PRODUCT_NO)
+		 WHERE
+		       DELETE_ASK = 'N'
+		   AND
+		       IMG_LEVEL = 1
+		   AND
+		       IMG_CA_NO = 3
+		   AND
+		       ADDRESS_TYPE = 1
+		 ORDER
+		    BY
+		       FARM_CREATE_DATE DESC
+	</select>
+	
+	<select id="selectPrice" resultType="farmPrice">
+		SELECT
+		      MIN(FARM_PRICE) minPrice,
+		      MAX(FARM_PRICE) maxPrice
+		 FROM
+		      TB_FARM
+		WHERE
+		      DELETE_ASK = 'N'
+	</select>
+	
+	<select id="selectState" resultType="stateCategory">
+		SELECT
+		       STATE_CODE AS stateCode,
+		       STATE_NAME stateName
+		  FROM
+		       TB_STATE_CATEGORY
+	</select>
+</mapper>

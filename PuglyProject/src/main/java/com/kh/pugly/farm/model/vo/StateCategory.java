@@ -1,6 +1,7 @@
 package com.kh.pugly.farm.model.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class StateCategory {
-	private int stateCode;
+	private String stateCode;
 	private String stateName;
 }
