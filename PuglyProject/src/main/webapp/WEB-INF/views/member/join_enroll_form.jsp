@@ -71,10 +71,16 @@
                 <input type="text" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div>
-                <input type="text" placeholder="닉네임(생략가능)" name="nickname" />
+                <input type="text" placeholder="닉네임" name="nickname" />
             </div>
             <div>
                 <input type="text" placeholder="전화번호 (-포함)" required/>
+            </div>
+            <div>
+                <select name="stateCode">
+                    <option value=""></option>
+                </select>
+                <input type="text" placeholder="상세주소" required />
             </div>
             <div>
                 <button>회원가입</button>
@@ -83,9 +89,8 @@
                     <option value="2">판매자</option>
                     <option value="1">관리자</option>
                 </select>
+        	</div>
             </form>
-        </div>
-        
     </div>
 
 

@@ -1,6 +1,8 @@
 package com.kh.pugly.member.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -63,12 +65,15 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress(ModelAndView mv) {
+	public ModelAndView updateFormAddress(ModelAndView mav) {
 		List<Address> category = memberService.selectStateCategory();
-		mv.addObject("stateCategory", category);
-		mv.setViewName("member/update_enroll_form");
-		return mv;
+		mav.setViewName("member/update_enroll_form");
+		mav.addObject("stateCategory", category)
+		return mav;
 	}
+	
+	@GetMapping("insert_enroll_form.member")
+	public ModelAndView insertEnrollForm()
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
