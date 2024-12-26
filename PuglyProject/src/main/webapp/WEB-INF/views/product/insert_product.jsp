@@ -64,7 +64,7 @@
 </head>
 <body>
 
-    <!--<jsp:include page="" />-->
+    <jsp:include page="" />
 
     <div class="content">
         <div>
@@ -205,7 +205,7 @@
          <br><br><br>
     </div>
 
-    <!--<jsp:include page="" /> -->
+    <jsp:include page="" />
 
 </body>
 </html>

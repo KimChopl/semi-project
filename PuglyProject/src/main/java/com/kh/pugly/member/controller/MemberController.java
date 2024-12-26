@@ -1,8 +1,6 @@
 package com.kh.pugly.member.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-
 public class MemberController {
+	
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
 	private final PasswordEncoder passEncrypt;
@@ -66,6 +64,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
+
 	public ModelAndView updateFormAddress() {
 		Map<String, Object> responseData = memberService.selectStateCategory();
 		
@@ -76,6 +75,7 @@ public class MemberController {
 	public ModelAndView insertEnrollForm() {
 		Map<String, Object> responseData = memberService.selectStateCategory();
 		return mv.setViewNameAndData("member/join_enroll_form", responseData);
+
 	}
 	
 	
