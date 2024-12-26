@@ -33,14 +33,12 @@ public class ProductServiceImpl implements ProductService {
 		   product.getProductName() == null || product.getProductName().trim().isEmpty() ||
 		   product.getProductPrice() == null || product.getProductPrice().trim().isEmpty() ||
 		   product.getProductQuantity() == null || product.getProductQuantity().trim().isEmpty() ||
-		   product.getUnitName() == null || product.getUnitName().trim().isEmpty() ||
-		   product.getProductContent() == null || product.getProductContent().trim().isEmpty() ||
-		   product.getCategoryName() == null || product.getCategoryName().trim().isEmpty()) {
+		   product.getProductContent() == null || product.getProductContent().trim().isEmpty()) { 
 			throw new ProductValueException("부적절한 입력값");
 		}
 	}
 	
-	private void handleFileUpload(Product product, MultipartFile[] upfile, Image image) {
+	private void handleFileUpload(Product product, MultipartFile[] upfile) {
 		for (MultipartFile file : upfile) {
 			if(!file.isEmpty()) {
 				String fileName = file.getOriginalFilename(); // 각 파일의 원본 파일 이름
@@ -54,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
 				} catch (IOException e) {
 					throw new FailToFileUploadException("파일오류!");
 				}
+				Image image = new Image();
 				// 이미지 파일 정보
 				image.setOriginImgName(fileName); // 원본 파일
 				image.setChangeImgName("/pugly/resources/upload_files/" + changeName); // 변경된 파일 경로
@@ -62,20 +61,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
 	@Override
-	public void insertProduct(Product product, MultipartFile[] upfile, Image image) {
+	public void insertProduct(Product product, MultipartFile[] upfile) {
 		validateProduct(product); // 유효성 검증
 	
-		if(!("".equals(image.getOriginImgName()))) {
-			handleFileUpload(product, upfile, image);
-		}
-		mapper.insertProduct(product, image);
+		mapper.insertProduct(product, upfile);
 	}
 	
 	

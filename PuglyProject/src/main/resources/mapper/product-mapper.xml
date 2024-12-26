@@ -13,16 +13,19 @@
 		  		PRODUCT_CONTENT,
 		  		PRODUCT_QUANTITY,
 		  		FK_UNIT_NO,
-		  		FK_DELIVERY_NO, 
+		  		FK_DELIVERY_NO,
+		  		FK_CATEGORY_NO
 		  		)
 		VALUES
 				(
 				SEQ_PNO.NEXTVAL,
-				#{productNo},
 				#{productName},
 				#{productPrice},
 				#{productContent},
-				
+				#{productQuantity},
+				#{unitNo},
+				#{deliveryNo},
+				#{categoryNo}
 				)
 
 
