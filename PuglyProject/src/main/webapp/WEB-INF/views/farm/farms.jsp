@@ -8,8 +8,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <title>Pugly Farm</title>
-    <style>
+    
+ 
+<style>
         div{
             border: 0.5px solid gray;
             margin : auto;
@@ -17,14 +23,13 @@
         }
         #body{
             width: 1200px;
-            height: auto;
+            height: 1600px;
             overflow: hidden;
         }
-        
         #suchbar{
-            height: 650px;
             position : fixed;
         }
+        
         .optionbar{
             height: 120px;
         }
@@ -81,20 +86,26 @@
             <div class="row">
                 <div class="col-3 out-frame">
                             <form action="" method="get">
-                                <div class="col" id="suchbar">
-                                    <div class="container">
-                                        <div class="row optionbar">
-                                            <div class="checkbox-div">
-                                            </div>
-                                            <div class="checkbox-div">
+                                <div id="suchbar">
+                                <div class="container" >
+                                    <div class="row">
+                                        <div class="col">
+                                                <div class="container" >
+                                                    <div class="row optionbar">
+                                                        <div class="checkbox-div">
+                                                        </div>
+                                                        <div class="checkbox-div">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row optionbar"></div>
+                                                    <div class="row optionbar"></div>
+                                                    <div class="row optionbar"></div>
+                                                    <div class="row optionbar"></div>
+                                                </div>
+                                                <button id="such-detail">조회하기</button>
                                             </div>
                                         </div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
                                     </div>
-                                    <button id="such-detail">조회하기</button>
                                 </div>
                             </form>
                 </div>
@@ -102,78 +113,23 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
+                            <input type="hidden" id="plusNo" name="plusNo" value="${ farm.mi.plusNo }">
                                 <div class="container">
-                                    <div class="row">
+                                    <div class="row" id="farm-list">
+                                    <c:forEach items="${ farm.farm }" var="farm">
                                         <div class="col-4 farms">
                                             <div class="farms-content">
                                                 <div class="img"><img src="" alt=""></div>
                                                 <div class="farm-explain">
-                                                    <div class="title">농장제목</div>
+                                                    <div class="title">${ farm.farmTitle }</div>
                                                     <div class="score">
-                                                        <div class="price"></div>
-                                                        <div class="like-attention"></div>
+                                                        <div class="price">${ farm.farmPrice }</div>
+                                                        <div class="like-attention">${ farm.attention } ${ farm.like }</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
+                                    </c:forEach>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +138,9 @@
                 </div>
             </div>
         </div>
+        <button id="btn">더보기</button>
     </div>
+    
 	<script>
 	window.onload = () =>{
 		
@@ -201,6 +159,24 @@
 					},
 					success : function(r){
 						document.getElementById('plusNo').value = r.mi.plusNo;
+						const replies = [...r.farm]
+						const result = replies.map(e =>
+							`<div class="col-4 farms">
+                                            <div class="farms-content">
+                                                <div class="img"><img src="" alt=""></div>
+                                                <div class="farm-explain">
+                                                    <div class="title">\${ e.farmTitle }</div>
+                                                    <div class="score">
+                                                        <div class="price">\${ e.farmPrice }</div>
+                                                        <div class="like-attention">\${ e.attention } \${ e.like }</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`		
+						).join('');
+						console.log(result);
+						document.getElementById('farm-list').innerHTML += result;
+						document.getElementById('body').style.height = 'auto';
 						if(r.mi.lastNo === r.mi.listCount){
 							btn.style.display = 'none';
 						}
