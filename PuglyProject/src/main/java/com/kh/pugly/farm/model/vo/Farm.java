@@ -21,15 +21,17 @@ public class Farm {
 	private String seller;
 	private String categoryName;
 	private int categoryNo;
-	private String productName;
-	private String farmTitile;
+	private String farmTitle;
 	private String farmContent;
-	private Date farmCreateDate;
 	private String bewareList;
 	private String deleteAsk;
-	private Long farmCount;
-	private int farmPrice;
-	private Date farmModifyDate;
+	private int attention;
+	private int like;
+	private int farmCount;
 	private String address;
-	private List<Image> imgList;
+	private String productName;
+	private Date farmCreateDate;
+	private Date farmModifyDate;
+	private int farmPrice;
+	List<Image> imgList;
 }

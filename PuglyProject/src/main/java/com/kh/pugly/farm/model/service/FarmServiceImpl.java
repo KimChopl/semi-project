@@ -22,9 +22,11 @@ import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class FarmServiceImpl implements FarmService {
 
 	private final FarmMapper fm;
@@ -62,6 +64,7 @@ public class FarmServiceImpl implements FarmService {
 		MoreInfo mi = getPageInfo(plusNo);
 		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getLastNo());
 		List<Farm> farm = fm.selectFarmList(rowNum);
+		log.info("{}", farm);
 		Map<String, Object> map = checkedMap(farm, mi);
 		
 		return map;
@@ -164,14 +167,14 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private void checkedVacuum(Farm farm) {
-		if(farm.getFarmTitile().trim().equals("") || farm.getFarmContent().trim().equals("")) {
+		if(farm.getFarmTitle().trim().equals("") || farm.getFarmContent().trim().equals("")) {
 			//Exception
 		}
 	}
 	
 	private Farm replaceContent(Farm farm) {
 		checkedVacuum(farm);
-		farm.setFarmTitile(rx.replaceXss(farm.getFarmTitile()));
+		farm.setFarmTitle(rx.replaceXss(farm.getFarmTitle()));
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
