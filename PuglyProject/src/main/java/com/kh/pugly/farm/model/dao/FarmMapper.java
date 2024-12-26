@@ -46,6 +46,4 @@ public interface FarmMapper {
 	
 	FarmPrice selectPrice();
 	
-
-	
 }

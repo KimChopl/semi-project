@@ -43,9 +43,16 @@
 	 	@Mapping 사용하기 위한 과정
 	 -->
 
+	<!-- 
  	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>
 
+	 -->
+ 	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao"/>
+	<mybatis-spring:scan base-package="com.kh.pugly.farm.model.dao"/>
+
+
  	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao, com.kh.pugly.farm.model.dao, com.kh.pugly.board.model.dao"/>
+
 
  	
  	<!--  File Upload Bean Regist -->
