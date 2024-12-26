@@ -21,12 +21,15 @@
 		<typeAlias type="com.kh.pugly.common.model.vo.Image" alias="image" />
 		<typeAlias type="com.kh.pugly.farm.model.dto.FarmPrice" alias="farmPrice"/>
 		<typeAlias type="com.kh.pugly.farm.model.dto.LikeAndAttention" alias="likeAndAtt" />
+		<typeAlias type="com.kh.pugly.product.model.vo.Product" alias="product" />
+		<typeAlias type="com.kh.pugly.product.model.vo.MyStore" alias="myStore" />
+		<typeAlias type="com.kh.pugly.product.model.vo.productOrder" alias="order" />
 	</typeAliases>
 	 
 	 <mappers>
 	 	<mapper resource="/mapper/farm-mapper.xml" />
 	 	<mapper resource="/mapper/member-mapper.xml"/>
-	 	
+	 	<mapper resource="/mapper/product-mapper.xml"/>
 	 </mappers>
 	 <!-- 
 	 -->

@@ -8,6 +8,7 @@ import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
+import com.kh.pugly.exception.ValidateProductException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +43,14 @@ public class ExceptionHandlingController {
 	protected ModelAndView comparedPasswordError(ComparedPasswordException e) {
 		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
 	}
-	
+	@ExceptionHandler(ValidateProductException.class)
+	protected ModelAndView validateProductNoError(ValidateProductException e) {
+		return createErrorResponse("상품이 존재하지 않습니다.", e);
+	}
+	@ExceptionHandler(ProductValueException.class)
+	protected ModelAndView novalueError(ProductValueException e) {
+		return createErrorResponse("필수 입력사항을 모두 입력해주세요", e);
+	}
 	
 	
 	

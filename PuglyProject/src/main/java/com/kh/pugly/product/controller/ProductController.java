@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ProductController {
 
-	private final ProductService productServuce;
+	private final ProductService productService;
 	private final ModelAndViewUtil mv;
 	
 	// 테스트 화면
@@ -45,6 +45,11 @@ public class ProductController {
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session) {
 		
 		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
+		
+		productService.insertProduct(product, upfile);
+		
+		session.setAttribute("alertMsg", "상품 등록완료!");
+		
 		
 		return mv.setViewNameAndData("redirect:testmain", null);
 	}
