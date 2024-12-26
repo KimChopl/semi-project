@@ -8,13 +8,13 @@
 </head>
 <body>
 
-	<a href="mystore.from">내상점</a>
+	<a href="mystore.form">내상점</a>
 	<br>
-	<a href="insert.from">상품등록</a>
+	<a href="insert.form">상품등록</a>
 	<br>
-	<a href="list.from">상품리스트</a>
+	<a href="list.form">상품리스트</a>
 	<br>
-	<a href="detail.from">상품상세보기</a>
+	<a href="detail.form">상품상세보기</a>
 
 
 </body>
