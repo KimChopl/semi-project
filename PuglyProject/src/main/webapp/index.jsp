@@ -14,7 +14,7 @@
 	<a href="">병민</a>
 	<a href="">상은</a>
 	<a href="farms">재성</a>
-	<a href="">한솔</a>
+	<a href="testmain">한솔</a>
 	
 </body>
 </html>
