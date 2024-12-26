@@ -8,13 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Hi! I'm welcome file</h1>
-	
-	<h2>각자 앞단 넣어서 테스트 해보아요</h2>
-	<a href="">병민</a>
-	<a href="login_form.member">상은</a>
-	<a href="farms">재성</a>
-	<a href="testmain">한솔</a>
-	
+
 </body>
 </html>
