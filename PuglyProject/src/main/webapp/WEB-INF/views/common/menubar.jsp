@@ -120,7 +120,7 @@
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
-                <li><a href="메인페이지">HOME</a></li>
+                <li><a href="/pugly">HOME</a></li>
                 <li><a href="농산물핸들러">농산물</a></li>
                 <li><a href="농장핸들러">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>

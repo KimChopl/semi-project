@@ -79,14 +79,23 @@
                 <input type="text" placeholder="전화번호 (-포함)" required/>
             </div>
             <div>
+                <select name="stateCode">
+                <c:forEach var="sc" items="${ stateCategory }">
+                    <option value="${ sc.stateCode }">${ sc.stateName }</option>
+                </c:forEach>
+                </select>
+                <input type="text" placeholder="상세주소" required />
+            </div>
+            
+            <div>
                 <button>회원가입</button>
                 <select name="categoryNo">
                     <option value="3">일반</option>
                     <option value="2">판매자</option>
                     <option value="1">관리자</option>
                 </select>
-            </form>
-        </div>
+        	</div>
+       </form>
         
     </div>
 
