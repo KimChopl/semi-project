@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.dao.ImageMapper;
@@ -17,10 +18,8 @@ import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
-import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
-import com.kh.pugly.farm.model.vo.StateCategory;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -31,9 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FarmServiceImpl implements FarmService {
 
-	private final FarmMapper fm;
-	private final ImageMapper im;
+	//private final ImageMapper im;
 	private final ReplaceXss rx;
+	private final FarmMapper fm;
+	
 	
 	private int countFarm() {
 		return fm.countFarm();
@@ -52,7 +52,7 @@ public class FarmServiceImpl implements FarmService {
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mif){
 		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-			map.put("mi", mif.getLastNo());
+			map.put("mi", mif);
 			map.put("farm", farm);
 			return map;
 		} else {
@@ -152,7 +152,7 @@ public class FarmServiceImpl implements FarmService {
 		ib.setCategoryNo(farm.getCategoryNo());
 		return ib;
 	}
-	
+	/*
 	private int cehckedInsertImageBrige(ImageBrige ib) {
 		int brigeNo = im.insertImageBrige(ib);
 		if(brigeNo < 1) {
@@ -167,7 +167,7 @@ public class FarmServiceImpl implements FarmService {
 			// Exception
 		}
 	}
-	
+	*/
 	private void checkedVacuum(Farm farm) {
 		if(farm.getFarmTitle().trim().equals("") || farm.getFarmContent().trim().equals("")) {
 			//Exception
@@ -180,7 +180,7 @@ public class FarmServiceImpl implements FarmService {
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
-
+	/*
 	@Override
 	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
 		checkedFarmContent(farm, member);
@@ -191,7 +191,7 @@ public class FarmServiceImpl implements FarmService {
 		img.setBrigeNo(brigeNo);
 		checkedInsertImage(img);
 	}
-
+	 */
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
@@ -225,6 +225,12 @@ public class FarmServiceImpl implements FarmService {
 
 	@Override
 	public void updateFarm(ImageBrige ib, Member member) {
+	}
+
+	@Override
+	public void insertFarm(Farm farm, Image img, Member member) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
