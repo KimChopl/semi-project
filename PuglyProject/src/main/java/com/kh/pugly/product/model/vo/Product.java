@@ -35,11 +35,5 @@ public class Product {
 	private String categoryName;			// 상품 카테고리 타입
 	
 	
-<<<<<<< HEAD
-
-=======
-	
-	
->>>>>>> parent of c1f48a5 (클래스오류)
 
 }
