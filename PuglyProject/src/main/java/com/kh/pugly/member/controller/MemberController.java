@@ -36,14 +36,26 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
+
 		Member loginUser = memberService.selectMember(member);
+		//log.info("{}", loginUser);
+		//log.info("{}", addresses);
+		
+		//Member loginUser = memberService.selectMember(member);
+		//Member loginUser = memberService.selectMember(member);
+
+		
+		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		//log.info("{}", memberPwd);
+		
+		//log.info("{}", loginUser);
+		//log.info("{}", addresses);
+		
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
 		
 		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		//log.info("{}", memberPwd);
-		
 		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
@@ -77,6 +89,7 @@ public class MemberController {
 		return mav;
 	}
 	
+	
 	@GetMapping("insert_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
 		return null;	
@@ -95,7 +108,5 @@ public class MemberController {
 		Member loginMember = (Member)session.getAttribute("loginUser");
 		memberService.updateMember(member, loginMember);
 		return mv;
-	}
-	
-	
+	}	
 }
