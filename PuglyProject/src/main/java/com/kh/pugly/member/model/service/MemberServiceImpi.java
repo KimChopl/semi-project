@@ -1,5 +1,6 @@
 package com.kh.pugly.member.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ public class MemberServiceImpi implements MemberService {
 		responseData.put("stateCategory", mapper.selectStateCategory());
 		
 		return responseData;
-
+	}
 	
 	@Override
 	public void insertMember(Member member) {
