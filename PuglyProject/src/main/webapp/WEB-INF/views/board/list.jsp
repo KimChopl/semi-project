@@ -70,20 +70,20 @@
                 <tbody>
                 
                 
-                	<!--<c:forEach items="${boards}" var="board"> -->
-	                    <tr onclick="detail('게시판번호')">
-	                        <td> 보드번호</td>
-	                        <td>보드제목</td>
-	                        <td>게시판 작성자</td>
-	                        <td>게시판 내용</td>
-	                        <td>게시판 작성일</td>
+                	<c:forEach items="${boards}" var="board">
+	                    <tr onclick="detail('${board.boardNo}')">
+	                        <td>${board.boardNo}</td>
+	                        <td>${board.boardTitle }</td>
+	                        <td>${board.nickName }</td>
+	                        <td>${board.count }</td>
+	                        <td>${board.createDate}</td>
 	                        <td>
-	                        <!-- <c:if test="첨부파일 있을 시"> -->
-	                        	<!--	💌 -->
-	                        <!--</c:if> -->	
+	                        <c:if test="첨부파일 있을 시"> -->
+	                        		🖼️
+	                        </c:if>	
 	                        </td>
 	                    </tr>
-                    <!--</c:forEach>-->
+                    </c:forEach>
                     
                 </tbody>
             </table>
