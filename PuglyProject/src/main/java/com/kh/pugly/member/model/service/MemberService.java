@@ -14,6 +14,8 @@ public interface MemberService {
 	void insertMember(Member member);
 	
 	void insertAddress(Address address);
+
+	void updateMember(Member member, Member loginMember);
 	
 	void deleteMember(Map<String, Object> map);
 
@@ -21,7 +23,6 @@ public interface MemberService {
 	
 	Map<String, Object> selectStateCategory();
 
-	void updateMember(Member member, Member loginMember);
 
 
 	

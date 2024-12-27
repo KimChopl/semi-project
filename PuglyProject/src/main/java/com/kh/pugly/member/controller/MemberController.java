@@ -65,12 +65,6 @@ public class MemberController {
 		return mv.setViewNameAndData("member/update_enroll_form", map);
 	}
 	
-	
-	@GetMapping("insert_enroll_form.member")
-	public ModelAndView insertEnrollForm() {
-		return null;	
-	}
-	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
 		
