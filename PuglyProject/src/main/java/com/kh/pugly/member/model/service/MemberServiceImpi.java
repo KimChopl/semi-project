@@ -29,7 +29,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		/*
+		
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
 			// 다른 클래스로 뺄 것
 			throw new TooLargeValueException("지나치게 큰 값");
@@ -40,7 +40,7 @@ public class MemberServiceImpi implements MemberService {
 		if(loginUser == null) {
 			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
 		}
-		*/
+		
 		
 		// 암호화를 모두 끝내면 하기
 		/*
@@ -53,8 +53,7 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		
-		//return loginUser;
-		return member;
+		return loginUser;
 	}
 	
 	@Override
