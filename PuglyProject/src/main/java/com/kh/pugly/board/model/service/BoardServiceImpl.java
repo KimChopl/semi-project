@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardMapper mapper;
-	private final ServletContext context;
 	
 	private int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();

@@ -12,7 +12,15 @@ public class PagiNation {
 		if(endPage > maxPage) {
 			endPage  = maxPage;
 		}
-		return PageInfo.builder().listCount(listCount).currentPage(currentPage).baordLimit(boardLimit).pageLimit(pageLimit).maxPage(maxPage).startPage(startPage).endPage(endPage).build();
+		return PageInfo.builder()
+					   .listCount(listCount)
+					   .currentPage(currentPage)
+					   .baordLimit(boardLimit)
+					   .pageLimit(pageLimit)
+					   .maxPage(maxPage)
+					   .startPage(startPage)
+					   .endPage(endPage)
+					   .build();
 	}
 
 }
