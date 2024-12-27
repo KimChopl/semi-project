@@ -18,13 +18,11 @@ import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
+import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
-<<<<<<< Updated upstream
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
-=======
->>>>>>> Stashed changes
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -35,15 +33,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FarmServiceImpl implements FarmService {
 
-<<<<<<< Updated upstream
 
 	private final FarmMapper fm;
 	private final ImageMapper im;
-=======
-	//private final ImageMapper im;
->>>>>>> Stashed changes
 	private final ReplaceXss rx;
-	private final FarmMapper fm;
 	
 	
 	private int countFarm() {
@@ -63,13 +56,9 @@ public class FarmServiceImpl implements FarmService {
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
 		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-<<<<<<< Updated upstream
 
 			map.put("mi", mi);
 
-=======
-			map.put("mi", mif);
->>>>>>> Stashed changes
 			map.put("farm", farm);
 			return map;
 		} else {

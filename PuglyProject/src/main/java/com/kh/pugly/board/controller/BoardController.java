@@ -2,7 +2,6 @@ package com.kh.pugly.board.controller;
 
 import java.util.Map;
 
-<<<<<<< Updated upstream
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -15,26 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.board.model.service.BoardService;
 import com.kh.pugly.board.model.vo.Board;
-=======
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.kh.pugly.board.model.service.BoardService;
->>>>>>> Stashed changes
 import com.kh.pugly.common.ModelAndViewUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> parent of a7ffb37 (모든 파일 커밋)
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -48,7 +32,6 @@ public class BoardController {
 	public ModelAndView selectBoardList(@RequestParam(value = "page", defaultValue = "1")int page) {
 		//Map<String, Object> map = boardService.selectBoardList(page);
 		
-<<<<<<< Updated upstream
 		return mv.setViewNameAndData("board/list", null);
 	}
 	
@@ -88,9 +71,6 @@ public class BoardController {
 		boardService.updateBoard(board, upfile);
 		
 		return mv.setViewNameAndData("redirect:/boards/"+board.getBoardNo(), null);
-=======
-		return mv.setViewNameAndData("board/list2", null);
->>>>>>> Stashed changes
 	}
 
 }
