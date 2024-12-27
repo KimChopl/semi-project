@@ -68,7 +68,7 @@
                     </form>
                 </div>
                 <button>
-                    <img src="resources/내상점이미지.png" alt="내상점이미지" class="main-img">
+                    <img src="resources/img/tomato2.jpg" alt="내상점이미지" class="main-img">
                 </button>
                 <div class="row">
                     <button class="btn-1">문의하기</button>
@@ -118,7 +118,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
@@ -132,7 +132,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
@@ -146,7 +146,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
@@ -160,7 +160,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
@@ -174,7 +174,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
@@ -189,7 +189,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구</div>
@@ -203,7 +203,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구</div>
@@ -217,7 +217,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구</div>
@@ -231,7 +231,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구</div>
@@ -245,7 +245,7 @@
         <div class="pro-1">
             <form>
                 <div>
-                    <img src="resources/poteto.png" alt="상품이미지" class="pro-img">
+                    <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
                 </div>
             <div class="pro-2">
                 <div style="font-size: 20px;">일이삼사오육칠팔구</div>
