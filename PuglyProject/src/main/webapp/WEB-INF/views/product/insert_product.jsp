@@ -83,23 +83,23 @@
             <div>                
             <div class="img-fom">
                 <label>대표이미지</label><br>
-                <img src="resources/img/tomato2.jpg" class="main-img" id="title-img">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="main-img" id="title-img">
             </div>
             <div class="img-fom">
                 <label>상세이미지-1</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img1">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img1">
             </div>
             <div class="img-fom">
                 <label>상세이미지-2</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img2">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img2">
             </div>
             <div class="img-fom">
                 <label>상세이미지-3</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img3">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img3">
             </div>
             <div class="img-fom">
                 <label>상세이미지-4</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img4">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img4">
             </div>
                 <br><br>
             
@@ -188,13 +188,17 @@
                 <br><br>
                 <span class="title">배송정보</span> 
                 <label>무료배송</label>
-                <input type="radio" value="1" checked name="deliveryNo" id="deliveryNo">
+                <input type="radio" name="radio1" value="무료배송" checked name="deliveryNo" id="deliveryNo">
                 <label>배송비</label>
+<<<<<<< HEAD
                 <input type="radio" name="deliveryNo" value="2">
                 <input type="number" class="text-title" name="deliverPrice"> 배송비 입력
                 <input type="radio" name="radio1" value="무료배송" checked>
                 <label>배송비</label>
                 <input type="radio" name="radio1" value="배송비 포함" name="deliveryPrice" id="deliveryPrice">
+=======
+                <input type="radio" name="radio1" value="배송비 포함">
+>>>>>>> parent of c1f48a5 (클래스오류)
                 <input type="number" class="text-title"> 배송비 입력
                 <br><br>
                 <hr>
