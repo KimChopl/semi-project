@@ -127,9 +127,6 @@
 
 </head>
 <body>
-
-	<jsp:include page="../common/menubar.jsp" />
-
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
@@ -207,13 +204,7 @@
             });
             
         })
-	</script>
-	
-
-	<!--  
-	<jsp:include page="../common/footer.jsp" />
-	-->
-
+</script>
 
 
 </body>

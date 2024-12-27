@@ -20,7 +20,7 @@ public interface MemberService {
 
 	List<Address> selectAdresses(Long memberNo);
 	
-	Map<String, Object> selectStateCategory();
+	List<Address> selectStateCategory();
 
 
 	

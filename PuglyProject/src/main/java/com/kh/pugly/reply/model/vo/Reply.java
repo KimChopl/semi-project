@@ -1,5 +1,7 @@
 package com.kh.pugly.reply.model.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +11,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
+@AllArgsConstructor
+@Builder
 public class Reply {
 	private Long replyNo;
 	private int refBno;
