@@ -11,9 +11,7 @@ public interface MemberService {
 
 	Member selectMember(Member member);
 	
-	void insertMember(Member member);
-	
-	void insertAddress(Address address);
+	void insertMember(Member member, Address address);
 
 	void updateMember(Member member, Member loginMember);
 	
@@ -22,6 +20,8 @@ public interface MemberService {
 	List<Address> selectAdresses(Long memberNo);
 	
 	Map<String, Object> selectStateCategory();
+
+	
 
 
 

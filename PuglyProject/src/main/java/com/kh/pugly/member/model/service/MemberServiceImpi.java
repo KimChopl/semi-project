@@ -79,7 +79,7 @@ public class MemberServiceImpi implements MemberService {
 		// 비밀번호가 25자가 넘는다.
 		
 		return loginUser;
-			}
+	}
 	
 	@Override
 	public List<Address> selectAdresses(Long memberNo) {
@@ -97,22 +97,21 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
-	public void insertMember(Member member) {
+	public void insertMember(Member member, Address address) {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
+		validationMember(member);
+		if("".equals(member.getNickName())) {
+			member.setNickName(member.getMemberId());
+		}
 		
-		
+		mapper.insertMember(member);
+		mapper.insertAddress(address);
 
 	}
 	
-	
-	@Override
-	public void insertAddress(Address address) {
-		
-		
-	}
 
 	@Override
 	public void updateMember(Member member, Member loginMember) {
@@ -134,6 +133,8 @@ public class MemberServiceImpi implements MemberService {
 		
 
 	}
+
+	
 
 
 

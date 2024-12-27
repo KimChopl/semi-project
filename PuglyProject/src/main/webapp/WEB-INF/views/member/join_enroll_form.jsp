@@ -70,7 +70,7 @@
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
             <div>
-                <input type="text" placeholder="비밀번호" name="memberPwd" required/>
+                <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div>
                 <input type="text" placeholder="닉네임" name="nickname" />
@@ -79,6 +79,7 @@
                 <input type="text" placeholder="전화번호 (-포함)" required/>
             </div>
             <div>
+                <input type="hidden" name="addressType" value="1"/>
                 <select name="stateCode">
                 <c:forEach var="s" items="${ stateCategory }">
                     <option value="${ s.stateCode }">${ s.stateName }</option>

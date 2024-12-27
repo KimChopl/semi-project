@@ -73,6 +73,13 @@ public class MemberController {
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
+	public ModelAndView insertMember(Member member, Address address) {
+		
+		memberService.insertMember(member, address);
+		
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
