@@ -59,6 +59,8 @@
 </head>
 <body>
     
+    <jsp:include page="../common/menubar.jsp" />
+    
     <div id="wrap">
         <form action="insert.member" method="post">
             <div>
@@ -68,7 +70,7 @@
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
             <div>
-                <input type="text" placeholder="비밀번호" name="memberPwd" required/>
+                <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div>
                 <input type="text" placeholder="닉네임" name="nickname" />
@@ -78,7 +80,9 @@
             </div>
             <div>
                 <select name="stateCode">
-                    <option value=""></option>
+                <c:forEach var="s" items="${ stateCategory }">
+                    <option value="${ s.stateCode }">${ s.stateName }</option>
+                </c:forEach>
                 </select>
                 <input type="text" placeholder="상세주소" required />
             </div>
