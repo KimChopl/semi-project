@@ -59,6 +59,8 @@
 </head>
 <body>
     
+    <jsp:include page="../common/menubar.jsp" />
+    
     <div id="wrap">
         <form action="insert.member" method="post">
             <div>

@@ -38,23 +38,6 @@ public class MemberController {
 	public ModelAndView selectMember(Member member, HttpSession session) {
 
 		Member loginUser = memberService.selectMember(member);
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		//Member loginUser = memberService.selectMember(member);
-		//Member loginUser = memberService.selectMember(member);
-
-		
-		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		//log.info("{}", memberPwd);
-		
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		
 		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
 		
 		session.setAttribute("loginUser", loginUser);
@@ -76,17 +59,10 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress() {
-		List<Address> category = memberService.selectStateCategory();
-		Map<String, Object> map = new HashMap();
-		map.put("asd", map);
+		public ModelAndView updateFormAddress() {
+		Map<String, Object> map = memberService.selectStateCategory();
+		
 		return mv.setViewNameAndData("member/update_enroll_form", map);
-	}
-	public ModelAndView updateFormAddress(ModelAndView mav) {
-		List<Address> category = memberService.selectStateCategory();
-		mav.setViewName("member/update_enroll_form");
-		mav.addObject("stateCategory", category);
-		return mav;
 	}
 	
 	
@@ -97,9 +73,9 @@ public class MemberController {
 	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
-		List<Address> category = memberService.selectStateCategory();
-		Map<String, Object> map = new HashMap();
-		map.put("asd", map);
+		
+		Map<String, Object> map = memberService.selectStateCategory();
+		
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
