@@ -35,6 +35,7 @@
 	 	<mapper resource="/mapper/product-mapper.xml"/>
 	 	<mapper resource="/mapper/reply-mapper.xml"/>
 	 	
+	 	
 	 </mappers>
 
 </configuration>
