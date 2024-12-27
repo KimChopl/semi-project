@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpi implements MemberService {
 
 	private final MemberMapper mapper;
-	//private final PasswordEncoder passwordEncrypt;
+	private final PasswordEncoder passwordEncrypt;
 	
 	private void validationMember(Member member) {
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
@@ -112,6 +112,8 @@ public class MemberServiceImpi implements MemberService {
 		if("".equals(member.getNickName())) {
 			member.setNickName(member.getMemberId());
 		}
+		
+		// member.setMemberPwd(passwordEncrypt.encode(member.getMemberPwd()));
 		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);

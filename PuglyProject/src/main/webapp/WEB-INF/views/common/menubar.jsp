@@ -136,13 +136,15 @@
 
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
-                        <div id="profile-menu">
-                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
-                            <a href="/pugly/my_page.member">마이페이지</a>
-                            <a href="예약상태핸들러">예약상태</a>
-                            <a href="장바구니핸들러">장바구니</a>
-                            <a href="/pugly/logout.member">로그아웃</a>
-                        </div>
+                        <c:if test="${ not empty sessionScope.loginUser }">
+	                        <div id="profile-menu">
+	                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
+	                            <a href="/pugly/my_page.member">마이페이지</a>
+	                            <a href="예약상태핸들러">예약상태</a>
+	                            <a href="장바구니핸들러">장바구니</a>
+	                            <a href="/pugly/logout.member">로그아웃</a>
+	                        </div>
+                        </c:if>
                     </div>
                     
                     

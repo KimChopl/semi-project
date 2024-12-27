@@ -10,7 +10,7 @@
     <style>
     	div{
             box-sizing: border-box;
-            border:1px solid red;
+            /*border:1px solid red;*/
     	}
     
         #wrap{
@@ -24,7 +24,7 @@
         }
 
         input{
-            width: 300px;
+            width: 280px;
             height: 35px;
             border-radius: 5px;
             border: 1px solid;
@@ -40,8 +40,8 @@
         }
 
         select{
-            width: 100px;
-            height: 25px;
+            width: 110px;
+            height: 30px;
             margin-left: 10px;
         }
 
@@ -95,7 +95,7 @@
             		※닉네임을 작성하지 않을 시 아이디가 닉네임으로 지정됩니다.
             	</p>
             <div class="div">
-                <input type="text" placeholder="전화번호 (-포함)" required/>
+                <input type="text" placeholder="전화번호(-포함)" required name="phone"/>
             </div>
                 <input type="hidden" name="addressType" value="1"/>
             <div class="div">
@@ -104,7 +104,7 @@
                     <option value="${ s.stateCode }">${ s.stateName }</option>
                 </c:forEach>
                 </select>
-                <input type="text" placeholder="상세주소" required />
+                <input type="text" placeholder="상세주소" required name="district" />
             </div>
             <div class="div">
                 <button>회원가입</button>
