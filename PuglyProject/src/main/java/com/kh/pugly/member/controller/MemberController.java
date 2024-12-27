@@ -36,18 +36,18 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
-		//Member loginUser = memberService.selectMember(member);
+		Member loginUser = memberService.selectMember(member);
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
 		
-		String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		log.info("{}", memberPwd);
+		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		//log.info("{}", memberPwd);
 		
-		/*
+		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		*/
+		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -64,7 +64,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress(ModelAndView mav) {
+	public ModelAndView updateFormAddress() {
 		Map<String, Object> category = memberService.selectStateCategory();
 		return mv.setViewNameAndData("member/update_enroll_form", category);
 	}
@@ -72,6 +72,12 @@ public class MemberController {
 	@GetMapping("insert_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
 		return null;	
+	}
+	
+	@GetMapping("join_enroll_form.member")
+	public ModelAndView joinEnrollForm() {
+		Map<String, Object> category = memberService.selectStateCategory();
+		return mv.setViewNameAndData("member/join_enroll_form", category);
 	}
 	
 	@PostMapping("update.memberInfo")

@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.service.FarmService;
+import com.kh.pugly.farm.model.vo.FarmProduct;
+import com.kh.pugly.farm.model.vo.StateCategory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +26,16 @@ public class FarmController {
 	
 	@GetMapping("farms")
 	public ModelAndView farmsPage() {
-		Map<String, Object> farm = fs.selectFarmList(0);
-		//log.info("{}", list);
-		
+		Map<String, Object> farmAndMi = fs.selectFarmList(0);
+		Map<String, Object> farm = new HashMap();
+		List<StateCategory> state = fs.selectState();
+		FarmPrice mmPrice = fs.selectMmPrice();
+		List<FarmProduct> farmProduct = fs.selectFarmProduct();
+		farm.put("farm", farmAndMi);
+		farm.put("state", state);
+		farm.put("mmPrice", mmPrice);
+		farm.put("farmProduct", farmProduct);
+
 		
 		return mv.setViewNameAndData("/farm/farms", farm);
 	}
