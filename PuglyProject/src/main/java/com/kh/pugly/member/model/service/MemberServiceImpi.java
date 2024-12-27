@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.pugly.common.model.vo.Address;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@EnableTransactionManagement
 public class MemberServiceImpi implements MemberService {
 
 	private final MemberMapper mapper;
