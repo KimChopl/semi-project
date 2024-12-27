@@ -105,25 +105,13 @@
 			   TB_BOARD
 		   SET
 		   	   BOARD_TITLE = #{baordTitle},
-		   	   BOARD_CONTENT = #{boardContent
+		   	   BOARD_CONTENT = #{boardContent}
 		 WHERE
-		 	   {
-		 	   	 SELECT
-		 	   	 	    ORIGIN_NAME,
-		 	   	 	    CHANGE_NAME
-		 	   	   FROM
-		 	   	 	    TB_IMAGE_BRIDGE ib
-		 	   	   JOIN 
-		 	   	        TB_ATTACHMENT a ON (ib.IMG_BRIGE_NO = a.IMG_BR)
-            	  WHERE 
-            	  	    ib.MAIN_CATEGORY_NO = TB_BOARD.MAIN_CATEGORY_NO
-              	    AND 
-              	    	a.IMG_STATUS = 'Y'
-              }
-		   AND
 		 	   STATUS = 'Y'
 		   AND
 		   	   BOARD_NO = #{boardNo}			  
 	</update>
+	
+	
 
 </mapper>

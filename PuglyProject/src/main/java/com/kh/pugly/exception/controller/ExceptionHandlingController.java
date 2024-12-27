@@ -8,6 +8,7 @@ import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.InvalidRequestException;
+import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -45,6 +46,7 @@ public class ExceptionHandlingController {
 		return createErrorResponse("비밀번호가 일치하지 않습니다.", e);
 	}
 	
+
 	@ExceptionHandler(InvalidRequestException.class)
 	protected ModelAndView invalidRequestError(InvalidRequestException e) {
 		return createErrorResponse("유효하지 않은 요청입니다.", e);
@@ -52,10 +54,16 @@ public class ExceptionHandlingController {
 	
 	
 	//---------------------------------------------------------------------
-	
+
+
 	@ExceptionHandler(BoardNotFoundException.class)
 	protected ModelAndView noSearchBoardError(BoardNotFoundException e) {
 		return createErrorResponse("게시판이 존재하지 않습니다.", e);
+	}
+	
+	@ExceptionHandler(InvalidParameterException.class)
+	protected ModelAndView invalidParameterError(InvalidParameterException e) {
+		return createErrorResponse("장난으로 입력하시면 오류가 발생합니다.", e);
 	}
 	
 	
