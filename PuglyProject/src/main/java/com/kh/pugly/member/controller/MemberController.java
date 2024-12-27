@@ -104,7 +104,6 @@ public class MemberController {
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
 		memberService.updateMember(member, loginMember);
-		memberService.updateMember(member, session);
 		return mv;
 	}	
 }
