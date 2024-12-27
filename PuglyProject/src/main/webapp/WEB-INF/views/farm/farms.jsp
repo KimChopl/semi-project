@@ -83,6 +83,7 @@
     </style>
 </head>
 <body>
+<<<<<<< Updated upstream
     <div id="body">
         <div class="container">
             <div class="row">
@@ -220,6 +221,32 @@
 	
 	
 
+=======
+	<!-- <input type="hidden" id="plusNo" name="pulsNo" value="${ mi.plusNo }" > -->
+	<button id="btn">더보기</button>
+	
+	<script>
+	/*
+	const btn = document.getElementById('btn');
+		btn.onclick = () => {
+			const plusNo = document.getElementById('plusNo');
+			console.log(plusNo.value)
+			$.ajax({
+				url : "plus",
+				type : "get",
+				data : {
+					plusNo : plusNo.value
+				},
+				success : function(r){
+					console.log(r);
+					plusNo.value += 1;
+					console.log(plusNo.value)
+				}
+			
+			})
+		}
+	*/
+>>>>>>> Stashed changes
 	</script>
 	
 </body>

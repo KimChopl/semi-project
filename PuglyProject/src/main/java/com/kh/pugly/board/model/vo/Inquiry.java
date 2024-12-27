@@ -1,5 +1,6 @@
 package com.kh.pugly.board.model.vo;
 
+<<<<<<< Updated upstream
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+=======
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+>>>>>>> Stashed changes
 @Getter
 @Setter
 @NoArgsConstructor

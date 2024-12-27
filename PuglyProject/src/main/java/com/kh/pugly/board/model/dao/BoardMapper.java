@@ -1,6 +1,9 @@
 package com.kh.pugly.board.model.dao;
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
