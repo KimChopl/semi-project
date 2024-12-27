@@ -65,8 +65,11 @@ public class MemberController {
 	
 	@GetMapping("enroll_form.address")
 	public ModelAndView updateFormAddress() {
-		Map<String, Object> category = memberService.selectStateCategory();
-		return mv.setViewNameAndData("member/update_enroll_form", category);
+		List<Address> category = memberService.selectStateCategory();
+		Map<String, Object> map = new HashMap();
+		map.put("asd", map);
+		return mv.setViewNameAndData("member/update_enroll_form", map);
+	}
 	public ModelAndView updateFormAddress(ModelAndView mav) {
 		List<Address> category = memberService.selectStateCategory();
 		mav.setViewName("member/update_enroll_form");
@@ -81,15 +84,16 @@ public class MemberController {
 	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
-		Map<String, Object> category = memberService.selectStateCategory();
-		return mv.setViewNameAndData("member/join_enroll_form", category);
+		List<Address> category = memberService.selectStateCategory();
+		Map<String, Object> map = new HashMap();
+		map.put("asd", map);
+		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
 		memberService.updateMember(member, loginMember);
-		memberService.updateMember(member, session);
 		return mv;
 	}
 	
