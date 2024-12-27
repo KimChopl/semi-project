@@ -158,7 +158,7 @@
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
                         
                         <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller" class="a">판매자 신청하기</a></li>   
+                        <li><a href="update.seller" class="a">판매자로 신청</a></li>   
                     </c:when>
                 </c:choose>
             </ul>
