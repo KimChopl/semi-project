@@ -23,6 +23,7 @@
             background-color:white;
         }
 
+
         #boardList {text-align:center;}
         #boardList>tbody>tr:hover {cursor:pointer;}
 

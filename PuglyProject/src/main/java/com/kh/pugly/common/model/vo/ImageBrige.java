@@ -1,5 +1,6 @@
 package com.kh.pugly.common.model.vo;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

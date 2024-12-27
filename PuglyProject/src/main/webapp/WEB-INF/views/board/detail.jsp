@@ -23,6 +23,7 @@
             background-color:white;
         }
 
+
         table * {margin:5px;}
         table {width:100%;}
     </style>

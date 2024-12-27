@@ -8,6 +8,7 @@
 </head>
 <body>
 
+
 	<a href="mystore.form">내상점</a>
 	<br>
 	<a href="insert.form">상품등록</a>

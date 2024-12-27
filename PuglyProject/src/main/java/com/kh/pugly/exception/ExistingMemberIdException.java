@@ -5,4 +5,5 @@ public class ExistingMemberIdException extends RuntimeException{
 	public ExistingMemberIdException(String message) {
 		super(message);
 	}
+	
 }

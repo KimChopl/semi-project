@@ -15,3 +15,4 @@ public class FarmProduct {
 	private int productNo;
 	private String productName;
 }
+

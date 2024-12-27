@@ -16,6 +16,7 @@ import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpi implements MemberService {

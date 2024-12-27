@@ -35,3 +35,4 @@ public class Farm {
 	private int farmPrice;
 	List<Image> imgList;
 }
+

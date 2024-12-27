@@ -1,5 +1,6 @@
 package com.kh.pugly.common.model.vo;
 
+
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;

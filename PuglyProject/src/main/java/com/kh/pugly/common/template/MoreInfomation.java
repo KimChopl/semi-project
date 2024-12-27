@@ -1,5 +1,6 @@
 package com.kh.pugly.common.template;
 
+
 import com.kh.pugly.common.model.vo.MoreInfo;
 
 public class MoreInfomation {
