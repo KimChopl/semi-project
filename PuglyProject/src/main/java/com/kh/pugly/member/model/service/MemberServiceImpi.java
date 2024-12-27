@@ -1,9 +1,8 @@
 package com.kh.pugly.member.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
@@ -27,10 +26,14 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		/*
+		
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
 			// 다른 클래스로 뺄 것
 			throw new TooLargeValueException("지나치게 큰 값");
+		}
+		
+		if("".equals(member.getMemberPwd().trim())) {
+			throw new InvalidRequestException("유효하지 않은 요청");
 		}
 		
 		Member loginUser = mapper.selectMember(member);
@@ -38,7 +41,7 @@ public class MemberServiceImpi implements MemberService {
 		if(loginUser == null) {
 			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
 		}
-		*/
+		
 		
 		// 암호화를 모두 끝내면 하기
 		/*
@@ -51,9 +54,8 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		
-		//return loginUser;
-		return member;
-	}
+		return loginUser;
+			}
 	
 	@Override
 	public List<Address> selectAdresses(Long memberNo) {
@@ -61,8 +63,13 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
-	public List<Address> selectStateCategory() {
-		return mapper.selectStateCategory();
+	public Map<String, Object> selectStateCategory() {
+		
+		Map<String, Object> responseData = new HashMap();
+		List<Address> category = mapper.selectStateCategory();
+		responseData.put("stateCategory", category);
+		
+		return responseData;
 	}
 	
 	@Override
@@ -82,7 +89,7 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	public void insertAddress(Address address) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -109,7 +116,7 @@ public class MemberServiceImpi implements MemberService {
 
 	@Override
 	public void deleteMember(Map<String, Object> map) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
