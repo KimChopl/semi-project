@@ -82,8 +82,8 @@ public class MemberController {
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
-		
-		memberService.updateMember(member, session);
+		Member loginMember = (Member)session.getAttribute("loginUser");
+		memberService.updateMember(member, loginMember);
 		return mv;
 	}
 	
