@@ -48,7 +48,7 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	private void existingMemberId(Member member) {
-		Member checkMember = selectMember(member);
+		Member checkMember = mapper.selectMember(member);
 		if(checkMember != null) {
 			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
 		}
@@ -109,7 +109,7 @@ public class MemberServiceImpi implements MemberService {
 		existingMemberId(member);
 		validationMember(member);
 		
-		if("".equals(member.getNickName())) {
+		if(member.getNickName() == null) {
 			member.setNickName(member.getMemberId());
 		}
 		
@@ -122,8 +122,6 @@ public class MemberServiceImpi implements MemberService {
 		if(memberResult * addressResult == 0) {
 			throw new FailInsertMemberException("회원 추가 실패");
 		}
-
-
 	}
 	
 

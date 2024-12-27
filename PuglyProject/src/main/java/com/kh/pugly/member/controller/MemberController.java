@@ -73,6 +73,7 @@ public class MemberController {
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
+	@PostMapping("insert.member")
 	public ModelAndView insertMember(Member member, Address address) {
 		
 		memberService.insertMember(member, address);

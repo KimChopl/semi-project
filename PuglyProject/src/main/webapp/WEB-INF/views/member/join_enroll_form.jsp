@@ -89,7 +89,7 @@
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div class="div">
-                <input type="text" placeholder="닉네임" name="nickname" />
+                <input type="text" placeholder="닉네임" name="nickName" />
             </div>
             	<p class="p">
             		※닉네임을 작성하지 않을 시 아이디가 닉네임으로 지정됩니다.

@@ -23,7 +23,7 @@ public class ExceptionHandlingController {
 	private ModelAndView createErrorResponse(String errorMsg, Exception e) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg)
-		  .setViewName("common/error_page");
+		  .setViewName("common/error-page");
 		log.info("발생예외 : {}", e.getMessage(), e);
 		return mv;
 	}
