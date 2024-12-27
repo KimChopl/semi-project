@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
@@ -115,7 +116,7 @@ public class MemberServiceImpi implements MemberService {
 
 		
 		if(memberResult * addressResult == 0) {
-			throw new FailInsertMemberException();
+			throw new FailInsertMemberException("회원 추가 실패");
 		}
 
 
