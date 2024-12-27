@@ -62,6 +62,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Map<String, Object> selectStateCategory() {
 		Map<String, Object> responseData = new HashMap();
+		
 		responseData.put("stateCategory", mapper.selectStateCategory());
 		
 		return responseData;
@@ -76,6 +77,10 @@ public class MemberServiceImpi implements MemberService {
 		if(checkMember != null) {
 			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
 		}
+		// 닉네임이 없으면 아이디를 대입
+		if(member.getNickName() == null) {
+			member.setNickName(member.getMemberId());
+		}
 		
 		
 
@@ -89,8 +94,10 @@ public class MemberServiceImpi implements MemberService {
 
 	@Override
 	public void deleteMember(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-
+		
+		
+		
+		
 	}
 
 
