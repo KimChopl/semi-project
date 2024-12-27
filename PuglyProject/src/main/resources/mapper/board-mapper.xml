@@ -9,13 +9,13 @@
 			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
 			   BOARD_CONTENT boardContent,
-			   NICKNAME nickName,
+			   M.NICKNAME nickName,
 			   COUNT,
 			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
 		 	  TB_BOARD
 		 JOIN
-		 	  TB_MEMBER ON (MEMBER_NO = BAORD_WRITER) 
+		 	  TB_MEMBER M ON (BOARD_WRITER = MEMBER_NO) 
 		WHERE
 			  STATUS = 'Y'
 	      
@@ -33,15 +33,15 @@
 	
 	<select id="selectBoardList" resultType="board">
 		SELECT
-			   BOARD_NO boardNO,
+			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
-			   NICNAME nickName,
+			   M.NICNAME nickName,
 			   COUNT,
 			   TO_CHAR(CREATE_DATE,'YYYY-MM-DD') as createDate
 		  FROM
 		       TB_BOARD
 		  JOIN
-		  	   TB_MEMBER ON (MEMBER_NO = BOARD_WRITER)
+		  	   TB_MEMBER M ON (BOARD_WRITER = M.MEMBER_NO)
 		 WHERE
 		  	   TB_BOARD.STATUS = 'Y'
 		 ORDER
@@ -53,11 +53,11 @@
 		UPDATE
 			   TB_BOARD
 		   SET
-		   	   COUNT1 = COUNT + 1
+		   	   COUNT = COUNT + 1
 		 WHERE
 		 	   STATUS = 'Y'
 		   AND
-		  	   BOARD_NO = #{boardNO}
+		  	   BOARD_NO = #{boardNo}
 	</update>
 	
 	<select id="selectById" resultType="board" parameterType="long">
@@ -72,13 +72,46 @@
 		  	   TB_BOARD
 		  	   (
 		  	   BOARD_NO,
-		  	
+		  	   BOARD_WRITER,
 		  	   BOARD_TITLE,
 		  	   BOARD_CONTENT,
-		  	   
-		  	   
+		  	   MAIN_CATEGORY_NO,
+		  	   COUNT
 		  	   )
+		VALUES
+			   (
+			    SEQ_BNO.NEXTVAL,
+			    #{boardWriter},
+			    #{boardTitle},
+			    #{boardContent},
+			    #{mainCategoryNo},
+			    #{count} 
+			   )
+	</insert>	
 	
-	</insert>		    
+	<delete id="deleteBoard" parameterType="long">
+		UPDATE
+			   TB_BOARD
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   BOARD_NO = #{boardNo}
+	</delete>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE
+			   TB_BOARD
+		   SET
+		   	   BOARD_TITLE = #{baordTitle},
+		   	   BOARD_CONTENT = #{boardContent}
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   BOARD_NO = #{boardNo}			  
+	</update>
+	
+	
 
 </mapper>

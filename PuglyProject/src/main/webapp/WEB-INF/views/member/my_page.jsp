@@ -47,11 +47,12 @@
             margin:20px;
         }
         
-        a{
+        .a-tag{
         	text-decoration: none;
+        	color:black;
         }
         
-        a:hover{
+        .a-tag:hover{
             list-style: none;
             font-family: 'Courier New', Courier, monospace;
             color: rgb(121, 121, 121);
@@ -127,38 +128,37 @@
 
 </head>
 <body>
-
 	<jsp:include page="../common/menubar.jsp" />
 
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
-                <li><a href="update.member">내 정보 수정</a></li>
+                <li><a href="update.member" class="a-tag">내 정보 수정</a></li>
                 
-                <li><a href="select.cart">장바구니</a></li>
+                <li><a href="select.cart" class="a-tag">장바구니</a></li>
                 
-                <li><a href="select.myBook">내 예약 목록</a></li>
+                <li><a href="select.myBook" class="a-tag">내 예약 목록</a></li>
                 
-                <li><a href="select.myOrder">내 주문 목록</a></li>
+                <li><a href="select.myOrder" class="a-tag">내 주문 목록</a></li>
                 
-                <li><a href="select.attention">찜 목록</a></li>
+                <li><a href="select.attention" class="a-tag">찜 목록</a></li>
                 
-                <li><a href="select.myBoardList">내 게시글</a></li>
+                <li><a href="select.myBoardList" class="a-tag">내 게시글</a></li>
                 
-                <li><a href="select.myReplyList">내 댓글</a></li>
+                <li><a href="select.myReplyList" class="a-tag">내 댓글</a></li>
                 <c:choose>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
                         
                         <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li><a href="select.myFarmList">내 농장</a></li>
+                        <li><a href="select.myFarmList" class="a-tag">내 농장</a></li>
                         
-                        <li><a href="select.myProductList">내 판매 목록</a></li>
+                        <li><a href="select.myProductList" class="a-tag">내 판매 목록</a></li>
                         <!-- 여기까지 판매자 -->
                     </c:when>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
                         
                         <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller">판매자 신청하기</a></li>   
+                        <li><a href="update.seller" class="a-tag">판매자 신청하기</a></li>   
                     </c:when>
                 </c:choose>
             </ul>
@@ -186,11 +186,12 @@
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
                 <br>
                 
-                <c:forEach var="address" items="${ sessionScope.addresses }">
                 <div id="address">주소 : 
-            							<label>${ address.stateName }</label><br>
-                                        <label>${ address.district }</label></div>
-                </c:forEach>
+	                <c:forEach var="address" items="${ sessionScope.addresses }">
+	            							<label>${ address.stateName }</label><br>
+	                                        <label>${ address.district }</label>
+	                </c:forEach>
+                </div>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 <br>
                 <button id="address-update">주소 수정</button>
@@ -207,12 +208,14 @@
             });
             
         })
+
 	</script>
 	
 
-	<!--  
 	<jsp:include page="../common/footer.jsp" />
+	<!--  
 	-->
+
 
 
 
