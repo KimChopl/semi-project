@@ -72,10 +72,10 @@
 
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-                <c:if test="${sessionScope.loginUser.memberNo eq board.boardWriter}">
+                
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
-            	</c:if>
+            	
             </div>
             
             <script>
@@ -150,12 +150,12 @@
     		if($('#content').val().trim() != ''){
 				
     			$.ajax({
-    				url : '/hyper/reply',
+    				url : '/pugly/reply',
     				type : 'post',
     				data : {
     					refBoardNo : ${board.boardNo},
     					replyContent : $('#content').val(),
-    					replyWriter : '${sessionScope.loginUser.userId}'
+    					replyWriter : '${sessionScope.loginUser.nickName}'
     				},
     				success : function(result){
     					
@@ -176,7 +176,7 @@
     	
     	function selectReply(){
     		$.ajax({
-    			url : '/hyper/reply',
+    			url : '/pugly/reply',
     			type : 'get',
     			data : {
     				boardNo : ${board.boardNo}

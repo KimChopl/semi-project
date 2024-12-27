@@ -51,9 +51,7 @@
             <h2>게시판</h2>
             <br>
             <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-            <c:if test="${ not empty sessionScope.loginUser}">
             	<a class="btn btn-secondary" style="float:right;" href="insertForm">글쓰기</a>
-            </c:if>
             <br>
             <br>
             <table id="boardList" class="table table-hover" align="center">

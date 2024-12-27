@@ -53,14 +53,14 @@ public class BoardController {
 	
 	@PostMapping("boards/delete")
 	public ModelAndView deleteBoard(Long boardNo) {
-		boardService.deleteBoard(boardNo, null);
+		boardService.deleteBoard(boardNo);
 		return mv.setViewNameAndData("redirect:boards", null);
 	}
 	
 	@PostMapping("boards/update-form")
 	public ModelAndView updateForm(Long boardNo) {
 		Map<String, Object> map = boardService.selectById(boardNo);
-		return mv.setViewNameAndData("board/update-page", map);
+		return mv.setViewNameAndData("board/update", map);
 	}
 	
 	@PostMapping("boards/update")

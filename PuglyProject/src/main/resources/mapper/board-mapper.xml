@@ -103,7 +103,7 @@
 		UPDATE
 			   TB_BOARD
 		   SET
-		   	   BOARD_TITLE = #{baordTitle},
+		   	   BOARD_TITLE = #{boardTitle},
 		   	   BOARD_CONTENT = #{boardContent}
 		 WHERE
 		 	   STATUS = 'Y'
