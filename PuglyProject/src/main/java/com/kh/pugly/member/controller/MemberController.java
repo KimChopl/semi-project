@@ -64,7 +64,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress(ModelAndView mav) {
+	public ModelAndView updateFormAddress() {
 		Map<String, Object> category = memberService.selectStateCategory();
 		return mv.setViewNameAndData("member/update_enroll_form", category);
 	}
@@ -72,6 +72,12 @@ public class MemberController {
 	@GetMapping("insert_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
 		return null;	
+	}
+	
+	@GetMapping("join_enroll_form.member")
+	public ModelAndView joinEnrollForm() {
+		Map<String, Object> category = memberService.selectStateCategory();
+		return mv.setViewNameAndData("member/join_enroll_form", category);
 	}
 	
 	@PostMapping("update.memberInfo")
