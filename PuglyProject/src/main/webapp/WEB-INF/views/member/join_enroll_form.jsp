@@ -80,7 +80,9 @@
             </div>
             <div>
                 <select name="stateCode">
-                    <option value=""></option>
+                <c:forEach var="s" items="${ stateCategory }">
+                    <option value="${ s.stateCode }">${ s.stateName }</option>
+                </c:forEach>
                 </select>
                 <input type="text" placeholder="상세주소" required />
             </div>
