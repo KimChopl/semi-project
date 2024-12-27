@@ -16,13 +16,13 @@ public interface MemberService {
 	
 	void insertAddress(Address address);
 	
-	void updateMember(Member member, HttpSession session);
-	
 	void deleteMember(Map<String, Object> map);
 
 	List<Address> selectAdresses(Long memberNo);
 	
-	List<Address> selectStateCategory();
+	Map<String, Object> selectStateCategory();
+
+	void updateMember(Member member, Member loginMember);
 
 
 	
