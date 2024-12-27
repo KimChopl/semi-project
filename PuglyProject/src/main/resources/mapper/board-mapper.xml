@@ -11,13 +11,13 @@
 			   BOARD_CONTENT boardContent,
 			   M.NICKNAME nickName,
 			   COUNT,
-			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
+			   TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
-		 	  TB_BOARD
+		 	  TB_BOARD B
 		 JOIN
-		 	  TB_MEMBER M ON (MEMBER_NO = BOARD_WRITER) 
+		 	  TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER) 
 		WHERE
-			  STATUS = 'Y'
+			  B.STATUS = 'Y'
 	      
 	</sql>
 	
