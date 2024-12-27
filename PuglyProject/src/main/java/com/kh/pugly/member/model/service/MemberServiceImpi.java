@@ -93,6 +93,17 @@ public class MemberServiceImpi implements MemberService {
 	public void updateMember(Member member, HttpSession session) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
+		if(member.getMemberPwd().length() >= 25) {
+			throw new TooLargeValueException("비밀번호가 너무 김");
+		}
+		
+		Member memberNo = (Member)session.getAttribute("loginUser");
+		
+		
+		if(member.getMemberNo() != memberNo.getMemberNo()) {
+			
+		}
+		
 	}
 
 	@Override
