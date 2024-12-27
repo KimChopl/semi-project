@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpi implements MemberService {
 
 	private final MemberMapper mapper;
-	private final PasswordEncoder passwordEncrypt;
+	//private final PasswordEncoder passwordEncrypt;
 	
 	@Override
 	public Member selectMember(Member member) {
@@ -87,19 +87,23 @@ public class MemberServiceImpi implements MemberService {
 	}
 
 	@Override
-	public void updateMember(Member member, HttpSession session) {
+	public void updateMember(Member member, Member loginMember) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
+		
 		if(member.getMemberPwd().length() >= 25) {
 			throw new TooLargeValueException("비밀번호가 너무 김");
 		}
 		
-		Member loginMember = (Member)session.getAttribute("loginUser");
-		
+		if("".equals(member.getMemberPwd().trim())) {
+			throw new InvalidRequestException("유효하지 않은 요청");
+		}
 		
 		if(member.getMemberNo() != loginMember.getMemberNo()) {
 			throw new InvalidRequestException("유효하지 않은 요청");
 		}
+		
+		
 		
 	}
 

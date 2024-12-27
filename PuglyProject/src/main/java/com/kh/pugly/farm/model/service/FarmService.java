@@ -35,6 +35,10 @@ public interface FarmService {
 
 	
 	List<FarmProduct> selectFarmProduct();
+
+	FarmPrice selectMmPrice();
+
+	List<StateCategory> selectState();
 	
 	
 }
