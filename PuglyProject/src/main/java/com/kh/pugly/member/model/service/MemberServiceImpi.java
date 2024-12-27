@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.exception.ExistingMemberIdException;
@@ -97,18 +98,20 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
+	@Transactional
 	public void insertMember(Member member, Address address) {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
 		validationMember(member);
+		
 		if("".equals(member.getNickName())) {
 			member.setNickName(member.getMemberId());
 		}
 		
-		mapper.insertMember(member);
-		mapper.insertAddress(address);
+		int memberResult = mapper.insertMember(member);
+		int addressResult = mapper.insertAddress(address);
 
 	}
 	
