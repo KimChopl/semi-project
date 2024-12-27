@@ -20,6 +20,7 @@ import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
+import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
 import com.kh.pugly.member.model.vo.Member;
 
@@ -238,6 +239,11 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public FarmPrice selectMmPrice() {
 		return fm.selectPrice();
+	}
+
+	@Override
+	public List<FarmProduct> selectFarmProduct() {
+		return fm.selectFarmProduct();
 	}
 
 }

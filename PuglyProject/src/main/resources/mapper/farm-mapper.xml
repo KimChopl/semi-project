@@ -109,6 +109,13 @@
 		       TB_STATE_CATEGORY
 	</select>
 	
+	<select id="selectFarmProduct" resultType="farmProduct">
+		SELECT
+		       PRODUCT_NO productNo,
+		       PRODUCT_NAME productName
+		  FROM
+		       TB_FARM_PRODUCT
+	</select>
 
 	
 </mapper>

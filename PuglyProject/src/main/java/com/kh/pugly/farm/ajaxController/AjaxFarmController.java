@@ -22,10 +22,10 @@ public class AjaxFarmController {
 	@GetMapping(value="plus", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public Map<String, Object> selectMoreFarm(int plusNo){
-		log.info("{}", plusNo);
+		//log.info("{}", plusNo);
 		plusNo += 6;
 		Map<String, Object> map = fs.selectFarmList(plusNo);
-		log.info("{} : " , map);
+		//log.info("{} : " , map);
 		return map;
 	}
 
