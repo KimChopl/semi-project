@@ -36,18 +36,18 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
-		//Member loginUser = memberService.selectMember(member);
+		Member loginUser = memberService.selectMember(member);
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
 		
-		String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		log.info("{}", memberPwd);
+		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		//log.info("{}", memberPwd);
 		
-		/*
+		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		*/
+		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	

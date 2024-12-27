@@ -14,6 +14,8 @@ public interface MemberService {
 	
 	void insertMember(Member member);
 	
+	void insertAddress(Address address);
+	
 	void updateMember(Member member, HttpSession session);
 	
 	void deleteMember(Map<String, Object> map);
