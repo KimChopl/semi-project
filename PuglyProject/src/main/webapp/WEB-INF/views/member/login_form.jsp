@@ -80,8 +80,6 @@
     </style>
 </head>
 <body>
-
-	<jsp:include page="../common/menubar.jsp" />
     
     <div id="body">
         <form action="login.member" method="post">
@@ -115,10 +113,14 @@
     </div>
 
 
+
+    
 	<jsp:include page="../common/footer.jsp" />
 	<!--  
 	-->
 
+
+    
 
 
 

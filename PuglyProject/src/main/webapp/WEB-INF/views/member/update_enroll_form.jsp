@@ -81,9 +81,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-
-	<jsp:include page="../common/menubar.jsp" />
-
     <div id="wrap">
         <div id="image"></div>
         <form action="update.memberInfo" method="post">
@@ -154,9 +151,11 @@
 	</div>
 </div>
 
+
 	<jsp:include page="../common/footer.jsp" />
 	<!--  
 	-->
+
 
 
 </body>
