@@ -16,7 +16,6 @@ import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
 
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Controller

@@ -1,6 +1,5 @@
 package com.kh.pugly.common.template;
 
-
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;

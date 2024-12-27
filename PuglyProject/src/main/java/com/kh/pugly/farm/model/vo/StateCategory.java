@@ -17,4 +17,3 @@ public class StateCategory {
 	private String stateCode;
 	private String stateName;
 }
-

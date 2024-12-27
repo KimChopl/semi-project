@@ -1,9 +1,12 @@
 package com.kh.pugly.board.model.dao;
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of a7ffb37 (모든 파일 커밋)
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;

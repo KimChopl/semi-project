@@ -24,4 +24,3 @@ public interface MemberMapper {
 	List<Address> selectStateCategory();
 	
 }
-

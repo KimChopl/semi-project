@@ -1,6 +1,5 @@
 package com.kh.pugly.common.template;
 
-
 import com.kh.pugly.common.model.vo.PageInfo;
 
 public class PagiNation {

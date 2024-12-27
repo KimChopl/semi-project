@@ -13,4 +13,3 @@ public class LikeAndAttention {
 	private Long FarmNo;
 	private Long memberNo;
 }
-

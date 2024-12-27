@@ -29,7 +29,6 @@ public class MemberController {
 	private final PasswordEncoder passEncrypt;
 	
 	
-	
 	@GetMapping("login_form.member")
 	public String loginEnrollForm() {
 		return "member/login_form";

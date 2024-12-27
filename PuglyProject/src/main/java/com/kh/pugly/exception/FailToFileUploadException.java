@@ -6,4 +6,3 @@ public class FailToFileUploadException extends RuntimeException {
 		
 	}
 }
-

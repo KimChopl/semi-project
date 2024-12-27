@@ -25,4 +25,3 @@ public class ProductOrder {
 	private String requestName;		// 요청사항 타입 
 
 }
-

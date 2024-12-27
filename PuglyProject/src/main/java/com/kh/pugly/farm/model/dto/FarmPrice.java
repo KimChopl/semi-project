@@ -14,5 +14,4 @@ public class FarmPrice {
 	private int minPrice;
 	private int maxPrice;
 	
-	
 }

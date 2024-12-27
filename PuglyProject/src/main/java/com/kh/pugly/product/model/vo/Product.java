@@ -3,7 +3,6 @@ package com.kh.pugly.product.model.vo;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

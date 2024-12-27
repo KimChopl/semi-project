@@ -22,4 +22,3 @@ public class InquiryAnswer {
 	private String createDate;
 	private String status;
 }
-

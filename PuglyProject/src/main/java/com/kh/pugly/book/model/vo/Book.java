@@ -1,6 +1,5 @@
 package com.kh.pugly.book.model.vo;
 
-
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
