@@ -132,7 +132,7 @@
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
-                <li><a href="update.member">내 정보 수정</a></li>
+                <li><a href="update_enroll_form.member">내 정보 수정</a></li>
                 
                 <li><a href="select.cart">장바구니</a></li>
                 
@@ -207,6 +207,8 @@
             
         })
 </script>
+
+	<jsp:include page="../common/footer.jsp" />
 
 
 </body>

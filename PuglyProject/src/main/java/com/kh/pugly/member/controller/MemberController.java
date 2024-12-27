@@ -62,7 +62,7 @@ public class MemberController {
 		public ModelAndView updateFormAddress() {
 		Map<String, Object> map = memberService.selectStateCategory();
 		
-		return mv.setViewNameAndData("member/update_enroll_form", map);
+		return mv.setViewNameAndData("member/enroll_form_address", map);
 	}
 	
 	@GetMapping("join_enroll_form.member")
@@ -80,6 +80,10 @@ public class MemberController {
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
+	@GetMapping("update_enroll_form.member")
+	public ModelAndView updateEnrollForm() {
+		return mv.setViewNameAndData("member/update_enroll_form", null);
+	}
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");

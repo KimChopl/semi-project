@@ -8,33 +8,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #wrap{
+    	div{
             box-sizing: border-box;
+            border:1px solid red;
+    	}
+    
+        #wrap{
             margin: auto;
-            /*border: 1px solid red;*/
-            text-align: center;
-            width: 400px;
-            height: 300px;
+            width: 450px;
+            height: 450px;
             background-color: rgb(243, 243, 243);
             border-radius: 5px;
+            text-align: center;
+           	margin-top:10px;
         }
 
         input{
-            width: 250px;
-            height: 30px;
-            margin-top: 10px;
-            margin-bottom: 3px;
+            width: 300px;
+            height: 35px;
             border-radius: 5px;
             border: 1px solid;
+            padding: 10px;
         }
 
-        div{
+        .div{
             width: 400px;
             height: 50px;
+            padding: auto;
+            margin: auto;
+            margin-top:10px;
         }
 
         select{
-            width: 70px;
+            width: 100px;
             height: 25px;
             margin-left: 10px;
         }
@@ -52,6 +58,14 @@
             background-color: green;
             border: 3px double rgb(0, 141, 7);
         }
+        
+        .p{
+        	color: green;
+        	font-size: 14px;
+        	font-weight: bolder;
+        	margin-top:0;
+        	padding-top:0;
+        }
 
     </style>
 
@@ -63,23 +77,28 @@
     
     <div id="wrap">
         <form action="insert.member" method="post">
-            <div>
+            <div class="div">
                 <input type="text" placeholder="이름" name="memberName" required/>
             </div>
-            <div>
+           
+            <div class="div">
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
-            <div>
+            
+            <div class="div">
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
-            <div>
+            <div class="div">
                 <input type="text" placeholder="닉네임" name="nickname" />
             </div>
-            <div>
+            	<p class="p">
+            		※닉네임을 작성하지 않을 시 아이디가 닉네임으로 지정됩니다.
+            	</p>
+            <div class="div">
                 <input type="text" placeholder="전화번호 (-포함)" required/>
             </div>
-            <div>
                 <input type="hidden" name="addressType" value="1"/>
+            <div class="div">
                 <select name="stateCode">
                 <c:forEach var="s" items="${ stateCategory }">
                     <option value="${ s.stateCode }">${ s.stateName }</option>
@@ -87,7 +106,7 @@
                 </select>
                 <input type="text" placeholder="상세주소" required />
             </div>
-            <div>
+            <div class="div">
                 <button>회원가입</button>
                 <select name="categoryNo">
                     <option value="3">일반</option>
@@ -98,7 +117,7 @@
             </form>
     </div>
 
-
+	<jsp:include page="../common/footer.jsp" />
 
 
     
