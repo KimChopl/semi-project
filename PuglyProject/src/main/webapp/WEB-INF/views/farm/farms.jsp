@@ -97,7 +97,7 @@
 	                                            <c:forEach items="${ state }" var="state">
 	                                            	<div class="cover-box">
 	                                             	<label class="label-font">${ state.stateName } </label>
-	                                             	<input class="box-size" type="checkbox" name="suchDetail" value="${ state.stateCode }">
+	                                             	<input class="box-size" type="checkbox" name="suchState" value="${ state.stateCode }">
 	                                            	</div>
 	                                            </c:forEach>
 	                                        </div>
@@ -212,7 +212,10 @@
 				
 				})
 			}
-			
+			const state = document.getElementsByName('suchState');
+			state.addEventListener('click', function(){
+				console.log(state.value);
+			})
 	}
 	
 

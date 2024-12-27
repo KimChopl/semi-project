@@ -7,9 +7,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.NoExistentMemberException;
+import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +68,15 @@ public class ExceptionHandlingController {
 		return createErrorResponse("장난으로 입력하시면 오류가 발생합니다.", e);
 	}
 	
+	@ExceptionHandler(FailToFileUploadException.class)
+	protected ModelAndView failFaileUploadError(FailToFileUploadException e) {
+		return createErrorResponse("바꾸십쇼", e);
+	}
 	
+	@ExceptionHandler(ProductValueException.class)
+	protected ModelAndView productValueError(ProductValueException e) {
+		return createErrorResponse("바꾸세용", e);
+	}
 	
 	
 	
