@@ -14,13 +14,15 @@ public interface MemberService {
 	
 	void insertMember(Member member);
 	
-	void updateMember(Member member, HttpSession session);
+	void insertAddress(Address address);
 	
 	void deleteMember(Map<String, Object> map);
 
 	List<Address> selectAdresses(Long memberNo);
 	
-	Map<String, Object> selectStateCategory();
+	List<Address> selectStateCategory();
+
+	void updateMember(Member member, Member loginMember);
 
 
 	

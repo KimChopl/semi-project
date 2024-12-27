@@ -33,24 +33,7 @@
         .optionbar{
             height: 120px;
         }
-        .checkbox-div  input{
-            display: inline-block;
-            margin-left : 2.5px;
-            margin-right : 2.5px;
-            width: 15px;
-            height: 15px;
-        }
-        .checkbox-div  label{
-            font-size : 9px;
-        }
-        .checkbox-div > div{
-            width: 100%;
-            height: 16.25px;
-        }
-        .checkbox-div{
-            margin-bottom: 0px;
-            padding: 0;
-        }
+        
         .farms{
             height: 350px;
         }
@@ -69,14 +52,33 @@
             height: 30px;
             text-align: center;
         }
-        .score > div{
+        .price{
             height: 100%;
             width: 50%;
             float : left;
         }
-        #such-detail{
-            margin-left: 140px;
-            margin-top: 10px;
+        #checkbox-div{
+            height: 240px;
+            width: 230px;
+        }
+        .label-font{
+        	font-size : 12px;
+        }
+        .box-size{
+        	width : 12px;
+        	height : 12px;
+        }
+        .cover-box{
+        	display : inline-block
+        }
+        #btn-more-div{
+        	width : 100%;
+        	height : 70px
+        }
+        .like, .attention{
+        	height : 100%;
+        	width : 25%;
+        	float : left;
         }
     </style>
 </head>
@@ -85,29 +87,43 @@
         <div class="container">
             <div class="row">
                 <div class="col-3 out-frame">
-                            <form action="" method="get">
-                                <div id="suchbar">
-                                <div class="container" >
-                                    <div class="row">
-                                        <div class="col">
-                                                <div class="container" >
-                                                    <div class="row optionbar">
-                                                        <div class="checkbox-div">
-                                                        </div>
-                                                        <div class="checkbox-div">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row optionbar"></div>
-                                                    <div class="row optionbar"></div>
-                                                    <div class="row optionbar"></div>
-                                                    <div class="row optionbar"></div>
-                                                </div>
-                                                <button id="such-detail">조회하기</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+	                <div id="suchbar">
+	                	<div class="container" >
+	                    	<div class="row">
+	                        	<div class="col">
+	                                <div class="container" >
+	                                    <div class="row">
+	                                        <div id="checkbox-div">
+	                                            <c:forEach items="${ state }" var="state">
+	                                            	<div class="cover-box">
+	                                             	<label class="label-font">${ state.stateName } </label>
+	                                             	<input class="box-size" type="checkbox" name="suchDetail" value="${ state.stateCode }">
+	                                            	</div>
+	                                            </c:forEach>
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <div class="optionbar">
+	                                            <c:forEach items="${ farmProduct }" var="product">
+	                                            	<div class="cover-box">
+	                                            		<label class="label-font">${ product.productName }</label>
+	                                            		<input type="checkbox" class="box-size" name="suchProduct" value="${ product.productNo }" step="1000">
+	                                            	</div>
+	                                            </c:forEach>
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <div class="optionbar">
+	                                          	<div>최신순<input type="radio" id="newest" name="option" value="newest"></div>
+	                                          	<div>평점순<input type="radio" id="rating" name="option" value="rating"></div>
+	                                          	<div>가격오름차순<input type="radio" id="upprice" name="option" value="upprice"></div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
                 </div>
                 <div class="col-9 out-frame">
                     <div class="container">
@@ -123,8 +139,16 @@
                                                 <div class="farm-explain">
                                                     <div class="title">${ farm.farmTitle }</div>
                                                     <div class="score">
+                                                    <c:choose>
+                                                    <c:when test="${ farm.farmPrice eq 0 }">
+                                                    	<div class="price">무료 체험</div>
+                                                    </c:when>
+                                                    <c:otherwise>
                                                         <div class="price">${ farm.farmPrice }</div>
-                                                        <div class="like-attention">${ farm.attention } ${ farm.like }</div>
+                                                    </c:otherwise>
+                                                    </c:choose>
+                                                        <div class="like">${ farm.attention }</div>
+                                                        <div class="attention"> ${ farm.like }</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -138,7 +162,9 @@
                 </div>
             </div>
         </div>
-        <button id="btn">더보기</button>
+		<div id="btn-more-div">
+        	<button id="btn">더보기</button>
+		</div>   
     </div>
     
 	<script>
@@ -150,7 +176,7 @@
 		const btn = document.getElementById('btn');
 		
 			btn.onclick = () => {
-				console.log(plusNo.value)
+				//console.log(plusNo.value)
 				$.ajax({
 					url : "plus",
 					type : "get",
@@ -174,7 +200,7 @@
                                             </div>
                                         </div>`		
 						).join('');
-						console.log(result);
+						//console.log(result);
 						document.getElementById('farm-list').innerHTML += result;
 						document.getElementById('body').style.height = 'auto';
 						if(r.mi.lastNo === r.mi.listCount){
@@ -186,6 +212,7 @@
 				
 				})
 			}
+			
 	}
 	
 

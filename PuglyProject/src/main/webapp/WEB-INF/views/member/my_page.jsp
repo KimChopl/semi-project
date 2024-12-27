@@ -127,7 +127,6 @@
 
 </head>
 <body>
-
 	<jsp:include page="../common/menubar.jsp" />
 
     <div id="body">
@@ -207,13 +206,7 @@
             });
             
         })
-	</script>
-	
-
-	<!--  
-	<jsp:include page="../common/footer.jsp" />
-	-->
-
+</script>
 
 
 </body>

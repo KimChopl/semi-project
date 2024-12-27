@@ -9,11 +9,11 @@ import com.kh.pugly.common.model.dto.FarmKeyword;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
+import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
 
 @Mapper
 public interface FarmMapper {
-
 	
 	int countFarm();
 	
@@ -47,8 +47,6 @@ public interface FarmMapper {
 	
 	FarmPrice selectPrice();
 	
+	List<FarmProduct> selectFarmProduct();
 
-	
 }
-	
-

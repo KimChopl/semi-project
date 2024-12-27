@@ -27,18 +27,13 @@
 		<typeAlias type="com.kh.pugly.product.model.vo.ProductOrder" alias="order" />
 		
 		<typeAlias type="com.kh.pugly.board.model.vo.Board" alias="board" />
-
 	</typeAliases>
 	 
 	 <mappers>
 	 	<mapper resource="/mapper/farm-mapper.xml" />
 	 	<mapper resource="/mapper/member-mapper.xml"/>
-
-	 	<mapper resource="/mapper/product-mapper.xml"/>
-
 	 	<mapper resource="/mapper/board-mapper.xml"/>
 	 	
-
 	 </mappers>
 
 </configuration>

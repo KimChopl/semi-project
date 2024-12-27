@@ -58,8 +58,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-
-	<jsp:include page="../common/menubar.jsp" />
     
     <div id="wrap">
         <form action="insert.member" method="post">
@@ -80,13 +78,10 @@
             </div>
             <div>
                 <select name="stateCode">
-                <c:forEach var="sc" items="${ stateCategory }">
-                    <option value="${ sc.stateCode }">${ sc.stateName }</option>
-                </c:forEach>
+                    <option value=""></option>
                 </select>
                 <input type="text" placeholder="상세주소" required />
             </div>
-            
             <div>
                 <button>회원가입</button>
                 <select name="categoryNo">
@@ -95,13 +90,9 @@
                     <option value="1">관리자</option>
                 </select>
         	</div>
-       </form>
-        
+            </form>
     </div>
 
-	<!--  
-	<jsp:include page="../common/footer.jsp" />
-	-->
 
 
 

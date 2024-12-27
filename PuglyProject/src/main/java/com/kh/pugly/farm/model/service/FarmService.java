@@ -9,7 +9,9 @@ import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
+import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
+
 import com.kh.pugly.member.model.vo.Member;
 
 public interface FarmService {
@@ -30,8 +32,13 @@ public interface FarmService {
 	
 	void updateFarm(ImageBrige ib, Member member);
 	
+
+	
+	List<FarmProduct> selectFarmProduct();
+
+	FarmPrice selectMmPrice();
+
 	List<StateCategory> selectState();
 	
-	FarmPrice selectMmPrice();
 	
 }

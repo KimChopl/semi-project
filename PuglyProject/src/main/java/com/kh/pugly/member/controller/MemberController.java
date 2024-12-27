@@ -1,5 +1,7 @@
 package com.kh.pugly.member.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
@@ -21,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-	
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
 	private final PasswordEncoder passEncrypt;
@@ -35,13 +37,12 @@ public class MemberController {
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
 		Member loginUser = memberService.selectMember(member);
+		//log.info("{}", loginUser);
+		//log.info("{}", addresses);
 		
 		
 		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		//log.info("평문 : {}, {}", memberPwd1, memberPwd);
-		
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
+		//log.info("{}", memberPwd);
 		
 		
 		session.setAttribute("loginUser", loginUser);
@@ -63,23 +64,31 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-
 	public ModelAndView updateFormAddress() {
-		Map<String, Object> responseData = memberService.selectStateCategory();
-		
-		return mv.setViewNameAndData("member/enroll_form_address", responseData);
+		Map<String, Object> category = memberService.selectStateCategory();
+		return mv.setViewNameAndData("member/update_enroll_form", category);
+	public ModelAndView updateFormAddress(ModelAndView mav) {
+		List<Address> category = memberService.selectStateCategory();
+		mav.setViewName("member/update_enroll_form");
+		mav.addObject("stateCategory", category);
+		return mav;
+	}
+	
+	@GetMapping("insert_enroll_form.member")
+	public ModelAndView insertEnrollForm() {
+		return null;	
 	}
 	
 	@GetMapping("join_enroll_form.member")
-	public ModelAndView insertEnrollForm() {
-		Map<String, Object> responseData = memberService.selectStateCategory();
-		return mv.setViewNameAndData("member/join_enroll_form", responseData);
-
+	public ModelAndView joinEnrollForm() {
+		Map<String, Object> category = memberService.selectStateCategory();
+		return mv.setViewNameAndData("member/join_enroll_form", category);
 	}
-	
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+		Member loginMember = (Member)session.getAttribute("loginUser");
+		memberService.updateMember(member, loginMember);
 		memberService.updateMember(member, session);
 		return mv;
 	}
