@@ -28,6 +28,16 @@ public class MemberServiceImpi implements MemberService {
 			throw new TooLargeValueException("지나치게 큰 값");
 		}
 		
+		if("".equals(member.getMemberId().trim()) || "".equals(member.getMemberPwd().trim())) {
+			throw new InvalidRequestException("유효하지 않은 요청");
+		}
+	}
+	
+	private void validationPassword(Member member) {
+		if(member.getMemberPwd().length() >= 25) {
+			throw new TooLargeValueException("비밀번호가 너무 김");
+		}
+		
 		if("".equals(member.getMemberPwd().trim())) {
 			throw new InvalidRequestException("유효하지 않은 요청");
 		}
@@ -109,13 +119,7 @@ public class MemberServiceImpi implements MemberService {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
 		
-		if(member.getMemberPwd().length() >= 25) {
-			throw new TooLargeValueException("비밀번호가 너무 김");
-		}
-		
-		if("".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 요청");
-		}
+		validationPassword(member);
 		
 		if(member.getMemberNo() != loginMember.getMemberNo()) {
 			throw new InvalidRequestException("유효하지 않은 요청");
