@@ -36,15 +36,26 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
+<<<<<<< HEAD
 		Member loginUser = memberService.selectMember(member);
 		//log.info("{}", loginUser);
 		//log.info("{}", addresses);
 		
+=======
+		//Member loginUser = memberService.selectMember(member);
+>>>>>>> parent of 78fd599 (Merge branch 'main' of https://github.com/KimChopl/semi-project)
 		
 		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
 		//log.info("{}", memberPwd);
 		
 		
+<<<<<<< HEAD
+=======
+		//log.info("{}", loginUser);
+		//log.info("{}", addresses);
+		
+		/*
+>>>>>>> parent of 78fd599 (Merge branch 'main' of https://github.com/KimChopl/semi-project)
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
 		
@@ -64,9 +75,17 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
+<<<<<<< HEAD
 	public ModelAndView updateFormAddress() {
 		Map<String, Object> category = memberService.selectStateCategory();
 		return mv.setViewNameAndData("member/update_enroll_form", category);
+=======
+	public ModelAndView updateFormAddress(ModelAndView mav) {
+		List<Address> category = memberService.selectStateCategory();
+		mav.setViewName("member/update_enroll_form");
+		mav.addObject("stateCategory", category);
+		return mav;
+>>>>>>> parent of 78fd599 (Merge branch 'main' of https://github.com/KimChopl/semi-project)
 	}
 	
 	@GetMapping("insert_enroll_form.member")
@@ -82,7 +101,6 @@ public class MemberController {
 	
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
-		
 		memberService.updateMember(member, session);
 		return mv;
 	}

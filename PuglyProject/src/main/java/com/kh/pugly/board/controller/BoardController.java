@@ -30,7 +30,7 @@ public class BoardController {
 	
 	@GetMapping("boards")
 	public ModelAndView selectBoardList(@RequestParam(value = "page", defaultValue = "1")int page) {
-		//Map<String, Object> map = boardService.selectBoardList(page);
+		Map<String, Object> map = boardService.selectBoardList(page);
 		
 		return mv.setViewNameAndData("board/list", null);
 	}
