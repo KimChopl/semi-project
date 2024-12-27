@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.ImageBrige;
-
+/*
 @Mapper
 public interface ImageMapper {
 	int insertImage(Image img);
@@ -17,3 +17,4 @@ public interface ImageMapper {
 	
 	int updateImage(Image img);
 }
+*/

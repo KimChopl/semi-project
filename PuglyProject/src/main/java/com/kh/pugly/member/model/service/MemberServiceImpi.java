@@ -1,6 +1,5 @@
 package com.kh.pugly.member.model.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		
+		/*
 		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
 			// 다른 클래스로 뺄 것
 			throw new TooLargeValueException("지나치게 큰 값");
@@ -39,7 +38,7 @@ public class MemberServiceImpi implements MemberService {
 		if(loginUser == null) {
 			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
 		}
-		
+		*/
 		
 		// 암호화를 모두 끝내면 하기
 		/*
@@ -52,7 +51,8 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		
-		return loginUser;
+		//return loginUser;
+		return member;
 	}
 	
 	@Override
@@ -61,13 +61,8 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
-
-	public Map<String, Object> selectStateCategory() {
-		Map<String, Object> responseData = new HashMap();
-		
-		responseData.put("stateCategory", mapper.selectStateCategory());
-		
-		return responseData;
+	public List<Address> selectStateCategory() {
+		return mapper.selectStateCategory();
 	}
 	
 	@Override
@@ -78,10 +73,6 @@ public class MemberServiceImpi implements MemberService {
 		Member checkMember = selectMember(member);
 		if(checkMember != null) {
 			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
-		}
-		// 닉네임이 없으면 아이디를 대입
-		if(member.getNickName() == null) {
-			member.setNickName(member.getMemberId());
 		}
 		
 		
@@ -118,10 +109,8 @@ public class MemberServiceImpi implements MemberService {
 
 	@Override
 	public void deleteMember(Map<String, Object> map) {
-		
-		
-		
-		
+		// TODO Auto-generated method stub
+
 	}
 
 

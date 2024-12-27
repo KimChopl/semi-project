@@ -67,6 +67,11 @@ public class MemberController {
 	public ModelAndView updateFormAddress() {
 		Map<String, Object> category = memberService.selectStateCategory();
 		return mv.setViewNameAndData("member/update_enroll_form", category);
+	public ModelAndView updateFormAddress(ModelAndView mav) {
+		List<Address> category = memberService.selectStateCategory();
+		mav.setViewName("member/update_enroll_form");
+		mav.addObject("stateCategory", category);
+		return mav;
 	}
 	
 	@GetMapping("insert_enroll_form.member")
@@ -84,6 +89,7 @@ public class MemberController {
 	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
 		memberService.updateMember(member, loginMember);
+		memberService.updateMember(member, session);
 		return mv;
 	}
 	
