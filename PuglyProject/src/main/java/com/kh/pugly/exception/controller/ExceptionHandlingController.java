@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailToFileUploadException;
@@ -58,6 +59,12 @@ public class ExceptionHandlingController {
 	protected ModelAndView failtoFileupload(FailToFileUploadException e) {
 		return createErrorResponse("파일 업로드에 실패했습니다.", e);
 	}
+	
+	@ExceptionHandler(BoardNotFoundException.class)
+	protected ModelAndView noSearchBoardError(BoardNotFoundException e) {
+		return createErrorResponse("게시판이 존재하지 않습니다.", e);
+	}
+	
 	
 	
 	
