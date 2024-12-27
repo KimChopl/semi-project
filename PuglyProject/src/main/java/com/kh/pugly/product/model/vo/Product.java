@@ -24,22 +24,15 @@ public class Product {
 	private int productCount;				// 상품 조회수
 	private String productStatus;			// 상품 상태
 	private Date productDate;				// 상품 등록일
-	
-	private Long unitNo;					// 상품 단위번호
-	private String unitName;				// 상품 단위타입
-	
-	private Long deliveryNo;				// 배송유무 번호
-	private String deliveryPrice;			// 배송금액
-	
-	private Long categoryNo;				// 상품 카테고리 번호
-	private String categoryName;			// 상품 카테고리 타입
+	private String unitName;				// 상품단위
+	private String deliveryPrice;			// 배송비
 	
 	
-<<<<<<< HEAD
-
-=======
+	private String productImg;				// 사진
+	private String newProductImg;			// 사진수정
 	
 	
->>>>>>> parent of c1f48a5 (클래스오류)
+	
+	
 
 }

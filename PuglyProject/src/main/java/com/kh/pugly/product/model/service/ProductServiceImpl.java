@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.product.model.dao.ProductMapper;
@@ -38,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 	
-	private void handleFileUpload(Product product, MultipartFile[] upfile) {
+	private void productSaveImg(Product product, MultipartFile[] upfile) {
 		for (MultipartFile file : upfile) {
 			if(!file.isEmpty()) {
 				String fileName = file.getOriginalFilename(); // 각 파일의 원본 파일 이름
@@ -52,10 +51,9 @@ public class ProductServiceImpl implements ProductService {
 				} catch (IOException e) {
 					throw new FailToFileUploadException("파일오류!");
 				}
-				Image image = new Image();
 				// 이미지 파일 정보
-				image.setOriginImgName(fileName); // 원본 파일
-				image.setChangeImgName("/pugly/resources/upload_files/" + changeName); // 변경된 파일 경로
+				product.setProductImg(fileName); // 원본 파일
+				product.setNewProductImg("/pugly/resources/upload_files/" + changeName); // 변경된 파일 경로
 			}
 		}
 	}
@@ -65,6 +63,12 @@ public class ProductServiceImpl implements ProductService {
 	public void insertProduct(Product product, MultipartFile[] upfile) {
 		validateProduct(product); // 유효성 검증
 	
+		for(MultipartFile file : upfile) {
+			if(!("".equals(file.getOriginalFilename()))) {
+				productSaveImg(product, upfile);
+			}
+		}
+		
 		mapper.insertProduct(product, upfile);
 	}
 	

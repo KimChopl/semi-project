@@ -64,7 +64,6 @@
 </head>
 <body>
 
-    <!--<jsp:include page="" />-->
 
     <div class="content">
         <div>
@@ -167,8 +166,7 @@
          </div>
          <hr>
          <br>
-         <div>
-                <span class="title">상품명</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
+                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
                 <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
                 <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
                 <select style="width: 80px; height: 30px; font-size: 20px" name="unitNo" id="unitNo">
@@ -187,27 +185,33 @@
                 </select>
                 <br><br>
                 <span class="title">배송정보</span> 
-                <input type="radio" value="1" checked name="deliveryNo" id="deliveryNo">
+                
+                
+                <input type="radio" value="1" name="deliverPrice" id="deliverPrice" checked>
                 <label>무료배송</label>
                 
-                <input type="radio" name="radio1" value="배송비 포함" name="deliveryPrice" id="deliveryPrice">
+                <input type="radio" value="2" name="deliverPrice" id="deliverPrice">
                 <label>배송비</label>
+                
+                
                 <input type="number" class="text-title" name="deliverPrice"> 
                 <label>배송비 입력</label>
+                
                 <br><br>
                 <hr>
                 <br>
+                
+                
                 <div class="save-btn">
                     <button type="submit" id="confirmation">등록하기</button>
-                    <button type="">임시저장</button>
+                    <button>임시저장</button>
                 </div>
                 <br>
             </form>
-         </div>
          <br><br><br>
     </div>
-
-    <!--<jsp:include page="" /> -->
+    
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

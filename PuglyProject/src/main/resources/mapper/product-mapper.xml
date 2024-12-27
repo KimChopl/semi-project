@@ -12,9 +12,8 @@
 		  		PRODUCT_PRICE,
 		  		PRODUCT_CONTENT,
 		  		PRODUCT_QUANTITY,
-		  		FK_UNIT_NO,
-		  		FK_DELIVERY_NO,
-		  		FK_CATEGORY_NO
+		  		PRODUCT_IMG,
+		  		NEW_PRODUCT_IMG
 		  		)
 		VALUES
 				(
@@ -23,9 +22,8 @@
 				#{productPrice},
 				#{productContent},
 				#{productQuantity},
-				#{unitNo},
-				#{deliveryNo},
-				#{categoryNo}
+				#{productImg},
+				#{newProductImg}
 				)
 
 
