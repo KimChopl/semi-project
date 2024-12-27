@@ -32,7 +32,6 @@
 </head>
 <body>
     
-    <!--<jsp:include page="" /> -->
 
     <div class="content">
         <br>
@@ -116,7 +115,6 @@
         
     </div>
 
-    <!--<jsp:include page="" /> -->
     
 </body>
 </html>

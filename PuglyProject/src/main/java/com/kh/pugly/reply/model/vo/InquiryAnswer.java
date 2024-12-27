@@ -4,16 +4,12 @@ import lombok.NoArgsConstructor;
 
 import lombok.Setter;
 import lombok.ToString;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-@AllArgsConstructor
-@Builder
 public class InquiryAnswer {
 	private int inquiryAnswerNo;
 	private String inquiryAnswer;
