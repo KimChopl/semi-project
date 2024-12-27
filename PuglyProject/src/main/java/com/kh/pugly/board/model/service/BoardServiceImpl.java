@@ -1,13 +1,6 @@
 package com.kh.pugly.board.model.service;
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-
-=======
->>>>>>> parent of a7ffb37 (모든 파일 커밋)
 import java.security.InvalidParameterException;
-=======
->>>>>>> Stashed changes
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +14,7 @@ import com.kh.pugly.board.model.dao.BoardMapper;
 import com.kh.pugly.board.model.vo.Board;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
-<<<<<<< Updated upstream
 import com.kh.pugly.exception.BoardNotFoundException;
-=======
->>>>>>> Stashed changes
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -38,11 +27,8 @@ public class BoardServiceImpl implements BoardService {
 	private int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();
 		if(totalCount == 0) {
-<<<<<<< Updated upstream
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
-=======
 			//예외처리
->>>>>>> Stashed changes
 		}
 		return totalCount;
 	}
@@ -56,7 +42,6 @@ public class BoardServiceImpl implements BoardService {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBaordLimit());
 		return mapper.selectBoardList(rowBounds);
 	}
-<<<<<<< Updated upstream
 	
 	private void validateBoard(Board board) {
 		if(board == null ||
@@ -81,45 +66,7 @@ public class BoardServiceImpl implements BoardService {
 				
 	}	
 	
-=======
 
-	@Override
-	public void insertBoard(Board board, MultipartFile upfile) {
-		// 예외처리
-		
-		mapper.insertBoard(board);
-		
-	}
-
-	@Override
-	public void updateBoard(Board board, MultipartFile upfile) {
-		
-		int result = mapper.updateBoard(board);
-		
-		if(result < 1) {
-			// 예외처리
-		}
-	}
-
-	@Override
-	public void deleteBoard(Long boardNo, String changeName) {
-		
-		int result = mapper.deleteBoard(boardNo);
-		
-		if(result <= 0) {
-			//예외처리
-		}
-		
-		// 파일 삭제
-		
-	}
-	
-	private void incrementViewCount(Long boardNo) {
-		int result = mapper.increaseCount(boardNo);
-		if(result < 1) {
-			//예외처리
-		}
-	}
 	
 	private Board findByBoard(Long boardNo) {
 		Board board = mapper.selectById(boardNo);
@@ -129,7 +76,6 @@ public class BoardServiceImpl implements BoardService {
 		return board;
 	}
 
->>>>>>> Stashed changes
 	@Override
 	public Map<String, Object> selectBoardList(int currentPage) {
 		int totalCount = getTotalCount();
@@ -144,7 +90,6 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-<<<<<<< Updated upstream
 	public void insertBoard(Board board, MultipartFile upfile) {
 		validateBoard(board);
 		
@@ -214,10 +159,6 @@ public class BoardServiceImpl implements BoardService {
 		responseData.put("board", board);
 		
 		return responseData;
-=======
-	public Map<String, Object> selectById(Long boardNo) {
-		return null;
->>>>>>> Stashed changes
 	}
 
 	@Override
