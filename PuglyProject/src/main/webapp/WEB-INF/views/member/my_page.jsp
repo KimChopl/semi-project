@@ -47,11 +47,12 @@
             margin:20px;
         }
         
-        a{
+        .a{
         	text-decoration: none;
+        	color:black;
         }
         
-        a:hover{
+        .a:hover{
             list-style: none;
             font-family: 'Courier New', Courier, monospace;
             color: rgb(121, 121, 121);
@@ -132,32 +133,32 @@
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
-                <li><a href="update_enroll_form.member">내 정보 수정</a></li>
+                <li><a href="update_enroll_form.member" class="a">내 정보 수정</a></li>
                 
-                <li><a href="select.cart">장바구니</a></li>
+                <li><a href="select.cart" class="a">장바구니</a></li>
                 
-                <li><a href="select.myBook">내 예약 목록</a></li>
+                <li><a href="select.myBook" class="a">내 예약 목록</a></li>
                 
-                <li><a href="select.myOrder">내 주문 목록</a></li>
+                <li><a href="select.myOrder" class="a">내 주문 목록</a></li>
                 
-                <li><a href="select.attention">찜 목록</a></li>
+                <li><a href="select.attention" class="a">찜 목록</a></li>
                 
-                <li><a href="select.myBoardList">내 게시글</a></li>
+                <li><a href="select.myBoardList" class="a">내 게시글</a></li>
                 
-                <li><a href="select.myReplyList">내 댓글</a></li>
+                <li><a href="select.myReplyList" class="a">내 댓글</a></li>
                 <c:choose>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
                         
                         <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li><a href="select.myFarmList">내 농장</a></li>
+                        <li><a href="select.myFarmList" class="a">내 농장</a></li>
                         
-                        <li><a href="select.myProductList">내 판매 목록</a></li>
+                        <li><a href="select.myProductList" class="a">내 판매 목록</a></li>
                         <!-- 여기까지 판매자 -->
                     </c:when>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
                         
                         <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller">판매자 신청하기</a></li>   
+                        <li><a href="update.seller" class="a">판매자 신청하기</a></li>   
                     </c:when>
                 </c:choose>
             </ul>
