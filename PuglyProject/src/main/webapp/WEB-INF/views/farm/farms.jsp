@@ -116,7 +116,7 @@
 	                                        <div class="optionbar">
 	                                          	<div>최신순<input type="radio" id="newest" name="option" value="newest"></div>
 	                                          	<div>평점순<input type="radio" id="rating" name="option" value="rating"></div>
-	                                          	<div>가격오름차순<input type="radio" id="upprice" name="option" value="upprice"></div>
+	                                          	<div>가격오름차순<input type="radio" id="upPrice" name="option" value="upprice"></div>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -212,13 +212,81 @@
 				
 				})
 			}
-			const state = document.getElementsByName('suchState');
-			state.addEventListener('click', function(){
-				console.log(state.value);
-			})
 	}
-	
-
+			
+			
+	</script>
+	<script>
+		let such = {
+			
+			state : [],
+			product : [],
+			option : '',
+			plusNo : 0
+		}	
+		
+	//console.log(such);
+	const stateInput = document.querySelectorAll('input[name=suchState]');
+	for(let s of stateInput){
+		s.addEventListener('click', function(){
+			let value = s.value
+			if(this.checked){
+				such.state.push(value);
+				
+				//console.log(such);
+			} else{
+				const index = such.state.indexOf(this.value);
+				such.state.splice(index, 1);
+			}
+		//console.log(such);
+		ajaxSuch();
+		})
+	}
+	const productInput = document.querySelectorAll('input[name=suchProduct]');
+	for(let p of productInput){
+		p.addEventListener("click", function(){
+			if(this.checked){
+				let value = this.value;
+				such.product.push(value);
+				//console.log(such);
+			} else{
+				const index = such.product.indexOf(this.value);
+				such.product.splice(index, 1);
+			}
+			ajaxSuch();
+		})
+	}
+	const optionInput = document.querySelectorAll('input[name=option]');
+	for(let o of optionInput){
+		o.addEventListener("click", function(){
+			such.option = o.value;
+			//console.log(such);
+			ajaxSuch();
+		})
+	}
+	</script>
+	<script>
+	function ajaxSuch(){
+		//console.log(such);
+		$.ajax({
+			url : "suchFarm",
+			type : "post",
+			dataType : 'json',
+			contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify(such),
+			//data : {
+				//'state' : state,
+				//'product' : product,
+				//'option' : option
+			//},
+			success : function(r){
+				console.log(r);
+				such.plusNo = r.plusNo + 6;
+				console.log(such.plusNo)
+			}
+			
+		})
+	}
 	</script>
 	
 </body>

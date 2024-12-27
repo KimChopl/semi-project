@@ -3,7 +3,6 @@ package com.kh.pugly.farm.model.service;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.pugly.common.model.dto.FarmKeyword;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.farm.model.dto.FarmPrice;
@@ -20,7 +19,7 @@ public interface FarmService {
 	
 	Farm selectDetailFarm(Long farmNo);
 	
-	List<Farm> suchByKeyword(FarmKeyword keyword);
+	List<Farm> suchByKeyword(Map<String, Object> suchMap);
 
 	void insertFarm(Farm farm, Image img, Member member);
 	
@@ -31,8 +30,6 @@ public interface FarmService {
 	void deleteFarm(ImageBrige ib, Member member);
 	
 	void updateFarm(ImageBrige ib, Member member);
-	
-
 	
 	List<FarmProduct> selectFarmProduct();
 
