@@ -1,6 +1,5 @@
 package com.kh.pugly.board.model.vo;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

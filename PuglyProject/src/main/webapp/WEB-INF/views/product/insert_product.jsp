@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <meta charset="UTF-8">
     <title>상품등록하자</title>
@@ -105,11 +104,11 @@
                 <br><br>
             
 	        <div id="file-area">
-                <input type="file" name="file1" id="file1" required onchange="loadImg(this, 1);">
-                <input type="file" name="file2" id="file2" onchange="loadImg(this, 2);">
-                <input type="file" name="file3" id="file3" onchange="loadImg(this, 3);">
-                <input type="file" name="file4" id="file4" onchange="loadImg(this, 4);">
-                <input type="file" name="file5" id="file5" onchange="loadImg(this, 5);">
+                <input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
+                <input type="file" name="upfile" id="file2" onchange="loadImg(this, 2);">
+                <input type="file" name="upfile" id="file3" onchange="loadImg(this, 3);">
+                <input type="file" name="upfile" id="file4" onchange="loadImg(this, 4);">
+                <input type="file" name="upfile" id="file5" onchange="loadImg(this, 5);">
             </div>         
             
              <script>
@@ -172,35 +171,29 @@
                 <span class="title">상품명</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
                 <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
                 <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
-                <select style="width: 80px; height: 30px; font-size: 20px" name="unitName" id="unitName">
-                    <option value="kg">kg</option>
-                    <option value="개">개</option>
-                    <option value="box">box</option>
+                <select style="width: 80px; height: 30px; font-size: 20px" name="unitNo" id="unitNo">
+                    <option value="1">kg</option>
+                    <option value="2">개</option>
+                    <option value="3">box</option>
                 </select>
                 <br><br>
                 <span class="title">상품설명</span><br> <textarea style="width: 99%; font-size: 18px;" rows="30" name="productContent" id="productContent"></textarea> <br><br>
                 <span class="title">상품 카테고리</span> 
-                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="categoryName" id="categoryName">
-                    <option value="유기농과일">유기농 과일</option>
-                    <option value="못난이과일">유기농 야채</option>
-                    <option value="유기농야채">못난이 과일</option>
-                    <option value="못난이야채">못난이 야채</option>
+                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="categoryNo" id="categoryNo">
+                    <option value="1">유기농 과일</option>
+                    <option value="2">유기농 야채</option>
+                    <option value="3">못난이 과일</option>
+                    <option value="4">못난이 야채</option>
                 </select>
                 <br><br>
                 <span class="title">배송정보</span> 
+                <input type="radio" value="1" checked name="deliveryNo" id="deliveryNo">
                 <label>무료배송</label>
-                <input type="radio" name="radio1" value="무료배송" checked name="deliveryNo" id="deliveryNo">
-                <label>배송비</label>
-<<<<<<< HEAD
-                <input type="radio" name="deliveryNo" value="2">
-                <input type="number" class="text-title" name="deliverPrice"> 배송비 입력
-                <input type="radio" name="radio1" value="무료배송" checked>
-                <label>배송비</label>
+                
                 <input type="radio" name="radio1" value="배송비 포함" name="deliveryPrice" id="deliveryPrice">
-=======
-                <input type="radio" name="radio1" value="배송비 포함">
->>>>>>> parent of c1f48a5 (클래스오류)
-                <input type="number" class="text-title"> 배송비 입력
+                <label>배송비</label>
+                <input type="number" class="text-title" name="deliverPrice"> 
+                <label>배송비 입력</label>
                 <br><br>
                 <hr>
                 <br>

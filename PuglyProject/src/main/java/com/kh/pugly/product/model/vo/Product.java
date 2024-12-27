@@ -3,7 +3,6 @@ package com.kh.pugly.product.model.vo;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +35,11 @@ public class Product {
 	private String categoryName;			// 상품 카테고리 타입
 	
 	
+<<<<<<< HEAD
 
+=======
+	
+	
+>>>>>>> parent of c1f48a5 (클래스오류)
 
 }

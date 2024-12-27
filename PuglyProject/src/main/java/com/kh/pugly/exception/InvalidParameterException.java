@@ -5,4 +5,3 @@ public class InvalidParameterException extends RuntimeException {
 		super(message);
 	}
 }
-

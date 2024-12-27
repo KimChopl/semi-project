@@ -6,5 +6,4 @@ public class ComparedPasswordException extends RuntimeException{
 		super(message);
 	}
 	
-	
 }

@@ -4,7 +4,6 @@
 
 
 
-
 	<select id="countFarm" resultType="_int">
 		SELECT
 		       COUNT(FARM_NO)

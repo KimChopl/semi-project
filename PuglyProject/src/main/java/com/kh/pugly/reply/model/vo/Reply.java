@@ -22,4 +22,3 @@ public class Reply {
 	private String status;
 
 }
-
