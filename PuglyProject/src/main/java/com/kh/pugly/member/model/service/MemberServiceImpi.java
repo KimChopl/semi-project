@@ -23,6 +23,12 @@ public class MemberServiceImpi implements MemberService {
 	private final MemberMapper mapper;
 	//private final PasswordEncoder passwordEncrypt;
 	
+	private void validationMember(Member member) {
+		
+	}
+	
+	
+	
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
