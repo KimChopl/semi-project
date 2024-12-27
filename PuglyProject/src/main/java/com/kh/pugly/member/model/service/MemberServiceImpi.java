@@ -112,13 +112,12 @@ public class MemberServiceImpi implements MemberService {
 		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);
-<<<<<<< Updated upstream
-=======
+
 		
 		if(memberResult * addressResult == 0) {
-			throw new 
+			throw new FailInsertMemberException();
 		}
->>>>>>> Stashed changes
+
 
 	}
 	
