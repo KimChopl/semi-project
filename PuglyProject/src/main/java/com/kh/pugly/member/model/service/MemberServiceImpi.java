@@ -24,7 +24,20 @@ public class MemberServiceImpi implements MemberService {
 	//private final PasswordEncoder passwordEncrypt;
 	
 	private void validationMember(Member member) {
+		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
+			throw new TooLargeValueException("지나치게 큰 값");
+		}
 		
+		if("".equals(member.getMemberPwd().trim())) {
+			throw new InvalidRequestException("유효하지 않은 요청");
+		}
+	}
+	
+	private void existingMemberId(Member member) {
+		Member checkMember = selectMember(member);
+		if(checkMember != null) {
+			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
+		}
 	}
 	
 	
@@ -33,14 +46,9 @@ public class MemberServiceImpi implements MemberService {
 	public Member selectMember(Member member) {
 		// 잠시 테스트
 		
-		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
-			// 다른 클래스로 뺄 것
-			throw new TooLargeValueException("지나치게 큰 값");
-		}
+		validationMember(member);
 		
-		if("".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 요청");
-		}
+		
 		
 		Member loginUser = mapper.selectMember(member);
 		
@@ -83,10 +91,7 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
-		Member checkMember = selectMember(member);
-		if(checkMember != null) {
-			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
-		}
+		existingMemberId(member);
 		
 		
 

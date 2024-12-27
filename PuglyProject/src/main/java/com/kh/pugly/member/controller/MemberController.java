@@ -55,6 +55,8 @@ public class MemberController {
 		//log.info("{}", addresses);
 		
 		
+		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
+		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
 		
@@ -87,6 +89,7 @@ public class MemberController {
 		mav.addObject("stateCategory", category);
 		return mav;
 	}
+	
 	
 	@GetMapping("insert_enroll_form.member")
 	public ModelAndView insertEnrollForm() {
