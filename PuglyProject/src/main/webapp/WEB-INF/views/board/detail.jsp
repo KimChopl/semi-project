@@ -153,9 +153,9 @@
     				url : '/pugly/reply',
     				type : 'post',
     				data : {
-    					refBoardNo : ${board.boardNo},
+    					refBno : ${board.boardNo},
     					replyContent : $('#content').val(),
-    					replyWriter : '${sessionScope.loginUser.nickName}'
+    					WriterNickName : '${sessionScope.loginUser.nickName}'
     				},
     				success : function(result){
     					
@@ -189,7 +189,7 @@
     				
     				const resultStr = replies.map(e =>
 								    					`<tr>
-								    					<td>\${e.replyWriter}</td>
+								    					<td>\${e.WriterNickName}</td>
 								    					<td>\${e.replyContent}</td>
 								    					<td>\${e.createDate}</td>
 								    					</tr>`
