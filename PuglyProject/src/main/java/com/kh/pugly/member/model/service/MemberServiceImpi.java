@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
@@ -71,12 +72,12 @@ public class MemberServiceImpi implements MemberService {
 		}
 		
 		
-		// 암호화를 모두 끝내면 하기
-		/*
-		if(passwordEncoder.matches(member.getMemberPwd(), loginUser.getMemberPwd())) {
+		if(!(passwordEncrypt.matches(member.getMemberPwd(), loginUser.getMemberPwd()))) {
 			throw new ComparedPasswordException("비밀번호가 일치하지 않습니다.");
 		}
-		*/
+		
+		
+		
 		
 		
 		// 아이디가 20자가 넘는다.
@@ -108,6 +109,9 @@ public class MemberServiceImpi implements MemberService {
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
 		validationMember(member);
+		
+		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
+		member.setMemberPwd(securityPass);
 		
 		if(member.getNickName() == null) {
 			member.setNickName(member.getMemberId());
