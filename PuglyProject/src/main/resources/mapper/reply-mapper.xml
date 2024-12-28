@@ -7,7 +7,7 @@
 	 <insert id="insertReply" parameterType="reply">
 	 	INSERT
 	 	  INTO
-	 	  	   REPLY
+	 	  	   TB_REPLY
 	 	  	   (
 	 	  	   REPLY_NO,
 	 	  	   REF_BNO,
@@ -28,9 +28,9 @@
 	 		   REPLY_NO replyNo,
 	 		   WRITER_NICKNAME writerNickname,
 	 		   REPLY_CONTENT replyContent,
-	 		   TO_CHAR(R.CREATE_DATE, 'YYYY-MM-DD') as createDate
+	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
 	 	  FROM
-	 	  	   REPLY R
+	 	  	   TB_REPLY
 	 	 WHERE
 	 	 	   STATUS = 'Y'
 	 	   AND

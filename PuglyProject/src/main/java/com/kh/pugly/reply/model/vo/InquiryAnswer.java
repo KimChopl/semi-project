@@ -18,7 +18,7 @@ public class InquiryAnswer {
 	private int inquiryAnswerNo;
 	private String inquiryAnswer;
 	private int refIno;
-	private String writer;
+	private String writerNickname;
 	private String createDate;
 	private String status;
 }
