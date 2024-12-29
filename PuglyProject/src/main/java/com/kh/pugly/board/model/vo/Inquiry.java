@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Inquiry {
 	private int inquiryNo;
 	private int inquiryWriter;
-	private String writerNickname;
+	private String nickName;
 	private String inquiryTitle;
 	private String inquiryContent;
 	private String createDate;

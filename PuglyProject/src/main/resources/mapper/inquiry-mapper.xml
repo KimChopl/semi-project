@@ -4,7 +4,97 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.kh.pugly.reply.model.dao.InquiryMapper">
  	
- 	
- 
+ 	<sql id="inquiryColumn">
+		SELECT
+			   INQUIRY_NO inquiryNo,
+			   INQUIRY_TITLE inquiryTitle,
+			   INQUIRY_CONTENT inquiryContent,
+			   M.NICKNAME nickName,
+			   COUNT,
+			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate
+		 FROM
+		 	  TB_INQUIRY I
+		 JOIN
+		 	  TB_MEMBER M ON (M.MEMBER_NO = I.INQUIRY_WRITER) 
+		WHERE
+			  I.STATUS = 'Y'
+	      
+	</sql>
+	
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM	
+		       TB_INQUIRY
+		 WHERE
+		       STATUS = 'Y'
+	</select>
+
+	<select id="selectInquiryList" resultType="inquiry">
+		SELECT
+			   INQUIRY_NO inquiryNo,
+			   INQUIRY_TITLE inquiryTitle,
+			   M.NICKNAME nickName,
+			   COUNT,
+			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate
+		  FROM
+		       TB_INQUIRY I
+		  JOIN
+		  	   TB_MEMBER M ON (M.MEMBER_NO = I.INQUIRY_WRITER)
+		 WHERE
+		  	   I.STATUS = 'Y'
+		 ORDER
+		 	BY
+		       INQUIRY_NO DESC
+	</select>
+	
+	<update id="increaseCount" parameterType="long">
+		UPDATE
+			   TB_INQUIRY
+		   SET
+		   	   COUNT = COUNT + 1
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		  	   INQUIRY_NO = #{inquiryNo}
+	</update>
+	
+	<select id="selectById" resultType="inquiry" parameterType="long">
+		<include refid="inquiryColumn" />
+		AND
+		    INQUIRY_NO = #{inquiryNo}
+	</select>
+	
+	<insert id="insertInquiry" parameterType="inquiry">
+		INSERT
+		  INTO
+		  	   TB_INQUIRY
+		  	   (
+		  	   INQUIRY_NO,
+		  	   INQUIRY_WRITER,
+		  	   INQUIRY_TITLE,
+		  	   INQUIRY_CONTENT,
+		  	   COUNT
+		  	   )
+		VALUES
+			   (
+			    SEQ_INO.NEXTVAL,
+			    #{inquiryWriter},
+			    #{inquiryTitle},
+			    #{inquiryContent},
+			    #{count} 
+			   )
+	</insert>	
+	
+	<delete id="deleteInquiry" parameterType="long">
+		UPDATE
+			   TB_INQUIRY
+		   SET
+		   	   STATUS = 'N'
+		 WHERE
+		 	   STATUS = 'Y'
+		   AND
+		   	   INQUIRY_NO = #{inquiryNo}
+	</delete>
  
  </mapper>
