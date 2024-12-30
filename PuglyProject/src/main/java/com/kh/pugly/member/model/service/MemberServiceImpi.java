@@ -77,6 +77,12 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 	
+	private void checkPwd(Member member, Member loginUser) {
+		if(!(passwordEncrypt.matches(member.getMemberPwd(), loginUser.getMemberPwd()))) {
+			throw new ComparedPasswordException("비밀번호가 일치하지 않습니다.");
+		}
+	}
+	
 	private Image memberImgSave(MultipartFile upfile) {
 		if(!upfile.isEmpty()) {
 			String fileName = upfile.getOriginalFilename(); // 각 파일의 원본 파일 이름
@@ -129,14 +135,7 @@ public class MemberServiceImpi implements MemberService {
 		
 		noExistingMember(loginUser);
 		
-		
-		if(!(passwordEncrypt.matches(member.getMemberPwd(), loginUser.getMemberPwd()))) {
-			throw new ComparedPasswordException("비밀번호가 일치하지 않습니다.");
-		}
-		
-		
-		
-		
+		checkPwd(member, loginUser);
 		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
