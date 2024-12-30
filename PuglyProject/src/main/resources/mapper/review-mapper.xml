@@ -11,4 +11,8 @@
 		 WHERE
 		       REVIEW_POST_NO = #{farmNo}
  	</select>
+ 	
+ 	<select id="selectReviewList" parameterType="long" resultType="review">
+ 		
+ 	</select>
  </mapper>
