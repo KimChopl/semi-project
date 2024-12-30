@@ -21,11 +21,9 @@
 		<typeAlias type="com.kh.pugly.common.model.vo.Image" alias="image" />
 		<typeAlias type="com.kh.pugly.farm.model.dto.FarmPrice" alias="farmPrice"/>
 		<typeAlias type="com.kh.pugly.farm.model.dto.LikeAndAttention" alias="likeAndAtt" />
-						
 		<typeAlias type="com.kh.pugly.product.model.vo.Product" alias="product" />
 		<typeAlias type="com.kh.pugly.product.model.vo.MyStore" alias="myStore" />
 		<typeAlias type="com.kh.pugly.product.model.vo.ProductOrder" alias="order" />
-		
 		<typeAlias type="com.kh.pugly.board.model.vo.Board" alias="board" />
 		<typeAlias type="com.kh.pugly.board.model.vo.Inquiry" alias="inquiry" />
 		<typeAlias type="com.kh.pugly.reply.model.vo.Reply" alias="reply" />
@@ -41,6 +39,7 @@
 	 	<mapper resource="/mapper/reply-mapper.xml"/>
 	 	<mapper resource="/mapper/inquiry-mapper.xml"/>
 	 	<mapper resource="/mapper/inquiryAnswer-mapper.xml"/>
+	 	
 	 	
 	 </mappers>
 

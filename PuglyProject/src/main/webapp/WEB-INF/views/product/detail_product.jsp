@@ -45,7 +45,7 @@
         </div>
         <div class="row">
             <div class="col-3">
-                <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
+                <img src="resources/tomato2.jpg" alt="상품이미지" class="pro-img">
             </div>
             <div class="col-7">
                 <div>상품명이요</div>
@@ -116,7 +116,10 @@
         
     </div>
 
+<<<<<<< Updated upstream
+=======
     <!--<jsp:include page="" /> -->
+>>>>>>> Stashed changes
     
 </body>
 </html>

@@ -30,3 +30,4 @@ target/
 #.classpath
 #.project
 .springBeans
+PuglyProject/src/main/java/com/kh/pugly/board/model/service/BoardServiceImpl.java

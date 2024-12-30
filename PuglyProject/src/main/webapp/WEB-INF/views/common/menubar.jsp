@@ -129,11 +129,11 @@
 
         <!-- 로그인/유저 메뉴 -->
         <div id="header_1_right">
-
-
+			<c:choose>
+				<c:when test="${ empty sessionScope.loginUser }">
                     <a href="로그인 경로">로그인</a>
-
-
+				</c:when>
+				<c:otherwise>
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
                         <div id="profile-menu">
@@ -145,8 +145,8 @@
                             <a href="로그아웃핸들러">로그아웃</a>
                         </div>
                     </div>
-                    
-                    
+            	</c:otherwise>        
+			</c:choose>                    
          </div>
     </div>
 

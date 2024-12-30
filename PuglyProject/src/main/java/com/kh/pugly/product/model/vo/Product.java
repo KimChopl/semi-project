@@ -8,11 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-@Getter				
-@Setter				
-@ToString			
+@Getter				// 겟
+@Setter				// 셋
+@ToString			// 투스트링
 @NoArgsConstructor	// 기본생성자
 @AllArgsConstructor	// 매개변수 생성자
+@Builder			// 빌더패턴
 public class Product {
 	
 	private Long productNo;					// 상품 번호
@@ -23,9 +24,6 @@ public class Product {
 	private int productCount;				// 상품 조회수
 	private String productStatus;			// 상품 상태
 	private Date productDate;				// 상품 등록일
-	
-	private String productImg;				// 상품사진 이름
-	private String newProductImg;			// 상품사진 수정이름
 	
 	private Long unitNo;					// 상품 단위번호
 	private String unitName;				// 상품 단위타입
