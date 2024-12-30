@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.dao.ImageMapper;
@@ -38,6 +39,7 @@ public class FarmServiceImpl implements FarmService {
 	private final ImageMapper im;
 	private final ReplaceXss rx;
 	private final ReviewService rs;
+	
 	
 	private int countFarm() {
 		return fm.countFarm();
@@ -160,7 +162,7 @@ public class FarmServiceImpl implements FarmService {
 		ib.setCategoryNo(farm.getCategoryNo());
 		return ib;
 	}
-	
+	/*
 	private int cehckedInsertImageBrige(ImageBrige ib) {
 		int brigeNo = im.insertImageBrige(ib);
 		if(brigeNo < 1) {
@@ -175,7 +177,7 @@ public class FarmServiceImpl implements FarmService {
 			// Exception
 		}
 	}
-	
+	*/
 	private void checkedVacuum(Farm farm) {
 		if(farm.getFarmTitle().trim().equals("") || farm.getFarmContent().trim().equals("")) {
 			//Exception
@@ -188,7 +190,7 @@ public class FarmServiceImpl implements FarmService {
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
-
+	/*
 	@Override
 	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
 		checkedFarmContent(farm, member);
@@ -199,7 +201,7 @@ public class FarmServiceImpl implements FarmService {
 		img.setBrigeNo(brigeNo);
 		checkedInsertImage(img);
 	}
-
+	 */
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
@@ -233,6 +235,12 @@ public class FarmServiceImpl implements FarmService {
 
 	@Override
 	public void updateFarm(ImageBrige ib, Member member) {
+	}
+
+	@Override
+	public void insertFarm(Farm farm, Image img, Member member) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

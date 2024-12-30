@@ -14,9 +14,7 @@
 		  		PRODUCT_QUANTITY,
 		  		FK_UNIT_NO,
 		  		FK_DELIVERY_NO,
-		  		FK_CATEGORY_NO,
-		  		PRODUCT_IMG,
-		  		NEW_PRODUCT_IMG
+		  		FK_CATEGORY_NO
 		  		)
 		VALUES
 				(
@@ -27,14 +25,15 @@
 				#{productQuantity},
 				#{unitNo},
 				#{deliveryNo},
-				#{categoryNo},
-				#{productImg},
-				#{newProductImg}
+				#{categoryNo}
 				)
+
+
 	</insert>
 
 
-	
+
+
 
 
 
