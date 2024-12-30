@@ -15,7 +15,6 @@ import com.kh.pugly.board.model.vo.Board;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
-
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,6 +28,7 @@ public class BoardServiceImpl implements BoardService {
 		int totalCount = mapper.selectTotalCount();
 		if(totalCount == 0) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
+			//예외처리
 		}
 		return totalCount;
 	}
@@ -66,6 +66,16 @@ public class BoardServiceImpl implements BoardService {
 				
 	}	
 	
+
+	
+	private Board findByBoard(Long boardNo) {
+		Board board = mapper.selectById(boardNo);
+		if(board == null) {
+			//예외처리
+		}
+		return board;
+	}
+
 	@Override
 	public Map<String, Object> selectBoardList(int currentPage) {
 		int totalCount = getTotalCount();
