@@ -17,6 +17,5 @@ public interface ProductService {
 	Map<String, Object> deatailProduct(Long productNo);
 
 
-	void insertProduct(Product product, MultipartFile[] upfile);
 
 }
