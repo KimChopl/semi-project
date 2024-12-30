@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kh.hyper.board.model.dao.BoardMapper">
+<mapper namespace="com.kh.pugly.board.model.dao.BoardMapper">
 
 	<sql id="boardColumn">
 		SELECT
@@ -11,13 +11,13 @@
 			   BOARD_CONTENT boardContent,
 			   M.NICKNAME nickName,
 			   COUNT,
-			   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
+			   TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
-		 	  TB_BOARD
+		 	  TB_BOARD B
 		 JOIN
-		 	  TB_MEMBER M ON (BOARD_WRITER = MEMBER_NO) 
+		 	  TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER) 
 		WHERE
-			  STATUS = 'Y'
+			  B.STATUS = 'Y'
 	      
 	</sql>
 	
@@ -30,20 +30,19 @@
 		       STATUS = 'Y'
 	</select>
 
-	
 	<select id="selectBoardList" resultType="board">
 		SELECT
 			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
-			   M.NICNAME nickName,
+			   M.NICKNAME nickName,
 			   COUNT,
-			   TO_CHAR(CREATE_DATE,'YYYY-MM-DD') as createDate
+			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD') as createDate
 		  FROM
-		       TB_BOARD
+		       TB_BOARD B
 		  JOIN
-		  	   TB_MEMBER M ON (BOARD_WRITER = M.MEMBER_NO)
+		  	   TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER)
 		 WHERE
-		  	   TB_BOARD.STATUS = 'Y'
+		  	   B.STATUS = 'Y'
 		 ORDER
 		 	BY
 		       BOARD_NO DESC
@@ -104,7 +103,7 @@
 		UPDATE
 			   TB_BOARD
 		   SET
-		   	   BOARD_TITLE = #{baordTitle},
+		   	   BOARD_TITLE = #{boardTitle},
 		   	   BOARD_CONTENT = #{boardContent}
 		 WHERE
 		 	   STATUS = 'Y'

@@ -37,35 +37,26 @@
             <h2>게시글 상세보기</h2>
             <br>
 
-            <a class="btn btn-secondary" style="float:right;" href="/pugly/boards">목록으로</a>
+            <a class="btn btn-secondary" style="float:right;" href="/pugly/inquiries">목록으로</a>
             <br><br>
 
             <table id="contentArea" align="center" class="table">
                 <tr>
                     <th width="100">제목</th>
-                    <td colspan="3">${board.boardTitle}</td>
+                    <td colspan="3">${inquiry.inquiryTitle}</td>
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${board.nickName}</td>
+                    <td>${inquiry.nickName}</td>
                     <th>작성일</th>
-                    <td>${board.createDate}</td>
-                </tr>
-                <tr>
-                    <th>첨부파일</th>
-	                    <td colspan="3">
-	                    	첨부파일이 존재하지 않습니다.
-	                    </td>
-	                    <td colspan="3">
-	                        <a href="" download=""></a>
-	                    </td>
+                    <td>${inquiry.createDate}</td>
                 </tr>
                 <tr>
                     <th>내용</th>
                     <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><p style="height:150px;">${board.boardContent}</p></td>
+                    <td colspan="4"><p style="height:150px;">${inquiry.inquiryContent}</p></td>
                 </tr>
             </table>
             <br>
@@ -73,24 +64,19 @@
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
                 
-	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
-	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
+	                <a class="btn btn-danger"  onclick="postSubmit()">삭제하기</a>
             	
             </div>
             
             <script>
-            	function postSubmit(num){
+            	function postSubmit(){
 					
-            		if(num == 1){
-            			$('#postForm').attr('action', '/pugly/boards/update-form').submit();
-            		} else {
-            			$('#postForm').attr('action', '/pugly/boards/delete').submit();
-            		}
+            		$('#postForm').attr('action', '/pugly/inquiris/delete').submit();
             	}
             </script>
             
             <form action="" method="post" id="postForm">
-            	<input type="hidden" name="boardNo" value="${board.boardNo}" />
+            	<input type="hidden" name="boardNo" value="${inquiry.inquiryNo}" />
             	<!-- <input type="hidden" name="memberNo" value="${loginUser.memberNo}" /> -->
             </form>
             
@@ -113,7 +99,7 @@
                 <thead>
                 
                 	<c:choose>
-                		<c:when test="${empty sessionScope.loginUser }">
+                		<c:when test="${empty sessionScope.loginUser}">
 		                    <tr>
 		                        <th colspan="2">
 		                            <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
@@ -150,12 +136,12 @@
     		if($('#content').val().trim() != ''){
 				
     			$.ajax({
-    				url : '/pugly/reply',
+    				url : '/pugly/inquiryAnswer',
     				type : 'post',
     				data : {
-    					refBno : ${board.boardNo},
-    					replyContent : $('#content').val(),
-    					WriterNickName : '${sessionScope.loginUser.nickName}'
+    					refIno : ${inquiry.inquiryNo},
+    					inquiryAnswer : $('#content').val(),
+    					nickName : '${sessionScope.loginUser.nickName}'
     				},
     				success : function(result){
     					
@@ -176,10 +162,10 @@
     	
     	function selectReply(){
     		$.ajax({
-    			url : '/pugly/reply',
+    			url : '/pugly/inquiryAnswer',
     			type : 'get',
     			data : {
-    				boardNo : ${board.boardNo}
+    				inquiryNo : ${inquiry.inquiryNo}
     			},
     			success : function(result){
     				//console.log(result);
@@ -190,7 +176,7 @@
     				const resultStr = replies.map(e =>
 								    					`<tr>
 								    					<td>\${e.nickName}</td>
-								    					<td>\${e.replyContent}</td>
+								    					<td>\${e.inquiryAnswer}</td>
 								    					<td>\${e.createDate}</td>
 								    					</tr>`
 				    								).join('');

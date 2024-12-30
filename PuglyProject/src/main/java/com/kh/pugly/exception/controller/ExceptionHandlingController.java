@@ -59,6 +59,7 @@ public class ExceptionHandlingController {
 	protected ModelAndView invalidRequestError(InvalidRequestException e) {
 		return createErrorResponse("유효하지 않은 요청입니다.", e);
 	}
+
 	
 	@ExceptionHandler(FailInsertMemberException.class)
 	protected ModelAndView failInsertMemberError(FailInsertMemberException e) {
@@ -90,7 +91,7 @@ public class ExceptionHandlingController {
 	
 	@ExceptionHandler(ProductValueException.class)
 	protected ModelAndView productValueError(ProductValueException e) {
-		return createErrorResponse("바꾸세용", e);
+		return createErrorResponse("입력값이 올바르지 않습니다.", e);
 	}
 	
 	

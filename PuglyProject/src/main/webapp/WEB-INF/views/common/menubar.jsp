@@ -109,17 +109,19 @@
     </style>
 </head>
 <body>
-    <!-- 헤더 -->
     <div id="header">
         <!-- 로고 -->
         <div id="header_1_left">
-            <img src="https://cdn4.iconfinder.com/data/icons/food-4-9/128/food_Potato-Vegetable-128.png" alt="퍼리 마켓 로고">
+            <a href="/pugly" style="text-decoration-line: none;">
+            	<img src="https://cdn4.iconfinder.com/data/icons/food-4-9/128/food_Potato-Vegetable-128.png" alt="퍼리 마켓 로고">
+            </a>
             <span style="color: white;">Pugly Market</span>
         </div>
 
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
+
 
                 <li><a href="/pugly">HOME</a></li>
                 <li><a href="농산물핸들러">농산물</a></li>
@@ -139,6 +141,7 @@
 
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
+
                         <c:if test="${ not empty sessionScope.loginUser }">
 	                        <div id="profile-menu">
 	                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
@@ -148,6 +151,7 @@
 	                            <a href="/pugly/logout.member">로그아웃</a>
 	                        </div>
                         </c:if>
+
                     </div>
             	</c:otherwise>        
 			</c:choose>                    
@@ -159,9 +163,7 @@
         function toggleProfileMenu() {
             var menu = document.getElementById('profile-menu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        };
-
-
+        }
     </script>
 </body>
 </html>

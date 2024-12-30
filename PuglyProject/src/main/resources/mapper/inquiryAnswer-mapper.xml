@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.kh.pugly.reply.model.dao.InquiryAnswerMapper">
+ 
+	 <insert id="insertAnswer" parameterType="inquiryAnswer">
+	 	INSERT
+	 	  INTO
+	 	  	   TB_INQUIRY_ANSWER
+	 	  	   (
+	 	  	   INQUIRY_ANSWER_NO,
+    		   INQUIRY_ANSWER ,
+    		   NICKNAME,
+			   REF_INO
+	 	  	   )
+	 	VALUES
+	 		   (
+	 		   #{inquiryAnswerNo},
+	 		   #{inquiryAnswer},
+	 		   #{nickName},
+	 		   #{refIno}
+	 		   )
+	 </insert>
+	 
+	 <select id="selectAnswerList" parameterType="Long" resultType="inquiryAnswer">
+	 	SELECT
+	 		   INQUIRY_ANSWER_NO inquiryAnswerNo,
+	 		   INQUIRY_ANSWER inquiryAnswer,
+	 		   NICKNAME nickName,
+	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
+	 	  FROM
+	 	  	   TB_INQUIRY_ANSWER
+	 	 WHERE
+	 	  	   STATUS = 'Y'
+	 	   AND
+	 	   	   REF_INO = #{refIno}
+	 	 ORDER
+	 	 	BY
+	 	 	   INQUIRY_ANSWER_NO DESC
+	 </select>
+	 
+</mapper>

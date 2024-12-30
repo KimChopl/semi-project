@@ -15,10 +15,12 @@ import lombok.ToString;
 @Builder
 public class Inquiry {
 	private int inquiryNo;
+	private int inquiryWriter;
 	private String nickName;
 	private String inquiryTitle;
 	private String inquiryContent;
 	private String createDate;
 	private String answerStatus;
 	private String status;
+	private int count;
 }
