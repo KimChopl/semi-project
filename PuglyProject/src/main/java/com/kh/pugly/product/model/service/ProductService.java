@@ -1,6 +1,8 @@
 package com.kh.pugly.product.model.service;
 
+
 import java.util.Map;
+
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,5 +16,7 @@ public interface ProductService {
 	// 상품 상세조회
 	Map<String, Object> deatailProduct(Long productNo);
 
+
+	void insertProduct(Product product, MultipartFile[] upfile);
 
 }

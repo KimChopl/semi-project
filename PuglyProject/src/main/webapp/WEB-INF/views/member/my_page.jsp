@@ -47,12 +47,13 @@
             margin:20px;
         }
         
-        a{
+        .a{
         	text-decoration: none;
         	color: black;
+
         }
         
-        a:hover{
+        .a:hover{
             list-style: none;
             font-family: 'Courier New', Courier, monospace;
             color: rgb(121, 121, 121);
@@ -111,8 +112,16 @@
             height: 100px;
             border-radius: 100px;
             display: inline-block;
-            border: 1px solid black;
             background-color: rgb(255, 255, 255) ;
+        }
+        
+        .img{
+            vertical-align: middle;
+            width: 100px;
+            height : 100px;
+            border-radius: 100px;
+            margin: 0;
+            padding: 0;
         }
 
         #address-update{
@@ -133,54 +142,53 @@
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
-                <li><a href="update.member">내 정보 수정</a></li>
+                <li><a href="update_enroll_form.member" class="a">내 정보 수정</a></li>
                 
-                <li><a href="select.cart">장바구니</a></li>
+                <li><a href="select.cart" class="a">장바구니</a></li>
                 
-                <li><a href="select.myBook">내 예약 목록</a></li>
+                <li><a href="select.myBook" class="a">내 예약 목록</a></li>
                 
-                <li><a href="select.myOrder">내 주문 목록</a></li>
+                <li><a href="select.myOrder" class="a">내 주문 목록</a></li>
                 
-                <li><a href="select.attention">찜 목록</a></li>
+                <li><a href="select.attention" class="a">찜 목록</a></li>
                 
-                <li><a href="select.myBoardList">내 게시글</a></li>
+                <li><a href="select.myBoardList" class="a">내 게시글</a></li>
                 
-                <li><a href="select.myReplyList">내 댓글</a></li>
+                <li><a href="select.myReplyList" class="a">내 댓글</a></li>
                 <c:choose>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
                         
                         <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li><a href="select.myFarmList">내 농장</a></li>
+                        <li><a href="select.myFarmList" class="a">내 농장</a></li>
                         
-                        <li><a href="select.myProductList">내 판매 목록</a></li>
+                        <li><a href="select.myProductList" class="a">내 판매 목록</a></li>
                         <!-- 여기까지 판매자 -->
                     </c:when>
                     <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
                         
                         <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller">판매자 신청하기</a></li>   
+                        <li><a href="update.seller" class="a">판매자로 신청</a></li>   
                     </c:when>
                 </c:choose>
             </ul>
         </div>
         <div id="memberInfo">
             <div id="info">
-                <div id="img"><img src="" alt=""></div>
+            	
+                <div id="img"><img src="${ sessionScope.memberImage.changeImgName }" class="img"></div>
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
-                <c:choose>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 3 }">
 	                	<label>일반</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
+	                </c:if>
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 2 }">
 	                	<label>판매자</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 1 }">
+	                </c:if>
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 1 }">
 	                	<label>관리자</label>
-	                </c:when>
+	                </c:if>
 	                
-                </c:choose>
                 </div>
                 <br>
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
@@ -208,6 +216,8 @@
             
         })
 </script>
+
+	<jsp:include page="../common/footer.jsp" />
 
 
 </body>

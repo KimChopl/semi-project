@@ -121,8 +121,10 @@
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
+
+
+                <li><a href="/pugly">HOME</a></li>
                 <li><a href="농산물핸들러">농산물</a></li>
-                <li><a href="메인페이지">HOME</a></li>
                 <li><a href="농장핸들러">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>
             </ul>
@@ -130,21 +132,26 @@
 
         <!-- 로그인/유저 메뉴 -->
         <div id="header_1_right">
-			<c:choose>
-				<c:when test="${ empty sessionScope.loginUser }">
-                    <a href="로그인 경로">로그인</a>
-				</c:when>
-				<c:otherwise>
+
+
+					<c:if test="${ empty sessionScope.loginUser }">
+                    	<a href="/pugly/login_form.member">로그인</a>
+					</c:if>
+
+
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
-                        <div id="profile-menu">
-                            <label style="color: black;">\${로그인유저이름}님</label>
-                            <a href="마이페이지핸들러">마이페이지</a>
-                            <a href="예약상태핸들러">예약상태</a>
-                            <a href="장바구니핸들러">장바구니</a>
-                            <a href="/pugly/inquiries">문의게시판</a>
-                            <a href="로그아웃핸들러">로그아웃</a>
-                        </div>
+
+                        <c:if test="${ not empty sessionScope.loginUser }">
+	                        <div id="profile-menu">
+	                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
+	                            <a href="/pugly/my_page.member">마이페이지</a>
+	                            <a href="예약상태핸들러">예약상태</a>
+	                            <a href="장바구니핸들러">장바구니</a>
+	                            <a href="/pugly/logout.member">로그아웃</a>
+	                        </div>
+                        </c:if>
+
                     </div>
             	</c:otherwise>        
 			</c:choose>                    
