@@ -48,6 +48,18 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 	
+	private void noExistingMember(Member member) {
+		if(member == null) {
+			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
+		}
+	}
+	
+	private void invalidRequestMemberNo(Member member, Member loginMember) {
+		if(member.getMemberNo() != loginMember.getMemberNo()) {
+			throw new InvalidRequestException("유효하지 않은 요청");
+		}
+	}
+	
 	private void validationPassword(Member member) {
 		if(member.getMemberPwd().length() >= 25) {
 			throw new TooLargeValueException("비밀번호가 너무 김");
@@ -70,7 +82,7 @@ public class MemberServiceImpi implements MemberService {
 			String fileName = upfile.getOriginalFilename(); // 각 파일의 원본 파일 이름
 			String ext = fileName.substring(fileName.lastIndexOf(".")); // 확장자 추출
 			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-			int randomNum = (int)Math.random() * 90000 + 10000; // 랜덤번호생성
+			int randomNum = (int)(Math.random() * 90000) + 10000; // 랜덤번호생성
 			String changeName = currentTime + randomNum + ext; // 새로운 파일 이름
 			String savePath = context.getRealPath("/resources/member_profile/"); // 저장경로
 			try {
@@ -87,7 +99,23 @@ public class MemberServiceImpi implements MemberService {
 		return null;
 	}
 	
+	private void encryptionPassword(Member member) {
+		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
+		member.setMemberPwd(securityPass);
+	}
 	
+	private void changeNickName(Member member) {
+		if("".equals(member.getNickName())) {
+			member.setNickName(member.getMemberId());
+		}
+	}
+	
+	private void updateUser(Member member, Member loginMember) {
+		validationPassword(member);
+		invalidRequestMemberNo(member, loginMember);
+		encryptionPassword(member);
+		changeNickName(member);
+	}
 	
 	@Override
 	public Member selectMember(Member member) {
@@ -99,9 +127,7 @@ public class MemberServiceImpi implements MemberService {
 		
 		Member loginUser = mapper.selectMember(member);
 		
-		if(loginUser == null) {
-			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
-		}
+		noExistingMember(loginUser);
 		
 		
 		if(!(passwordEncrypt.matches(member.getMemberPwd(), loginUser.getMemberPwd()))) {
@@ -149,12 +175,16 @@ public class MemberServiceImpi implements MemberService {
 		validationMember(member);
 		Image image = memberImgSave(upfile);
 		
-		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
-		member.setMemberPwd(securityPass);
+		encryptionPassword(member);
+		changeNickName(member);
+		//String securityPass = passwordEncrypt.encode(member.getMemberPwd());
+		//member.setMemberPwd(securityPass);
 		
+		/*
 		if("".equals(member.getNickName())) {
 			member.setNickName(member.getMemberId());
 		}
+		*/
 		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);
@@ -168,17 +198,13 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 	
-
 	@Override
-	public void updateMember(Member member, Member loginMember) {
+	public void updateMember(Member member, Member loginMember, MultipartFile upfile) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
 		
-		validationPassword(member);
-		
-		if(member.getMemberNo() != loginMember.getMemberNo()) {
-			throw new InvalidRequestException("유효하지 않은 요청");
-		}
+		updateUser(member, loginMember);
+		Image image = memberImgSave(upfile);
 		
 		
 		
@@ -189,6 +215,7 @@ public class MemberServiceImpi implements MemberService {
 		
 
 	}
+
 
 
 

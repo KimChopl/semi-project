@@ -15,7 +15,7 @@ public interface MemberService {
 	
 	void insertMember(Member member, Address address, MultipartFile upfile);
 
-	void updateMember(Member member, Member loginMember);
+	void updateMember(Member member, Member loginMember, MultipartFile upfile);
 	
 	void deleteMember(Map<String, Object> map);
 

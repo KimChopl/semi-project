@@ -86,9 +86,9 @@
 
     <div id="wrap">
         <div id="image"></div>
-        <form action="update.memberInfo" method="post">
+        <form action="update.memberInfo" method="post" enctype="multipart/form-data">
             <input type="hidden" value="${ sessionScope.loginUser.memberNo }" name="memberNo"/>
-            <input type="file" id="file" name="img"/>
+            <input type="file" id="file" name="upfile"/>
             <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName"/>
            	<input type="text" placeholder="새로운 이름을 입력해주세요" value="${ sessionScope.loginUser.memberName }" name="memberName" />
             <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required />

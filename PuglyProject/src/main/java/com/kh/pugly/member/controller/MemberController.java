@@ -87,9 +87,9 @@ public class MemberController {
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")
-	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member, @RequestPart(value="upfile",required = false) MultipartFile upfile) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		memberService.updateMember(member, loginMember);
+		memberService.updateMember(member, loginMember, upfile);
 		return mv;
 	}	
 }
