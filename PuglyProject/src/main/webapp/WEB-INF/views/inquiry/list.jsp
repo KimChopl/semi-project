@@ -51,10 +51,10 @@
             <h2>게시판</h2>
             <br>
             <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
-            <a class="btn btn-secondary" style="float:right;" href="">글쓰기</a>
+            	<a class="btn btn-secondary" style="float:right;" href="insertInquiryForm">글쓰기</a>
             <br>
             <br>
-            <table id="boardList" class="table table-hover" align="center">
+            <table id="inquiryList" class="table table-hover" align="center">
                 <thead>
                     <tr>
                         <th>글번호</th>
@@ -62,62 +62,54 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
-                        <th>첨부파일</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>5</td>
-                        <td>마지막 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2024-06-10</td>
-                        <td>💌</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>네번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2024-06-07</td>
-                        <td>💌</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>세번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>10</td>
-                        <td>2024-06-03</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>두번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>100</td>
-                        <td>2024-06-01</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>첫번째 게시글제목</td>
-                        <td>admin</td>
-                        <td>45</td>
-                        <td>2023-12-25</td>
-                        <td>💌</td>
-                    </tr>
+                
+                	<c:forEach items="${inquiries}" var="inquiry">
+	                    <tr onclick="detail('${inquiry.inquiryNo}')">
+	                        <td>${inquiry.inquiryNo}</td>
+	                        <td>${inquiry.inquiryTitle }</td>
+	                        <td>${inquiry.nickName }</td>
+	                        <td>${inquiry.count }</td>
+	                        <td>${inquiry.createDate}</td>
+	                        <td>
+	                        <c:if test="답변완료시"> -->
+	                        		✔️
+	                        </c:if>	
+	                        </td>
+	                    </tr>
+                    </c:forEach>
+                    
                 </tbody>
             </table>
             <br>
+            <script>
+            	function detail(num) {
+            		location.href=`inquiries/\${num}`;
+            	}	
+            
+            </script>
+            
 
             <div id="pagingArea">
                 <ul class="pagination">
-                    <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <c:choose>
+                    <c:when test="${pageInfo.currentPage ne 1 }">
+                    	<li class="page-item"><a class="page-link" href="inquiries?page=${pageInfo.currentPage}">이전</a></li>
+                   </c:when>
+                   <c:otherwise>
+                   		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+                   </c:otherwise>
+                </c:choose>
+                   
+                   <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
+                    
+		                    	<li class="page-item">
+		                    		<a class="page-link" href="inquiries?page=${num}">${num}</a>
+		                    	</li>
+                    </c:forEach>
+                    
                     <li class="page-item"><a class="page-link" href="#">다음</a></li>
                 </ul>
             </div>

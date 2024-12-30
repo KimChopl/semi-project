@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +13,11 @@ import com.kh.pugly.board.model.vo.Board;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
+
+import com.kh.pugly.exception.ProductValueException;
+
+
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -22,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardMapper mapper;
-	private final ServletContext context;
 	
 	private int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();
@@ -48,7 +50,7 @@ public class BoardServiceImpl implements BoardService {
 		   board.getBoardTitle() == null || board.getBoardTitle().trim().isEmpty() ||
 		   board.getBoardContent() == null || board.getBoardContent().trim().isEmpty() ||
 		   board.getNickName() == null || board.getNickName().trim().isEmpty()) {
-			throw new BoardNotFoundException("부적절한 입력값입니다.");
+			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		
 		String boardTitle = escapeHtml(board.getBoardTitle());
@@ -135,7 +137,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void deleteBoard(Long boardNo, String changeName) {
+	public void deleteBoard(Long boardNo) {
 		
 		int result = mapper.deleteBoard(boardNo);
 		

@@ -23,7 +23,7 @@ public class ExceptionHandlingController {
 	private ModelAndView createErrorResponse(String errorMsg, Exception e) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg)
-		  .setViewName("common/error_page");
+		  .setViewName("common/error-page");
 		log.info("발생예외 : {}", e.getMessage(), e);
 		return mv;
 	}
@@ -53,10 +53,6 @@ public class ExceptionHandlingController {
 	protected ModelAndView invalidRequestError(InvalidRequestException e) {
 		return createErrorResponse("유효하지 않은 요청입니다.", e);
 	}
-	
-	
-	//---------------------------------------------------------------------
-
 
 	@ExceptionHandler(BoardNotFoundException.class)
 	protected ModelAndView noSearchBoardError(BoardNotFoundException e) {
@@ -75,7 +71,7 @@ public class ExceptionHandlingController {
 	
 	@ExceptionHandler(ProductValueException.class)
 	protected ModelAndView productValueError(ProductValueException e) {
-		return createErrorResponse("바꾸세용", e);
+		return createErrorResponse("입력값이 올바르지 않습니다.", e);
 	}
 	
 	

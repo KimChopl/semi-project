@@ -15,10 +15,10 @@ import lombok.ToString;
 @Builder
 public class Reply {
 	private Long replyNo;
-	private int refBno;
-	private String Nicname;
-	private String reply_content;
+	private Long refBno;
+	private String nickName;
+	private String replyContent;
 	private String createDate;
 	private String status;
-
+	private String modifyDate;
 }

@@ -109,19 +109,20 @@
     </style>
 </head>
 <body>
-    <!-- 헤더 -->
     <div id="header">
         <!-- 로고 -->
         <div id="header_1_left">
-            <img src="https://cdn4.iconfinder.com/data/icons/food-4-9/128/food_Potato-Vegetable-128.png" alt="퍼리 마켓 로고">
+            <a href="/pugly" style="text-decoration-line: none;">
+            	<img src="https://cdn4.iconfinder.com/data/icons/food-4-9/128/food_Potato-Vegetable-128.png" alt="퍼리 마켓 로고">
+            </a>
             <span style="color: white;">Pugly Market</span>
         </div>
 
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
+                <li><a href="농산물핸들러">농산물</a></li>
                 <li><a href="메인페이지">HOME</a></li>
-                <li><a href="상품핸들러">농산물</a></li>
                 <li><a href="농장핸들러">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>
             </ul>
@@ -141,6 +142,7 @@
                             <a href="마이페이지핸들러">마이페이지</a>
                             <a href="예약상태핸들러">예약상태</a>
                             <a href="장바구니핸들러">장바구니</a>
+                            <a href="/pugly/inquiries">문의게시판</a>
                             <a href="로그아웃핸들러">로그아웃</a>
                         </div>
                     </div>
@@ -154,9 +156,7 @@
         function toggleProfileMenu() {
             var menu = document.getElementById('profile-menu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        };
-
-
+        }
     </script>
 </body>
 </html>
