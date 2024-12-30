@@ -97,6 +97,25 @@
 	           #{district}
 	           )
 	</insert>
+	<insert id="insertMemberImage" parameterType="image">
+		INSERT
+		  INTO
+		       TB_MEMBER_IMAGE
+		       (
+		       MEMBER_IMG_NO,
+		       MEMBER_NO,
+		       ORIGIN_IMG_NAME,
+		       CHANGE_IMG_NAME
+		       )
+		VALUES
+		       (
+		       SEQ_MINO.NEXTVAL,
+		       SEQ_MNO.CURRVAL,
+		       #{originImgName},
+		       #{changeImgName}
+		       )
+	</insert>
+	
 	<select id="selectMemberImage" parameterType="long" resultType="image">
 		SELECT
                MEMBER_IMG_NO imgNo,

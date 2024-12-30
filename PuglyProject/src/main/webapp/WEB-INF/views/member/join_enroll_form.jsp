@@ -15,8 +15,8 @@
     
         #wrap{
             margin: auto;
-            width: 450px;
-            height: 600px;
+            width: 500px;
+            height: 500px;
             background-color: rgb(243, 243, 243);
             border-radius: 5px;
             text-align: center;
@@ -73,13 +73,28 @@
     </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     
     <jsp:include page="../common/menubar.jsp" />
     
     <div id="wrap">
-        <form action="insert.member" method="post">
+        <form action="insert.member" method="post" enctype="multipart/form-data">
+			<div class="custom-file">
+			  <input type="file" class="custom-file-input" id="customFile" name="upfile">
+			  <label class="custom-file-label" for="customFile">Choose file</label>
+			</div>
+		
+			<script>
+				// Add the following code if you want the name of the file appear on select
+				$(".custom-file-input").on("change", function() {
+				  var fileName = $(this).val().split("\\").pop();
+				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+				});
+			</script>
             <div class="div">
                 <input type="text" placeholder="이름" name="memberName" required/>
             </div>
@@ -92,18 +107,6 @@
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
                 
-			<div class="custom-file">
-			  <input type="file" class="custom-file-input" id="customFile">
-			  <label class="custom-file-label" for="customFile">Choose file</label>
-			</div>
-		
-			<script>
-				// Add the following code if you want the name of the file appear on select
-				$(".custom-file-input").on("change", function() {
-				  var fileName = $(this).val().split("\\").pop();
-				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-				});
-			</script>
             
             <div class="div">
                 <input type="text" placeholder="닉네임" name="nickName" />

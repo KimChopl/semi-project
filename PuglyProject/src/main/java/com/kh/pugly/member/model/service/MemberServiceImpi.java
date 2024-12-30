@@ -1,8 +1,14 @@
 package com.kh.pugly.member.model.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -14,6 +20,7 @@ import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailInsertMemberException;
+import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
@@ -28,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpi implements MemberService {
 
 	private final MemberMapper mapper;
+	private final ServletContext context;
 	private final PasswordEncoder passwordEncrypt;
 	
 	private void validationMember(Member member) {
@@ -55,6 +63,28 @@ public class MemberServiceImpi implements MemberService {
 		if(checkMember != null) {
 			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
 		}
+	}
+	
+	private Image memberImgSave(MultipartFile upfile) {
+		if(!upfile.isEmpty()) {
+			String fileName = upfile.getOriginalFilename(); // 각 파일의 원본 파일 이름
+			String ext = fileName.substring(fileName.lastIndexOf(".")); // 확장자 추출
+			String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+			int randomNum = (int)Math.random() * 90000 + 10000; // 랜덤번호생성
+			String changeName = currentTime + randomNum + ext; // 새로운 파일 이름
+			String savePath = context.getRealPath("/resources/member_profile/"); // 저장경로
+			try {
+				upfile.transferTo(new File(savePath + changeName)); //파일을 지정된 경로에 저장
+			} catch (IOException e) {
+				throw new FailToFileUploadException("파일을 업로드하지 못했습니다.");
+			}
+			// 이미지 파일 정보
+			Image image = new Image();
+			image.setOriginImgName(fileName); // 원본 파일
+			image.setChangeImgName("/pugly/resources/member_profile/" + changeName);
+			return image;
+		}
+		return null;
 	}
 	
 	
@@ -117,6 +147,7 @@ public class MemberServiceImpi implements MemberService {
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
 		validationMember(member);
+		Image image = memberImgSave(upfile);
 		
 		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
 		member.setMemberPwd(securityPass);
@@ -125,13 +156,14 @@ public class MemberServiceImpi implements MemberService {
 			member.setNickName(member.getMemberId());
 		}
 		
-		// member.setMemberPwd(passwordEncrypt.encode(member.getMemberPwd()));
-		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);
-
+		int imageResult = 1;
+		if(image != null) {
+			imageResult = mapper.insertMemberImage(image);
+		}
 		
-		if(memberResult * addressResult == 0) {
+		if(memberResult * addressResult * imageResult == 0) {
 			throw new FailInsertMemberException("회원 추가 실패");
 		}
 	}
