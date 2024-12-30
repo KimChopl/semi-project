@@ -32,7 +32,7 @@
 </head>
 <body>
     
-    <!--<jsp:include page="" /> -->
+    <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="content">
         <br>
@@ -45,14 +45,14 @@
         </div>
         <div class="row">
             <div class="col-3">
-                <img src="resources/img/tomato2.jpg" alt="상품이미지" class="pro-img">
+                <img src="${ product.newProductImg }" alt="상품이미지" class="pro-img">
             </div>
             <div class="col-7">
-                <div>상품명이요</div>
-                <div>상품가격이요</div>
-                <div>상품 단위요</div>
-                <div>배송비요</div>
-                <div>상품등록일이요</div>
+                <div>${ product.productName }</div>
+                <div>${ product.price }</div>
+                <div>${ product.productQuantity } ${ product.unitName }</div>
+                <div>${ product.deliiveryPrice }</div>
+                <div>${product.productDate }</div>
             </div>
         </div>
         <div class="row">
@@ -116,7 +116,7 @@
         
     </div>
 
-    <!--<jsp:include page="" /> -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
     
 </body>
 </html>

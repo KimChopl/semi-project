@@ -64,7 +64,8 @@
 </head>
 <body>
 
-    <!--<jsp:include page="" />-->
+
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="content">
         <div>
@@ -83,32 +84,32 @@
             <div>                
             <div class="img-fom">
                 <label>대표이미지</label><br>
-                <img src="resources/img/tomato2.jpg" class="main-img" id="title-img">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="main-img" id="title-img">
             </div>
             <div class="img-fom">
                 <label>상세이미지-1</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img1">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img1">
             </div>
             <div class="img-fom">
                 <label>상세이미지-2</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img2">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img2">
             </div>
             <div class="img-fom">
                 <label>상세이미지-3</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img3">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img3">
             </div>
             <div class="img-fom">
                 <label>상세이미지-4</label><br>
-                <img src="resources/img/tomato2.jpg" class="img" id="sub-img4">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img4">
             </div>
                 <br><br>
             
 	        <div id="file-area">
-                <input type="file" name="file1" id="file1" required onchange="loadImg(this, 1);">
-                <input type="file" name="file2" id="file2" onchange="loadImg(this, 2);">
-                <input type="file" name="file3" id="file3" onchange="loadImg(this, 3);">
-                <input type="file" name="file4" id="file4" onchange="loadImg(this, 4);">
-                <input type="file" name="file5" id="file5" onchange="loadImg(this, 5);">
+                <input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
+                <input type="file" name="upfile" id="file2" onchange="loadImg(this, 2);">
+                <input type="file" name="upfile" id="file3" onchange="loadImg(this, 3);">
+                <input type="file" name="upfile" id="file4" onchange="loadImg(this, 4);">
+                <input type="file" name="upfile" id="file5" onchange="loadImg(this, 5);">
             </div>         
             
              <script>
@@ -167,8 +168,7 @@
          </div>
          <hr>
          <br>
-         <div>
-                <span class="title">상품명</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
+                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
                 <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
                 <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
                 <select style="width: 80px; height: 30px; font-size: 20px" name="unitName" id="unitName">
@@ -179,37 +179,41 @@
                 <br><br>
                 <span class="title">상품설명</span><br> <textarea style="width: 99%; font-size: 18px;" rows="30" name="productContent" id="productContent"></textarea> <br><br>
                 <span class="title">상품 카테고리</span> 
-                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="categoryName" id="categoryName">
+                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="productType" id="productType">
                     <option value="유기농과일">유기농 과일</option>
-                    <option value="못난이과일">유기농 야채</option>
-                    <option value="유기농야채">못난이 과일</option>
+                    <option value="유기농야채">유기농 야채</option>
+                    <option value="못난이과일">못난이 과일</option>
                     <option value="못난이야채">못난이 야채</option>
                 </select>
                 <br><br>
                 <span class="title">배송정보</span> 
+                
+                
+                <input type="radio" value="무료" name="deliveryPrice" id="deliver-btn1" checked>
                 <label>무료배송</label>
-                <input type="radio" value="1" checked name="deliveryNo" id="deliveryNo">
+                
+                <input type="radio" value="배송비포함" name="deliveryPrice" id="deliver-btn2">
                 <label>배송비</label>
-                <input type="radio" name="deliveryNo" value="2">
-                <input type="number" class="text-title" name="deliverPrice"> 배송비 입력
-                <input type="radio" name="radio1" value="무료배송" checked>
-                <label>배송비</label>
-                <input type="radio" name="radio1" value="배송비 포함" name="deliveryPrice" id="deliveryPrice">
-                <input type="number" class="text-title"> 배송비 입력
+                
+                
+                <input type="number" class="text-title" name=""> 
+                <label>배송비 입력</label>
+                
                 <br><br>
                 <hr>
                 <br>
+                
+                
                 <div class="save-btn">
                     <button type="submit" id="confirmation">등록하기</button>
-                    <button type="">임시저장</button>
+                    <button>임시저장</button>
                 </div>
                 <br>
             </form>
-         </div>
          <br><br><br>
     </div>
-
-    <!--<jsp:include page="" /> -->
+    
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

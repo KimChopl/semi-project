@@ -49,7 +49,8 @@
         
         .a{
         	text-decoration: none;
-        	color:black;
+        	color: black;
+
         }
         
         .a:hover{

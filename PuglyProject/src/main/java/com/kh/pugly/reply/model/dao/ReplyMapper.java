@@ -1,5 +1,8 @@
 package com.kh.pugly.reply.model.dao;
 
-public class ReplyMapper {
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface ReplyMapper {
 
 }

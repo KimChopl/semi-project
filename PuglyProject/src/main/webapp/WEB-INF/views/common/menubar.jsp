@@ -120,6 +120,7 @@
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
+
                 <li><a href="/pugly">HOME</a></li>
                 <li><a href="농산물핸들러">농산물</a></li>
                 <li><a href="농장핸들러">농장</a></li>
@@ -130,9 +131,11 @@
         <!-- 로그인/유저 메뉴 -->
         <div id="header_1_right">
 
+
 					<c:if test="${ empty sessionScope.loginUser }">
                     	<a href="/pugly/login_form.member">로그인</a>
 					</c:if>
+
 
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
@@ -146,8 +149,8 @@
 	                        </div>
                         </c:if>
                     </div>
-                    
-                    
+            	</c:otherwise>        
+			</c:choose>                    
          </div>
     </div>
 
@@ -156,16 +159,9 @@
         function toggleProfileMenu() {
             var menu = document.getElementById('profile-menu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
-
-        // 프로필 메뉴 외부 클릭 시 닫기
-        window.onclick = function(event) {
-            var menu = document.getElementById('profile-menu');
-            var profilePic = document.getElementById('profile-pic');
-            if (event.target !== profilePic && !profilePic.contains(event.target)) {
-                menu.style.display = 'none';
-            }
         };
+
+
     </script>
 </body>
 </html>

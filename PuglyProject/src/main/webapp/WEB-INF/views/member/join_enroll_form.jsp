@@ -102,8 +102,7 @@
             <div class="div">
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
-            
-            <div class="div">
+
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
                 

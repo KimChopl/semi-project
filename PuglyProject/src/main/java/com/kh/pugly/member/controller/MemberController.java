@@ -64,13 +64,13 @@ public class MemberController {
 		Map<String, Object> map = memberService.selectStateCategory();
 		
 		return mv.setViewNameAndData("member/enroll_form_address", map);
+
+
 	}
 	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
-		
 		Map<String, Object> map = memberService.selectStateCategory();
-		
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
