@@ -32,6 +32,7 @@ public class Product {
 	private String newProductImg;			// 사진수정
 	
 	
+
 	
 	
 
