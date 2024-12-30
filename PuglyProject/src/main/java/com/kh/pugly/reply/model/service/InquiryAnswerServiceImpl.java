@@ -16,8 +16,8 @@ public class InquiryAnswerServiceImpl implements InquiryAnswerService {
 	private final InquiryAnswerMapper answerMapper;
 	
 	@Override
-	public int insertAnswer(InquiryAnswer answer) {
-		return answerMapper.insertAnswer(answer);
+	public int insertAnswer(InquiryAnswer inquiryAnswer) {
+		return answerMapper.insertAnswer(inquiryAnswer);
 	}
 
 	@Override

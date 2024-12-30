@@ -22,4 +22,5 @@ public class Inquiry {
 	private String createDate;
 	private String answerStatus;
 	private String status;
+	private int count;
 }

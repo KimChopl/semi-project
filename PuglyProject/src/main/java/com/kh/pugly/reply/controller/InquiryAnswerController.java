@@ -23,9 +23,9 @@ public class InquiryAnswerController {
 	private final InquiryAnswerService answerService;
 	
 	@PostMapping
-	public ResponseEntity<ResponseData> insertAnswer(InquiryAnswer answer) {
+	public ResponseEntity<ResponseData> insertAnswer(InquiryAnswer inquiryAnswer) {
 		
-		int result = answerService.insertAnswer(answer);
+		int result = answerService.insertAnswer(inquiryAnswer);
 		ResponseData response = ResponseData.builder()
 					 						.message("댓글 등록에 성공했습니다!")
 					 						.status(HttpStatus.OK.toString())

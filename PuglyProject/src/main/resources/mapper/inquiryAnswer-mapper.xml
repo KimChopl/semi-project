@@ -4,30 +4,30 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.kh.pugly.reply.model.dao.InquiryAnswerMapper">
  
-	 <insert id="insertAnswer" parameterType="answer">
+	 <insert id="insertAnswer" parameterType="inquiryAnswer">
 	 	INSERT
 	 	  INTO
 	 	  	   TB_INQUIRY_ANSWER
 	 	  	   (
 	 	  	   INQUIRY_ANSWER_NO,
-    		   INQUIRY_ANSWER,
-    		   WRITER_NICKNAME,
+    		   INQUIRY_ANSWER ,
+    		   NICKNAME,
 			   REF_INO
 	 	  	   )
 	 	VALUES
 	 		   (
 	 		   #{inquiryAnswerNo},
 	 		   #{inquiryAnswer},
-	 		   #{writerNickname},
+	 		   #{nickName},
 	 		   #{refIno}
 	 		   )
 	 </insert>
 	 
-	 <select id="selectAnswerList" parameterType="Long" resultType="answer">
+	 <select id="selectAnswerList" parameterType="Long" resultType="inquiryAnswer">
 	 	SELECT
 	 		   INQUIRY_ANSWER_NO inquiryAnswerNo,
 	 		   INQUIRY_ANSWER inquiryAnswer,
-	 		   WRITER_NICKNAME writerNickname,
+	 		   NICKNAME nickName,
 	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
 	 	  FROM
 	 	  	   TB_INQUIRY_ANSWER

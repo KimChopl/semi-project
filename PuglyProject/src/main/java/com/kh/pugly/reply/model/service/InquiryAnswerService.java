@@ -6,7 +6,7 @@ import com.kh.pugly.reply.model.vo.InquiryAnswer;
 
 public interface InquiryAnswerService {
 	
-	int insertAnswer(InquiryAnswer answer);
+	int insertAnswer(InquiryAnswer inquiryAnswer);
 	
 	List<InquiryAnswer> selectAnswerList(Long inquiryNo);
 

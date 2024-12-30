@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.kh.pugly.reply.model.dao.InquiryMapper">
+ <mapper namespace="com.kh.pugly.board.model.dao.InquiryMapper">
  	
  	<sql id="inquiryColumn">
 		SELECT
@@ -21,7 +21,7 @@
 	      
 	</sql>
 	
-	<select id="selectTotalCount" resultType="_int">
+	<select id="totalCount" resultType="_int">
 		SELECT
 			   COUNT(*)
 		  FROM	
@@ -36,6 +36,7 @@
 			   INQUIRY_TITLE inquiryTitle,
 			   M.NICKNAME nickName,
 			   COUNT,
+			   ANSWER_STATUS answerStatus,
 			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate
 		  FROM
 		       TB_INQUIRY I
@@ -45,7 +46,7 @@
 		  	   I.STATUS = 'Y'
 		 ORDER
 		 	BY
-		       INQUIRY_NO DESC
+		       INQUIRY_GROUP DESC, INQUIRY_NO DESC
 	</select>
 	
 	<update id="increaseCount" parameterType="long">
@@ -66,25 +67,34 @@
 	</select>
 	
 	<insert id="insertInquiry" parameterType="inquiry">
-		INSERT
-		  INTO
-		  	   TB_INQUIRY
-		  	   (
-		  	   INQUIRY_NO,
-		  	   INQUIRY_WRITER,
-		  	   INQUIRY_TITLE,
-		  	   INQUIRY_CONTENT,
-		  	   COUNT
-		  	   )
-		VALUES
-			   (
-			    SEQ_INO.NEXTVAL,
-			    #{inquiryWriter},
-			    #{inquiryTitle},
-			    #{inquiryContent},
-			    #{count} 
-			   )
-	</insert>	
+    	INSERT 
+    	  INTO 
+    	  	   TB_INQUIRY 
+    	  	   (
+        	   INQUIRY_NO,
+        	   INQUIRY_WRITER,
+        	   INQUIRY_TITLE,
+        	   INQUIRY_CONTENT,
+        	   COUNT,
+        	   INQUIRY_GROUP
+    		   )
+    	VALUES 
+    		   (
+        	   SEQ_INO.NEXTVAL,
+        	   #{inquiryWriter},
+        	   #{inquiryTitle},
+        	   #{inquiryContent},
+        	   #{count},
+        	   (
+               SELECT 
+               	 CASE WHEN NICKNAME = '관리자' THEN 2 ELSE 1 END
+            	 FROM 
+            	 	  TB_MEMBER
+            	WHERE 
+            		  MEMBER_NO = #{inquiryWriter}
+        	   )
+               )
+</insert>	
 	
 	<delete id="deleteInquiry" parameterType="long">
 		UPDATE

@@ -52,6 +52,7 @@
  	<mybatis-spring:scan base-package="com.kh.pugly.board.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.product.model.dao"/>
+ 	<mybatis-spring:scan base-package="com.kh.pugly.reply.model.dao"/>
  	
  	<!--  File Upload Bean Regist -->
  	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">

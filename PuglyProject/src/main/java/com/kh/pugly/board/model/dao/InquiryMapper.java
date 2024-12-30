@@ -20,6 +20,6 @@ public interface InquiryMapper {
 
 	List<Inquiry> selectInquiryList(RowBounds rowBounds);
 
-	int selectTotalCount();
+	int totalCount();
 
 }

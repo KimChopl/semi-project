@@ -22,7 +22,7 @@ public class InquiryServiceImpl implements InquiryService {
 	private final InquiryMapper inquiryMapper;
 	
 	private int getTotalCount() {
-		int totalCount = inquiryMapper.selectTotalCount();
+		int totalCount = inquiryMapper.totalCount();
 		if(totalCount == 0) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
 		}

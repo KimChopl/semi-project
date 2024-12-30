@@ -15,10 +15,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Builder
 public class InquiryAnswer {
-	private int inquiryAnswerNo;
+	private Long inquiryAnswerNo;
 	private String inquiryAnswer;
-	private int refIno;
-	private String writerNickname;
+	private Long refIno;
+	private String nickName;
 	private String createDate;
 	private String status;
 }
