@@ -11,14 +11,14 @@
 	 	  	   (
 	 	  	   REPLY_NO,
 	 	  	   REF_BNO,
-	 	  	   WRITER_NICKNAME,
+	 	  	   NICKNAME,
 	 	  	   REPLY_CONTENT
 	 	  	   )
 	 	VALUES
 	 		   (
 	 		   #{replyNo},
 	 		   #{refBno},
-	 		   #{writerNickname},
+	 		   #{nickName},
 	 		   #{replyContent}
 	 		   )
 	 </insert>
@@ -26,7 +26,7 @@
 	 <select id="selectReplyList" parameterType="Long" resultType="reply">
 	 	SELECT
 	 		   REPLY_NO replyNo,
-	 		   WRITER_NICKNAME writerNickname,
+	 		   NICKNAME nickName,
 	 		   REPLY_CONTENT replyContent,
 	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
 	 	  FROM
