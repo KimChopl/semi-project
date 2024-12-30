@@ -175,7 +175,7 @@
 			}
 			const replies = [...r.farm]
 			const result = replies.map(e =>
-					`<div class="col-4 farms" onclick="farms(\${farm.farmNo})">
+					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
 	                     <div class="farms-content">
 	                         <div class="img"><img src="" alt=""></div>
 	                         <div class="farm-explain">
