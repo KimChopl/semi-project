@@ -14,6 +14,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.farm.model.service.FarmService;
 import com.kh.pugly.farm.model.vo.Farm;
 
@@ -24,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class AjaxFarmController {
-
 
 	private final FarmService fs;
 	
@@ -38,23 +38,24 @@ public class AjaxFarmController {
 		return map;
 	}
 	
-	@PostMapping(value="suchFarm", produces="application/json; charset=UTF-8")
-	public void suchFarmList(@RequestBody String such) {
-		JsonParser parser = new JsonParser();
-		JsonElement jel = parser.parse(such);
-		JsonObject jo = jel.getAsJsonObject();
-		JsonElement stateEl = jo.get("state");
-		JsonArray productEl = jo.get("product").getAsJsonArray();
-		String optionEl = jo.get("option").getAsString();
-		int plusNo = jo.get("plusNo").getAsInt();
-		Map<String, Object> suchMap = new HashMap();
-		suchMap.put("state", stateEl);
-		suchMap.put("product", productEl);
-		suchMap.put("option", optionEl);
-		suchMap.put("plusNo", plusNo);
-		List<Farm> farm = fs.suchByKeyword(suchMap);
+	@PostMapping(value="plus", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> suchFarmList(@RequestBody Map<String, Object> such) {
+		List<String> state = (List<String>) such.get("state");
+		List<Integer> product = (List<Integer>)such.get("product");
+		String option = (String)such.get("option");
+		double str = (double)such.get("plusNo");
+		int plusNo = (int)str;
+		Map<String, Object> map = new HashMap();
+		map.put("state", state);
+		map.put("product", product);
+		map.put("option", option);
+		map.put("plusNo", plusNo);
+		//log.info("{}", map);
+		Map<String, Object>list = fs.suchByKeyword(map);
+		//log.info("{}", list);
+		return list;
 		
-		log.info("{}", farm);
 	}
 
 }

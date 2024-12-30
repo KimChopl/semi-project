@@ -17,9 +17,9 @@ public interface FarmService {
 	
 	Map<String, Object> selectFarmList(int plusNo);
 	
-	Farm selectDetailFarm(Long farmNo);
+	Map<String, Object> selectDetailFarm(Long farmNo);
 	
-	List<Farm> suchByKeyword(Map<String, Object> suchMap);
+	Map<String, Object> suchByKeyword(Map<String, Object> suchMap);
 
 	void insertFarm(Farm farm, Image img, Member member);
 	

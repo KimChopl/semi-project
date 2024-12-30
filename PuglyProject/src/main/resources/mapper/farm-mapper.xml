@@ -7,7 +7,7 @@
 		       FARM_NO farmNo,
 		       NICKNAME seller,
 		       FARM_TITLE farmTitle,
-		       (SELECT
+		       NVL((SELECT
 		               COUNT(ATT_BY_FARM)
 		          FROM
 		               TB_FARM_ATTENTION
@@ -15,8 +15,8 @@
 		               ATT_BY_FARM = TB_FARM.FARM_NO
 		         GROUP
 		            BY
-		               ATT_BY_FARM) ATT,
-		        (SELECT
+		               ATT_BY_FARM),0) ATT,
+		        NVL((SELECT
 		               COUNT(LIKE_BY_FARM)
 		          FROM
 		               TB_FARM_LIKE
@@ -24,7 +24,7 @@
 		               LIKE_BY_FARM = TB_FARM.FARM_NO
 		         GROUP
 		            BY
-		               LIKE_BY_FARM) AS "FARM_LIKE",
+		               LIKE_BY_FARM),0) AS "FARM_LIKE",
 		        FARM_COUNT farmCount,
 		        DISTRICT address,
 		        PRODUCT_NAME productName,
@@ -33,7 +33,16 @@
 		        FARM_PRICE farmPrice,
 		        ORIGIN_IMG_NAME originImgName,
 		        CHANGE_IMG_NAME changeImgName,
-        		IMG_NO imgNo
+        		IMG_NO imgNo,
+        		NVL((SELECT
+                       ROUND(AVG(RATING), 1)
+                  FROM
+                       TB_REVIEW
+                 WHERE
+                       REVIEW_POST_NO = TB_FARM.FARM_NO
+                 GROUP
+                    BY
+                       REVIEW_POST_NO),0) rating
 		  FROM
 		       TB_FARM
 		  JOIN
@@ -48,6 +57,8 @@
 		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
 		  JOIN
 		       TB_FARM_PRODUCT ON(PRODUCT_NO = FARM_PRODUCT_NO)
+		  JOIN
+               TB_STATE_CATEGORY S ON (S.STATE_CODE = TA.STATE_CODE)
 		 WHERE
 		       DELETE_ASK = 'N'
 		   AND
@@ -68,8 +79,6 @@
 		       DELETE_ASK = 'N'
 	</select>
 	<resultMap id="farmList" type="farm">
-	<constructor>
-	</constructor>
 		<id property="farmNo" column="farmNo" />
 		<result property="seller" column="seller" />
 		<result property="attention" column="ATT" />
@@ -81,6 +90,7 @@
 		<result property="productName" column="productName" />
 		<result property="farmCreateDate" column="farmCreateDate" />
 		<result property="farmModifyDate" column="farmModifyDate" />
+		<result property="rating" column="rating" />
 		<collection property="imgList"  ofType="Image">
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
@@ -122,29 +132,175 @@
 	
 	<select id="suchByKeyword" resultMap="farmList" parameterType="map">
 		<include refid="farmColumn" />
-		<if test="map.state != null">
-			<foreach item="state" collection="list">
-				AND
-				    STATE_CODE = #{state}
+		<if test="state.size != 0">
+		AND
+		    S.STATE_CODE IN
+		<foreach collection="state" item="state" open="(" close=")" separator=",">
+			#{state}
+		</foreach>
+		</if>
+		<if test="product.size != 0">
+			AND
+			    FARM_PRODUCT_NO IN
+			<foreach collection="product" item="pro" open="(" close=")" separator=",">
+				#{pro}
 			</foreach>
 		</if>
-		<if test="map.product != null">
-			<foreach item="product" collection="list" index="product">
+		<if test="option == 'date'">
+			ORDER
+			   BY
+			      farmCreateDate DESC
+		</if>
+		<if test="option == 'rating'">
+			ORDER
+			   BY
+			      rating DESC
+		</if>
+		<if test="option == 'price'">
+			ORDER
+			   BY
+			      farmPrice DESC
+		</if>
+	</select>
+	<select id="countSuchList" parameterType="map" resultType="_int">
+		SELECT
+		       COUNT(FARM_NO)
+		  FROM
+		       TB_FARM
+		  JOIN
+		       TB_ADDRESS TA ON(SELLER_NO = TA.MEMBER_NO)
+		  JOIN
+		       TB_STATE_CATEGORY TSC ON (TA.STATE_CODE = TSC.STATE_CODE)
+		 WHERE
+		       DELETE_ASK = 'N'
+		   AND
+		       ADDRESS_TYPE = 1
+	  		<if test="state.size != 0">
+			AND
+			    TSC.STATE_CODE IN
+			<foreach collection="state" item="state" open="(" close=")" separator=",">
+				#{state}
+			</foreach>
+			</if>
+			<if test="product.size != 0">
 				AND
-				    PRODUCT_NO IN 
-				<foreach collection="product" item="product" index="product" separator="or" open="(" close=")">
-				    #{product}
+				    FARM_PRODUCT_NO IN
+				<foreach collection="product" item="pro" open="(" close=")" separator=",">
+					#{pro}
 				</foreach>
-			</foreach>
-		</if>
-		<if test="option != ''">
-			ORDER
-			   BY
-			      #{option} DESC
-		</if>
-			ORDER
-			   BY
-			      FARM_CREATE_DATE DESC
+			</if>
 	</select>
 	
+	<resultMap id="detailFarm" type="farm">
+		<id property="farmNo" column="farmNo"/>
+		<result property="seller" column="seller" />
+		<result property="farmTitle" column="farmTitle" />
+		<result property="farmContent" column="farmContent" />
+		<result property="bewareList" column="bewareList" />
+		<result property="farmCreateDate" column="farmCreateDate" />
+		<result property="farmModifyDate" column="farmModifyDate" />
+		<result property="address" column="address" />
+		<result property="farmPrice" column="farmPrice" />
+		<result property="attention" column="attention" />
+		<result property="like" column="FARM_LIKE" />
+		<result property="rating" column="rating" />
+		<result property="productName" column="productName" />
+		<result property="categoryNo" column="categoryNo" />
+		<result property="categoryName" column="categoryName" />
+		<collection property="imgList" ofType="image">
+			<result property="originImgName" column="originImgName" />
+			<result property="changeImgName" column="changeImgName" />
+			<result property="imgNo" column="imgNo" />
+		</collection>
+			
+		<collection property="facility" ofType="fac">
+			<result property="facilityNo" column="facilityNo"/>
+			<result property="facilityName" column="facilityName"/>
+		</collection>
+	</resultMap>
+	<select id="selectDetailFarm" parameterType="long" resultMap="detailFarm">
+		SELECT
+		      FARM_NO farmNo,
+		      NICKNAME seller,
+		      FARM_TITLE farmTitle,
+		      FARM_CONTENT farmContent,
+		      BEWARE_LIST bewareList,
+		      IMG_NO imgNo,
+		      ORIGIN_IMG_NAME originImgName,
+		      CHANGE_IMG_NAME changeImgName,
+		      FACILITY_NO facilityNo,
+		      FACILITY_NAME facilityName,
+		      DISTRICT address,
+		      FARM_CREATE_DATE farmCreateDate,
+		      FARM_MODIFY_DATE farmModifyDate,
+		      FARM_PRICE farmPrice,
+		      NVL((SELECT
+		                   COUNT(ATT_BY_FARM)
+		              FROM
+		                   TB_FARM_ATTENTION
+		              WHERE
+		                   ATT_BY_FARM = TB_FARM.FARM_NO
+		             GROUP
+		                BY
+		                   ATT_BY_FARM),0) attention,
+		            NVL((SELECT
+		                   COUNT(LIKE_BY_FARM)
+		              FROM
+		                   TB_FARM_LIKE
+		              WHERE
+		                   LIKE_BY_FARM = TB_FARM.FARM_NO
+		             GROUP
+		                BY
+		                   LIKE_BY_FARM),0) AS "FARM_LIKE",
+		       NVL((SELECT
+		                   ROUND(AVG(RATING), 1)
+		              FROM
+		                   TB_REVIEW
+		             WHERE
+		                   REVIEW_POST_NO = TB_FARM.FARM_NO
+		             GROUP
+		                BY
+		                   REVIEW_POST_NO),0) rating,
+		       PRODUCT_NAME productName,
+		       CATEGORY_NAME categoryName,
+		       CATEGORY_NO categoryNo
+		  FROM
+		       TB_FARM
+		  JOIN
+		       TB_MEMBER M ON (M.MEMBER_NO = SELLER_NO)
+		  LEFT
+		  JOIN
+		       TB_IMAGE_BRIGE ON(FARM_NO = IMG_POST_NO)
+		  LEFT
+		  JOIN
+		       TB_IMAGE ON (IMG_POST_NO = IMG_BR_NO)
+		  JOIN
+		       TB_FARM_PRODUCT ON (FARM_PRODUCT_NO = PRODUCT_NO)
+		  LEFT
+		  JOIN
+		       TB_FAC_BRIGE ON (BR_FARM_NO = FARM_NO)
+		  LEFT
+		  JOIN
+		       TB_FACILITY ON (BR_FACILITY_NO = FACILITY_NO)
+		  JOIN
+		       TB_MAIN_CATEGORY ON (CATEGORY_NO = MAIN_CATEGORY_NO)
+		  JOIN
+		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
+		 WHERE
+		        FARM_NO = #{farmNo}
+		   AND
+		       DELETE_ASK = 'N'
+		   AND
+		       IMG_STATUS = 'Y'
+	</select>
+	<update id="updateCount" parameterType="long">
+		UPDATE
+		       TB_FARM
+		   SET
+		       FARM_COUNT = FARM_COUNT + 1
+		 WHERE
+		       FARM_NO = #{farmNo}
+		   AND
+		       DELETE_ASK = 'N'
+	</update>
 </mapper>

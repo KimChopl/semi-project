@@ -22,6 +22,8 @@ import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
 import com.kh.pugly.member.model.vo.Member;
+import com.kh.pugly.review.model.service.ReviewService;
+import com.kh.pugly.review.model.vo.Review;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,19 +37,25 @@ public class FarmServiceImpl implements FarmService {
 	private final FarmMapper fm;
 	private final ImageMapper im;
 	private final ReplaceXss rx;
+	private final ReviewService rs;
 	
 	private int countFarm() {
 		return fm.countFarm();
 	}
 	
-	private MoreInfo getPageInfo(int plusNo) {
+	private MoreInfo getPageInfo(int plusNo, int boardLimit) {
 		int listCount = countFarm();
 		if(listCount > 0) {
-			return MoreInfomation.getMoreInfo(listCount, plusNo);
+			return MoreInfomation.getMoreInfo(listCount, plusNo, boardLimit);
 		} else {
 			return null;
 		}
 	
+	}
+	
+	private MoreInfo getSuchPageInfo(Map<String, Object> map, int boardLimit) {
+		int listCount = fm.countSuchList(map);
+		return MoreInfomation.getMoreInfo(listCount, (int)map.get("plusNo"), boardLimit);
 	}
 	
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
@@ -66,7 +74,8 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public Map<String, Object> selectFarmList(int plusNo) {
 		//log.info("{}", plusNo);
-		MoreInfo mi = getPageInfo(plusNo);
+		int boardLimit = 6;
+		MoreInfo mi = getPageInfo(plusNo, boardLimit);
 		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
 		List<Farm> farm = fm.selectFarmList(rowNum);
 		//log.info("{}", plusNo);
@@ -96,30 +105,32 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	@Override
-	public Farm selectDetailFarm(Long farmNo) {
+	public Map<String, Object> selectDetailFarm(Long farmNo) {
 		checkedFarmNo(farmNo);
 		checkedFarm(farmNo);
-		return checkedDetailFarm(farmNo);
+		Farm farm =  checkedDetailFarm(farmNo);
+		int moreNo = 0;
+		List<Review> review = rs.selectReviewList(moreNo, farmNo);
+		log.info("{}", farm);
+		Map<String, Object> detail = new HashMap();
+		detail.put("farm", farm);
+		detail.put("review", review);
+		return detail;
 	}
 	
 	
-	private List<Farm> findByOption(Map<String, Object> suchMap){
-		Object o = suchMap.get("plusNo");
-		int plusNo = (int)o;
-		MoreInfo mi = getPageInfo(plusNo);
-		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
-		List<Farm> farm = fm.suchByKeyword(suchMap, rowNum);
-		if(farm == null) {
-			return null;
-		} else {
-			return farm;
-		}
-	}
 	
 	@Override
-	public List<Farm> suchByKeyword(Map<String, Object> suchMap) {
-		List<Farm> farm = findByOption(suchMap);
-		return farm;
+	public Map<String, Object> suchByKeyword(Map<String, Object> suchMap) {
+		int boardLimit = 6;
+		MoreInfo mi = getSuchPageInfo(suchMap, boardLimit);
+		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
+		//log.info("{}", rowNum.getOffset());
+		
+		List<Farm> list = fm.suchByKeyword(suchMap, rowNum);
+		Map<String, Object> map = checkedMap(list, mi);
+		return map;
+		
 	}
 	
 	private void checkedFarmContent(Farm farm, Member member) {

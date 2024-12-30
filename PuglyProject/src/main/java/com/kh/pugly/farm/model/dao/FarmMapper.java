@@ -48,5 +48,7 @@ public interface FarmMapper {
 	FarmPrice selectPrice();
 	
 	List<FarmProduct> selectFarmProduct();
+	
+	int countSuchList(Map<String, Object> suchMap);
 
 }
