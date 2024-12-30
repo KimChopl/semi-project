@@ -1,10 +1,14 @@
 package com.kh.pugly.product.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,18 +33,19 @@ public class ProductController {
 	}
 	
 	// 내상점 화면 호출
-	@GetMapping("mystore.form")
+	@GetMapping("mystore")
 	public String myStore() {
 		
 		return "product/my_store";
 	}
 	
 	// 상품등록 화면 호출
-	@GetMapping("insert.form")
-	public String insertform() {
+	@GetMapping("insert_form")
+	public String insertForm() {
 		return "product/insert_product";
 	}
 	
+	// 상품등록 
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session) {
 		
@@ -50,14 +55,20 @@ public class ProductController {
 	}
 	
 	// 상품리스트 화면 호출
-	@GetMapping("list.form")
-	public String listProduct() {
-		return "product/list_product";
+	@GetMapping("products")
+	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page) {
+		
+		Map<String, Object> map = productService.listProduct(page);
+		
+		return mv.setViewNameAndData("product/list_product", map);
 	}
 	// 상품상세 화면 호출
-	@GetMapping("detail.form")
-	public String detailProduct() {
-		return "product/detail_product";
+	@GetMapping("detail.form/{id}")
+	public ModelAndView detailProduct(@PathVariable(name="id") Long id) {
+		
+		Map<String, Object> reponseData = productService.deatailProduct(id);
+		return mv.setViewNameAndData("product/detail_product", reponseData);
+
 	}
 	
 	

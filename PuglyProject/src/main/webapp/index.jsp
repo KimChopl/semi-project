@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<jsp:include page="WEB-INF/views/common/menubar.jsp" />
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 	
 	<div style="height : 500px;">
 		<h1>Hi! I'm welcome file</h1>

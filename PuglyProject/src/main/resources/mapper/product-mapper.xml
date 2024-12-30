@@ -7,13 +7,16 @@
 		  INTO
 		  		TB_PRODUCT
 		  		(
-		  		PRODUCT NO,
+		  		PRODUCT_NO,
 		  		PRODUCT_NAME,
 		  		PRODUCT_PRICE,
 		  		PRODUCT_CONTENT,
 		  		PRODUCT_QUANTITY,
 		  		PRODUCT_IMG,
-		  		NEW_PRODUCT_IMG
+		  		NEW_PRODUCT_IMG,
+		  		UNIT_NAME,
+		  		DELIVERY_PRICE,
+		  		PRODUCT_TYPE
 		  		)
 		VALUES
 				(
@@ -23,11 +26,58 @@
 				#{productContent},
 				#{productQuantity},
 				#{productImg},
-				#{newProductImg}
+				#{newProductImg},
+				#{unitName},
+				#{deliveryPrice},
+				#{productType}
 				)
-
-
 	</insert>
+	
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+				COUNT (*)
+		  FROM
+		  		TB_PRODUCT
+		 WHERE
+		 		STATUS = 'Y'
+	</select>
+	
+	<select id="listProduct" resultType="product">
+		SELECT
+				PRODUCT_NAME productName,
+				PRODUCT_PRICE productPrice,
+				DELIVERY_PRICE deliveryPrice,
+				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+				PRODUCT_IMG productImg,
+				NEW_PRODUCT_IMG newProductImg
+		 FROM
+		 		TB_PRODUCT
+		WHERE
+				STATUS = 'Y'
+		ORDER
+		   BY
+		   		PRODUCT_DATE DESC
+	</select>
+	
+	<select id="detailProduct" parameterType="long" resultType="product">
+		SELECT
+				PRODUCT_NO productNo,
+				PRODUCT_NAME productName,
+				PRODUCT_PRICE productPrice,
+				PRODUCT_QUANTITY productQuantity,
+				UNIT_NAME unitName,
+				DELIVERY_PRICE deliveryPrice,
+				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+				PRODUCT_CONTENT productContent
+		  FROM
+		  		TB_PRODUCT
+		 WHERE
+		 		STATUS = 'Y'
+		   AND
+		   		PRODUCT_NO = #{ productNo }
+		
+		
+	</select>
 
 
 

@@ -121,7 +121,7 @@
         <div id="header_1_center">
             <ul>
                 <li><a href="메인페이지">HOME</a></li>
-                <li><a href="농산물핸들러">농산물</a></li>
+                <li><a href="상품핸들러">농산물</a></li>
                 <li><a href="농장핸들러">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>
             </ul>
@@ -154,16 +154,9 @@
         function toggleProfileMenu() {
             var menu = document.getElementById('profile-menu');
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-        }
-
-        // 프로필 메뉴 외부 클릭 시 닫기
-        window.onclick = function(event) {
-            var menu = document.getElementById('profile-menu');
-            var profilePic = document.getElementById('profile-pic');
-            if (event.target !== profilePic && !profilePic.contains(event.target)) {
-                menu.style.display = 'none';
-            }
         };
+
+
     </script>
 </body>
 </html>
