@@ -18,7 +18,7 @@
             margin:auto;
         }
 
-        .pro-img{width: 250px;}
+        .pro-img{width: 250px; height: 250px;}
 
         .user-img{width: 50px;}
 
@@ -49,10 +49,10 @@
             </div>
             <div class="col-7">
                 <div>${ product.productName }</div>
-                <div>${ product.price }</div>
+                <div>${ product.productPrice }</div>
                 <div>${ product.productQuantity } ${ product.unitName }</div>
-                <div>${ product.deliiveryPrice }</div>
-                <div>${product.productDate }</div>
+                <div>${ product.deliveryPrice }</div>
+                <div>${ product.productDate }</div>
             </div>
         </div>
         <div class="row">
@@ -72,8 +72,7 @@
 
         <h3>상품설명</h3>
         <br>
-        <div>안녕하세요! 오늘은 정말 멋진 날이에요. :) 여러분은 어떻게 지내시나요? 제가 준비한 이야기를 들려드릴게요. 먼저, 세상은 참 신기하죠? @ 모든 곳에서 흥미로운 일이 일어나고 있으니까요. # 아, 그런데 혹시 여러분도 느끼셨나요? $ 우리는 매일 작은 기적들을 경험하고 있답니다. % 하늘을 올려다보면, 햇살이 따스하게 내리쬐는 모습도 참 멋져요. ^ 우리의 삶은 정말 놀랍습니다. & 이 모든 것을 즐기며 살아가는 게 중요해요. * 꼭 기억하세요! ( 지금부터는 또 다른 이야기를 들려드릴게요. ) 옛날 옛적에, - 한 마을에 멋진 영웅이 살고 있었어요. = 그의 이름은 '용감한 심장'이었답니다. + 그는 항상 마을 사람들을 돕기 위해 최선을 다했어요. { 그런데 어느 날, } 마을에 커다란 문제가 생겼습니다. [ 이 문제를 해결하기 위해, ] 그는 용감하게 나섰죠. : 사람들은 모두 그의 용기를 칭찬했어요. ; 그리고 마침내, " 그는 문제를 해결했답니다. ' 이렇게 해서 마을에는 평화가 찾아왔어요. < 정말 멋지죠? > 여러분도 그런 용기를 가지고 살아가면 좋겠어요. , 그리고 함께 나눌 이야기가 많으니, . 우리 모두 즐겁게 대화를 이어가요! ? 지금까지 제 이야기를 들어주셔서 감사합니다. / 다음에도 재미있는 이야기를 들려드릴게요. | 그럼 오늘도 행복한 하루 되세요! \
-        </div>
+        <div>${ product.productContent }</div>
         <br>
         <hr>
         <h3>상품후기</h3>

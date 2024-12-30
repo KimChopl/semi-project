@@ -44,6 +44,7 @@
 	
 	<select id="listProduct" resultType="product">
 		SELECT
+				PRODUCT_NO productNo,
 				PRODUCT_NAME productName,
 				PRODUCT_PRICE productPrice,
 				DELIVERY_PRICE deliveryPrice,
@@ -59,7 +60,7 @@
 		   		PRODUCT_DATE DESC
 	</select>
 	
-	<select id="detailProduct" parameterType="long" resultType="product">
+	<select id="deatailProduct" parameterType="long" resultType="product">
 		SELECT
 				PRODUCT_NO productNo,
 				PRODUCT_NAME productName,
@@ -68,15 +69,14 @@
 				UNIT_NAME unitName,
 				DELIVERY_PRICE deliveryPrice,
 				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
-				PRODUCT_CONTENT productContent
+				PRODUCT_CONTENT productContent,
+				NEW_PRODUCT_IMG newProductImg
 		  FROM
 		  		TB_PRODUCT
 		 WHERE
 		 		STATUS = 'Y'
 		   AND
 		   		PRODUCT_NO = #{ productNo }
-		
-		
 	</select>
 
 

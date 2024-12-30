@@ -63,11 +63,12 @@ public class ProductController {
 		return mv.setViewNameAndData("product/list_product", map);
 	}
 	// 상품상세 화면 호출
-	@GetMapping("detail.form/{id}")
+	@GetMapping("products/{id}")
 	public ModelAndView detailProduct(@PathVariable(name="id") Long id) {
-		
+		//log.info("{}", id);
 		Map<String, Object> reponseData = productService.deatailProduct(id);
-		return mv.setViewNameAndData("product/detail_product", reponseData);
+		return mv.setViewNameAndData("/product/detail_product", reponseData);
+		
 
 	}
 	

@@ -4,25 +4,25 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-
-import javax.servlet.ServletContext;
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.ServletContext;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.product.model.dao.ProductMapper;
 import com.kh.pugly.product.model.vo.Product;
+
 import lombok.RequiredArgsConstructor;
 
 @EnableTransactionManagement
@@ -65,6 +65,28 @@ public class ProductServiceImpl implements ProductService {
 			}
 		}
 	}
+	//사진 테이블 이용해서 받기
+	private void productSaveNewImg(Image image, MultipartFile[] upfile) {
+		for(MultipartFile file : upfile) {
+			if(!file.isEmpty()) {
+				String fileName = file.getOriginalFilename();
+				String ext = fileName.substring(fileName.lastIndexOf("."));
+				String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+				int randomNum = (int)Math.random() * 90000 + 10000;
+				String changeName = currentTime + randomNum + ext;
+				String savePath = context.getRealPath("/resources/upload_files/");
+				try {
+					file.transferTo(new File(savePath + changeName));
+				} catch(IOException e) {
+					throw new FailToFileUploadException("파일오류!");
+				}
+				image.setOriginImgName(fileName);
+				image.setChangeImgName("/pugly/resources/upload_files/" + changeName);
+			}
+		}
+		
+	}
+	
 	// 페이지 체크
 	private int getTotalCount() {
 		
@@ -117,13 +139,14 @@ public class ProductServiceImpl implements ProductService {
 		
 		return map;
 	}
-
+	// 상품 상세보기
 	@Override
 	public Map<String, Object> deatailProduct(Long productNo) {
 		
 		Product product = findProductById(productNo);
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("product", product);
+		
 		return responseData;
 		
 	}
