@@ -16,7 +16,7 @@
         #wrap{
             margin: auto;
             width: 450px;
-            height: 450px;
+            height: 600px;
             background-color: rgb(243, 243, 243);
             border-radius: 5px;
             text-align: center;
@@ -67,6 +67,9 @@
         	padding-top:0;
         }
 
+		.file{
+			border:none;
+		}
     </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -88,6 +91,20 @@
             <div class="div">
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
+                
+			<div class="custom-file">
+			  <input type="file" class="custom-file-input" id="customFile">
+			  <label class="custom-file-label" for="customFile">Choose file</label>
+			</div>
+		
+			<script>
+				// Add the following code if you want the name of the file appear on select
+				$(".custom-file-input").on("change", function() {
+				  var fileName = $(this).val().split("\\").pop();
+				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+				});
+			</script>
+            
             <div class="div">
                 <input type="text" placeholder="닉네임" name="nickName" />
             </div>

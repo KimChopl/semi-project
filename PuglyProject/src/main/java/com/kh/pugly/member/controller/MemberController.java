@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
@@ -42,6 +43,7 @@ public class MemberController {
 		
 		session.setAttribute("loginUser", loginUser);
 		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
+		session.setAttribute("memberImage", memberService.selectMemberImage(loginUser.getMemberNo()));
 		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
@@ -74,9 +76,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("insert.member")
-	public ModelAndView insertMember(Member member, Address address) {
+	public ModelAndView insertMember(Member member, Address address, MultipartFile upfile) {
 		
-		memberService.insertMember(member, address);
+		memberService.insertMember(member, address, upfile);
 		
 		return mv.setViewNameAndData("redirect:/", null);
 	}

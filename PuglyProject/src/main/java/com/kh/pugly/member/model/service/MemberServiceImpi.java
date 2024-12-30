@@ -7,8 +7,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailInsertMemberException;
@@ -92,6 +94,12 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
+	public Image selectMemberImage(Long memberNo) {
+		return mapper.selectMemberImage(memberNo);
+	}
+	
+	
+	@Override
 	public Map<String, Object> selectStateCategory() {
 		
 		Map<String, Object> responseData = new HashMap();
@@ -103,7 +111,7 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
-	public void insertMember(Member member, Address address) {
+	public void insertMember(Member member, Address address, MultipartFile upfile) {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
@@ -113,7 +121,7 @@ public class MemberServiceImpi implements MemberService {
 		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
 		member.setMemberPwd(securityPass);
 		
-		if(member.getNickName() == null) {
+		if("".equals(member.getNickName())) {
 			member.setNickName(member.getMemberId());
 		}
 		
@@ -150,7 +158,6 @@ public class MemberServiceImpi implements MemberService {
 
 	}
 
-	
 
 
 

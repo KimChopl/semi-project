@@ -25,6 +25,7 @@
 		<typeAlias type="com.kh.pugly.product.model.vo.Product" alias="product" />
 		<typeAlias type="com.kh.pugly.product.model.vo.MyStore" alias="myStore" />
 		<typeAlias type="com.kh.pugly.product.model.vo.ProductOrder" alias="order" />
+		<typeAlias type="com.kh.pugly.common.model.vo.Address" alias="address"/>
 		
 		<typeAlias type="com.kh.pugly.board.model.vo.Board" alias="board" />
 	</typeAliases>

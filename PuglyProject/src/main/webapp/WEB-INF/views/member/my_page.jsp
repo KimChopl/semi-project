@@ -111,8 +111,16 @@
             height: 100px;
             border-radius: 100px;
             display: inline-block;
-            border: 1px solid black;
             background-color: rgb(255, 255, 255) ;
+        }
+        
+        .img{
+            vertical-align: middle;
+            width: 100px;
+            height : 100px;
+            border-radius: 100px;
+            margin: 0;
+            padding: 0;
         }
 
         #address-update{
@@ -165,22 +173,21 @@
         </div>
         <div id="memberInfo">
             <div id="info">
-                <div id="img"><img src="" alt=""></div>
+            	
+                <div id="img"><img src="${ sessionScope.memberImage.changeImgName }" class="img"></div>
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
-                <c:choose>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 3 }">
 	                	<label>일반</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
+	                </c:if>
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 2 }">
 	                	<label>판매자</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 1 }">
+	                </c:if>
+	                <c:if test="${ sessionScope.loginUser.categoryNo eq 1 }">
 	                	<label>관리자</label>
-	                </c:when>
+	                </c:if>
 	                
-                </c:choose>
                 </div>
                 <br>
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
