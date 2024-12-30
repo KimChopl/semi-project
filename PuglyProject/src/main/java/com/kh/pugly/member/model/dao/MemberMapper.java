@@ -22,6 +22,10 @@ public interface MemberMapper {
 	
 	int updateMember(Member member);
 	
+	int updateMemberImage(Map<String, Object> ImageInfo);
+	
+	int updateAddress(Map<String, Object> addressInfo);
+	
 	int deleteMember(Map<String, Object> map);
 	
 	List<Address> selectAddresses(Long memberNo);

@@ -9,6 +9,7 @@ import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailInsertMemberException;
+import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.NoExistentMemberException;
@@ -57,6 +58,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailInsertMemberException.class)
 	protected ModelAndView failInsertMemberError(FailInsertMemberException e) {
 		return createErrorResponse("회원가입에 실패했습니다, 관리자에게 문의해주세요.", e);
+	}
+	
+	@ExceptionHandler(FailUpdateMemberException.class)
+	protected ModelAndView failUpdateMemberError(FailUpdateMemberException e) {
+		return createErrorResponse("회원 정보 수정에 실패했습니다.", e);
 	}
 	
 	//---------------------------------------------------------------------

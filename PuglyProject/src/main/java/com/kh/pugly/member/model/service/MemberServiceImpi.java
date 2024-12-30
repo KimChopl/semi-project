@@ -198,14 +198,27 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
+	@Transactional
 	public void updateMember(Member member, Member loginMember, MultipartFile upfile) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
 		
-		updateUser(member, loginMember);
+		/*
 		Image image = memberImgSave(upfile);
+		updateUser(member, loginMember);
 		
-		
+		int memberResult = mapper.updateMember(member);
+		int imageResult = 1;
+		if(image != null) {
+			Map<String, Object> imageInfo = new HashMap();
+			imageInfo.put("image", image);
+			imageInfo.put("memberNo", loginMember.getMemberNo());
+			imageResult = mapper.updateMemberImage(imageInfo);
+		}
+		if(memberResult * imageResult == 0) {
+			throw new FailUpdateMember("회원수정실패");
+		}
+		*/
 		
 	}
 
