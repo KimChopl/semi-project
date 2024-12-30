@@ -83,7 +83,6 @@
     </style>
 </head>
 <body>
-<<<<<<< Updated upstream
     <div id="body">
         <div class="container">
             <div class="row">
@@ -115,9 +114,9 @@
 	                                    </div>
 	                                    <div class="row">
 	                                        <div class="optionbar">
-	                                          	<div>최신순<input type="radio" id="newest" name="option" value="newest"></div>
+	                                          	<div>최신순<input type="radio" id="newest" name="option" value="date"></div>
 	                                          	<div>평점순<input type="radio" id="rating" name="option" value="rating"></div>
-	                                          	<div>가격오름차순<input type="radio" id="upprice" name="option" value="upprice"></div>
+	                                          	<div>가격오름차순<input type="radio" id="upPrice" name="option" value="price"></div>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -134,7 +133,7 @@
                                 <div class="container">
                                     <div class="row" id="farm-list">
                                     <c:forEach items="${ farm.farm }" var="farm">
-                                        <div class="col-4 farms">
+                                        <div class="col-4 farms" onclick="farms(${farm.farmNo})">
                                             <div class="farms-content">
                                                 <div class="img"><img src="" alt=""></div>
                                                 <div class="farm-explain">
@@ -148,7 +147,7 @@
                                                         <div class="price">${ farm.farmPrice }</div>
                                                     </c:otherwise>
                                                     </c:choose>
-                                                        <div class="like">${ farm.attention }</div>
+                                                        <div class="like">${ farm.rating }</div>
                                                         <div class="attention"> ${ farm.like }</div>
                                                     </div>
                                                 </div>
@@ -165,9 +164,35 @@
         </div>
 		<div id="btn-more-div">
         	<button id="btn">더보기</button>
+        	<button id="more-btn" style="display : none;">더보기</button>
 		</div>   
     </div>
     
+	<script>
+		function createDiv(r){
+			for(let o in r.farm){
+				r.farm[o].farmPrice = r.farm[o].farmPrice === 0 ? "무료체험" : r.farm[o].farmPrice;
+			}
+			const replies = [...r.farm]
+			const result = replies.map(e =>
+					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
+	                     <div class="farms-content">
+	                         <div class="img"><img src="" alt=""></div>
+	                         <div class="farm-explain">
+	                             <div class="title">\${ e.farmTitle }</div>
+	                             <div class="score">
+	                             	<div class="price">\${ e.farmPrice }</div>
+	                                 <div class="like">\${ e.rating }</div>
+	                                 <div class="attention"> \${ e.like }</div>
+	                             </div>
+	                         </div>
+	                     </div>
+	                 </div>`
+			).join('');
+			return result
+		}
+		
+	</script>
 	<script>
 	window.onload = () =>{
 		
@@ -186,23 +211,9 @@
 					},
 					success : function(r){
 						document.getElementById('plusNo').value = r.mi.plusNo;
-						const replies = [...r.farm]
-						const result = replies.map(e =>
-							`<div class="col-4 farms">
-                                            <div class="farms-content">
-                                                <div class="img"><img src="" alt=""></div>
-                                                <div class="farm-explain">
-                                                    <div class="title">\${ e.farmTitle }</div>
-                                                    <div class="score">
-                                                        <div class="price">\${ e.farmPrice }</div>
-                                                        <div class="like-attention">\${ e.attention } \${ e.like }</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`		
-						).join('');
+						
 						//console.log(result);
-						document.getElementById('farm-list').innerHTML += result;
+						document.getElementById('farm-list').innerHTML += createDiv(r);
 						document.getElementById('body').style.height = 'auto';
 						if(r.mi.lastNo === r.mi.listCount){
 							btn.style.display = 'none';
@@ -213,40 +224,125 @@
 				
 				})
 			}
-			const state = document.getElementsByName('suchState');
-			state.addEventListener('click', function(){
-				console.log(state.value);
-			})
 	}
-	
-
-=======
-	<!-- <input type="hidden" id="plusNo" name="pulsNo" value="${ mi.plusNo }" > -->
-	<button id="btn">더보기</button>
-	
-	<script>
-	/*
-	const btn = document.getElementById('btn');
-		btn.onclick = () => {
-			const plusNo = document.getElementById('plusNo');
-			console.log(plusNo.value)
-			$.ajax({
-				url : "plus",
-				type : "get",
-				data : {
-					plusNo : plusNo.value
-				},
-				success : function(r){
-					console.log(r);
-					plusNo.value += 1;
-					console.log(plusNo.value)
-				}
 			
-			})
-		}
-	*/
->>>>>>> Stashed changes
+			
+	</script>
+	<script>
+		let such = {
+			
+			state : [],
+			product : [],
+			option : '',
+			plusNo : 0
+		}	
+		
+	//console.log(such);
+	const stateInput = document.querySelectorAll('input[name=suchState]');
+	for(let s of stateInput){
+		s.addEventListener('click', function(){
+			let value = s.value
+			if(this.checked){
+				such.state.push(value);
+				
+				//console.log(such);
+			} else{
+				const index = such.state.indexOf(this.value);
+				such.state.splice(index, 1);
+			}
+		//console.log(such);
+		ajaxSuch();
+		})
+	}
+	const productInput = document.querySelectorAll('input[name=suchProduct]');
+	for(let p of productInput){
+		p.addEventListener("click", function(){
+			if(this.checked){
+				let value = this.value;
+				such.product.push(value);
+				//console.log(such);
+			} else{
+				const index = such.product.indexOf(this.value);
+				such.product.splice(index, 1);
+			}
+			ajaxSuch();
+		})
+	}
+	const optionInput = document.querySelectorAll('input[name=option]');
+	for(let o of optionInput){
+		o.addEventListener("click", function(){
+			such.option = o.value;
+			//console.log(such);
+			ajaxSuch();
+		})
+	}
 	</script>
 	
+	<script>
+		const moreBtn = document.getElementById('more-btn');
+		moreBtn.onclick = () => {
+		such.plusNo = such.plusNo + 6;
+		$.ajax({
+			url : "plus",
+			type : "post",
+			dataType : 'json',
+			contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify(such),
+			//data : {
+				//'state' : state,
+				//'product' : product,
+				//'option' : option
+			//},
+			success : function(r){
+				btn.style.display = 'none';
+				moreBtn.style.display = 'inline'
+				//console.log(result);
+				document.getElementById('farm-list').innerHTML += createDiv(r);
+				document.getElementById('body').style.height = 'auto';
+				//console.log(btn);
+				if(r.mi.lastNo === r.mi.listCount){
+					moreBtn.style.display = 'none';
+				}
+			}
+		})
+		}
+	</script>
+	
+	<script>
+	function ajaxSuch(){
+		//console.log(such);
+		$.ajax({
+			url : "plus",
+			type : "post",
+			dataType : 'json',
+			contentType : 'application/json; charset=UTF-8',
+			data : JSON.stringify(such),
+			//data : {
+				//'state' : state,
+				//'product' : product,
+				//'option' : option
+			//},
+			success : function(r){
+				btn.style.display = 'none';
+				moreBtn.style.display = 'inline';
+				such.plusNo = 0;
+				//console.log(result);
+				document.getElementById('farm-list').innerHTML = createDiv(r);
+				document.getElementById('body').style.height = 'auto';
+				//console.log(btn);
+				console.log(r.mi.lastNo);
+				console.log(r.mi.listCount);
+				if(r.mi.lastNo === r.mi.listCount){
+					moreBtn.style.display = 'none';
+				}
+			}
+		})
+	}
+	</script>
+	<script>
+		function farms(num){
+			location.href = `/pugly/farms/\${num}`
+		}
+	</script>
 </body>
 </html>

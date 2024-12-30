@@ -28,10 +28,12 @@ public class Farm {
 	private int attention;
 	private int like;
 	private int farmCount;
+	private double rating;
 	private String address;
 	private String productName;
 	private Date farmCreateDate;
 	private Date farmModifyDate;
 	private int farmPrice;
 	List<Image> imgList;
+	List<Facility> facility;
 }
