@@ -1,11 +1,11 @@
 package com.kh.pugly.farm.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
-import com.kh.pugly.common.model.dto.FarmKeyword;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -33,7 +33,7 @@ public interface FarmMapper {
 	
 	List<StateCategory> selectState();
 	
-	List<Farm> suchByKeyword(FarmKeyword keyword);
+	List<Farm> suchByKeyword(Map<String, Object> suchMap, RowBounds rowNum);
 	
 	int deleteFarm(Long farmNo);
 	
@@ -48,5 +48,7 @@ public interface FarmMapper {
 	FarmPrice selectPrice();
 	
 	List<FarmProduct> selectFarmProduct();
+	
+	int countSuchList(Map<String, Object> suchMap);
 
 }
