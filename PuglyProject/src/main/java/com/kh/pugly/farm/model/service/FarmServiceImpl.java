@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.kh.pugly.common.model.dao.ImageMapper;
 import com.kh.pugly.common.model.vo.Image;
-import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.common.template.ReplaceXss;
@@ -110,10 +109,12 @@ public class FarmServiceImpl implements FarmService {
 		Farm farm =  checkedDetailFarm(farmNo);
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
-		log.info("{}", farm);
+		//log.info("{}", farm);
+		moreNo += 3;
 		Map<String, Object> detail = new HashMap();
 		detail.put("farm", farm);
 		detail.put("review", review);
+		detail.put("plusNo", moreNo);
 		return detail;
 	}
 	
@@ -152,13 +153,7 @@ public class FarmServiceImpl implements FarmService {
 		}
 	}
 	
-	private ImageBrige makedImageBrige(int farmNo, Farm farm, Image img) {
-		checkedImg(img);
-		ImageBrige ib = new ImageBrige();
-		ib.setFarmNo(farmNo);
-		ib.setCategoryNo(farm.getCategoryNo());
-		return ib;
-	}
+	
 	/*
 	private int cehckedInsertImageBrige(ImageBrige ib) {
 		int brigeNo = im.insertImageBrige(ib);
@@ -225,14 +220,6 @@ public class FarmServiceImpl implements FarmService {
 		fm.likeFarm(attention);
 	}
 
-	@Override
-	public void deleteFarm(ImageBrige ib, Member member) {
-		
-	}
-
-	@Override
-	public void updateFarm(ImageBrige ib, Member member) {
-	}
 
 	@Override
 	public void insertFarm(Farm farm, Image img, Member member) {
@@ -254,6 +241,11 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public List<FarmProduct> selectFarmProduct() {
 		return fm.selectFarmProduct();
+	}
+
+	@Override
+	public Farm selectBookFarm(Long farmNo) {
+		return checkedDetailFarm(farmNo);
 	}
 
 }

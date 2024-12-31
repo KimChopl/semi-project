@@ -20,5 +20,4 @@ public class Image {
 	private Date uploadDate;
 	private String imgStatus;
 	private int imgLevel;
-	private int brigeNo;
 }

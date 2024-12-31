@@ -7,21 +7,190 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>농장 제목 들어가기</title>
     <style>
-        #body{
+        body{
             width: 1200px;
-            height: auto;
-            border : 0.3px solid gray;
             margin: auto;
         }
+        div{
+            height: auto;
+            border : 0.3px solid gray;
+        }
+        
+        #img-box{
+            width: 900px;
+            height: 600px;
+            margin: auto;
+        }
+        #title-line{
+            width: 100%;
+            height: 60px;
+            text-align: center;
+        }
+        #check-day, #person-count, #person-count > div, #book-btn-cover{
+            width: 100%;
+            text-align: right;
+        }
+        .person{
+            display: inline-block;
+            width: 80px;
+            height: 28px;
+            
+        }
+        .label-box{
+            margin-right: 20px;
+        }
+        .col > div{
+            width: 100%;
+        }
+        #review-img-box{
+            width: 100%;
+            height: 200px;
+        }
+        a{
+            text-decoration: none;
+            color : black;
+            height: 100%;
+            margin: 0;
+        }
+        p{
+            margin: 0;
+            height: 35px;
+        }
+        #subbar a{
+            text-align: center;
+        }
+        #farms{
+            width: 100%;
+            height: 600px;
+        }
+        #farms  img{
+            width: 100%;
+            height: 598px;
+        }
+        
+        
     </style>
 </head>
 <body>
     <div id="body">
         <div class="contaniner">
             <div class="row">
-                
+                <div class="col">
+                    <div id="title-line">
+                        <h3>제목이 들어갈 자리</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="img-box">
+                        <div id="farms" class="carousel slide">
+                            <div class="carousel-indicators">
+                              <button type="button" data-bs-target="#farms" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                              <button type="button" data-bs-target="#farms" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            </div>
+                            <div class="carousel-inner">
+                              <div class="carousel-item active">
+                                <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F015%2F2023%2F06%2F05%2F0004852593_001_20230605145403049.jpg&type=a340" class="d-block w-100" alt="...">
+                              </div>
+                              <div class="carousel-item">
+                                <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F015%2F2023%2F06%2F05%2F0004852593_001_20230605145403049.jpg&type=a340" class="d-block w-100" alt="...">
+                              </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#farms" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#farms" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="subbar">
+                <div class="col-4">
+                    <a href="#content-box"><p>내용</p></a>
+                </div>
+                <div class="col-4">
+                    <a href="#review"><p>리뷰</p></a>
+                </div>
+                <div class="col-4">
+                    <a href="#beware-box"><p>주의사항</p></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div id="check-day">
+                        <label class="label-box">예약일 <input type="date"></label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div id="person-count">
+                        <div id="adult">
+                            <label class="label-box">성인 : <input type="number" class="person"> 명</label>
+                        </div>
+                        <div id="kid">
+                            <label class="label-box">어린이 : <input type="number" class="person"> 명</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div id="book-btn-cover">
+                        <button id="book">예약 하기</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="facility-box">
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="content-box">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="beware-box">
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="review">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div id="review-img-box">
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="container">
+                                        <div class="row"><p></p></div>
+                                        <div class="row"><p></p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row col">
+                            <div id="more"><button id="more-btn">더보기</button></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>

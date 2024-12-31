@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.kh.pugly.common.model.vo.Image;
-import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -27,15 +26,14 @@ public interface FarmService {
 
 	void attetionFarm(LikeAndAttention attention);
 	
-	void deleteFarm(ImageBrige ib, Member member);
-	
-	void updateFarm(ImageBrige ib, Member member);
 	
 	List<FarmProduct> selectFarmProduct();
 
 	FarmPrice selectMmPrice();
 
 	List<StateCategory> selectState();
+	
+	Farm selectBookFarm(Long farmNo);
 	
 	
 }

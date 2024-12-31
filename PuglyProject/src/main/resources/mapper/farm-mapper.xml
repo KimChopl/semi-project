@@ -49,10 +49,7 @@
 		       TB_MEMBER M ON(SELLER_NO = M.MEMBER_NO)
 		  LEFT
 		  JOIN
-		       TB_IMAGE_BRIGE ON (IMG_POST_NO = FARM_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON(IMG_NO = IMG_BRIGE_NO)
+		       TB_IMAGE ON(IMG_POST_NO = FARM_NO)
 		  JOIN
 		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
 		  JOIN
@@ -64,7 +61,7 @@
 		   AND
 		       IMG_LEVEL = 1
 		   AND
-		       IMG_CA_NO = 3
+		       TB_IMAGE.CATEGORY_NO = 3
 		   AND
 		       ADDRESS_TYPE = 1
 	</sql>
@@ -211,6 +208,7 @@
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
+			<result property="imgLevel" column="imgLevel"/>
 		</collection>
 			
 		<collection property="facility" ofType="fac">
@@ -263,17 +261,15 @@
 		                   REVIEW_POST_NO),0) rating,
 		       PRODUCT_NAME productName,
 		       CATEGORY_NAME categoryName,
-		       CATEGORY_NO categoryNo
+		       CATEGORY_NO categoryNo,
+		       IMG_LEVEL imgLevel
 		  FROM
 		       TB_FARM
 		  JOIN
 		       TB_MEMBER M ON (M.MEMBER_NO = SELLER_NO)
 		  LEFT
 		  JOIN
-		       TB_IMAGE_BRIGE ON(FARM_NO = IMG_POST_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON (IMG_POST_NO = IMG_BR_NO)
+		       TB_IMAGE ON (IMG_POST_NO = FARM_NO)
 		  JOIN
 		       TB_FARM_PRODUCT ON (FARM_PRODUCT_NO = PRODUCT_NO)
 		  LEFT
@@ -292,6 +288,8 @@
 		       DELETE_ASK = 'N'
 		   AND
 		       IMG_STATUS = 'Y'
+		   AND
+		       TB_IMAGE.CATEGORY_NO = 3
 	</select>
 	<update id="updateCount" parameterType="long">
 		UPDATE

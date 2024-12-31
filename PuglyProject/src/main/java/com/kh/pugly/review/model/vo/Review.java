@@ -29,7 +29,7 @@ public class Review {
 	private int rating;
 	private Long reviewPostNo;
 	private Date reviewCreateDate;
-	private Date reviewModifyFate;
+	private Date reviewModifyDate;
 	private List<Image> imgList;
 
 }

@@ -49,10 +49,10 @@ public class FarmController {
 	}
 	
 	
-	@GetMapping("farms/{farmNo}")
+	@GetMapping("farms/{farmNo}") // 일로 들어옴(12.31)
 	public ModelAndView detailFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
 		Map<String, Object> detail = fs.selectDetailFarm(farmNo);
-		log.info("{}", detail);
+		//log.info("{}", detail);
 		return mv.setViewNameAndData("/farm/farm-detail", detail);
 	}
 	

@@ -27,6 +27,7 @@
 		<typeAlias type="com.kh.pugly.board.model.vo.Board" alias="board" />
 		<typeAlias type="com.kh.pugly.farm.model.vo.Facility" alias="fac"/>
 		<typeAlias type="com.kh.pugly.review.model.vo.Review" alias="review"/>
+		<typeAlias type="com.kh.pugly.book.model.vo.Book" alias="book"/>
 	</typeAliases>
 	 
 	 <mappers>
@@ -37,6 +38,7 @@
 	 	<mapper resource="/mapper/product-mapper.xml"/>
 	 	<mapper resource="/mapper/reply-mapper.xml"/>
 	 	<mapper resource="/mapper/review-mapper.xml" />
+	 	<mapper resource="/mapper/book-mapper.xml" />
 	 	
 	 	
 	 </mappers>

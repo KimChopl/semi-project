@@ -156,14 +156,6 @@
             menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
         }
 
-        // 프로필 메뉴 외부 클릭 시 닫기
-        window.onclick = function(event) {
-            var menu = document.getElementById('profile-menu');
-            var profilePic = document.getElementById('profile-pic');
-            if (event.target !== profilePic && !profilePic.contains(event.target)) {
-                menu.style.display = 'none';
-            }
-        };
     </script>
 </body>
 </html>
