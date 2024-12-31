@@ -139,7 +139,8 @@
 		       NICKNAME = #{nickName},
 		       MEMBER_PWD = #{memberPwd},
 		       MEMBER_NAME = #{memberName},
-		       PHONE = #{phone}
+		       PHONE = #{phone},
+		       MODIFY_DATE = SYSDATE
 		 WHERE
 		       MEMBER_NO = #{memberNo} 
 	</update>
@@ -179,6 +180,19 @@
 		       MODIFY_DATE = SYSDATE
 		 WHERE
 		       MEMBER_NO = #{memberNo}
+	</update>
+	
+	<update id="updateAddress" parameterType="map">
+		UPDATE
+               TB_ADDRESS
+           SET
+               STATE_CODE = #{stateCode},
+               ADDRESS_TYPE = #{addressType},
+               DISTRICT = #{district}
+         WHERE
+               MEMBER_NO = #{memberNo}
+           AND
+               ADDRESS_NO = #{addressNo}
 	</update>
 
 </mapper>

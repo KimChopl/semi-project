@@ -15,7 +15,7 @@ public interface MemberService {
 	
 	void insertMember(Member member, Address address, MultipartFile upfile);
 
-	Member updateMember(Member member, Member loginMember, Image memberImage, MultipartFile upfile);
+	Member updateMember(Member member, Member loginMember, MultipartFile upfile);
 	
 	void deleteMember(Member member, Member loginUser);
 
@@ -25,6 +25,15 @@ public interface MemberService {
 	
 	Map<String, Object> selectStateCategory();
 
+	void updateAddress(Long memberNo, Address address);
+	
+	void insertNewAddress(Long memberNo, Address address);
+
+	Map<String, Object> selectMemberAddresses(Long memberNo);
+	
+	Map<String, Object> selectMemberInfo(Long memberNo);
+
+	
 	
 
 

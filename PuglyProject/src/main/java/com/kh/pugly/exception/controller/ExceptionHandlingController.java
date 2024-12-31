@@ -68,7 +68,7 @@ public class ExceptionHandlingController {
 	
 	@ExceptionHandler(FailUpdateMemberException.class)
 	protected ModelAndView failUpdateMemberError(FailUpdateMemberException e) {
-		return createErrorResponse("회원 정보 수정에 실패했습니다.", e);
+		return createErrorResponse("정보 수정에 실패했습니다.", e);
 	}
 	
 	@ExceptionHandler(FailDeleteMemberException.class)

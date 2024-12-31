@@ -109,6 +109,17 @@ public class MemberServiceImpi implements MemberService {
 		return null;
 	}
 	
+	private void newImageUpdate(Map<String, Object> newImage, Image image, Long memberNo) {
+		newImage.put("originImgName", image.getOriginImgName());
+		newImage.put("changeImgName", image.getChangeImgName());
+		newImage.put("memberNo", memberNo);
+	}
+	
+	private void oldImageUpdate(Map<String, Object> oldImage, Image memberImage, Long memberNo) {
+		oldImage.put("imgNo", memberImage.getImgNo());
+		oldImage.put("memberNo", memberNo);
+	}
+	
 	private void encryptionPassword(Member member) {
 		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
 		member.setMemberPwd(securityPass);
@@ -130,11 +141,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		
 		validationMember(member);
-		
-		
-		
 		Member loginUser = mapper.selectMember(member);
 		
 		noExistingMember(loginUser);
@@ -143,7 +150,6 @@ public class MemberServiceImpi implements MemberService {
 		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
-		
 		return loginUser;
 	}
 	
@@ -180,14 +186,6 @@ public class MemberServiceImpi implements MemberService {
 		
 		encryptionPassword(member);
 		changeNickName(member);
-		//String securityPass = passwordEncrypt.encode(member.getMemberPwd());
-		//member.setMemberPwd(securityPass);
-		
-		/*
-		if("".equals(member.getNickName())) {
-			member.setNickName(member.getMemberId());
-		}
-		*/
 		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);
@@ -203,7 +201,7 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
-	public Member updateMember(Member member, Member loginMember, Image memberImage, MultipartFile upfile) {
+	public Member updateMember(Member member, Member loginMember, MultipartFile upfile) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
 		// 프로필 사진이 없던 사람이 프로필사진을 추가
@@ -213,20 +211,22 @@ public class MemberServiceImpi implements MemberService {
 		
 		updateUser(member, loginMember);
 		Image image = memberImgSave(upfile);
+		Image memberImage = mapper.selectMemberImage(loginMember.getMemberNo());
 		
 		int memberResult = mapper.updateMember(member);
 		int imageResult = 1;
 		int updateImageResult = 1;
+		
 		if(image != null) {
 			Map<String, Object> newImage = new HashMap();
-			newImage.put("originImgName", image.getOriginImgName());
-			newImage.put("changeImgName", image.getChangeImgName());
-			newImage.put("memberNo", loginMember.getMemberNo());
+			
+			newImageUpdate(newImage, image, loginMember.getMemberNo());
 			imageResult = mapper.updateMemberInsertImage(newImage);
 			if(memberImage != null) {
 				Map<String, Object> oldImage = new HashMap();
-				oldImage.put("imgNo", memberImage.getImgNo());
-				oldImage.put("memberNo", loginMember.getMemberNo());
+				
+				oldImageUpdate(oldImage, memberImage, loginMember.getMemberNo());
+				
 				updateImageResult = mapper.updateMemberImage(oldImage);
 			}
 		}
@@ -246,7 +246,45 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 
+	@Override
+	public void updateAddress(Long memberNo, Address address) {
+		// 아직하는 중
+		Map<String, Object> map = new HashMap();
+		map.put("memberNo", memberNo);
+		map.put("stateCode", address.getStateCode());
+		map.put("addressType", address.getAddressType());
+		map.put("district", address.getDistrict());
+		map.put("addressNo", address.getAddressNo());
+		if(mapper.updateAddress(map) == 0) {
+			throw new FailUpdateMemberException("주소수정실패");
+		}
+		
+	}
+	
+	@Override
+	public void insertNewAddress(Long memberNo, Address address) {
+		// 아직하는 중
+		
+		
+	}
+	
+	
+	@Override
+	public Map<String, Object> selectMemberAddresses(Long memberNo) {
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("stateCategory", mapper.selectStateCategory());
+		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		
+		return responseData;
+	}
 
+	@Override
+	public Map<String, Object> selectMemberInfo(Long memberNo) {
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
+		return responseData;
+	}
 
 
 
