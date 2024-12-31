@@ -12,7 +12,52 @@
 		       REVIEW_POST_NO = #{farmNo}
  	</select>
  	
- 	<select id="selectReviewList" parameterType="long" resultType="review">
- 		
+ 	<resultMap id="reviewMap" type="review">
+ 		<id property="reviewNo" column="reviewNo" />
+ 		<result property="reviewer" column="reviewer" />
+ 		<result property="reviewTitle" column="reviewTitle" />
+ 		<result property="reviewContent" column="reviewContent" />
+ 		<result property="rating" column="rating" />
+ 		<result property="reviewPostNo" column="reviewPostNo" />
+ 		<result property="reviewCreateDate" column="reviewCreateDate" />
+ 		<result property="reviewModifyDate" column="reviewModifyDate" />
+ 		<collection property="imgList" ofType="image">
+ 			<result property="imgNo" column="imgNo" />
+ 			<result property="imgLevel" column="imgLevel" />
+ 			<result property="originImgName" column="originImgName" />
+ 			<result property="changeImgName" column="changeImgName" />
+ 		</collection>
+ 	</resultMap>
+ 	
+ 	<select id="selectReviewList" parameterType="_int" resultMap="reviewMap">
+ 		SELECT
+		       REVIEW_NO reviewNo,
+		       NICKNAME reviewer,
+		       REVIEW_TITLE reviewTitle,
+		       REVIEW_CONTENT reviewContent,
+		       RATING rating,
+		       REVIEW_POST_NO reviewPostNo,
+		       REVIEW_CREATE_DATE reviewCreateDate,
+		       REVIEW_MODIFY_DATE reviewModifyDate,
+		       IMG_NO imgNo,
+		       ORIGIN_IMG_NAME originImgName,
+		       CHANGE_IMG_NAME changeImgName,
+		       IMG_LEVEL imgLevel
+		  FROM
+		       TB_REVIEW
+		  JOIN
+		       TB_MEMBER ON(MEMBER_NO = REVIEW_MB_NO)
+		  LEFT
+		  JOIN
+		       TB_IMAGE ON (IMG_POST_NO = REVIEW_NO)
+		  JOIN
+		       TB_FARM ON (FARM_NO = REVIEW_POST_NO)
+		 WHERE
+		       
+		       TB_IMAGE.CATEGORY_NO = 4
+		   AND
+		       IMG_LEVEL = 1
+		   AND
+		       REVIEW_POST_NO = ${farmNo}
  	</select>
  </mapper>

@@ -1,6 +1,9 @@
-package com.kh.pugly.common.model.vo;
+package com.kh.pugly.book.model.dto;
+
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,13 +11,13 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-public class ImageBrige {
-	
-	private int brigeNo;
-	private int farmNo;
-	private int categoryNo;
+@Builder
+public class BookCondition {
 
+	private Long bookNo;
+	private Date date;
+	
 }

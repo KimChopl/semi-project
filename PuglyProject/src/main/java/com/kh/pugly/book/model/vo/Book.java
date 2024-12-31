@@ -19,13 +19,7 @@ public class Book {
 	private String userNickname;
 	private Date bookDate;
 	private Date playDate;
-	private String bookCheck;
-	private String bookCancel;
-	private String bookPay;
-	private String playCheck;
-	private String bookComplete;
 	private int adultNo;
 	private int kidNo;
-	private String deletePlayer;
-	private String deleteSeller;
+	private String bookContent;
 }

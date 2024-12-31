@@ -16,8 +16,7 @@
     
  
 <style>
-        div{
-            border: 0.5px solid gray;
+       div{
             margin : auto;
             
         }
@@ -83,6 +82,7 @@
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
     <div id="body">
         <div class="container">
             <div class="row">
@@ -135,7 +135,7 @@
                                     <c:forEach items="${ farm.farm }" var="farm">
                                         <div class="col-4 farms" onclick="farms(${farm.farmNo})">
                                             <div class="farms-content">
-                                                <div class="img"><img src="" alt=""></div>
+                                                <div class="img"><img src="" alt="${farm.imgList[0].originImgName }"></div>
                                                 <div class="farm-explain">
                                                     <div class="title">${ farm.farmTitle }</div>
                                                     <div class="score">
@@ -177,7 +177,7 @@
 			const result = replies.map(e =>
 					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
 	                     <div class="farms-content">
-	                         <div class="img"><img src="" alt=""></div>
+	                         <div class="img"><img src="" alt="\${ e.imgList[0].originImgName }"></div>
 	                         <div class="farm-explain">
 	                             <div class="title">\${ e.farmTitle }</div>
 	                             <div class="score">
@@ -204,7 +204,7 @@
 			btn.onclick = () => {
 				//console.log(plusNo.value)
 				$.ajax({
-					url : "plus",
+					url : "/pugly/plus",
 					type : "get",
 					data : {
 						plusNo : plusNo.value
@@ -250,6 +250,7 @@
 				const index = such.state.indexOf(this.value);
 				such.state.splice(index, 1);
 			}
+			such.plusNo = 0;
 		//console.log(such);
 		ajaxSuch();
 		})
@@ -265,6 +266,7 @@
 				const index = such.product.indexOf(this.value);
 				such.product.splice(index, 1);
 			}
+			such.plusNo = 0;
 			ajaxSuch();
 		})
 	}
@@ -273,6 +275,7 @@
 		o.addEventListener("click", function(){
 			such.option = o.value;
 			//console.log(such);
+			such.plusNo = 0;
 			ajaxSuch();
 		})
 	}
@@ -283,7 +286,7 @@
 		moreBtn.onclick = () => {
 		such.plusNo = such.plusNo + 6;
 		$.ajax({
-			url : "plus",
+			url : "/pugly/plus",
 			type : "post",
 			dataType : 'json',
 			contentType : 'application/json; charset=UTF-8',
@@ -312,7 +315,7 @@
 	function ajaxSuch(){
 		//console.log(such);
 		$.ajax({
-			url : "plus",
+			url : "/pugly/plus",
 			type : "post",
 			dataType : 'json',
 			contentType : 'application/json; charset=UTF-8',
@@ -325,7 +328,7 @@
 			success : function(r){
 				btn.style.display = 'none';
 				moreBtn.style.display = 'inline';
-				such.plusNo = 0;
+				
 				//console.log(result);
 				document.getElementById('farm-list').innerHTML = createDiv(r);
 				document.getElementById('body').style.height = 'auto';
@@ -344,5 +347,6 @@
 			location.href = `/pugly/farms/\${num}`
 		}
 	</script>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

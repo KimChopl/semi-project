@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.service.FarmService;
-import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
-import com.kh.pugly.review.model.service.ReviewService;
-import com.kh.pugly.review.model.vo.Review;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,10 +49,10 @@ public class FarmController {
 	}
 	
 	
-	@GetMapping("farms/{farmNo}")
+	@GetMapping("farms/{farmNo}") // 일로 들어옴(12.31)
 	public ModelAndView detailFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
 		Map<String, Object> detail = fs.selectDetailFarm(farmNo);
-		log.info("{}", detail);
+		//log.info("{}", detail);
 		return mv.setViewNameAndData("/farm/farm-detail", detail);
 	}
 	

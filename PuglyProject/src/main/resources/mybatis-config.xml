@@ -33,6 +33,7 @@
 		<typeAlias type="com.kh.pugly.reply.model.vo.InquiryAnswer" alias="inquiryAnswer" />
 		<typeAlias type="com.kh.pugly.farm.model.vo.Facility" alias="fac"/>
 		<typeAlias type="com.kh.pugly.review.model.vo.Review" alias="review"/>
+		<typeAlias type="com.kh.pugly.book.model.vo.Book" alias="book"/>
 	</typeAliases>
 	 
 	 <mappers>
@@ -46,6 +47,7 @@
 	 	<mapper resource="/mapper/inquiry-mapper.xml"/>
 	 	<mapper resource="/mapper/inquiryAnswer-mapper.xml"/>
 	 	<mapper resource="/mapper/review-mapper.xml" />
+	 	<mapper resource="/mapper/book-mapper.xml" />
 	 	
 	 	
 
