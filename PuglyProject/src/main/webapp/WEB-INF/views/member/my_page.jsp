@@ -175,7 +175,11 @@
         <div id="memberInfo">
             <div id="info">
             	
-                <div id="img"><img src="${ sessionScope.memberImage.changeImgName }" class="img"></div>
+                <div id="img">
+                	<c:if test="${ not empty memberImage }">
+                		<img src="${ memberImage.changeImgName }" class="img">
+                	</c:if>
+                </div>
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
@@ -194,7 +198,7 @@
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
                 <br>
                 
-                <c:forEach var="address" items="${ sessionScope.addresses }">
+                <c:forEach var="address" items="${ addresses }">
                 <div id="address">주소 : 
             							<label>${ address.stateName }</label><br>
                                         <label>${ address.district }</label></div>

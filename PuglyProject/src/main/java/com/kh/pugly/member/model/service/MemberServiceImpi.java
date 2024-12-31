@@ -19,8 +19,10 @@ import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailDeleteMemberException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
+import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
@@ -28,7 +30,9 @@ import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableTransactionManagement
@@ -105,6 +109,17 @@ public class MemberServiceImpi implements MemberService {
 		return null;
 	}
 	
+	private void newImageUpdate(Map<String, Object> newImage, Image image, Long memberNo) {
+		newImage.put("originImgName", image.getOriginImgName());
+		newImage.put("changeImgName", image.getChangeImgName());
+		newImage.put("memberNo", memberNo);
+	}
+	
+	private void oldImageUpdate(Map<String, Object> oldImage, Image memberImage, Long memberNo) {
+		oldImage.put("imgNo", memberImage.getImgNo());
+		oldImage.put("memberNo", memberNo);
+	}
+	
 	private void encryptionPassword(Member member) {
 		String securityPass = passwordEncrypt.encode(member.getMemberPwd());
 		member.setMemberPwd(securityPass);
@@ -126,11 +141,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		
 		validationMember(member);
-		
-		
-		
 		Member loginUser = mapper.selectMember(member);
 		
 		noExistingMember(loginUser);
@@ -139,20 +150,8 @@ public class MemberServiceImpi implements MemberService {
 		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
-		
 		return loginUser;
 	}
-	
-	@Override
-	public List<Address> selectAdresses(Long memberNo) {
-		return mapper.selectAddresses(memberNo);
-	}
-	
-	@Override
-	public Image selectMemberImage(Long memberNo) {
-		return mapper.selectMemberImage(memberNo);
-	}
-	
 	
 	@Override
 	public Map<String, Object> selectStateCategory() {
@@ -176,14 +175,6 @@ public class MemberServiceImpi implements MemberService {
 		
 		encryptionPassword(member);
 		changeNickName(member);
-		//String securityPass = passwordEncrypt.encode(member.getMemberPwd());
-		//member.setMemberPwd(securityPass);
-		
-		/*
-		if("".equals(member.getNickName())) {
-			member.setNickName(member.getMemberId());
-		}
-		*/
 		
 		int memberResult = mapper.insertMember(member);
 		int addressResult = mapper.insertAddress(address);
@@ -199,36 +190,90 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
-	public void updateMember(Member member, Member loginMember, MultipartFile upfile) {
+	public Member updateMember(Member member, Member loginMember, MultipartFile upfile) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
+		// 프로필 사진이 없던 사람이 프로필사진을 추가
+		// 프로필 사진이 있던 사람이 그대로 유지
+		// 프로필 사진이 있던 사람이 프로필사진을 추가
+		// 프로필 사진이 없던 사람이 그대로 유지
 		
-		/*
-		Image image = memberImgSave(upfile);
 		updateUser(member, loginMember);
+		Image image = memberImgSave(upfile);
+		Image memberImage = mapper.selectMemberImage(loginMember.getMemberNo());
 		
 		int memberResult = mapper.updateMember(member);
 		int imageResult = 1;
-		if(image != null) {
-			Map<String, Object> imageInfo = new HashMap();
-			imageInfo.put("image", image);
-			imageInfo.put("memberNo", loginMember.getMemberNo());
-			imageResult = mapper.updateMemberImage(imageInfo);
-		}
-		if(memberResult * imageResult == 0) {
-			throw new FailUpdateMember("회원수정실패");
-		}
-		*/
+		int updateImageResult = 1;
 		
+		if(image != null) {
+			Map<String, Object> newImage = new HashMap();
+			
+			newImageUpdate(newImage, image, loginMember.getMemberNo());
+			imageResult = mapper.updateMemberInsertImage(newImage);
+			if(memberImage != null) {
+				Map<String, Object> oldImage = new HashMap();
+				
+				oldImageUpdate(oldImage, memberImage, loginMember.getMemberNo());
+				
+				updateImageResult = mapper.updateMemberImage(oldImage);
+			}
+		}
+		if(memberResult * imageResult * updateImageResult == 0) {
+			throw new FailUpdateMemberException("회원수정실패");
+		}
+		loginMember = mapper.selectMember(loginMember);
+		
+		return loginMember;
 	}
 
 	@Override
-	public void deleteMember(Map<String, Object> map) {
-		
-
+	public void deleteMember(Member member, Member loginUser) {
+		checkPwd(member, loginUser);
+		if(mapper.deleteMember(member) == 0) {
+			throw new FailDeleteMemberException("회원탈퇴 실패");
+		}
 	}
 
+	@Override
+	public void updateAddress(Long memberNo, Address address) {
+		// 아직하는 중
+		Map<String, Object> map = new HashMap();
+		map.put("memberNo", memberNo);
+		map.put("stateCode", address.getStateCode());
+		map.put("addressType", address.getAddressType());
+		map.put("district", address.getDistrict());
+		map.put("addressNo", address.getAddressNo());
+		if(mapper.updateAddress(map) == 0) {
+			throw new FailUpdateMemberException("주소수정실패");
+		}
+		
+	}
+	
+	@Override
+	public void insertNewAddress(Long memberNo, Address address) {
+		// 아직하는 중
+		
+		
+	}
+	
+	
+	@Override
+	public Map<String, Object> selectMemberAddresses(Long memberNo) {
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("stateCategory", mapper.selectStateCategory());
+		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		
+		return responseData;
+	}
 
+	@Override
+	public Map<String, Object> selectMemberInfo(Long memberNo) {
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
+		return responseData;
+	}
 
 
 

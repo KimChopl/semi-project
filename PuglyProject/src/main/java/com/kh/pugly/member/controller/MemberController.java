@@ -14,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
-import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -26,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
-	private final PasswordEncoder passEncrypt;
 	
 	
 	@GetMapping("login_form.member")
@@ -36,14 +34,8 @@ public class MemberController {
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
-
 		Member loginUser = memberService.selectMember(member);
-		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		
 		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		session.setAttribute("memberImage", memberService.selectMemberImage(loginUser.getMemberNo()));
-		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -54,15 +46,19 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 서비스 1개만 쓰기
 	@GetMapping("my_page.member")
-	public String myPage() {
-		return "member/my_page";
+	public ModelAndView myPage(HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		Map<String, Object> map = memberService.selectMemberInfo(loginUser.getMemberNo());
+		return mv.setViewNameAndData("member/my_page", map);
 	}
 	
+	// 서비스 1개만 쓰기
 	@GetMapping("enroll_form.address")
-		public ModelAndView updateFormAddress() {
-		Map<String, Object> map = memberService.selectStateCategory();
-		
+		public ModelAndView updateFormAddress(HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo());
 		return mv.setViewNameAndData("member/enroll_form_address", map);
 
 
@@ -76,20 +72,44 @@ public class MemberController {
 	
 	@PostMapping("insert.member")
 	public ModelAndView insertMember(@RequestPart(value="upfile",required = false) MultipartFile upfile, Member member, Address address) {
-		
 		memberService.insertMember(member, address, upfile);
-		
 		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@PostMapping("insert.address")
+	public ModelAndView insertAddress(Long memberNo, Address address) {
+		memberService.insertNewAddress(memberNo, address);
+		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
+	}
+	
+	@PostMapping("update.address")
+	public ModelAndView updateAddress(Long memberNo, Address address) {
+		memberService.updateAddress(memberNo, address);
+		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
 	}
 	
 	@GetMapping("update_enroll_form.member")
 	public ModelAndView updateEnrollForm() {
+		// session에 값이 있어서 따로 뽑을 필요가 없음
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")
-	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member, @RequestPart(value="upfile",required = false) MultipartFile upfile) {
+	public ModelAndView updateMemberInfo(@RequestPart(value="upfile",required = false)MultipartFile upfile, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		memberService.updateMember(member, loginMember, upfile);
-		return mv;
+		
+		Member loginUser = memberService.updateMember(member, loginMember, upfile);
+
+		session.setAttribute("loginUser", loginUser);
+
+		return mv.setViewNameAndData("redirect:/my_page.member", null);
 	}	
+	
+	@PostMapping("delete.member")
+	public ModelAndView deleteMember(Member member, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		session.removeAttribute("loginUser");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	
 }
