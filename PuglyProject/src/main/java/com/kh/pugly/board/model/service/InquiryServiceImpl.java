@@ -34,8 +34,8 @@ public class InquiryServiceImpl implements InquiryService {
 	}
 	
 	private List<Inquiry> getInquiryList(PageInfo pi){
-		int offset = (pi.getCurrentPage() - 1) * pi.getBaordLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBaordLimit());
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return inquiryMapper.selectInquiryList(rowBounds);
 	}
 	
