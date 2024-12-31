@@ -81,9 +81,9 @@
     
     <jsp:include page="../common/menubar.jsp" />
     
+   <form action="insert.member" method="post" enctype="multipart/form-data">
     <div id="wrap">
-        <form action="insert.member" method="post" enctype="multipart/form-data">
-			<div class="custom-file">
+		<div class="custom-file">
 			  <input type="file" class="custom-file-input" id="customFile" name="upfile">
 			  <label class="custom-file-label" for="customFile">Choose file</label>
 			</div>
@@ -102,11 +102,9 @@
             <div class="div">
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
-
+            <div class="div">
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
-                
-            
             <div class="div">
                 <input type="text" placeholder="닉네임" name="nickName" />
             </div>
@@ -132,9 +130,9 @@
                     <option value="2">판매자</option>
                     <option value="1">관리자</option>
                 </select>
-        	</div>
-            </form>
-    </div>
+    		</div>
+        </div>
+      </form>
 
 	<jsp:include page="../common/footer.jsp" />
 

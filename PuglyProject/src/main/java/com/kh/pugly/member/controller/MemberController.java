@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
@@ -87,9 +88,17 @@ public class MemberController {
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")
-	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member, @RequestPart(value="upfile",required = false) MultipartFile upfile) {
+	public ModelAndView updateMemberInfo(@RequestPart(value="upfile",required = false)MultipartFile upfile, HttpSession session, Member member) {
+		//log.info("{}", upfile);
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		memberService.updateMember(member, loginMember, upfile);
-		return mv;
+		Image memberImage = (Image)session.getAttribute("memberImage");
+		
+		Member loginUser = memberService.updateMember(member, loginMember, memberImage, upfile);
+
+		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
+		session.setAttribute("memberImage", memberService.selectMemberImage(loginUser.getMemberNo()));
+
+		return mv.setViewNameAndData("redirect:/my_page.member", null);
 	}	
 }

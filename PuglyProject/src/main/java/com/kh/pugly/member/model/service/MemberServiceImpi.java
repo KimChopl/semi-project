@@ -21,6 +21,7 @@ import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
+import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
@@ -123,6 +124,10 @@ public class MemberServiceImpi implements MemberService {
 		changeNickName(member);
 	}
 	
+	private void reconnectMember(Member loginMember) {
+		mapper.selectMember(loginMember);
+	}
+	
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
@@ -199,27 +204,39 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
-	public void updateMember(Member member, Member loginMember, MultipartFile upfile) {
+	public Member updateMember(Member member, Member loginMember, Image memberImage, MultipartFile upfile) {
 		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
 		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
+		// 프로필 사진이 없던 사람이 프로필사진을 추가
+		// 프로필 사진이 있던 사람이 그대로 유지
+		// 프로필 사진이 있던 사람이 프로필사진을 추가
+		// 프로필 사진이 없던 사람이 그대로 유지
 		
-		/*
-		Image image = memberImgSave(upfile);
 		updateUser(member, loginMember);
+		Image image = memberImgSave(upfile);
 		
 		int memberResult = mapper.updateMember(member);
 		int imageResult = 1;
+		int updateImageResult = 1;
 		if(image != null) {
-			Map<String, Object> imageInfo = new HashMap();
-			imageInfo.put("image", image);
-			imageInfo.put("memberNo", loginMember.getMemberNo());
-			imageResult = mapper.updateMemberImage(imageInfo);
+			Map<String, Object> newImage = new HashMap();
+			newImage.put("originImgName", image.getOriginImgName());
+			newImage.put("changeImgName", image.getChangeImgName());
+			newImage.put("memberNo", loginMember.getMemberNo());
+			imageResult = mapper.updateMemberInsertImage(newImage);
+			if(memberImage != null) {
+				Map<String, Object> oldImage = new HashMap();
+				oldImage.put("imgNo", memberImage.getImgNo());
+				oldImage.put("memberNo", loginMember.getMemberNo());
+				updateImageResult = mapper.updateMemberImage(oldImage);
+			}
 		}
-		if(memberResult * imageResult == 0) {
-			throw new FailUpdateMember("회원수정실패");
+		if(memberResult * imageResult * updateImageResult == 0) {
+			throw new FailUpdateMemberException("회원수정실패");
 		}
-		*/
+		loginMember = mapper.selectMember(loginMember);
 		
+		return loginMember;
 	}
 
 	@Override

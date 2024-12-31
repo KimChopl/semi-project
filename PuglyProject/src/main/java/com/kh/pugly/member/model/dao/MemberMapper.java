@@ -14,6 +14,12 @@ public interface MemberMapper {
 
 	Member selectMember(Member member);
 	
+	Image selectMemberImage(Long memberNo);
+	
+	List<Address> selectStateCategory();
+	
+	List<Address> selectAddresses(Long memberNo);
+	
 	int insertMember(Member member);
 	
 	int insertAddress(Address address);
@@ -24,14 +30,14 @@ public interface MemberMapper {
 	
 	int updateMemberImage(Map<String, Object> ImageInfo);
 	
+	int updateMemberInsertImage(Map<String, Object> imageInfo);
+
 	int updateAddress(Map<String, Object> addressInfo);
 	
 	int deleteMember(Map<String, Object> map);
 	
-	List<Address> selectAddresses(Long memberNo);
 	
-	List<Address> selectStateCategory();
 	
-	Image selectMemberImage(Long memberNo);
+
 	
 }
