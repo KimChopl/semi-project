@@ -136,10 +136,10 @@
                     </form>
                 <script>
                 function validate() {
-                	if($('#member-pwd').val() != $('#check-pwd').val() && $('#check-delete').val() != "탈퇴하겠습니다"){
-                		$('#member-pwd').focus().val('');
-                		$('#check-pwd').focus().val('');
-                		$('#check-delete').focus().val('');
+                	if($('#member-pwd').val() != $('#check-pwd').val() || $('#check-delete').val() != "탈퇴하겠습니다"){
+                		$('#member-pwd').val('');
+                		$('#check-pwd').val('');
+                		$('#check-delete').val('');
                 		return false;
                 	}
                 	return true;

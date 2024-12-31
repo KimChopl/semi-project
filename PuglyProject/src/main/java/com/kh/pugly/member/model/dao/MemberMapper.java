@@ -34,7 +34,7 @@ public interface MemberMapper {
 
 	int updateAddress(Map<String, Object> addressInfo);
 	
-	int deleteMember(Map<String, Object> map);
+	int deleteMember(Member member);
 	
 	
 	

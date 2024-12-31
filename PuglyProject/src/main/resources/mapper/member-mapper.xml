@@ -171,5 +171,14 @@
 		       #{changeImgName}
 		       )
 	</insert>
+	<update id="deleteMember" parameterType="member">
+		UPDATE
+		       TB_MEMBER
+		   SET
+		       STATUS = 'N',
+		       MODIFY_DATE = SYSDATE
+		 WHERE
+		       MEMBER_NO = #{memberNo}
+	</update>
 
 </mapper>

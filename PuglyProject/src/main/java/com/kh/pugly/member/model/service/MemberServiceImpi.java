@@ -19,6 +19,7 @@ import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailDeleteMemberException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.FailUpdateMemberException;
@@ -29,7 +30,9 @@ import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @EnableTransactionManagement
@@ -122,10 +125,6 @@ public class MemberServiceImpi implements MemberService {
 		invalidRequestMemberNo(member, loginMember);
 		encryptionPassword(member);
 		changeNickName(member);
-	}
-	
-	private void reconnectMember(Member loginMember) {
-		mapper.selectMember(loginMember);
 	}
 	
 	@Override
@@ -240,9 +239,11 @@ public class MemberServiceImpi implements MemberService {
 	}
 
 	@Override
-	public void deleteMember(Map<String, Object> map) {
-		
-
+	public void deleteMember(Member member, Member loginUser) {
+		checkPwd(member, loginUser);
+		if(mapper.deleteMember(member) == 0) {
+			throw new FailDeleteMemberException("회원탈퇴 실패");
+		}
 	}
 
 

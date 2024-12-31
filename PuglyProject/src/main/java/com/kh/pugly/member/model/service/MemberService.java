@@ -17,7 +17,7 @@ public interface MemberService {
 
 	Member updateMember(Member member, Member loginMember, Image memberImage, MultipartFile upfile);
 	
-	void deleteMember(Map<String, Object> map);
+	void deleteMember(Member member, Member loginUser);
 
 	List<Address> selectAdresses(Long memberNo);
 	

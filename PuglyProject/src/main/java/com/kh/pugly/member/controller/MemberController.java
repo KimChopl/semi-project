@@ -101,4 +101,15 @@ public class MemberController {
 
 		return mv.setViewNameAndData("redirect:/my_page.member", null);
 	}	
+	
+	@PostMapping("delete.member")
+	public ModelAndView deleteMember(Member member, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteMember(member, loginUser);
+		session.removeAttribute("loginUser");
+		session.removeAttribute("addresses");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	
 }
