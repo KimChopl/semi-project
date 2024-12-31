@@ -154,17 +154,6 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
-	public List<Address> selectAdresses(Long memberNo) {
-		return mapper.selectAddresses(memberNo);
-	}
-	
-	@Override
-	public Image selectMemberImage(Long memberNo) {
-		return mapper.selectMemberImage(memberNo);
-	}
-	
-	
-	@Override
 	public Map<String, Object> selectStateCategory() {
 		
 		Map<String, Object> responseData = new HashMap();

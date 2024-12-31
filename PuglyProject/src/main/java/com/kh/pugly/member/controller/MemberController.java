@@ -1,6 +1,5 @@
 package com.kh.pugly.member.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -14,9 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
-import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.member.model.service.MemberService;
-import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
-	private final PasswordEncoder passEncrypt;
 	
 	
 	@GetMapping("login_form.member")
@@ -99,9 +95,7 @@ public class MemberController {
 	}
 	@PostMapping("update.memberInfo")
 	public ModelAndView updateMemberInfo(@RequestPart(value="upfile",required = false)MultipartFile upfile, HttpSession session, Member member) {
-		//log.info("{}", upfile);
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		//Image memberImage = memberService.selectMemberImage(loginMember.getMemberNo());
 		
 		Member loginUser = memberService.updateMember(member, loginMember, upfile);
 
@@ -113,9 +107,7 @@ public class MemberController {
 	@PostMapping("delete.member")
 	public ModelAndView deleteMember(Member member, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		memberService.deleteMember(member, loginUser);
 		session.removeAttribute("loginUser");
-		session.removeAttribute("addresses");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	

@@ -19,9 +19,7 @@ public interface MemberService {
 	
 	void deleteMember(Member member, Member loginUser);
 
-	List<Address> selectAdresses(Long memberNo);
 	
-	Image selectMemberImage(Long memberNo);
 	
 	Map<String, Object> selectStateCategory();
 
