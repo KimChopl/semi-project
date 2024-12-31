@@ -17,6 +17,7 @@ public class Image {
 	private Long imgNo;
 	private String originImgName;
 	private String changeImgName;
+	private String imgPath;
 	private Date uploadDate;
 	private String imgStatus;
 	private int imgLevel;

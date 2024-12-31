@@ -69,10 +69,9 @@
 		    <div class="pro-1" onclick="datail('${product.productNo }')">
 		        <form>
 		           <div>
-		               <img src="${ product.newProductImg }" alt="상품이미지" class="pro-img">
+		               <img src="${ Image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
 			       <div class="pro-2">
-			       		<p>product No : ${ product.productNo }</p>
 			           <div style="font-size: 20px; height: 60px;">${ product.productName }</div>
 			           <div style="font-size: 20px; font-weight: 550;">가격 : <span>${ product.productPrice }</span></div>
 			           <div style="font-size: 18px;">상품후기 :<span>★★★★☆</span></div>

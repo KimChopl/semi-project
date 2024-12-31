@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.product.model.dao.ProductMapper">
-
+	
+	<insert id="insertProductImg" parameterType="Image">
+		INSERT
+		  INTO
+		  		TB_IMAGE
+		  		(
+		  		IMG_NO,
+		  		ORIGIN_IMG_NAME,
+		  		CHANGE_IMG_NAME,
+		  		IMG_PATH,
+		  		IMG_LEVEL,
+		  		IMG_POST_NO,
+		  		CATEGORY_NO
+		  		)
+		VALUES
+				(
+				SEQ_INO.NEXTVAL,
+				#{originImgName},
+				#{changeImgName},
+				#{imgPath},
+				#{imgLevel},
+				SEQ_PNO.CURRVAL,
+				2
+				)
+	</insert>
+	
+	 
 	<insert id="insertProduct" parameterType="product">
 		INSERT
 		  INTO
@@ -12,8 +38,6 @@
 		  		PRODUCT_PRICE,
 		  		PRODUCT_CONTENT,
 		  		PRODUCT_QUANTITY,
-		  		PRODUCT_IMG,
-		  		NEW_PRODUCT_IMG,
 		  		UNIT_NAME,
 		  		DELIVERY_PRICE,
 		  		PRODUCT_TYPE
@@ -25,8 +49,6 @@
 				#{productPrice},
 				#{productContent},
 				#{productQuantity},
-				#{productImg},
-				#{newProductImg},
 				#{unitName},
 				#{deliveryPrice},
 				#{productType}
@@ -44,20 +66,25 @@
 	
 	<select id="listProduct" resultType="product">
 		SELECT
-				PRODUCT_NO productNo,
-				PRODUCT_NAME productName,
-				PRODUCT_PRICE productPrice,
+		        PRODUCT_NO productNO,
+				PRODUCT_NAME productName, 
+				PRODUCT_PRICE productPrice, 
 				DELIVERY_PRICE deliveryPrice,
 				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
-				PRODUCT_IMG productImg,
-				NEW_PRODUCT_IMG newProductImg
-		 FROM
-		 		TB_PRODUCT
-		WHERE
-				STATUS = 'Y'
-		ORDER
-		   BY
-		   		PRODUCT_DATE DESC
+		        ORIGIN_IMG_NAME originImgName,
+		        CHANGE_IMG_NAME changeImgName,
+		        IMG_LEVEL
+		  FROM
+		        TB_PRODUCT
+		  JOIN
+		        TB_IMAGE ON (PRODUCT_NO = IMG_POST_NO)
+		 WHERE
+		        STATUS = 'Y'
+		   AND
+		        IMG_LEVEL = 1
+		 ORDER
+		    BY
+		        PRODUCT_DATE DESC
 	</select>
 	
 	<select id="deatailProduct" parameterType="long" resultType="product">

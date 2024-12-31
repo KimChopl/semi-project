@@ -3,6 +3,7 @@ package com.kh.pugly.product.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,8 +44,8 @@ public class ProductServiceImpl implements ProductService {
 			throw new ProductValueException("부적절한 입력값");
 		}
 	}
-	
-	// 사진파일 수정 메소드
+	/*
+	// 사진파일 수정 업로드 구버전
 	private void productSaveImg(Product product, MultipartFile[] upfile) {
 		for (MultipartFile file : upfile) {
 			if(!file.isEmpty()) {
@@ -65,14 +66,19 @@ public class ProductServiceImpl implements ProductService {
 			}
 		}
 	}
-	//사진 테이블 이용해서 받기
-	private void productSaveNewImg(Image image, MultipartFile[] upfile) {
+	*/
+	//사진파일 수정 업로드 신버전
+	private List<Image> productSaveImg(MultipartFile[] upfile) {
+		
+		List<Image> imagesList = new ArrayList<>();	// 여러장 사진을 넣을 리스트
+		boolean firstFile = true;					// 첫번째 사진은 true
+		
 		for(MultipartFile file : upfile) {
 			if(!file.isEmpty()) {
 				String fileName = file.getOriginalFilename();
 				String ext = fileName.substring(fileName.lastIndexOf("."));
 				String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
-				int randomNum = (int)Math.random() * 90000 + 10000;
+				int randomNum = (int)(Math.random() * 90000) + 10000;
 				String changeName = currentTime + randomNum + ext;
 				String savePath = context.getRealPath("/resources/upload_files/");
 				try {
@@ -80,11 +86,17 @@ public class ProductServiceImpl implements ProductService {
 				} catch(IOException e) {
 					throw new FailToFileUploadException("파일오류!");
 				}
+				Image image = new Image();
 				image.setOriginImgName(fileName);
 				image.setChangeImgName("/pugly/resources/upload_files/" + changeName);
+				image.setImgLevel(firstFile ? 1 : 2);	// 첫번째 사진만 1번으로 받는다.
+				image.setImgPath("/resources/upload_files/");
+						
+				imagesList.add(image);
+				firstFile = false;	// 반복문을 통해 2번째 사진부터는 false
 			}
 		}
-		
+		return imagesList;
 	}
 	
 	// 페이지 체크
@@ -100,11 +112,13 @@ public class ProductServiceImpl implements ProductService {
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return PagiNation.getPageInfo(totalCount, page, 10, 5);
 	}
+	// 상품수
 	private List<Product> getProductList(PageInfo pi){
 		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return mapper.listProduct(rowBounds);
 	}
+		
 	// 상품이 삭제될때
 	private Product findProductById(Long productNo) {
 		Product product = mapper.deatailProduct(productNo);
@@ -112,31 +126,32 @@ public class ProductServiceImpl implements ProductService {
 		return product;
 	}
 	
-	// 상품등록 메소드
+
+	// 상품등록 메소드 신버전
 	@Override
 	public void insertProduct(Product product, MultipartFile[] upfile) {
-		validateProduct(product); // 유효성 검증
-	
-		for(MultipartFile file : upfile) {
-			if(!("".equals(file.getOriginalFilename()))) {
-				productSaveImg(product, upfile);
-			}
-		}
+		validateProduct(product);
+		
+		List<Image> imagesList = productSaveImg(upfile);
 		mapper.insertProduct(product);
+			
+		for(Image imags : imagesList) {
+			mapper.insertProductImg(imags);
+		}
 	}
+	
 	// 상품 리스트 메소드
 	public Map<String, Object>listProduct(int currentPage){
-		
+
 		int totalCount = getTotalCount();
-		
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
 		List<Product> products = getProductList(pi);
-								
+		
+		
 		Map<String, Object> map = new HashMap();
 		map.put("products", products);
 		map.put("pageInf", pi);
-		
 		return map;
 	}
 	// 상품 상세보기
@@ -150,6 +165,7 @@ public class ProductServiceImpl implements ProductService {
 		return responseData;
 		
 	}
+
 
 
 
