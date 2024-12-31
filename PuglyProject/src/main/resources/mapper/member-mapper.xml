@@ -76,6 +76,60 @@
                #{phone}
                )
 	</insert>
-
+	
+	<insert id="insertAddress" parameterType="com.kh.pugly.common.model.vo.Address">
+		INSERT
+          INTO
+               TB_ADDRESS
+               (
+               ADDRESS_NO,
+               STATE_CODE,
+               MEMBER_NO,
+               ADDRESS_TYPE,
+               DISTRICT
+               )
+        VALUES
+	           (
+	           SEQ_ANO.NEXTVAL,
+	           #{stateCode},
+	           SEQ_MNO.CURRVAL,
+	           #{addressType},
+	           #{district}
+	           )
+	</insert>
+	<insert id="insertMemberImage" parameterType="image">
+		INSERT
+		  INTO
+		       TB_MEMBER_IMAGE
+		       (
+		       MEMBER_IMG_NO,
+		       MEMBER_NO,
+		       ORIGIN_IMG_NAME,
+		       CHANGE_IMG_NAME
+		       )
+		VALUES
+		       (
+		       SEQ_MINO.NEXTVAL,
+		       SEQ_MNO.CURRVAL,
+		       #{originImgName},
+		       #{changeImgName}
+		       )
+	</insert>
+	
+	<select id="selectMemberImage" parameterType="long" resultType="image">
+		SELECT
+               MEMBER_IMG_NO imgNo,
+               ORIGIN_IMG_NAME originImgName,
+               CHANGE_IMG_NAME changeImgName,
+               UPLOAD_DATE uploadDate,
+               IMG_LEVEL imgLevel,
+               IMG_STATUS imgStatus
+          FROM
+               TB_MEMBER_IMAGE
+         WHERE
+               IMG_STATUS = 'Y'
+           AND
+               MEMBER_NO = #{memberNo}
+	</select>
 
 </mapper>

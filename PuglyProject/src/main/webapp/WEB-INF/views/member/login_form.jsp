@@ -40,7 +40,7 @@
             border: 2px double rgb(88, 88, 88);
         }
 
-        a{
+        .a{
             font-size: small;
             font-family: 'Courier New', Courier, monospace;
         }
@@ -107,14 +107,14 @@
         <br>
         <div id="user-find-or-join">
             <!-- header에 회원가입이 있다면 사라질 요소 -->
-            <a href="join_enroll_form.member"> 회원가입 </a>|
+            <a href="join_enroll_form.member" class="a"> 회원가입 </a>|
 
-            <a href="find_id.member"> 아이디 찾기 </a>|
-            <a href="find_pwd.member"> 비밀번호 찾기</a>
+            <a href="find_id.member" class="a"> 아이디 찾기 </a>|
+            <a href="find_pwd.member" class="a"> 비밀번호 찾기</a>
         </div>
     </div>
 
-
+	<jsp:include page="../common/footer.jsp" />
 
 
 

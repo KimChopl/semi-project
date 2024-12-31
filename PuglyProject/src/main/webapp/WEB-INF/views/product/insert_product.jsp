@@ -64,7 +64,8 @@
 </head>
 <body>
 
-    <!--<jsp:include page="" />-->
+
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="content">
         <div>
@@ -167,47 +168,52 @@
          </div>
          <hr>
          <br>
-         <div>
-                <span class="title">상품명</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
+                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
                 <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
                 <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
-                <select style="width: 80px; height: 30px; font-size: 20px" name="unitNo" id="unitNo">
-                    <option value="1">kg</option>
-                    <option value="2">개</option>
-                    <option value="3">box</option>
+                <select style="width: 80px; height: 30px; font-size: 20px" name="unitName" id="unitName">
+                    <option value="kg">kg</option>
+                    <option value="개">개</option>
+                    <option value="box">box</option>
                 </select>
                 <br><br>
                 <span class="title">상품설명</span><br> <textarea style="width: 99%; font-size: 18px;" rows="30" name="productContent" id="productContent"></textarea> <br><br>
                 <span class="title">상품 카테고리</span> 
-                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="categoryNo" id="categoryNo">
-                    <option value="1">유기농 과일</option>
-                    <option value="2">유기농 야채</option>
-                    <option value="3">못난이 과일</option>
-                    <option value="4">못난이 야채</option>
+                <select style="width: 150px; height: 40px; margin-left: 10px; font-size: 15px;" name="productType" id="productType">
+                    <option value="유기농과일">유기농 과일</option>
+                    <option value="유기농야채">유기농 야채</option>
+                    <option value="못난이과일">못난이 과일</option>
+                    <option value="못난이야채">못난이 야채</option>
                 </select>
                 <br><br>
                 <span class="title">배송정보</span> 
-                <input type="radio" value="1" checked name="deliveryNo" id="deliveryNo">
+                
+                
+                <input type="radio" value="무료" name="deliveryPrice" id="deliver-btn1" checked>
                 <label>무료배송</label>
                 
-                <input type="radio" name="radio1" value="배송비 포함" name="deliveryPrice" id="deliveryPrice">
+                <input type="radio" value="배송비포함" name="deliveryPrice" id="deliver-btn2">
                 <label>배송비</label>
-                <input type="number" class="text-title" name="deliverPrice"> 
+                
+                
+                <input type="number" class="text-title" name=""> 
                 <label>배송비 입력</label>
+                
                 <br><br>
                 <hr>
                 <br>
+                
+                
                 <div class="save-btn">
                     <button type="submit" id="confirmation">등록하기</button>
-                    <button type="">임시저장</button>
+                    <button>임시저장</button>
                 </div>
                 <br>
             </form>
-         </div>
          <br><br><br>
     </div>
-
-    <!--<jsp:include page="" /> -->
+    
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

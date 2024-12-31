@@ -4,5 +4,40 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.kh.pugly.reply.model.dao.ReplyMapper">
  
+	 <insert id="insertReply" parameterType="reply">
+	 	INSERT
+	 	  INTO
+	 	  	   TB_REPLY
+	 	  	   (
+	 	  	   REPLY_NO,
+	 	  	   REF_BNO,
+	 	  	   NICKNAME,
+	 	  	   REPLY_CONTENT
+	 	  	   )
+	 	VALUES
+	 		   (
+	 		   #{replyNo},
+	 		   #{refBno},
+	 		   #{nickName},
+	 		   #{replyContent}
+	 		   )
+	 </insert>
+	 
+	 <select id="selectReplyList" parameterType="Long" resultType="reply">
+	 	SELECT
+	 		   REPLY_NO replyNo,
+	 		   NICKNAME nickName,
+	 		   REPLY_CONTENT replyContent,
+	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
+	 	  FROM
+	 	  	   TB_REPLY
+	 	 WHERE
+	 	 	   STATUS = 'Y'
+	 	   AND
+	 	   	   REF_BNO = #{refBno}
+	 	 ORDER
+	 	 	BY
+	 	 	   REPLY_NO DESC
+	 </select>
  
  </mapper>

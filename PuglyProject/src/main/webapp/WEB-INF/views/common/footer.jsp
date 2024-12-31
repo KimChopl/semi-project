@@ -46,13 +46,13 @@
 
         <div id="footer-2">
             <p id="p1">
-                종로지원 : 서울특별시 중구 남대문로 120 그레이츠청계 2F, 3F <br>
-                강병민 : 메인페이지 & 게시판
-                박상은 : 마이페이지 & 로그인
-                서한솔 : 농산물 관리
-                안재성 : 농장 관리리
+                종로지원 : 서울특별시 중구 남대문로 120 그레이츠청계 2F <br>
+                강병민 : 메인페이지 & 게시판 <br>
+                박상은 : 마이페이지 & 로그인 <br>
+                서한솔 : 농산물 관리 <br>
+                안재성 : 농장 관리리 <br>
             </p> 
-            <p id="p2">Copyright © 2024-2025 울퉁불퉁감자 Educational Institute All Right Reserved</p>
+            <p id="p2">Copyright © 2024-2025 울퉁불퉁감자 Ugly Potato is my Life</p>
         </div>
     </div>
 </body>

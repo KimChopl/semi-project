@@ -47,6 +47,9 @@
     </style>
 </head>
 <body>  <!-- 합 12 관격 정할수 있음 (col-1, col-9,) -->
+
+	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
+
     <div class="container" id="content">
         <hr>
         <div class="row">
@@ -277,7 +280,9 @@
         </div>
     </div>
 
-
     </div>
+    
+    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    
 </body>
 </html>

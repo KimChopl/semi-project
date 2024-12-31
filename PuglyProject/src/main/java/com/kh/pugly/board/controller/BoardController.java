@@ -17,22 +17,19 @@ import com.kh.pugly.board.model.vo.Board;
 import com.kh.pugly.common.ModelAndViewUtil;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class BoardController {
 	
 	private final BoardService boardService;
 	private final ModelAndViewUtil mv;
 	
-	
 	@GetMapping("boards")
 	public ModelAndView selectBoardList(@RequestParam(value = "page", defaultValue = "1")int page) {
-		//Map<String, Object> map = boardService.selectBoardList(page);
+		Map<String, Object> map = boardService.selectBoardList(page);
 		
-		return mv.setViewNameAndData("board/list", null);
+		return mv.setViewNameAndData("board/list", map);
 	}
 	
 	@GetMapping("boards/{id}")
@@ -56,14 +53,14 @@ public class BoardController {
 	
 	@PostMapping("boards/delete")
 	public ModelAndView deleteBoard(Long boardNo) {
-		boardService.deleteBoard(boardNo, null);
+		boardService.deleteBoard(boardNo);
 		return mv.setViewNameAndData("redirect:boards", null);
 	}
 	
 	@PostMapping("boards/update-form")
 	public ModelAndView updateForm(Long boardNo) {
 		Map<String, Object> map = boardService.selectById(boardNo);
-		return mv.setViewNameAndData("board/update-page", map);
+		return mv.setViewNameAndData("board/update", map);
 	}
 	
 	@PostMapping("boards/update")

@@ -37,8 +37,7 @@
             <h2>게시글 상세보기</h2>
             <br>
 
-			<!-- <button onclick="history.back();">버어어어어튼</button> --> <!-- 과거 캐싱된 상태로 돌아가는 것.  -->
-            <a class="btn btn-secondary" style="float:right;" href="/hyper/boards">목록으로</a>
+            <a class="btn btn-secondary" style="float:right;" href="/pugly/boards">목록으로</a>
             <br><br>
 
             <table id="contentArea" align="center" class="table">
@@ -48,25 +47,18 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${board.boardWriter}</td>
+                    <td>${board.nickName}</td>
                     <th>작성일</th>
                     <td>${board.createDate}</td>
                 </tr>
                 <tr>
                     <th>첨부파일</th>
-                    
-                    <c:choose>
-                    <c:when test="${empty board.changeName }">
 	                    <td colspan="3">
 	                    	첨부파일이 존재하지 않습니다.
 	                    </td>
-                    </c:when>
-                    <c:otherwise>
 	                    <td colspan="3">
-	                        <a href="${board.changeName}" download="${board.originName}">${board.originName}</a>
+	                        <a href="" download=""></a>
 	                    </td>
-                    </c:otherwise>
-                    </c:choose>
                 </tr>
                 <tr>
                     <th>내용</th>
@@ -80,28 +72,26 @@
 
             <div align="center">
                 <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-                <c:if test="${sessionScope.loginUser.userId eq board.boardWriter}">
+                
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
-            	</c:if>
+            	
             </div>
             
             <script>
             	function postSubmit(num){
 					
             		if(num == 1){
-            			$('#postForm').attr('action', '/hyper/boards/update-form').submit();
+            			$('#postForm').attr('action', '/pugly/boards/update-form').submit();
             		} else {
-            			$('#postForm').attr('action', '/hyper/boards/delete').submit();
+            			$('#postForm').attr('action', '/pugly/boards/delete').submit();
             		}
             	}
             </script>
             
             <form action="" method="post" id="postForm">
             	<input type="hidden" name="boardNo" value="${board.boardNo}" />
-            	<input type="hidden" name="changeName" value="${board.changeName}" />
-            	<input type="hidden" name="boardWriter" value="${board.boardWriter}"/>
-            	<!-- <input type="hidden" name="userId" value="${loginUser.userId}" /> -->
+            	<!-- <input type="hidden" name="memberNo" value="${loginUser.memberNo}" /> -->
             </form>
             
             <!-- 
@@ -160,12 +150,12 @@
     		if($('#content').val().trim() != ''){
 				
     			$.ajax({
-    				url : '/hyper/reply',
+    				url : '/pugly/reply',
     				type : 'post',
     				data : {
-    					refBoardNo : ${board.boardNo},
+    					refBno : ${board.boardNo},
     					replyContent : $('#content').val(),
-    					replyWriter : '${sessionScope.loginUser.userId}'
+    					WriterNickName : '${sessionScope.loginUser.nickName}'
     				},
     				success : function(result){
     					
@@ -186,7 +176,7 @@
     	
     	function selectReply(){
     		$.ajax({
-    			url : '/hyper/reply',
+    			url : '/pugly/reply',
     			type : 'get',
     			data : {
     				boardNo : ${board.boardNo}
@@ -199,7 +189,7 @@
     				
     				const resultStr = replies.map(e =>
 								    					`<tr>
-								    					<td>\${e.replyWriter}</td>
+								    					<td>\${e.nickName}</td>
 								    					<td>\${e.replyContent}</td>
 								    					<td>\${e.createDate}</td>
 								    					</tr>`
