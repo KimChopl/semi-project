@@ -11,9 +11,13 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
+<<<<<<< Updated upstream
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+=======
+import org.springframework.transaction.annotation.Transactional;
+>>>>>>> Stashed changes
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
@@ -151,6 +155,14 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		return loginUser;
+<<<<<<< Updated upstream
+=======
+	}
+	
+	@Override
+	public List<Address> selectAdresses(Long memberNo) {
+		return mapper.selectAddresses(memberNo);
+>>>>>>> Stashed changes
 	}
 	
 	@Override
@@ -165,12 +177,17 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
+<<<<<<< Updated upstream
 	public void insertMember(Member member, Address address, MultipartFile upfile) {
+=======
+	public void insertMember(Member member, Address address) {
+>>>>>>> Stashed changes
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
 		validationMember(member);
+<<<<<<< Updated upstream
 		Image image = memberImgSave(upfile);
 		
 		encryptionPassword(member);
@@ -181,6 +198,32 @@ public class MemberServiceImpi implements MemberService {
 		int imageResult = 1;
 		if(image != null) {
 			imageResult = mapper.insertMemberImage(image);
+=======
+		
+		if("".equals(member.getNickName())) {
+			member.setNickName(member.getMemberId());
+		}
+		
+		int memberResult = mapper.insertMember(member);
+		int addressResult = mapper.insertAddress(address);
+		
+		if(memberResult * addressResult == 0) {
+			throw new 
+		}
+
+	}
+	
+
+	@Override
+	public void updateMember(Member member, Member loginMember) {
+		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
+		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
+		
+		validationPassword(member);
+		
+		if(member.getMemberNo() != loginMember.getMemberNo()) {
+			throw new InvalidRequestException("유효하지 않은 요청");
+>>>>>>> Stashed changes
 		}
 		
 		if(memberResult * addressResult * imageResult == 0) {
@@ -274,6 +317,8 @@ public class MemberServiceImpi implements MemberService {
 		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
 		return responseData;
 	}
+
+	
 
 
 
