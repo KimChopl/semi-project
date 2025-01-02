@@ -76,7 +76,7 @@
 	            </c:forEach>
 	            </select>
 	            <br>
-	            <button id="find-id-btn">아이디 찾기</button>
+	            <button id="find-id-btn">비밀번호 찾기</button>
 	        </form>
         </c:if>
     </div>

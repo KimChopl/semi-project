@@ -23,7 +23,9 @@ public interface MemberService {
 	
 	Map<String, Object> findMemberId(Member member);
 	
-	void findMemberPassword(Member member);
+	Map<String, Object> findMemberPassword(Member member);
+	
+	void changePassword(Member member);
 
 	void updateAddress(Long memberNo, Long userNo, Address address);
 	

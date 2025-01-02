@@ -66,8 +66,15 @@ public class MemberController {
 	}
 	
 	@PostMapping("find_pwd.member")
-	public ModelAndView findMemberPassword() {
-		return mv.setViewNameAndData("/member/new_password_form", null);
+	public ModelAndView findMemberPassword(Member member) {
+		Map<String, Object> responseData = memberService.findMemberPassword(member);
+		return mv.setViewNameAndData("/member/new_password_form", responseData);
+	}
+	
+	@PostMapping("change_password.member")
+	public ModelAndView changeNewPassword(Member member) {
+		memberService.changePassword(member);
+		return mv.setViewNameAndData("redirect:/login_form.member", null);
 	}
 	
 	@GetMapping("my_page.member")

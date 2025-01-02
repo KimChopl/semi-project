@@ -282,7 +282,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Map<String, Object> findMemberId(Member member) {
 		Map<String, Object> map = new HashMap();
-		String memberId = mapper.findMemberId(member);
+		List<Member> memberId = mapper.findMemberId(member);
 		
 		if(memberId == null) {
 			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
@@ -294,13 +294,26 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
-	public void findMemberPassword(Member member) {
+	public Map<String, Object> findMemberPassword(Member member) {
 		Map<String, Object> map = new HashMap();
-		
-		if(mapper.selectMember(member) == null) {
+		Member loginMember = mapper.selectMember(member);
+		if(loginMember == null) {
 			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
 		}
+		map.put("loginMember", loginMember);
+		
+		return map;
 	}
+	
+	@Override
+	public void changePassword(Member member) {
+		Member loginMember = mapper.selectMember(member);
+		encryptionPassword(member);
+		loginMember.setMemberPwd(member.getMemberPwd());
+		mapper.updateMember(loginMember);
+		
+	}
+	
 	
 	@Override
 	@Transactional
@@ -359,6 +372,7 @@ public class MemberServiceImpi implements MemberService {
 		responseData.put("memberCategory", mapper.selectMemberCategory());
 		return responseData;
 	}
+
 
 
 

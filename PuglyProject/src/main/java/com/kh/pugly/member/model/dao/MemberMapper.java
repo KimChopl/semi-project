@@ -28,7 +28,7 @@ public interface MemberMapper {
 	List<Address> selectAddresses(Long memberNo);
 	
 	// 아이디 찾기
-	String findMemberId(Member member);
+	List<Member> findMemberId(Member member);
 	
 	// 회원가입(회원추가)
 	int insertMember(Member member);
