@@ -65,8 +65,7 @@
                         <th>첨부파일</th>
                     </tr>
                 </thead>
-                <tbody>
-                
+                <tbody id="boardListBody">
                 	<c:forEach items="${boards}" var="board">
 	                    <tr onclick="detail('${board.boardNo}')">
 	                        <td>${board.boardNo}</td>
@@ -74,11 +73,6 @@
 	                        <td>${board.nickName }</td>
 	                        <td>${board.count }</td>
 	                        <td>${board.createDate}</td>
-	                        <td>
-	                        <c:if test="첨부파일 있을 시"> -->
-	                        		🖼️
-	                        </c:if>	
-	                        </td>
 	                    </tr>
                     </c:forEach>
                     
@@ -118,7 +112,7 @@
 
             <form id="searchForm" action="" method="get" align="center">
                 <div class="select">
-                    <select class="custom-select" name="condition">
+                    <select class="custom-select" name="condition" id="condition">
                         <option value="writer">작성자</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
@@ -127,13 +121,61 @@
                 <div class="text">
                     <input type="text" class="form-control" name="keyword">
                 </div>
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+                <button type="button" class="searchBtn btn btn-secondary" onclick="searchBoard()">검색</button>
             </form>
             <br><br>
         </div>
         <br><br>
 
     </div>
+    
+    <script>
+	    function searchBoard(){
+            const condition = $('option:selected').val();
+            const keyword = $('input[name="keyword"]').val();
+            const page = 1;
+	        
+	        if (!keyword) {
+	            alert('검색어를 입력해주세요.');
+	            return;
+	        }
+	        $.ajax({
+	            url: '/pugly/boards/search',
+	            type: 'get',
+	            data: {
+	                condition: condition,
+	                keyword: keyword,
+	                page: page
+	            },
+	            success: function(searchResult) {
+	            	console.log(searchResult.boardList);
+	            	const boardList = searchResult.boardList;
+	            	
+	            	updateBoardList(boardList);
+	            }
+	           
+	        });
+	    }
+	    
+	    function updateBoardList(boardList) {
+	        const boardListBody = $('#boardListBody');
+	        boardListBody.empty();
+	        console.log(boardList);
+	        
+	        const resultStr = boardList.map(e =>
+	        `<tr onclick="detail('\${e.boardNo}')">
+	            <td>\${e.boardNo}</td>
+	            <td>\${e.boardTitle}</td>
+	            <td>\${e.nickName}</td>
+	            <td>\${e.count}</td>
+	            <td>\${e.createDate}</td>
+	        </tr>`
+		    ).join('');
+			console.log(resultStr);
+		    boardListBody.html(resultStr);
+	    }
+
+    </script>
 
     <jsp:include page="../common/footer.jsp" />
 

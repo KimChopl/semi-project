@@ -50,8 +50,9 @@
         <div class="innerOuter" style="padding:5% 10%;">
             <h2>게시판</h2>
             <br>
-            <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
+            <c:if test="${not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="insertInquiryForm">글쓰기</a>
+            </c:if>
             <br>
             <br>
             <table id="inquiryList" class="table table-hover" align="center">
@@ -64,7 +65,7 @@
                         <th>작성일</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="inquiryListBody">
                 
                 	<c:forEach items="${inquiries}" var="inquiry">
 	                    <tr onclick="detail('${inquiry.inquiryNo}')">
@@ -116,9 +117,9 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="" method="get" align="center">
+             <form id="searchForm" action="" method="get" align="center">
                 <div class="select">
-                    <select class="custom-select" name="condition">
+                    <select class="custom-select" name="condition" id="condition">
                         <option value="writer">작성자</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
@@ -127,13 +128,60 @@
                 <div class="text">
                     <input type="text" class="form-control" name="keyword">
                 </div>
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+                <button type="button" class="searchBtn btn btn-secondary" onclick="searchBoard()">검색</button>
             </form>
             <br><br>
         </div>
         <br><br>
 
     </div>
+    
+    <script>
+	    function searchBoard(){
+            const condition = $('option:selected').val();
+            const keyword = $('input[name="keyword"]').val();
+            const page = 1;
+	        
+	        if (!keyword) {
+	            alert('검색어를 입력해주세요.');
+	            return;
+	        }
+	        $.ajax({
+	            url: '/pugly/inquiries/search',
+	            type: 'get',
+	            data: {
+	                condition: condition,
+	                keyword: keyword,
+	                page: page
+	            },
+	            success: function(searchResult) {
+	            	console.log(searchResult.inquiryList);
+	            	const boardList = searchResult.inquiryList;
+	            	
+	            	updateInquiryList(inquiryList);
+	            }
+	           
+	        });
+	    }
+	    
+	    function updateInquiryList(inquiryList) {
+	        const inquiryListBody = $('#inquiryListBody');
+	        inquiryListBody.empty();
+	        
+	        const resultStr = inquiryList.map(e =>
+	        `<tr onclick="detail('\${e.inquiryNo}')">
+	            <td>\${e.inquiryNo}</td>
+	            <td>\${e.inquiryTitle}</td>
+	            <td>\${e.nickName}</td>
+	            <td>\${e.count}</td>
+	            <td>\${e.createDate}</td>
+	        </tr>`
+		    ).join('');
+	        
+	        inquiryListBody.html(resultStr);
+	    }
+
+    </script>
 
     <jsp:include page="../common/footer.jsp" />
 

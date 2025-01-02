@@ -15,7 +15,7 @@ public class PagiNation {
 		return PageInfo.builder()
 					   .listCount(listCount)
 					   .currentPage(currentPage)
-					   .baordLimit(boardLimit)
+					   .boardLimit(boardLimit)
 					   .pageLimit(pageLimit)
 					   .maxPage(maxPage)
 					   .startPage(startPage)
