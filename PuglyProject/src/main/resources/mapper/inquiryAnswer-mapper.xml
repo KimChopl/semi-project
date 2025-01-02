@@ -12,14 +12,16 @@
 	 	  	   INQUIRY_ANSWER_NO,
     		   INQUIRY_ANSWER ,
     		   NICKNAME,
-			   REF_INO
+			   REF_INO,
+			   ANSWER_STATUSE
 	 	  	   )
 	 	VALUES
 	 		   (
 	 		   #{inquiryAnswerNo},
 	 		   #{inquiryAnswer},
 	 		   #{nickName},
-	 		   #{refIno}
+	 		   #{refIno},
+	 		   'Y'
 	 		   )
 	 </insert>
 	 
