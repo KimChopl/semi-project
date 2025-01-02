@@ -40,4 +40,16 @@
 	 	 	   INQUIRY_ANSWER_NO DESC
 	 </select>
 	 
+	 <update id="okAnswer">
+	 	UPDATE
+	 		   TB_INQUIRY_ANSWER
+	 	   SET
+	 	   	   ANSWER_STATUS = 'Y'
+	 	 WHERE
+	 	 	   INQUIRY_NO = ${inquiryNo}
+	 	   AND
+	 	   	   STATUS = 'N'
+	 
+	 </update>
+	 
 </mapper>

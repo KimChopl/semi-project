@@ -91,8 +91,6 @@ public class BoardController {
 		
 		Map<String, Object> searchResult = boardService.searchBoard(map);
 		
-		log.info("Board search parameters: {}", searchResult);
-
 	   return searchResult;
 	}
 

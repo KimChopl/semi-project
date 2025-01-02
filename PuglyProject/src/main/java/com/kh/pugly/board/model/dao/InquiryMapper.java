@@ -1,6 +1,7 @@
 package com.kh.pugly.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -21,5 +22,9 @@ public interface InquiryMapper {
 	List<Inquiry> selectInquiryList(RowBounds rowBounds);
 
 	int totalCount();
+
+	int countSearchInquiry(Map<String, Object> map);
+
+	List<Inquiry> searchInquiryList(Map<String, Object> map, RowBounds rowBounds);
 
 }

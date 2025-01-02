@@ -91,20 +91,28 @@
                 <ul class="pagination">
                 <c:choose>
                     <c:when test="${pageInfo.currentPage ne 1 }">
-                    	<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage}">이전</a></li>
+                    	<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage - 1}">이전</a></li>
                    </c:when>
                    <c:otherwise>
                    		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
                    </c:otherwise>
                 </c:choose>
                    
-                   <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
-                    	<li class="page-item">
-                    		<a class="page-link" href="boards?page=${num}">${num}</a>
-                    	</li>
-                    </c:forEach>
-                    
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
+                 	<li class="page-item">
+                 		<a class="page-link" href="boards?page=${num}">${num}</a>
+                 	</li>
+                </c:forEach>
+                
+                <c:choose>
+                	<c:when test="${pageInfo.currentPage eq pageInfo.endPage}">    
+                    	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+                    </c:when>
+                	<c:otherwise>
+                		<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage +1}">다음</a></li>
+                	</c:otherwise>
+               	</c:choose>
+        
                 </ul>
             </div>
 
@@ -148,19 +156,19 @@
 	                page: page
 	            },
 	            success: function(searchResult) {
-	            	console.log(searchResult.boardList);
-	            	const boardList = searchResult.boardList;
 	            	
-	            	updateBoardList(boardList);
+	            	const boardList = searchResult.boardList;
+	            	const pageInfo = searchResult.pageInfo;
+	            	
+	            	updateBoardList(boardList, pageInfo, condition, keyword);
 	            }
 	           
 	        });
 	    }
 	    
-	    function updateBoardList(boardList) {
+	    function updateBoardList(boardList, pageInfo, condition, keyword) {
 	        const boardListBody = $('#boardListBody');
 	        boardListBody.empty();
-	        console.log(boardList);
 	        
 	        const resultStr = boardList.map(e =>
 	        `<tr onclick="detail('\${e.boardNo}')">
@@ -171,10 +179,41 @@
 	            <td>\${e.createDate}</td>
 	        </tr>`
 		    ).join('');
-			console.log(resultStr);
 		    boardListBody.html(resultStr);
+		    updatePageInfo(pageInfo, condition, keyword);
 	    }
+	    
+	    function updatePageInfo(pageInfo, condition, keyword) {
+	    	const pagingArea = $('#pagingArea');
+	        
+	        let pagingStr = 
+	        `<ul class="pagination">`;
 
+	        if (pageInfo.currentPage > 1) {
+	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage - 1}&condition=\${condition}&keyword=\${keyword}">이전</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>`;
+	        }
+	        
+	        for (let i = pageInfo.startPage; i <= pageInfo.endPage; i++) {
+	            pagingStr += `<li class="page-item \${i === pageInfo.currentPage ? 'active' : ''}">
+	                            <a class="page-link" href="boards?page=\${i}&condition=\${condition}&keyword=\${keyword}">\${i}</a>
+	                          </li>`;
+	        }
+
+	        if (pageInfo.currentPage < pageInfo.totalPages) {
+	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage + 1}&condition=\${condition}&keyword=\${keyword}">다음</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
+	        }
+
+	        pagingStr += `</ul>`;
+	        
+	        pagingArea.html(pagingStr);
+	    	
+	    }
+	    
+	    
     </script>
 
     <jsp:include page="../common/footer.jsp" />

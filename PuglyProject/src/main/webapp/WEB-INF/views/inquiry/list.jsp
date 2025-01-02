@@ -155,7 +155,6 @@
 	                page: page
 	            },
 	            success: function(searchResult) {
-	            	console.log(searchResult.inquiryList);
 	            	const boardList = searchResult.inquiryList;
 	            	
 	            	updateInquiryList(inquiryList);
