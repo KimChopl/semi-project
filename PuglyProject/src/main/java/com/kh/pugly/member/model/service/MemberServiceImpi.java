@@ -11,19 +11,19 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
-<<<<<<< Updated upstream
+
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-=======
-import org.springframework.transaction.annotation.Transactional;
->>>>>>> Stashed changes
+
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailDeleteAddressException;
 import com.kh.pugly.exception.FailDeleteMemberException;
+import com.kh.pugly.exception.FailInsertAddressException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.FailUpdateMemberException;
@@ -52,7 +52,7 @@ public class MemberServiceImpi implements MemberService {
 		}
 		
 		if("".equals(member.getMemberId().trim()) || "".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 요청");
+			throw new InvalidRequestException("유효하지 않은 값");
 		}
 	}
 	
@@ -62,8 +62,8 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 	
-	private void invalidRequestMemberNo(Member member, Member loginMember) {
-		if(member.getMemberNo() != loginMember.getMemberNo()) {
+	private void invalidRequestMemberNo(Long memberNo, Long userNo) {
+		if(memberNo != userNo) {
 			throw new InvalidRequestException("유효하지 않은 요청");
 		}
 	}
@@ -74,7 +74,7 @@ public class MemberServiceImpi implements MemberService {
 		}
 		
 		if("".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 요청");
+			throw new InvalidRequestException("유효하지 않은 값");
 		}
 	}
 	
@@ -137,9 +137,17 @@ public class MemberServiceImpi implements MemberService {
 	
 	private void updateUser(Member member, Member loginMember) {
 		validationPassword(member);
-		invalidRequestMemberNo(member, loginMember);
+		invalidRequestMemberNo(member.getMemberNo(), loginMember.getMemberNo());
 		encryptionPassword(member);
 		changeNickName(member);
+	}
+	
+	private void processUpdateAddress(Map<String, Object> map, Long memberNo, Address address) {
+		map.put("memberNo", memberNo);
+		map.put("stateCode", address.getStateCode());
+		map.put("addressType", address.getAddressType());
+		map.put("district", address.getDistrict());
+		map.put("addressNo", address.getAddressNo());
 	}
 	
 	@Override
@@ -155,15 +163,9 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		return loginUser;
-<<<<<<< Updated upstream
-=======
+
 	}
 	
-	@Override
-	public List<Address> selectAdresses(Long memberNo) {
-		return mapper.selectAddresses(memberNo);
->>>>>>> Stashed changes
-	}
 	
 	@Override
 	public Map<String, Object> selectStateCategory() {
@@ -177,17 +179,13 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	@Transactional
-<<<<<<< Updated upstream
 	public void insertMember(Member member, Address address, MultipartFile upfile) {
-=======
-	public void insertMember(Member member, Address address) {
->>>>>>> Stashed changes
+
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
 		existingMemberId(member);
 		validationMember(member);
-<<<<<<< Updated upstream
 		Image image = memberImgSave(upfile);
 		
 		encryptionPassword(member);
@@ -198,38 +196,16 @@ public class MemberServiceImpi implements MemberService {
 		int imageResult = 1;
 		if(image != null) {
 			imageResult = mapper.insertMemberImage(image);
-=======
-		
-		if("".equals(member.getNickName())) {
-			member.setNickName(member.getMemberId());
-		}
-		
-		int memberResult = mapper.insertMember(member);
-		int addressResult = mapper.insertAddress(address);
-		
-		if(memberResult * addressResult == 0) {
-			throw new 
 		}
 
-	}
-	
-
-	@Override
-	public void updateMember(Member member, Member loginMember) {
-		// 경우의 수 member의 비밀번호가 25자를 넘어간다. 
-		// hidden 으로 넘긴 memberNo가 session의 memberNo와 일치하지 않는다.
-		
-		validationPassword(member);
-		
-		if(member.getMemberNo() != loginMember.getMemberNo()) {
-			throw new InvalidRequestException("유효하지 않은 요청");
->>>>>>> Stashed changes
-		}
-		
 		if(memberResult * addressResult * imageResult == 0) {
 			throw new FailInsertMemberException("회원 추가 실패");
 		}
+		
 	}
+	
+
+	
 	
 	@Override
 	@Transactional
@@ -262,6 +238,7 @@ public class MemberServiceImpi implements MemberService {
 				updateImageResult = mapper.updateMemberImage(oldImage);
 			}
 		}
+		
 		if(memberResult * imageResult * updateImageResult == 0) {
 			throw new FailUpdateMemberException("회원수정실패");
 		}
@@ -279,27 +256,67 @@ public class MemberServiceImpi implements MemberService {
 	}
 
 	@Override
-	public void updateAddress(Long memberNo, Address address) {
-		// 아직하는 중
+	public void updateAddress(Long memberNo, Long userNo, Address address) {
+		
+		invalidRequestMemberNo(memberNo, userNo);
+		
 		Map<String, Object> map = new HashMap();
-		map.put("memberNo", memberNo);
-		map.put("stateCode", address.getStateCode());
-		map.put("addressType", address.getAddressType());
-		map.put("district", address.getDistrict());
-		map.put("addressNo", address.getAddressNo());
-		if(mapper.updateAddress(map) == 0) {
-			throw new FailUpdateMemberException("주소수정실패");
+		
+		processUpdateAddress(map, memberNo, address);
+		
+		if(address.getAddressType() != 1) {
+			if(mapper.updateAddress(map) == 0) {
+				throw new FailDeleteAddressException("주소 수정 실패");
+			}
+		} else {
+			int addressTypeResult = mapper.changeAddressType(memberNo);
+			int updateAddressResult = mapper.updateAddress(map);
+			if(addressTypeResult * updateAddressResult == 0) {
+				throw new FailDeleteAddressException("주소 수정 실패");
+			}
+		}
+
+		
+		
+	}
+	
+	@Override
+	public void insertNewAddress(Long memberNo, Long userNo, Address address) {
+		// 경우의 수
+		// memberNo와 loginUser의 memberNo가 일치하지 않을 때
+		
+		invalidRequestMemberNo(memberNo, userNo);
+		
+		Map<String, Object> map = new HashMap();
+		
+		processUpdateAddress(map, memberNo, address);
+		
+		if(address.getAddressType() != 1) {
+			if(mapper.insertNewAddress(map) == 0) {
+				throw new FailInsertAddressException("주소 추가 실패");
+			}
+		} else {
+			int addressTypeResult = mapper.changeAddressType(memberNo);
+			int newAddressResult = mapper.insertNewAddress(map);
+			if(addressTypeResult * newAddressResult == 0) {
+				throw new FailInsertAddressException("주소 추가 실패");
+			}
 		}
 		
 	}
 	
 	@Override
-	public void insertNewAddress(Long memberNo, Address address) {
-		// 아직하는 중
+	public void deleteAddress(Long memberNo, Long userNo, Long addressNo) {
+		invalidRequestMemberNo(memberNo, userNo);
 		
+		Map<String, Object> map = new HashMap();
+		map.put("memberNo", memberNo);
+		map.put("addressNo", addressNo);
+		if(mapper.deleteAddress(map) == 0) {
+			throw new FailDeleteAddressException("주소 삭제 실패");
+		}
 		
 	}
-	
 	
 	@Override
 	public Map<String, Object> selectMemberAddresses(Long memberNo) {
@@ -317,6 +334,7 @@ public class MemberServiceImpi implements MemberService {
 		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
 		return responseData;
 	}
+
 
 	
 

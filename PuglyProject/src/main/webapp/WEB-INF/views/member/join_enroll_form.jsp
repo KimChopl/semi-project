@@ -95,6 +95,7 @@
 				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 				});
 			</script>
+			
             <div class="div">
                 <input type="text" placeholder="이름" name="memberName" required/>
             </div>
@@ -128,7 +129,7 @@
                 <select name="categoryNo">
                     <option value="3">일반</option>
                     <option value="2">판매자</option>
-                    <option value="1">관리자</option>
+                    <option value="1" disabled>관리자</option>
                 </select>
     		</div>
         </div>

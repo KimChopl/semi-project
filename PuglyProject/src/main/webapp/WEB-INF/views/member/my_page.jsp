@@ -199,9 +199,12 @@
                 <br>
                 
                 <c:forEach var="address" items="${ addresses }">
-                <div id="address">주소 : 
-            							<label>${ address.stateName }</label><br>
-                                        <label>${ address.district }</label></div>
+		            <c:if test="${ address.addressType eq 1 }">
+		                <div id="address">주소 : 
+							<label>${ address.stateName }</label><br>
+                          	<label>${ address.district }</label>
+		                </div>
+		            </c:if>
                 </c:forEach>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 <br>

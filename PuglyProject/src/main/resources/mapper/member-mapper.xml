@@ -187,12 +187,50 @@
                TB_ADDRESS
            SET
                STATE_CODE = #{stateCode},
-               ADDRESS_TYPE = #{addressType},
-               DISTRICT = #{district}
+               DISTRICT = #{district},
+               ADDRESS_TYPE = #{addressType}
          WHERE
                MEMBER_NO = #{memberNo}
            AND
                ADDRESS_NO = #{addressNo}
 	</update>
-
+	<update id="changeAddressType" parameterType="long">
+		UPDATE
+               TB_ADDRESS
+           SET
+               ADDRESS_TYPE = 2
+         WHERE
+               MEMBER_NO = #{memberNo}
+	</update>
+	
+	<insert id="insertNewAddress" parameterType="map">
+		INSERT
+          INTO
+               TB_ADDRESS
+               (
+               ADDRESS_NO,
+               STATE_CODE,
+               MEMBER_NO,
+               ADDRESS_TYPE,
+               DISTRICT
+               )
+        VALUES
+	           (
+	           SEQ_ANO.NEXTVAL,
+	           #{stateCode},
+	           #{memberNo},
+	           #{addressType},
+	           #{district}
+	           )
+	</insert>
+	<delete id="deleteAddress" parameterType="map">
+		DELETE
+          FROM
+               TB_ADDRESS
+         WHERE
+               ADDRESS_NO = #{addressNo}
+           AND
+               MEMBER_NO = #{memberNo}
+	</delete>
+	
 </mapper>

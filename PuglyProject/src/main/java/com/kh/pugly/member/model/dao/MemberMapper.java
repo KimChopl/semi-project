@@ -40,8 +40,12 @@ public interface MemberMapper {
 	
 	// 주소변경
 	int updateAddress(Map<String, Object> map);
+	// 주소 메인배송지 변경
+	int changeAddressType(Long memberNo);
 	// 새 주소 추가
 	int insertNewAddress(Map<String, Object> address);
+	// 주소 삭제
+	int deleteAddress(Map<String, Object> map);
 	
 	
 	// 회원탈퇴

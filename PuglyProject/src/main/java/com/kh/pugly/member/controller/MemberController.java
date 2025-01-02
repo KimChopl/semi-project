@@ -77,20 +77,30 @@ public class MemberController {
 	}
 	
 	@PostMapping("insert.address")
-	public ModelAndView insertAddress(Long memberNo, Address address) {
-		memberService.insertNewAddress(memberNo, address);
-		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
+	public ModelAndView insertAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.insertNewAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
 	@PostMapping("update.address")
-	public ModelAndView updateAddress(Long memberNo, Address address) {
-		memberService.updateAddress(memberNo, address);
-		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
+	public ModelAndView updateAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.updateAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
+	
+	@PostMapping("delete.address")
+	public ModelAndView deleteAddress(Long memberNo, Long addressNo, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteAddress(memberNo, loginUser.getMemberNo(),addressNo);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
+	}
+	
 	
 	@GetMapping("update_enroll_form.member")
 	public ModelAndView updateEnrollForm() {
-		// session에 값이 있어서 따로 뽑을 필요가 없음
+		// session에 값이 있어서 따로 뽑을 필요가 없음 (회원정보수정)
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")

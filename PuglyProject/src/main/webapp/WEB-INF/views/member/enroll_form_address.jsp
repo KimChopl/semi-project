@@ -8,13 +8,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주소수정</title>
     <style>
+    
         div{
             box-sizing: border-box;
-            /*border: 1px solid red;*/
         }
+        
         #body{
-            width: 550px;
-            height: 500px;
+            width: 600px;
+            height: 520px;
             margin: auto;
             text-align: center;
         }
@@ -25,7 +26,6 @@
             margin: auto;
             background-color: rgb(247, 247, 247);
             border-radius: 8px;
-            text-align: center;
             margin-bottom: 10px;
             border-style: outset;
         }
@@ -36,7 +36,7 @@
             text-align: center;
             position: relative;
             right:190px;
-            top: 20px;
+            top: 5px;
             font-size: 15px;
         }
 
@@ -45,7 +45,7 @@
             height: 40px;
             position: relative;
             left:55px;
-			bottom:35px;            
+			bottom:70px;            
         }
 
         .btn1{
@@ -53,7 +53,7 @@
             height: 35px;
             position: relative;
             font-size: 14px;
-            bottom: 25px;
+            bottom: 50px;
         }
         
         .btn2{
@@ -61,7 +61,7 @@
 	        height: 40px;
             font-size: 14px;
             position: relative;
-            bottom: 30px;
+            bottom: 55px;
         }
 		
 		.p{
@@ -81,20 +81,18 @@
 	<jsp:include page="../common/menubar.jsp" />
     
     <div id="body">
-    
+    	
+    	<br>
     	<c:forEach items="${ addresses }" var="a">
-            <c:choose>
-            	<c:when test="${ a.addressType eq 1 }">
-            	 	<p class="p">메인배송지</p>
-            	</c:when>
-            	<c:otherwise>
-            		<p class="p">서브배송지</p>
-            	</c:otherwise>
-            </c:choose>
 	        <div class="wrap">
-	            <form method="post" id="address-change">
+	            <form method="post" class="address-change">
 	                <input type="hidden" name="addressNo" value="${ a.addressNo }" />
 	                <input type="hidden" name="memberNo" value="${ sessionScope.loginUser.memberNo }" />
+	                <select name="addressType" class="select">
+	                	<option <c:if test ="${ a.addressType eq 1 }"> selected="selected"</c:if> value="1">메인배송지</option>
+	                	<option <c:if test ="${ a.addressType eq 2 }"> selected="selected"</c:if> value="2">서브배송지</option>
+	                </select>
+	                <br>
 	                <select name="stateCode" class="select">
 	                <c:forEach items="${ stateCategory }" var="s">
 	                    <option value="${ s.stateCode }" <c:if test ="${ a.stateCode eq s.stateCode }"> selected="selected"</c:if>>${ s.stateName }</option>
@@ -110,10 +108,16 @@
 	        </div>
         </c:forEach>
         
+        <c:if test="${addresses.size() lt 3}">
         <p class="p">새 주소 추가</p>
         <div class="wrap">
 	            <form action="insert.address" method="post">
 	                <input type="hidden" name="memberNo" value="${ sessionScope.loginUser.memberNo }" />
+	                <select name="addressType" class="select">
+	                	<option value="2">서브배송지</option>
+	                	<option value="1">메인배송지</option>
+	                </select>
+	                <br>
 	                <select name="stateCode" class="select">
 	                <c:forEach items="${ stateCategory }" var="s">
 	                    <option value="${ s.stateCode }">${ s.stateName }</option>
@@ -125,6 +129,7 @@
     				<button class="btn2">주소 추가</button>
 	            </form>
 	        </div>
+        </c:if>
     </div>
     
     <script>
@@ -137,7 +142,7 @@
     		if(num == 2){
     			address += "delete";
     		}
-			$('#address-change').attr("action", address+".address");
+			$('.address-change').attr("action", address+".address");
 		}
     </script>
 
