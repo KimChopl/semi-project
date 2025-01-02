@@ -62,23 +62,21 @@
     <jsp:include page="../common/menubar.jsp" />
     
     <div id="wrap">
-        <c:if test="${ empty memberId }">
-	        <form action="find_pwd.member" method="post">
-				<br><br>
-	            <input type="text" class="input" placeholder="아이디를 입력해주세요" name="memberId">
-	            
-	            <br>
-	            <select name="categoryNo" id="form">
+        <form action="find_pwd.member" method="post">
+			<br><br>
+            <input type="text" class="input" placeholder="아이디를 입력해주세요" name="memberId">
+            
+            <br>
+            <select name="categoryNo" id="form">
 	            <c:forEach items="${ memberCategory }" var="mc">
-	            <c:if test="${ mc.categoryName ne '정지' }">
-	                <option value="${ mc.categoryNo }">${ mc.categoryName }</option>
-	            </c:if>
+		            <c:if test="${ mc.categoryName ne '정지' }">
+		                <option value="${ mc.categoryNo }">${ mc.categoryName }</option>
+		            </c:if>
 	            </c:forEach>
-	            </select>
-	            <br>
-	            <button id="find-id-btn">비밀번호 찾기</button>
-	        </form>
-        </c:if>
+            </select>
+            <br>
+            <button id="find-id-btn">비밀번호 찾기</button>
+        </form>
     </div>
 
     <jsp:include page="../common/footer.jsp" />

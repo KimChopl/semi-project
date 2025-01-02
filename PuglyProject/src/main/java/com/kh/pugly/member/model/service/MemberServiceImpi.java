@@ -156,6 +156,10 @@ public class MemberServiceImpi implements MemberService {
 		
 		noExistingMember(loginUser);
 		
+		if(member.getCategoryNo() != loginUser.getCategoryNo()) {
+			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
+		}
+		
 		checkPwd(member, loginUser);
 		
 		// 아이디가 20자가 넘는다.
@@ -297,7 +301,7 @@ public class MemberServiceImpi implements MemberService {
 	public Map<String, Object> findMemberPassword(Member member) {
 		Map<String, Object> map = new HashMap();
 		Member loginMember = mapper.selectMember(member);
-		if(loginMember == null) {
+		if(loginMember == null || loginMember.getCategoryNo() != member.getCategoryNo()) {
 			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
 		}
 		map.put("loginMember", loginMember);
@@ -310,7 +314,9 @@ public class MemberServiceImpi implements MemberService {
 		Member loginMember = mapper.selectMember(member);
 		encryptionPassword(member);
 		loginMember.setMemberPwd(member.getMemberPwd());
-		mapper.updateMember(loginMember);
+		if(mapper.updateMember(loginMember) == 0) {
+			throw new FailUpdateMemberException("비밀번호 수정 실패");
+		}
 		
 	}
 	

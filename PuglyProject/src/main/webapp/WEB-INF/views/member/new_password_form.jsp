@@ -63,7 +63,6 @@
     
     <div id="wrap">
 	        <form action="change_password.member" method="post">
-				<input type="hidden" name="categoryNo" value=${ loginMember.categoryNo } />
 	            <input type="text" class="input" name="memberId" readonly value="${ loginMember.memberId }" />
 	            <input type="text" class="input" placeholder="새로운 비밀번호를 입력해주세요" name="memberPwd" />
 	            

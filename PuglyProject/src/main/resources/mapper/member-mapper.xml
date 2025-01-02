@@ -22,8 +22,6 @@
                STATUS = 'Y'
            AND
                MEMBER_ID = #{memberId}
-           AND
-               me.FK_CATEGORY_NO = #{categoryNo}
 	</select>
 	
 	<select id="selectAddresses" parameterType="long" resultType="address">
