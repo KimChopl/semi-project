@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
+import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.product.model.dao.ProductMapper;
@@ -44,29 +45,6 @@ public class ProductServiceImpl implements ProductService {
 			throw new ProductValueException("부적절한 입력값");
 		}
 	}
-	/*
-	// 사진파일 수정 업로드 구버전
-	private void productSaveImg(Product product, MultipartFile[] upfile) {
-		for (MultipartFile file : upfile) {
-			if(!file.isEmpty()) {
-				String fileName = file.getOriginalFilename(); // 각 파일의 원본 파일 이름
-				String ext = fileName.substring(fileName.lastIndexOf(".")); // 확장자 추출
-				String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
-				int randomNum = (int)Math.random() * 90000 + 10000; // 랜덤번호생성
-				String changeName = currentTime + randomNum + ext; // 새로운 파일 이름
-				String savePath = context.getRealPath("/resources/upload_files/"); // 저장경로
-				try {
-					file.transferTo(new File(savePath + changeName)); //파일을 지정된 경로에 저장
-				} catch (IOException e) {
-					throw new FailToFileUploadException("파일오류!");
-				}
-				// 이미지 파일 정보
-				product.setProductImg(fileName); // 원본 파일
-				product.setNewProductImg("/pugly/resources/upload_files/" + changeName); // 변경된 파일 경로
-			}
-		}
-	}
-	*/
 	//사진파일 수정 업로드 신버전
 	private List<Image> productSaveImg(MultipartFile[] upfile) {
 		
@@ -105,6 +83,7 @@ public class ProductServiceImpl implements ProductService {
 		int totalCount = mapper.selectTotalCount();
 		
 		if(totalCount == 0) {
+			throw new BoardNotFoundException("게시글 없음");
 		}
 		return totalCount;
 	}
@@ -118,12 +97,17 @@ public class ProductServiceImpl implements ProductService {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return mapper.listProduct(rowBounds);
 	}
-		
 	// 상품이 삭제될때
 	private Product findProductById(Long productNo) {
-		Product product = mapper.deatailProduct(productNo);
+		Product product = mapper.detailProduct(productNo);
 		
 		return product;
+	}
+	// 사진리스트 꺼내오기
+	private List<Image> findImagesByProductId(Long productNo) {
+		List<Image> imageList = (List<Image>) mapper.findImagesByProductId(productNo);
+		System.out.println(imageList);
+		return imageList;
 	}
 	
 
@@ -142,16 +126,14 @@ public class ProductServiceImpl implements ProductService {
 	
 	// 상품 리스트 메소드
 	public Map<String, Object>listProduct(int currentPage){
-
 		int totalCount = getTotalCount();
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
 		List<Product> products = getProductList(pi);
 		
-		
 		Map<String, Object> map = new HashMap();
 		map.put("products", products);
-		map.put("pageInf", pi);
+		map.put("pageInfo", pi);
 		return map;
 	}
 	// 상품 상세보기
@@ -159,13 +141,16 @@ public class ProductServiceImpl implements ProductService {
 	public Map<String, Object> deatailProduct(Long productNo) {
 		
 		Product product = findProductById(productNo);
+		
+		List<Image> imageList = findImagesByProductId(productNo);
+		
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("product", product);
+		responseData.put("imageList", imageList);
 		
 		return responseData;
-		
 	}
-
+	
 
 
 

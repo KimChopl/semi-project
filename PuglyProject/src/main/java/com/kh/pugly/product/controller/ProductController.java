@@ -34,14 +34,14 @@ public class ProductController {
 	}
 	
 	// 내상점 화면 호출
-	@GetMapping("mystore")
+	@GetMapping("/mystore")
 	public String myStore() {
 		
 		return "product/my_store";
 	}
 	
 	// 상품등록 화면 호출
-	@GetMapping("insert_form")
+	@GetMapping("/insert_form")
 	public String insertForm() {
 		return "product/insert_product";
 	}
@@ -68,8 +68,6 @@ public class ProductController {
 		//log.info("{}", id);
 		Map<String, Object> reponseData = productService.deatailProduct(id);
 		return mv.setViewNameAndData("/product/detail_product", reponseData);
-		
-
 	}
 	
 	

@@ -17,10 +17,14 @@ public interface ProductMapper {
 	// 목록조회
 	 List<Product> listProduct(RowBounds rowBounds);
 	 // 상세조회
-	Product deatailProduct(Long productNo);
+	Product detailProduct(Long productNo);
+			
 	// 상품등록 신버전
 	void insertProduct(Product product);
 	void insertProductImg(Image image);
+	List<Image> findImagesByProductId(Long productNo);
+
+
 	
 	
 

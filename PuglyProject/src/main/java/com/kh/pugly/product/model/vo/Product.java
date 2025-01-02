@@ -1,5 +1,9 @@
 package com.kh.pugly.product.model.vo;
 
+import java.util.List;
+
+import com.kh.pugly.common.model.vo.Image;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +29,7 @@ public class Product {
 	private String unitName;				// 상품단위
 	private String deliveryPrice;			// 배송비
 	private String productType;				// 상품타입
+	
+	private Image image;					
+	private List<Image> imageList;
 }

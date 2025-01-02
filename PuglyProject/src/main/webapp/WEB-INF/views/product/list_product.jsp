@@ -13,30 +13,51 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
-
         .content {
             background-color:rgb(247, 245, 245);
             width:65%;
             margin:auto;
         }
         .cat-list {float: right;
-                    margin-right: 20px;
-                    margin-top: 50px;
-                }
-
+                    margin-top: 20px;
+                    margin-right: 10px;
+        }
+        .cat-select{ 
+            margin-top: 20px;
+            margin-left: 10px;
+        }
         .pro-img{width: 220px; height: 220px; display: inline-block;
         border-bottom: 1px solid black; }
 
-.pro-1{border: 1px solid black;
-    width: 222px;
-    height: 450px;
-    display: inline-block;
-    margin: 10px;
-    background-color: white;
-}
-.pro-2 > div{margin: 5px;}
+        .pro-1{border: 1px solid black;
+            width: 222px;
+            height: 450px;
+            display: inline-block;
+            margin: 10px;
+            background-color: white;
+        }
+        .pro-2 > div{margin: 5px;}
+        .user-a > a{
+            border: 1px solid black;
+            font-size: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            width: 100px;
+            text-align: center;
+            
+        }
+        .product-save{
+            float: right;
+            background-color: rgb(218, 130, 44);
+            color: white;
+        }
+        .mystore{
+            float: right;
+            color: black;
 
-#pagingArea {width:fit-content; margin:auto;}
+        }
+        #pagingArea {width:fit-content; margin:auto;}
 
 
 
@@ -52,7 +73,21 @@
             <div class="col">
                 <h2 style="margin-left: 20px;">상품 리스트</h2>
             </div>
-            <div class="col"></div>
+            <div class="user-a">
+                <a href="insert_form" class="product-save">상품등록</a>
+                <a href="mystore" class="mystore">내상점</a>
+            </div>
+            <div class="col">
+                <form class="cat-select">카테고리 >
+                    <select>
+                        <option>전체</option>
+                        <option>유기농과일</option>
+                        <option>유기농채소</option>
+                        <option>못난이과일</option>
+                        <option>못난이채소</option>
+                    </select>
+                </form>
+            </div>
             <div class="col">
                 <div class="cat-list">
                 <a href="#">최신순</a> |
@@ -69,7 +104,7 @@
 		    <div class="pro-1" onclick="datail('${product.productNo }')">
 		        <form>
 		           <div>
-		               <img src="${ Image.changeImgName }" alt="상품이미지" class="pro-img">
+		               <img src="${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
 			       <div class="pro-2">
 			           <div style="font-size: 20px; height: 60px;">${ product.productName }</div>
@@ -93,18 +128,30 @@
         
         <div id="pagingArea">
             <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item"><a class="page-link" href="#">8</a></li>
-                <li class="page-item"><a class="page-link" href="#">9</a></li>
-                <li class="page-item"><a class="page-link" href="#">10</a></li>
-                <li class="page-item"><a class="page-link" href="#">다음</a></li>
+            
+            <c:choose>
+            	<c:when test="${ pageInfo.currentPage ne 1 }" >
+                	<li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage - 1 }">이전</a></li>
+                </c:when>
+                <c:otherwise>
+                	<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+				</c:otherwise>
+            </c:choose>
+            
+            <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
+            	<li class="page-item"><a class="page-link" href="products?page=${ num }">${ num }</a></li>
+            </c:forEach>
+            
+            <c:choose>
+            	<c:when test="${ pageInfo.currentPage != pageInfo.endPage }">
+                <li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage + 1 }">다음</a></li>
+                </c:when>
+                <c:otherwise>
+                	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+                </c:otherwise>
+            </c:choose>
+            
+            
             </ul>
         </div>
     </div>
