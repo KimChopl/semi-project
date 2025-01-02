@@ -11,11 +11,9 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
@@ -168,11 +166,11 @@ public class MemberServiceImpi implements MemberService {
 	
 	
 	@Override
-	public Map<String, Object> selectStateCategory() {
+	public Map<String, Object> selectCategory() {
 		
 		Map<String, Object> responseData = new HashMap();
-		List<Address> category = mapper.selectStateCategory();
-		responseData.put("stateCategory", category);
+		responseData.put("stateCategory", mapper.selectStateCategory());
+		responseData.put("memberCategory", mapper.selectMemberCategory());
 		
 		return responseData;
 	}
@@ -256,6 +254,7 @@ public class MemberServiceImpi implements MemberService {
 	}
 
 	@Override
+	@Transactional
 	public void updateAddress(Long memberNo, Long userNo, Address address) {
 		
 		invalidRequestMemberNo(memberNo, userNo);
@@ -281,6 +280,30 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	@Override
+	public Map<String, Object> findMemberId(Member member) {
+		Map<String, Object> map = new HashMap();
+		String memberId = mapper.findMemberId(member);
+		
+		if(memberId == null) {
+			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
+		}	
+		
+		map.put("memberId", memberId);
+		
+		return map;
+	}
+	
+	@Override
+	public void findMemberPassword(Member member) {
+		Map<String, Object> map = new HashMap();
+		
+		if(mapper.selectMember(member) == null) {
+			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
+		}
+	}
+	
+	@Override
+	@Transactional
 	public void insertNewAddress(Long memberNo, Long userNo, Address address) {
 		// 경우의 수
 		// memberNo와 loginUser의 memberNo가 일치하지 않을 때
@@ -318,6 +341,7 @@ public class MemberServiceImpi implements MemberService {
 		
 	}
 	
+	
 	@Override
 	public Map<String, Object> selectMemberAddresses(Long memberNo) {
 		Map<String, Object> responseData = new HashMap();
@@ -332,8 +356,10 @@ public class MemberServiceImpi implements MemberService {
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("addresses", mapper.selectAddresses(memberNo));
 		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
+		responseData.put("memberCategory", mapper.selectMemberCategory());
 		return responseData;
 	}
+
 
 
 	

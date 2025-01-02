@@ -19,7 +19,11 @@ public interface MemberService {
 	
 	void deleteMember(Member member, Member loginUser);
 	
-	Map<String, Object> selectStateCategory();
+	Map<String, Object> selectCategory();
+	
+	Map<String, Object> findMemberId(Member member);
+	
+	void findMemberPassword(Member member);
 
 	void updateAddress(Long memberNo, Long userNo, Address address);
 	
@@ -30,6 +34,7 @@ public interface MemberService {
 	Map<String, Object> selectMemberInfo(Long memberNo);
 
 	void deleteAddress(Long memberNo, Long userNo, Long addressNo);
+
 	
 
 

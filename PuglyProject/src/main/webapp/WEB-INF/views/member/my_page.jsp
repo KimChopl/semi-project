@@ -155,21 +155,21 @@
                 <li><a href="select.myBoardList" class="a">내 게시글</a></li>
                 
                 <li><a href="select.myReplyList" class="a">내 댓글</a></li>
-                <c:choose>
-                    <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
-                        
-                        <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li><a href="select.myFarmList" class="a">내 농장</a></li>
-                        
-                        <li><a href="select.myProductList" class="a">내 판매 목록</a></li>
-                        <!-- 여기까지 판매자 -->
-                    </c:when>
-                    <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
-                        
-                        <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller" class="a">판매자로 신청</a></li>   
-                    </c:when>
-                </c:choose>
+	                <c:choose>
+	                    <c:when test="${ sessionScope.loginUser.categoryName eq '판매자' }">
+	                        
+	                        <!-- 판매자 유저에게만 띄울 메뉴-->
+	                        <li><a href="select.myFarmList" class="a">내 농장</a></li>
+	                        
+	                        <li><a href="select.myProductList" class="a">내 판매 목록</a></li>
+	                        <!-- 여기까지 판매자 -->
+	                    </c:when>
+	                    <c:when test="${ sessionScope.loginUser.categoryName eq '일반이용자' }">
+	                        
+	                        <!-- 일반 유저에게만 띄울 메뉴 -->
+	                        <li><a href="update.seller" class="a">판매자 신청</a></li>   
+	                    </c:when>
+	                </c:choose>
             </ul>
         </div>
         <div id="memberInfo">
@@ -183,15 +183,11 @@
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
-	                <c:if test="${ sessionScope.loginUser.categoryNo eq 3 }">
-	                	<label>일반</label>
-	                </c:if>
-	                <c:if test="${ sessionScope.loginUser.categoryNo eq 2 }">
-	                	<label>판매자</label>
-	                </c:if>
-	                <c:if test="${ sessionScope.loginUser.categoryNo eq 1 }">
-	                	<label>관리자</label>
-	                </c:if>
+                <c:forEach items="${ memberCategory }" var="m">
+                <c:if test="${ m.categoryNo eq sessionScope.loginUser.categoryNo }">
+	                	<label>${ m.categoryName }</label>
+                </c:if>
+                </c:forEach>
 	                
                 </div>
                 <br>
