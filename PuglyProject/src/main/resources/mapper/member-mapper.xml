@@ -272,5 +272,10 @@
                MEMBER_NO DESC
 	</select>
 
+	<select id="selectMemberInfo" parameterType="long" resultType="member">
+		<include refid="memberColumn" />
+		AND
+		    MEMBER_NO = #{memberNo}
+	</select>
 
 </mapper>
