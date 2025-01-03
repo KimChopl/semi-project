@@ -180,29 +180,29 @@
             <ul id="menu">
                 <li><a href="update_enroll_form.member" class="a">내 정보 수정</a></li>
                 
-                <li><a href="select.cart" class="a">장바구니</a></li>
+                <li><a href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }" class="a">장바구니</a></li>
                 
-                <li><a href="select.myBook" class="a">내 예약 목록</a></li>
+                <li><a href="select.myBook?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 예약 목록</a></li>
                 
-                <li><a href="select.myOrder" class="a">내 주문 목록</a></li>
+                <li><a href="select.myOrder?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 주문 목록</a></li>
                 
-                <li><a href="select.attention" class="a">찜 목록</a></li>
+                <li><a href="select.attention?memberNo=${ sessionScope.loginUser.memberNo }" class="a">찜 목록</a></li>
                 
-                <li><a href="select.myBoardList" class="a">내 게시글</a></li>
+                <li><a href="select.myBoardList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 게시글</a></li>
                 
-                <li><a href="select.myReplyList" class="a">내 댓글</a></li>
+                <li><a href="select.myReplyList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 댓글</a></li>
 	                <c:choose>
 	                    <c:when test="${ sessionScope.loginUser.categoryName eq '판매자' }">
 	                        
 	                        <!-- 판매자 유저에게만 띄울 메뉴-->
-	                        <li><a href="select.myFarmList" class="a">내 농장</a></li>
+	                        <li><a href="select.myFarmList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 농장</a></li>
 	                        
-	                        <li><a href="select.myProductList" class="a">내 판매 목록</a></li>
+	                        <li><a href="select.myProductList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 판매 목록</a></li>
 	                        <!-- 여기까지 판매자 -->
 	                    </c:when>
 	                    <c:when test="${ sessionScope.loginUser.categoryName eq '일반이용자' }">
 	                        
-	                        <!-- 일반 유저에게만 띄울 메뉴 -->
+	                        <!-- 일반 유저에게만 띄울 메뉴(폼 작성) -->
 	                        <li><a href="update.seller" class="a">판매자 신청</a></li>   
 	                    </c:when>
 	                </c:choose>

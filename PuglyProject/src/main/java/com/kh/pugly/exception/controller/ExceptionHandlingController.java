@@ -17,6 +17,7 @@ import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
+import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -89,6 +90,13 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailDeleteAddressException.class)
 	protected ModelAndView failDeleteAddressError(FailDeleteAddressException e) {
 		return createErrorResponse("주소 삭제에 실패했습니다.", e);
+	}
+	
+	//---------------------------------------------------------------------
+	
+	@ExceptionHandler(NotFoundCartListException.class)
+	protected ModelAndView noSearchCartListEroor(NotFoundCartListException e) {
+		return createErrorResponse("장바구니가 비어있습니다.", e);
 	}
 	
 	

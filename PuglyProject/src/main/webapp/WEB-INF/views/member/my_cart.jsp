@@ -16,12 +16,19 @@
             width: 650px;
             height: 500px;
             margin: auto;
+            text-align: center;
         }
 
-        .pagination{
-            position: relative;
-            left: 190px;
-        }
+		.text-center{
+			margin: auto;
+			width: 220px;
+			text-align: center;
+		}
+        
+        .text-center > ul > li{
+	        margin:0 auto;
+			text-align: center;
+		}
         
 
         #wrap{
@@ -39,7 +46,7 @@
             width: 25px;
             height: 25px;
             position: relative;
-            bottom: 240px;
+            bottom: 215px;
             left: 275px;
         }
 
@@ -111,13 +118,11 @@
             height: 30px;
             background-color: rgb(87, 87, 255);
             color: white;
-            position: relative;
             margin-top: 5px;
-            left: 25px;
             font-family: 'SUITE-Regular';
         }
 
-        .input{
+        .span{
             width: 90%;
             height: 80%;
             margin: 0;
@@ -140,30 +145,64 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
+	<jsp:include page="../common/menubar.jsp" />
+
     <div id="body">
-        <form action="" method="post">
+        <form action="insert.myOrder" method="post">
+        <c:forEach items="${ cartList }" var="c">
             <div id="wrap">
-                <input type="hidden" name="productNo" value="상품번호" />
+                <input type="hidden" name="productNo" value="${ c.productNo }" />
                 <div id="img"><img src="" class="img"></div>
-                <div id="category-name"><input type="text" readonly name="categoryName" value="상품카테고리" class="input"></div>
-                <div id="product-name"><input type="text" readonly name="productName" value="상품명" class="input"></div>
-                <div id="product-price"><input type="number" readonly name="productPrice" value="10000" class="input"></div>
-                <div id="unit-name"><input type="text" readonly name="unitName" value="box" class="input"></div>
-                <div id="product-quantity"><input type="number" readonly name="productQuantity" value="0" class="input"></div>
-                <div id="delivery-price"><input type="number" readonly name="deliveryPrice" value="2500" class="input"></div>
+                <div id="category-name"><span class="span">${ c.productType }</span></div>
+                <div id="product-name"><span class="span">${ c.productName }</span></div>
+                <div id="product-price"><span class="span">${ c.productPrice }원</span></div>
+                <div id="unit-name"><span class="span">${ c.unitName }</span></div>
+                <div id="product-quantity"><span class="span">${ c.productQuantity }</span></div>
+                <c:if test="${ c.deliveryPrice ne '무료' }">
+                <div id="delivery-price"><span class="span">${ c.deliveryPrice }원</span></div>
+                </c:if>
                 <input type="checkbox" class="checkbox">
             </div>
+        </c:forEach>
+         
+            
             <button type="submit" class="button">주문하기</button>   
         </form>
-        <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="my_cart.member">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
+        <br>
+        <div class="text-center">
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
+	        </ul>
+        </div>
     </div>
+    <script>
+    	let endPage = "${pageInfo.endPage}";
+    	let maxPage = "${pageInfo.maxPage}";
+    	let pageLimit = "${pageInfo.pageLimit}";
+    	let currentPage = "${pageInfo.currentPage}";
+    	
+    	if(maxPage <= pageLimit){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(endPage == maxPage){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(currentPage <= pageLimit){
+    		$("#pro").attr("class", "page-item disabled")
+    	}
+    	
+    </script>
    
+	<jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

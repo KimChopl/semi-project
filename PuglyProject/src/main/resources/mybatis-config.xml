@@ -39,6 +39,7 @@
 	 <mappers>
 	 	<mapper resource="/mapper/farm-mapper.xml" />
 	 	<mapper resource="/mapper/member-mapper.xml"/>
+	 	<mapper resource="/mapper/mypage-mapper.xml"/>
 	 	<mapper resource="/mapper/board-mapper.xml"/>
 
 	 	<mapper resource="/mapper/image-mapper.xml"/>

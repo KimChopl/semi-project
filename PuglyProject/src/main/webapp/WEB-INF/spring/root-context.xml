@@ -48,6 +48,7 @@
 
 	 -->
  	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao"/>
+ 	<mybatis-spring:scan base-package="com.kh.pugly.member.mypage.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.pugly.farm.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.board.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>

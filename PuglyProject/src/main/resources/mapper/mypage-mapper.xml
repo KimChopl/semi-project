@@ -2,7 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.member.mypage.model.dao.MyPageMapper">
 
-
+<select id="selectMyCartAll" parameterType="long" resultType="_int">
+	SELECT
+	       COUNT(PRODUCT_NO)
+	  FROM
+	       TB_CART
+	 WHERE
+	       MEMBER_NO = #{memberNo}
+</select>
+<select id="selectMyCartList" parameterType="long" resultType="product">
+	SELECT
+           pr.PRODUCT_NO productNo,
+           PRODUCT_NAME productName,
+           PRODUCT_PRICE productPrice,
+           PRODUCT_QUANTITY productQuantity,
+           PRODUCT_TYPE productType,
+           UNIT_NAME unitName,
+           DELIVERY_PRICE deliveryPrice
+      FROM
+           TB_CART ct
+      JOIN
+           TB_PRODUCT pr ON(pr.PRODUCT_NO = ct.PRODUCT_NO)
+     WHERE
+           pr.STATUS = 'Y'
+       AND
+           ct.MEMBER_NO = #{memberNo}
+</select>
 
 
 </mapper>
