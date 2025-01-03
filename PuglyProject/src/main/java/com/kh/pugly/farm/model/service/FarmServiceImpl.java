@@ -144,7 +144,7 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private void checkedFarmContent(Farm farm, Member member) {
-		if(!!!farm.getSeller().equals(member.getNickName())) {
+		if(!!!farm.getSeller().equals(member.getNickname())) {
 			
 		}
 	}

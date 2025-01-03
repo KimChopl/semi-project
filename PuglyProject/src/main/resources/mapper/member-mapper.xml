@@ -3,14 +3,14 @@
 
 <mapper namespace="com.kh.pugly.member.model.dao.MemberMapper">
 
-	<select id="selectMember" parameterType="member" resultType="member">
+	<sql id="memberColumn">
 		SELECT
                MEMBER_NO memberNo,
                me.FK_CATEGORY_NO categoryNo,
                my.MB_CATEGORY_NAME categoryName,
                MEMBER_ID memberId,
                MEMBER_PWD memberPwd,
-               NICKNAME nickName,
+               NICKNAME nickname,
                MEMBER_NAME memberName,
                PHONE phone,
                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate
@@ -20,6 +20,10 @@
                TB_MEMBER_TYPE my ON (me.FK_CATEGORY_NO = my.MB_CATEGORY_NO)
          WHERE
                STATUS = 'Y'
+	</sql>
+
+	<select id="selectMember" parameterType="member" resultType="member">
+		<include refid="memberColumn" />
            AND
                MEMBER_ID = #{memberId}
 	</select>
@@ -272,5 +276,10 @@
                MEMBER_NO DESC
 	</select>
 
+	<select id="selectMemberInfo" parameterType="long" resultType="member">
+		<include refid="memberColumn" />
+		AND
+		    MEMBER_NO = #{memberNo}
+	</select>
 
 </mapper>

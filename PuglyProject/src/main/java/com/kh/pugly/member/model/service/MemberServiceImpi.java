@@ -129,8 +129,8 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	private void changeNickName(Member member) {
-		if("".equals(member.getNickName())) {
-			member.setNickName(member.getMemberId());
+		if("".equals(member.getNickname())) {
+			member.setNickname(member.getMemberId());
 		}
 	}
 	
