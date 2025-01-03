@@ -66,6 +66,7 @@
 			<br><br>
             <input type="text" class="input" placeholder="아이디를 입력해주세요" name="memberId">
             
+            <input type="text" class="input" placeholder="전화번호를 입력해주세요(-포함)" name="phone">
             <br>
             <select name="categoryNo" id="form">
 	            <c:forEach items="${ memberCategory }" var="mc">

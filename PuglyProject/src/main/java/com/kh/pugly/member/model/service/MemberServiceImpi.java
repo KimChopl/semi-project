@@ -148,6 +148,8 @@ public class MemberServiceImpi implements MemberService {
 		map.put("addressNo", address.getAddressNo());
 	}
 	
+	
+	
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
@@ -301,7 +303,10 @@ public class MemberServiceImpi implements MemberService {
 	public Map<String, Object> findMemberPassword(Member member) {
 		Map<String, Object> map = new HashMap();
 		Member loginMember = mapper.selectMember(member);
-		if(loginMember == null || loginMember.getCategoryNo() != member.getCategoryNo()) {
+		log.info("{}, {}", loginMember, member);
+		if(loginMember == null ||
+		   loginMember.getCategoryNo() != member.getCategoryNo() ||
+		   !(loginMember.getPhone().equals(member.getPhone()))) {
 			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
 		}
 		map.put("loginMember", loginMember);

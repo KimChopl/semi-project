@@ -45,17 +45,19 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: 600;
             margin:20px;
+            font-family: 'SUITE-Regular';
         }
         
         .a{
         	text-decoration: none;
         	color: black;
+        	font-family: 'SUITE-Regular';
 
         }
         
         .a:hover{
             list-style: none;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'SUITE-Regular';
             color: rgb(121, 121, 121);
             cursor: pointer;
             text-decoration: underline;
@@ -75,35 +77,56 @@
             left: 280px;
             bottom: 100px;
             margin-left: 20px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #address{
             width: 400px;
             height: 50px;
             margin-left: 20px;
+            position: relative;
+            bottom: 80px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #member-name{
             width: 300px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            bottom: 70px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
         #phone{
             width: 350px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            left: 280px;
+            bottom: 125px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #member-type{
             width: 200px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            bottom: 60px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #enroll-date{
             position: relative;
             left: 300px;
             bottom: 90px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #img{
@@ -125,9 +148,22 @@
         }
 
         #address-update{
+        	width: 100px;
+        	height: 40px;
+        	background-color: orange;
+        	border: outset;
             position: relative;
-            left: 380px;
+            left: 360px;
             bottom: 40px;
+            font-family: 'SUITE-Regular';
+            font-weight: 900;
+        }
+        
+        @font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
         }
 
         
@@ -193,7 +229,9 @@
                 <br>
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
                 <br>
+                <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 
+                <br>
                 <c:forEach var="address" items="${ addresses }">
 		            <c:if test="${ address.addressType eq 1 }">
 		                <div id="address">주소 : 
@@ -202,8 +240,6 @@
 		                </div>
 		            </c:if>
                 </c:forEach>
-                <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
-                <br>
                 <button id="address-update">주소 수정</button>
             </div>
         </div>
