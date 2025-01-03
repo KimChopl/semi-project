@@ -3,6 +3,41 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.kh.pugly.book.model.dao.BookMapper">
+  	<sql id="bookColumn">
+  		SELECT
+  		      B.BOOK_NO bookNo,
+  		      BOOK_FARM_NO farmNo,
+  		      FARM_TITLE farmTitle,
+  		      BOOK_USER_NO memberNo,
+  		      NICKNAME nickname,
+  		      BOOK_DATE bookDate,
+  		      PLAY_DATE playDate,
+  		      BOOK_CONTENT bookContent,
+  		      ADULT adultNo,
+  		      KID kidNo,
+			  D.BOOK_NO as "decide",
+			  C.BOOK_NO as "cancel",
+			  PL.BOOK_NO as "play",
+			  PY.BOOK_NO as "pay" 		      
+  		 FROM
+  		      TB_BOOK B
+  		 JOIN
+  		      TB_MEMBER ON(MEMBER_NO = BOOK_USER_NO)
+  		 JOIN
+  		      TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_DECIDE D ON (D.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_CANCEL C ON (C.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_PLAY PL ON (PL.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_PAY PY ON (PY.BOOK_NO = B.BOOK_NO)
+  	</sql>
   	<insert id="insertBook" parameterType="book">
   		INSERT
   		  INTO
@@ -36,23 +71,7 @@
   		       BOOK_USER_NO = #{memberNo}
   	</select>
   	<select id="selectBookList" parameterType="long" resultType="book">
-  		SELECT
-  		      BOOK_NO bookNo,
-  		      BOOK_FARM_NO farmNo,
-  		      FARM_TITLE farmTitle,
-  		      BOOK_USER_NO memberNo,
-  		      NICKNAME nickname,
-  		      BOOK_DATE bookDate,
-  		      PLAY_DATE playDate,
-  		      BOOK_CONTENT bookContent,
-  		      ADULT adultNo,
-  		      KID kidNo
-  		 FROM
-  		      TB_BOOK
-  		 JOIN
-  		      TB_MEMBER ON(MEMBER_NO = BOOK_USER_NO)
-  		 JOIN
-  		      TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+  		<include refid="bookColumn" />
   		WHERE
   		      BOOK_USER_NO = #{memberNo}
   	</select>
@@ -98,7 +117,7 @@
   	</select>
   	<select id="selectBookListFarmer" parameterType="long" resultType="book">
   		SELECT
-		       BOOK_NO bookNo,
+		       B.BOOK_NO bookNo,
 		       BOOK_FARM_NO farmNo,
 		       FARM_TITLE farmTitle,
 		       BOOK_USER_NO memberNo,
@@ -107,15 +126,31 @@
 		       PLAY_DATE playDate,
 		       BOOK_CONTENT bookContent,
 		       ADULT adultNo,
-		       KID kidNo
+		       KID kidNo,
+		       D.BOOK_NO as "decide",
+			   C.BOOK_NO as "cancel",
+			   PL.BOOK_NO as "play",
+			   PY.BOOK_NO as "pay"
 		  FROM
-		       TB_BOOK
+		       TB_BOOK B
 		  JOIN
 		       TB_FARM ON (BOOK_FARM_NO = FARM_NO)
 		  JOIN
 		       TB_MEMBER M1 ON(M1.MEMBER_NO = SELLER_NO)
 		  JOIN
 		       TB_MEMBER M2 ON(M2.MEMBER_NO = BOOK_USER_NO)
+		  LEFT
+  		  JOIN
+  		      TB_BOOK_DECIDE D ON (D.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_CANCEL C ON (C.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_PLAY PL ON (PL.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_PAY PY ON (PY.BOOK_NO = B.BOOK_NO)
 		 WHERE
 		       SELLER_NO = #{memberNo}
   	</select>
@@ -129,4 +164,21 @@
 		 WHERE
 		       SELLER_NO = #{memberNo}
   	</select>
+  	<select id="selectByNo" resultType="book" parameterType="long">
+  		<include refid="bookColumn" />
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	<insert id="insertDecide" parameterType="long">
+  		INSERT
+  		  INTO
+  		      TB_BOOK_DECIDE
+  		      (
+  		      BOOK_NO
+  		      )
+  	   VALUES
+  	          (
+  	          #{bookNo}
+  	          )
+  	</insert>
   </mapper>

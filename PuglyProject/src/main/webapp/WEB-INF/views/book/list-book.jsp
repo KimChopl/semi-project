@@ -61,7 +61,7 @@
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="book-user">
-                                                    예약자 닉네임 / 아이디 / 이름
+                                                    <label id="name-${b.bookNo}">${ b.nickname }</label>
                                                 </div>
                                             </div>
                                             <div class="col-9">
@@ -79,25 +79,25 @@
                                         <div class="row">
                                             <div class="col-3">
                                                 <div class="farm-title">
-                                                    ${ b.farmTitle }
+                                                    <label id="title-${ b.bookNo}">${ b.farmTitle }</label>
                                                 </div>
                                             </div>
                                             <div class="col-9">
                                                 <div class="book-content">
-                                                    ${ b.bookSub }
                                                     <button value="${ b.bookContent }" class="btn btn-sm btn btn-outline-dark book-content" data-bs-toggle="modal" data-bs-target="#booker-content">더보기</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="btn">
-                                    	<c:if test="${ bookCancel ne null }">
-                                        <button data-bs-toggle="modal" data-bs-target="#cancel" class="btn btn-danger">취소하기</button>
+                                    	<c:if test="${ empty b.cancel }">
+                                    	<input type="hidden" value="${ b.bookNo }" class="book-hidden">
+                                        <button data-bs-toggle="modal" data-bs-target="#cancel" class="btn btn-danger cancel-btn">취소하기</button>
                                     	</c:if>
-                                        <c:if test="${ sessionScope.loginUser.categoryNo eq 2 }">
-                                        <button type="button" data-bs-toggle="modal" data-bs-target="#acceptance-btn" class="btn btn-primary">확정하기</button>
+                                        <c:if test="${ sessionScope.loginUser.categoryNo eq 2 && empty b.decide && empty b.play}">
+                                        <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" data-bs-target="#acceptance-btn" class="btn btn-primary decide-btn">확정하기</button>
                                         </c:if>
-                                        <c:if test="${ bookPlay eq null }">
+                                        <c:if test="${ not empty b.play }">
                                         <button>리뷰하기</button>
                                         </c:if>
                                     </div>
@@ -122,8 +122,9 @@
             <div id="acceptance">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
-                                예약 관련 정보
+                        <div class="col" id="decide-content">
+                        
+                               
                         </div>
                     </div>
                 </div>
@@ -131,7 +132,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
-          <button type="button" class="btn btn-primary">확정하기</button>
+          <button type="button" class="btn btn-primary" id="decide">확정하기</button>
         </div>
       </div>
     </div>
@@ -144,18 +145,21 @@
           <h5 class="modal-title">예약 취소</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <form action="cancel/book">
         <div class="modal-body">
           <div id="cancel-answer">
             <label>취소 사유</label>
-            <div id="content">
-                <textarea style="resize:none;" id="cancel-content"></textarea>
+            <div>
+            	<input type="hidden" name="bookNo"  id="cancel-content">
+                <textarea name="content" style="resize:none;" id="cancel-content"></textarea>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
-          <button type="button" class="btn btn-primary">취소확정</button>
+          <button type="submit" class="btn btn-primary" id="cancel-btn">취소확정</button>
         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -179,11 +183,83 @@
   </div>
   <script>
   	const moreContent = document.getElementsByClassName('book-content');
-  	for(let i = 0; i < moreContent.length; i += 2)
+  	for(let i = 0; i < moreContent.length; i += 2){
 	  	moreContent[i].addEventListener('click', function(e) {
 	  		const bookContent = document.getElementById('book-content');
 	  		bookContent.innerText = e.target.value;
-  	})
+  		})
+  	}
   </script>
+  <script>
+		
+	  	const decide = document.getElementsByClassName('decide-btn');
+	  	for(let i = 0; i < decide.length; i ++){
+	  		decide[i].addEventListener('click', function(e) {
+	  			$.ajax({
+	  				url : "book.content",
+	  				type : "get",
+	  				data : {
+	  					bookNo : e.target.value
+	  				},
+	  				success : function(r){
+	  					const result = `<div class="container">
+						                        <div class="row">
+						                        <div class="col">
+						                            농장 제목 : \${r.farmTitle}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col-4">
+						                            예약일 : \${r.playDate}
+						                        </div>
+						                        <div class="col-4">
+						                            성인 : \${r.adultNo}
+						                        </div>
+						                        <div class="col-4">
+						                            어린이 : \${r.kidNo}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col-4">
+						                            예약자 : \${r.nickname}
+						                        </div>
+						                        <div class="col-8">
+						                            전화번호 : \${r.phone}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col">
+						                            \${r.bookContent}
+						                        </div>
+						                    </div>
+						                </div>
+						                <input type="hidden" value="\${r.bookNo}" id="d">`;
+						const inner = document.getElementById('decide-content');
+						inner.innerHTML = result;
+						const decidePlay = document.getElementById('d');
+						const bookNo = decidePlay.value;
+						const decideBtn = document.getElementById('decide');
+						decideBtn.onclick = () => {
+							location.href=`decide/play/\${bookNo}`;
+						}
+					  	
+					 }
+	  			})
+	  			
+	  		})
+	  	}
+  </script>
+	<script>
+		const book = document.getElementsByClassName('book-hidden');
+		const cancelBtn = document.getElementsByClassName('cancel-btn');
+		const cancelContent = document.getElementById('cancel-content');
+		for(let i = 0; i < cancelBtn.length; i++){
+			cancelBtn[i].onclick = () => {
+				const bookNo = book[i].value;
+				cancelContent.value = bookNo;
+				
+			}
+		}
+	</script>
 </body>
 </html>

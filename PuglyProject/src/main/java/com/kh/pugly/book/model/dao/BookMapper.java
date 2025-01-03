@@ -14,9 +14,9 @@ public interface BookMapper {
 	
 	int insertBook(Book book);
 	
-	int insertDecide(BookCondition condition);
+	int insertDecide(Long bookNo);
 	
-	int insertPay(BookCondition condition);
+	int insertPay(Long bookNo);
 	
 	int insertCancel(BookCondition condition);
 	
@@ -26,16 +26,10 @@ public interface BookMapper {
 	
 	int bookListCount(Long MemberNo);
 	
-	BookStatus selectBookDecide(Long bookNo);
-	
-	BookStatus selectBookCancel(Long bookNo);
-	
-	BookStatus selectBookPay(Long bookNo);
-	
-	Long selectBookPlay(Long bookNo);
-
 	List<Book> selectBookListFarmer(RowBounds rb, Long memberNo);
 
 	int selectBookCountFarmer(Long memberNo);
+
+	Book selectByNo(Long bookNo);
 
 }

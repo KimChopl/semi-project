@@ -25,4 +25,9 @@ public class Book {
 	private String bookContent;
 	private String farmTitle;
 	private String bookSub;
+	private String phone;
+	private String decide;
+	private String cancel;
+	private String play;
+	private String pay;
 }

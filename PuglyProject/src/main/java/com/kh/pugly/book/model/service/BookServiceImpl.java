@@ -57,13 +57,21 @@ public class BookServiceImpl implements BookService {
 		checkedMember(loginUser);
 		Book newBook = insertBookToMember(book, loginUser);
 		int result = bm.insertBook(newBook);
-		log.info("{}", newBook);
+		//log.info("{}", newBook);
 		checkedInsertBook(result);
 		}
 
 	@Override
-	public void insertDecide(BookCondition condition) {
+	public void insertDecide(Long bookNo, Member member) {
+		checkedMember(member);
+		int result = bm.insertDecide(bookNo);
+		checkedInsert(result);
+	}
 
+	private void checkedInsert(int result) {
+		if(result < 1) {
+			//Exception
+		}
 	}
 
 	@Override
@@ -105,26 +113,8 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	private Map<String, Object> selectbookStatus(List<Book> books) {
+		log.info("{}", books);
 		Map<String, Object> bookStatus = new HashMap();
-		List<BookStatus> bookDecides = new ArrayList();
-		List<BookStatus> bookCancels = new ArrayList();
-		List<BookStatus> bookPays = new ArrayList();
-		List<Long> bookPlays = new ArrayList();
-		for(int i = 0; i < books.size(); i++) {
-			Long bookNo = books.get(i).getBookNo();
-			BookStatus bookDecide = bm.selectBookDecide(bookNo);
-			bookDecides.add(bookDecide);
-			BookStatus bookCancel = bm.selectBookCancel(bookNo);
-			bookCancels.add(bookCancel);
-			BookStatus bookPay = bm.selectBookPay(bookNo);
-			bookPays.add(bookPay);
-			Long bookPlay = bm.selectBookPlay(bookNo);
-			bookPlays.add(bookPlay);
-		}
-		bookStatus.put("bookDecide", bookDecides);
-		bookStatus.put("bookCancel", bookCancels);
-		bookStatus.put("bookPay", bookPays);
-		bookStatus.put("bookPlay", bookPlays);
 		bookStatus.put("books", books);
 		
 		return bookStatus;
@@ -153,7 +143,7 @@ public class BookServiceImpl implements BookService {
 		} else {
 			books = selectBookListBooker(memberNo, rb);
 		}
-		log.info("{} : {}", books, category);
+		//log.info("{} : {}", books, category);
 		
 		return books;
 	}
@@ -173,7 +163,7 @@ public class BookServiceImpl implements BookService {
 		RowBounds rb = makeRowBounds(mi);
 		Map<String, Object> map = selectbookStatus(makeTitle(checkedMember(loginUser, rb)));
 		map.put("mi", mi);
-		log.info("{}", map);
+		//log.info("{}", map);
 		
 		
 		
@@ -182,6 +172,23 @@ public class BookServiceImpl implements BookService {
 
 	private RowBounds makeRowBounds(MoreInfo mi) {
 		return new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
+	}
+
+	@Override
+	public Book selectByNo(Long bookNo, Member member) {
+		checkedMember(member);
+		Book book = checkedContent(bookNo);
+		book.setPhone(member.getPhone());
+		//log.info("{}", book);
+		return book;
+	}
+
+	private Book checkedContent(Long bookNo) {
+		Book book = bm.selectByNo(bookNo);
+		if(book == null) {
+			//Exception
+		}
+		return book;
 	}
 
 }

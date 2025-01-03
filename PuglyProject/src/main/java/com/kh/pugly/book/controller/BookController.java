@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -56,6 +57,15 @@ public class BookController {
 		Member m = (Member)ssn.getAttribute("loginUser");
 		Map<String, Object> map = bs.selectBookList(m);
 		return mv.setViewNameAndData("book/list-book", map);
+	}
+	
+	@GetMapping("decide/play/{bookNo}")
+	public String playDecide(@PathVariable(name="bookNo") Long bookNo, HttpSession ssn) {
+		log.info("{}", bookNo);
+		Member member = (Member)ssn.getAttribute("loginUser");
+		bs.insertDecide(bookNo, member);
+		ssn.setAttribute("alertMsg", "확정이 완료되었습니다.");
+		return "redirect:/farms";
 	}
 	
 }

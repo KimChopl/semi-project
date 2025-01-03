@@ -1,5 +1,6 @@
 package com.kh.pugly.book.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -11,7 +12,7 @@ public interface BookService {
 	
 	void insertBook(Book book, Member loginUser);
 	
-	void insertDecide(BookCondition condition);
+	void insertDecide(Long bokkNo, Member member);
 	
 	void insertPay(BookCondition condition);
 	
@@ -20,4 +21,6 @@ public interface BookService {
 	void insertPlay(Long bookNo);
 	
 	Map<String, Object> selectBookList(Member loginUser);
+
+	Book selectByNo(Long bookNo, Member member);
 }
