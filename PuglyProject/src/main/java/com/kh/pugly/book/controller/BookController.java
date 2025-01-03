@@ -1,6 +1,7 @@
 package com.kh.pugly.book.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -44,16 +45,17 @@ public class BookController {
 	@PostMapping("book/booking")
 	public ModelAndView booking(Book book, HttpSession ssn) {
 		Member loginUser = (Member)ssn.getAttribute("loginUser");
-		log.info("{}", loginUser);
+		//log.info("{}", book);
 		bs.insertBook(book, loginUser);
 		ssn.setAttribute("alertMsg", "예약 완료. 승인 대기 중입니다.");
 		return mv.setViewNameAndData("redirect:/farms", null);
 	}
 	
 	@GetMapping("list.book")
-	public String bookList(HttpSession ssn) {
-		
-		return "book/list-book";
+	public ModelAndView bookList(HttpSession ssn) {
+		Member m = (Member)ssn.getAttribute("loginUser");
+		Map<String, Object> map = bs.selectBookList(m);
+		return mv.setViewNameAndData("book/list-book", map);
 	}
 	
 }

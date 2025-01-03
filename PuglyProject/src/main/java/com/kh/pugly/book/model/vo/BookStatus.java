@@ -3,6 +3,7 @@ package com.kh.pugly.book.model.vo;
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,16 +14,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Book {
+@Builder
+public class BookStatus {
+	
 	private Long bookNo;
-	private Long farmNo;
-	private String nickname;
-	private Long memberNo;
-	private Date bookDate;
-	private Date playDate;
-	private int adultNo;
-	private int kidNo;
-	private String bookContent;
-	private String farmTitle;
-	private String bookSub;
+	private Date date;
+	private String countent;
+
 }

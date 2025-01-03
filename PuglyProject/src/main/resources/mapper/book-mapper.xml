@@ -19,12 +19,114 @@
   		VALUES
   		       (
   		       SEQ_BOOK.NEXTVAL,
-  		       #{bookFarmNo},
-  		       #{userNickname},
+  		       #{farmNo},
+  		       #{nickname},
   		       #{playDate},
   		       #{bookContent},
   		       #{adultNo},
   		       #{kidNo}
   		       )
   	</insert>
+  	<select id="bookListCount" parameterType="long" resultType="_int">
+  		SELECT
+  		       COUNT(BOOK_NO)
+  		  FROM
+  		       TB_BOOK
+  		 WHERE
+  		       BOOK_USER_NO = #{memberNo}
+  	</select>
+  	<select id="selectBookList" parameterType="long" resultType="book">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      BOOK_FARM_NO farmNo,
+  		      FARM_TITLE farmTitle,
+  		      BOOK_USER_NO memberNo,
+  		      NICKNAME nickname,
+  		      BOOK_DATE bookDate,
+  		      PLAY_DATE playDate,
+  		      BOOK_CONTENT bookContent,
+  		      ADULT adultNo,
+  		      KID kidNo
+  		 FROM
+  		      TB_BOOK
+  		 JOIN
+  		      TB_MEMBER ON(MEMBER_NO = BOOK_USER_NO)
+  		 JOIN
+  		      TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+  		WHERE
+  		      BOOK_USER_NO = #{memberNo}
+  	</select>
+  	
+  	<select id="selectBookDecide" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      DECIDE_DATE as "date"
+  		 FROM
+  		      TB_BOOK_DECIDE
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookCancel" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      CANCEL_DATE as "date",
+  		      CANCEL_CONTENT content
+  		 FROM
+  		      TB_BOOK_CANCEL
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookPay" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      PAY_DATE as "date"
+  		 FROM
+  		      TB_BOOK_PAY
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookPlay" parameterType="long" resultType="long">
+  		SELECT
+  		      BOOK_NO
+  		 FROM
+  		      TB_BOOK_PLAY
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	<select id="selectBookListFarmer" parameterType="long" resultType="book">
+  		SELECT
+		       BOOK_NO bookNo,
+		       BOOK_FARM_NO farmNo,
+		       FARM_TITLE farmTitle,
+		       BOOK_USER_NO memberNo,
+		       M2.NICKNAME nickname,
+		       BOOK_DATE bookDate,
+		       PLAY_DATE playDate,
+		       BOOK_CONTENT bookContent,
+		       ADULT adultNo,
+		       KID kidNo
+		  FROM
+		       TB_BOOK
+		  JOIN
+		       TB_FARM ON (BOOK_FARM_NO = FARM_NO)
+		  JOIN
+		       TB_MEMBER M1 ON(M1.MEMBER_NO = SELLER_NO)
+		  JOIN
+		       TB_MEMBER M2 ON(M2.MEMBER_NO = BOOK_USER_NO)
+		 WHERE
+		       SELLER_NO = #{memberNo}
+  	</select>
+  	<select id="selectBookCountFarmer" parameterType="long" resultType="_int">
+  		SELECT
+		      COUNT(BOOK_NO)
+		  FROM
+		       TB_BOOK
+		  JOIN
+		       TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+		 WHERE
+		       SELLER_NO = #{memberNo}
+  	</select>
   </mapper>

@@ -1,8 +1,7 @@
 package com.kh.pugly.book.model.service;
 
-import java.util.List;
+import java.util.Map;
 
-import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.book.model.dto.BookCondition;
 import com.kh.pugly.book.model.vo.Book;
@@ -20,5 +19,5 @@ public interface BookService {
 	
 	void insertPlay(Long bookNo);
 	
-	List<Book> selectBookList(RowBounds rb, Long memberNo);
+	Map<String, Object> selectBookList(Member loginUser);
 }
