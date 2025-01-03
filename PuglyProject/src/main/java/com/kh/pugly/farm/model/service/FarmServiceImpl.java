@@ -17,7 +17,7 @@ import com.kh.pugly.common.template.ChangeImage;
 import com.kh.pugly.common.template.ChangeStringContext;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.exception.FailInsertFarmException;
-import com.kh.pugly.exception.FailUpdateCountException;
+import com.kh.pugly.exception.FailUpdateException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.farm.model.dao.FarmMapper;
