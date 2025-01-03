@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.pugly.board.model.service.BoardService;
 import com.kh.pugly.common.model.vo.ResponseData;
 import com.kh.pugly.reply.model.service.ReplyService;
 import com.kh.pugly.reply.model.vo.Reply;

@@ -67,9 +67,7 @@ public class BoardServiceImpl implements BoardService {
 		return value.replaceAll("\n","<br>");
 				
 	}	
-	
 
-	
 	private Board findByBoard(Long boardNo) {
 		Board board = mapper.selectById(boardNo);
 		if(board == null) {
@@ -164,8 +162,33 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Map<String, Object> selectByKeyword(String keyword) {
-		return null;
+	public Map<String, Object> searchBoard(Map<String, Object> map) {
+	    
+		String keyword = (String) map.get("keyword");
+		int page = (int)map.get("page");
+		
+		validateKeyword(keyword);
+
+	    int totalCount = mapper.countSearchBoard(map);
+
+	    PageInfo pageInfo = getPageInfo(totalCount, page);
+
+	    int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getBoardLimit();
+	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
+	    List<Board> boardList = mapper.searchBoardList(map, rowBounds);
+
+	    // 결과를 Map으로 반환
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("boardList", boardList);
+	    resultMap.put("pageInfo", pageInfo);
+
+	    return resultMap;
+	}
+	
+	private void validateKeyword(String keyword) {
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        throw new InvalidParameterException("검색어를 입력해주세요.");
+	    }
 	}
 
 }

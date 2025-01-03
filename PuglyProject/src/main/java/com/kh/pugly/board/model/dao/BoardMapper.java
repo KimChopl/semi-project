@@ -1,6 +1,7 @@
 package com.kh.pugly.board.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -23,5 +24,9 @@ public interface BoardMapper {
 	int updateBoard(Board board);
 
 	int deleteBoard(Long boardNo);
+
+	int countSearchBoard(Map<String, Object> map);
+
+	List<Board> searchBoardList(Map<String, Object> map, RowBounds rowBounds);
 
 }
