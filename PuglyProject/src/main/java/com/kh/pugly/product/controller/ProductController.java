@@ -47,9 +47,10 @@ public class ProductController {
 	public ModelAndView insertStore(MyStore myStore, MultipartFile upfile, HttpSession session, Image image) {
 		Member member = (Member)session.getAttribute("loginUser");
 		myStore.setUserNo(member.getMemberNo());
+		
 		session.setAttribute("myStore", myStore);
 		log.info("{}", member);
-		
+		log.info("{}", session);
 		log.info("게시글 정보 : {}, 파일 정보: {}", myStore, upfile);
 		productService.insertMyStore(myStore, upfile);
 		return mv.setViewNameAndData("redirect:products", null);
@@ -64,9 +65,26 @@ public class ProductController {
 	}
 	// 상품리스트 화면 호출
 	@GetMapping("products")
-	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page) {
+	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page, HttpSession session) {
 		
 		Map<String, Object> map = productService.listProduct(page);
+		
+		// 로그인한 사용자 정보를 세션에서 뽑음
+		Object loginUser = session.getAttribute("loginUser");
+		
+		// 로그인유저가 myStore 정보가있는지 확인!
+		if (loginUser != null && loginUser instanceof Member) {
+	        Member member = (Member) loginUser;
+	        // 상점정보가 세션에있는지 확인
+	        MyStore myStore = (MyStore) session.getAttribute("myStore");
+	        
+	        // 만약 상점 정보가 없다면 가져오기
+	        if(myStore == null) {
+	        	myStore = productService.getStoreByUserNo(member.getMemberNo());
+	        }
+	        // 상점 정보가 있으면 map에 추가
+	        map.put("myStore", myStore);
+		}
 		
 		return mv.setViewNameAndData("product/list_product", map);
 	}

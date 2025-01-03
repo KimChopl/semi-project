@@ -17,6 +17,8 @@ public interface ProductService {
 	void insertProduct(Product product, MultipartFile[] upfile);
 	// 내상점 등록
 	void insertMyStore(MyStore myStore, MultipartFile upfile);
+	// 내상점 정보확인
+	MyStore getStoreByUserNo(Long memberNo);
 
 
 

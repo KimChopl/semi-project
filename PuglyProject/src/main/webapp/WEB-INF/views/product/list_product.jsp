@@ -84,10 +84,13 @@
             <div class="col">
                 <h2 style="margin-left: 20px;">상품 리스트</h2>
             </div>
+            상점번호 ${sessionScope.myStore.storeNo } <br/>
+            유저번호 ${sessionScope.loginUser.memberNo } <br/>
+            상점주인번호 ${sessionScope.myStore.userNo }<br/>
             <div class="user-a">
                 <c:if test="${ not empty sessionScope.loginUser and sessionScope.loginUser.categoryNo eq 2 }">
 					<c:choose>
-						<c:when test="${ !sessionScope.myStore.storeNo eq null }">
+						<c:when test="${ (sessionScope.loginUser.memberNo eq sessionScope.myStore.userNo) and (empty sessionScope.myStore.storeNo) }">
 	                    <a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save">상점등록</a>
 	                    </c:when>
 	                <c:otherwise>

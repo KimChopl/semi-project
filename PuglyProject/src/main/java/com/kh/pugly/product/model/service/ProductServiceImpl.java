@@ -178,8 +178,12 @@ public class ProductServiceImpl implements ProductService {
 		mapper.insertMyStore(myStore);
 		mapper.insertMyStoreImg(img);
 	}
+	@Override
+	public MyStore getStoreByUserNo(Long memberNo) {
+		return null;
+	}
 	
-
+	
 
 
 

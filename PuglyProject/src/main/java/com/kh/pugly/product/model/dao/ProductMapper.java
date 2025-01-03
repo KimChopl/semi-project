@@ -27,6 +27,7 @@ public interface ProductMapper {
 	// 내상점 등록
 	void insertMyStore(MyStore myStore);
 	void insertMyStoreImg(Image img);
+	MyStore selectStoreByUserNo(Long memberNo);
 
 
 	

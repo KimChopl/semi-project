@@ -203,7 +203,18 @@
 				)
 	</insert>
 
-
+	    <select id="selectStoreByUserNo" resultType="myStore">
+        SELECT
+            STORE_NO,
+            STORE_TITLE,
+            STORE_CONTENT,
+            STORE_COUNT,
+            FK_MEMBER_NO AS userNo
+        FROM
+            TB_MY_STORE
+        WHERE
+            FK_MEMBER_NO = #{userNo}
+    </select>
 
 
 
