@@ -82,7 +82,7 @@
 	                    <div class="row">
 	                        <div class="col">
 	                        농장주에게 전할 말
-	                            <input type="textarea" id="text-booker" name="bookContent">
+	                            <textarea style="resize:none;" id="text-booker" name="bookContent"></textarea>
 	                        </div>
 	                    </div>
 	                </div>
@@ -97,7 +97,7 @@
 	                <div class="container">
 	                    <div class="row">
 	                        <div class="col">
-	                        	<input type="hidden" value="${ farm.farmNo }" name="bookFarmNo">
+	                        	<input type="hidden" value="${ farm.farmNo }" name="farmNo">
 	                            <button id="book">예약 하기</button> <button type="button" id="cancel">취소하기</button>
 	                        </div>
 	                    </div>
