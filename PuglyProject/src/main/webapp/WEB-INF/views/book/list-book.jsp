@@ -1,0 +1,170 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Document</title>
+
+    <style>
+        #body{
+            width: 1200px;
+            margin : auto;
+        }
+        div{
+            border : 0.3px solid gray;
+        }
+        .book-box{
+            height: 120px;
+        }
+        #acceptance{
+            width: 100%;
+            height: 500px;
+        }
+        #cover-btn{
+            height: 50px;
+            text-align: center;
+        }
+        #cancel-content{
+            width: 100%;
+            height: 300px;
+        }
+        .book-content:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="body">
+    	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    로그인 유저 정보 담기
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div class="book-box">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="book-user">
+                                                    예약자 닉네임 / 아이디 / 이름
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-4">날짜</div>
+                                                        <div class="col-4">성인</div>
+                                                        <div class="col-4">어린이</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="farm-title">
+                                                    체험 농장 제목
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="book-content">
+                                                    대충 30자만 들어가게 해봐야징
+                                                    <button class="btn btn-sm btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#booker-content">더보기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="btn">
+                                        체험자, 농장주 구분하기
+                                        <button data-bs-toggle="modal" data-bs-target="#cancel" class="btn btn-danger">취소하기</button>
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#acceptance-btn" class="btn btn-primary">확정하기</button>
+                                        <button>리뷰하기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+<div class="modal" tabindex="-1" id="acceptance-btn">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div id="acceptance">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                                예약 관련 정보
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+          <button type="button" class="btn btn-primary">확정하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="modal" tabindex="-1" id="cancel">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="cancel-answer">
+            <label>취소 사유</label>
+            <div id="content">
+                <input type="textarea" id="cancel-content">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+          <button type="button" class="btn btn-primary">취소확정</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" tabindex="-1" id="booker-content">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>내용 풀
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

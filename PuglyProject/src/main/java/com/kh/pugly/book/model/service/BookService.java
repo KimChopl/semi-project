@@ -6,10 +6,11 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.book.model.dto.BookCondition;
 import com.kh.pugly.book.model.vo.Book;
+import com.kh.pugly.member.model.vo.Member;
 
 public interface BookService {
 	
-	void insertBook(Book book);
+	void insertBook(Book book, Member loginUser);
 	
 	void insertDecide(BookCondition condition);
 	

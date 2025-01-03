@@ -3,5 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.kh.pugly.book.model.dao.BookMapper">
-  
+  	<insert id="insertBook" parameterType="book">
+  		INSERT
+  		  INTO
+  		       TB_BOOK
+  		       (
+  		       BOOK_NO,
+  		       BOOK_FARM_NO,
+  		       BOOK_USER_NO,
+  		       PLAY_DATE,
+  		       BOOK_CONTENT,
+  		       ADULT,
+  		       KID
+  		       )
+  		VALUES
+  		       (
+  		       SEQ_BOOK.NEXTVAL,
+  		       #{bookFarmNo},
+  		       #{userNickname},
+  		       #{playDate},
+  		       #{bookContent},
+  		       #{adultNo},
+  		       #{kidNo}
+  		       )
+  	</insert>
   </mapper>

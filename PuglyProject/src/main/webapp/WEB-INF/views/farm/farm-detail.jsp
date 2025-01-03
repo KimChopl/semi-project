@@ -104,14 +104,14 @@
                             	<c:choose>
                             		<c:when test="${ img.imgLevel eq 1 }">
                               <div class="carousel-item active">
-                                <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA4MjBfODQg%2FMDAxNzI0MTU2NjI5Mjk0.t3SbxchS-G2nvm6HjaeKZq0_E5UKXdKtSyC99cH3DVwg.2oRnauuOTI_5LhKzLF1SdRfzO46bzW8-7ElgYQ5o0Dkg.JPEG%2F%25B4%25D9%25BF%25EE%25B7%25CE%25B5%25E5%25C6%25C4%25C0%25CF%25A3%25DF20240820%25A3%25DF212319.jpg&type=a340" class="d-block w-100" alt="${ img.originImgName }">
+                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
                               </div>
                             		</c:when>
-                            		<c:otherwise>
+                            		<c:when test="${ img.imgLevel eq 2 }">
                               <div class="carousel-item">
-                                <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F015%2F2023%2F06%2F05%2F0004852593_001_20230605145403049.jpg&type=a340" class="d-block w-100" alt="${ img.originImgName }">
+                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
                               </div>
-                            		</c:otherwise>
+                            		</c:when>
                             	</c:choose>
                             </c:forEach>
                             </div>
