@@ -33,7 +33,7 @@ public class BookServiceImpl implements BookService {
 	private void checkedMember(Member loginUser) {
 		Member checkMember = mm.selectMemberInfo(loginUser.getMemberNo());
 		
-		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!loginUser.getNickName().equals(checkMember.getNickName())
+		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!loginUser.getNickname().equals(checkMember.getNickname())
 				|| !!!loginUser.getMemberName().equals(checkMember.getMemberName())) {
 			//Exception
 		}

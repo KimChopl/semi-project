@@ -10,14 +10,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
   	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
-	<!-- Default theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
-	<!-- Semantic UI theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/semantic.min.css"/>
-	<!-- Bootstrap theme -->
 	<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/bootstrap.min.css"/>
     <style>
         body {
@@ -139,8 +135,8 @@
 
 
                 <li><a href="/pugly">HOME</a></li>
-                <li><a href="/pugly/products">농산물</a></li>
-                <li><a href="/pugly/farms">농장</a></li>
+                <li><a href="농산물핸들러">농산물</a></li>
+                <li><a href="farms">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>
             </ul>
         </div>
@@ -159,7 +155,7 @@
 
                         <c:if test="${ not empty sessionScope.loginUser }">
 	                        <div id="profile-menu">
-	                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
+	                            <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
 	                            <a href="/pugly/my_page.member">마이페이지</a>
 	                            <a href="/pugly/list.book">예약상태</a>
 	                            <a href="장바구니핸들러">장바구니</a>

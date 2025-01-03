@@ -47,7 +47,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    ${ sessionScope.loginUser.nickName }님 예약 현황
+                    ${ sessionScope.loginUser.nickname }님 예약 현황
                 </div>
             </div>
             <div class="row">
@@ -84,6 +84,7 @@
                                             </div>
                                             <div class="col-9">
                                                 <div class="book-content">
+                                                	${ b.bookSub }
                                                     <button value="${ b.bookContent }" class="btn btn-sm btn btn-outline-dark book-content" data-bs-toggle="modal" data-bs-target="#booker-content">더보기</button>
                                                 </div>
                                             </div>
