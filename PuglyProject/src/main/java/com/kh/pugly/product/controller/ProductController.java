@@ -14,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Image;
+import com.kh.pugly.member.model.vo.Member;
 import com.kh.pugly.product.model.service.ProductService;
+import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 
 import lombok.RequiredArgsConstructor;
@@ -27,14 +29,9 @@ public class ProductController {
 	private final ProductService productService;
 	private final ModelAndViewUtil mv;
 	
-	// 테스트 화면
-	@GetMapping("testmain")
-	public String testMain() {
-		return "product/test-main";
-	}
 	
 	// 내상점 화면 호출
-	@GetMapping("/mystore")
+	@GetMapping("/mystores")
 	public String myStore() {
 		
 		return "product/my_store";
@@ -45,14 +42,25 @@ public class ProductController {
 	public String insertForm() {
 		return "product/insert_product";
 	}
-	
+	// 내상점 등록
+	@PostMapping("insert.store")
+	public ModelAndView insertStore(MyStore myStore, MultipartFile upfile, HttpSession session, Image image) {
+		Member member = (Member)session.getAttribute("loginUser");
+		myStore.setUserNo(member.getMemberNo());
+		session.setAttribute("myStore", myStore);
+		log.info("{}", member);
+		
+		log.info("게시글 정보 : {}, 파일 정보: {}", myStore, upfile);
+		productService.insertMyStore(myStore, upfile);
+		return mv.setViewNameAndData("redirect:products", null);
+	}
 	// 상품등록 
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session, Image image) {
 		
 		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
 		productService.insertProduct(product, upfile);
-		return mv.setViewNameAndData("redirect:testmain", null);
+		return mv.setViewNameAndData("redirect:products", null);
 	}
 	// 상품리스트 화면 호출
 	@GetMapping("products")

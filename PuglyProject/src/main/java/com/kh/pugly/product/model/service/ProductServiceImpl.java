@@ -23,6 +23,7 @@ import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.product.model.dao.ProductMapper;
+import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	private final ProductMapper mapper;
 	private final ServletContext context;
+	private MultipartFile upfile;
 	
 	// 상품등록 정상값 확인 메소드
 	private void validateProduct(Product product) {
@@ -77,6 +79,26 @@ public class ProductServiceImpl implements ProductService {
 		return imagesList;
 	}
 	
+	private Image myStoreSaveImg(MultipartFile upfile) {
+		String fileName = upfile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+		int randomNum = (int)(Math.random() * 90000) + 10000;
+		String changeName = currentTime + randomNum + ext;
+		String savePath = context.getRealPath("/resources/mystore_profile/");
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch(IOException e) {
+			throw new FailToFileUploadException("파일오류!");
+		}
+		Image image = new Image();
+		image.setOriginImgName(fileName);
+		image.setChangeImgName("/resources/mystore_profile/" + changeName);
+		image.setImgLevel(1);
+		image.setImgPath("/resources/mystore_profile/");
+		return image;
+	}
+	
 	// 페이지 체크
 	private int getTotalCount() {
 		
@@ -111,7 +133,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 
-	// 상품등록 메소드 신버전
+	// 상품등록 메소드 
 	@Override
 	public void insertProduct(Product product, MultipartFile[] upfile) {
 		validateProduct(product);
@@ -149,6 +171,12 @@ public class ProductServiceImpl implements ProductService {
 		responseData.put("imageList", imageList);
 		
 		return responseData;
+	}
+	@Override
+	public void insertMyStore(MyStore myStore, MultipartFile upfile) {
+		Image img = myStoreSaveImg(upfile);
+		mapper.insertMyStore(myStore);
+		mapper.insertMyStoreImg(img);
 	}
 	
 

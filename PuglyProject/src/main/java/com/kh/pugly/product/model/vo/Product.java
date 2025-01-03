@@ -30,6 +30,8 @@ public class Product {
 	private String deliveryPrice;			// 배송비
 	private String productType;				// 상품타입
 	
+	
+	
 	private Image image;					
 	private List<Image> imageList;
 }
