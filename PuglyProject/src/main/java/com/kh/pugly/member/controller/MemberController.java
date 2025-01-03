@@ -1,20 +1,20 @@
 package com.kh.pugly.member.controller;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.member.model.service.MemberService;
-import com.kh.pugly.member.model.service.PasswordEncoder;
 import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
@@ -26,76 +26,127 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	private final MemberService memberService;
 	private final ModelAndViewUtil mv;
-	private final PasswordEncoder passEncrypt;
 	
 	
 	@GetMapping("login_form.member")
-	public String loginEnrollForm() {
-		return "member/login_form";
+	public ModelAndView loginEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("/member/login_form", responseData);
 	}
 	
 	@PostMapping("login.member")
 	public ModelAndView selectMember(Member member, HttpSession session) {
-
 		Member loginUser = memberService.selectMember(member);
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		//Member loginUser = memberService.selectMember(member);
-		//Member loginUser = memberService.selectMember(member);
-
-		
-		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		//log.info("{}", memberPwd);
-		
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		//log.info("{}", loginUser);
-		//log.info("{}", addresses);
-		
-		
-		//String memberPwd = passEncrypt.encode(member.getMemberPwd());
-		
 		session.setAttribute("loginUser", loginUser);
-		session.setAttribute("addresses", memberService.selectAdresses(loginUser.getMemberNo()));
-		
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
 	@GetMapping("logout.member")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loginUser");
-		session.removeAttribute("addresses");
 		return "redirect:/";
 	}
 	
+	@GetMapping("find_id.member")// 아이디찾기 폼
+	public ModelAndView findIdEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("member/find_member_id_form", responseData);
+	}
+	
+	@PostMapping("find_id.member")// 아이디찾기
+	public ModelAndView findMemberId(Member member) {
+		Map<String, Object> responseData = memberService.findMemberId(member);
+		return mv.setViewNameAndData("/member/find_member_id_form", responseData);
+	}
+	
+	@GetMapping("find_pwd.member")
+	public ModelAndView findPwdEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("member/find_member_pwd_form", responseData);
+	}
+	
+	@PostMapping("find_pwd.member")
+	public ModelAndView findMemberPassword(Member member) {
+		
+		Map<String, Object> responseData = memberService.findMemberPassword(member);
+		return mv.setViewNameAndData("/member/new_password_form", responseData);
+	}
+	
+	@PostMapping("change_password.member")
+	public ModelAndView changeNewPassword(Member member) {
+		memberService.changePassword(member);
+		return mv.setViewNameAndData("redirect:/login_form.member", null);
+	}
+	
 	@GetMapping("my_page.member")
-	public String myPage() {
-		return "member/my_page";
+	public ModelAndView myPage(HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		Map<String, Object> map = memberService.selectMemberInfo(loginUser.getMemberNo());
+		return mv.setViewNameAndData("member/my_page", map);
 	}
 	
 	@GetMapping("enroll_form.address")
-	public ModelAndView updateFormAddress() {
-		Map<String, Object> map = memberService.selectStateCategory();
-		return mv.setViewNameAndData("member/update_enroll_form", map);
-	}
-	
-	@GetMapping("insert_enroll_form.member")
-	public ModelAndView insertEnrollForm() {
-		return null;	
+		public ModelAndView updateFormAddress(HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo());
+		return mv.setViewNameAndData("member/enroll_form_address", map);
 	}
 	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
-		Map<String, Object> map = memberService.selectStateCategory();
+		Map<String, Object> map = memberService.selectCategory();
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
+	@PostMapping("insert.member")
+	public ModelAndView insertMember(@RequestPart(value="upfile",required = false) MultipartFile upfile, Member member, Address address) {
+		memberService.insertMember(member, address, upfile);
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	@PostMapping("insert.address")
+	public ModelAndView insertAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.insertNewAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
+	}
+	
+	@PostMapping("update.address")
+	public ModelAndView updateAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.updateAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
+	}
+	
+	@PostMapping("delete.address")
+	public ModelAndView deleteAddress(Long memberNo, Long addressNo, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteAddress(memberNo, loginUser.getMemberNo(),addressNo);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
+	}
+	
+	@GetMapping("update_enroll_form.member")
+	public ModelAndView updateEnrollForm() {
+		// session에 값이 있어서 따로 뽑을 필요가 없음 (회원정보수정)
+		return mv.setViewNameAndData("member/update_enroll_form", null);
+	}
 	@PostMapping("update.memberInfo")
-	public ModelAndView updateMemberInfo(ModelAndView mv, HttpSession session, Member member) {
+	public ModelAndView updateMemberInfo(@RequestPart(value="upfile",required = false)MultipartFile upfile, HttpSession session, Member member) {
 		Member loginMember = (Member)session.getAttribute("loginUser");
-		memberService.updateMember(member, loginMember);
-		return mv;
+		
+		Member loginUser = memberService.updateMember(member, loginMember, upfile);
+
+		session.setAttribute("loginUser", loginUser);
+
+		return mv.setViewNameAndData("redirect:/my_page.member", null);
 	}	
+	
+	@PostMapping("delete.member")
+	public ModelAndView deleteMember(Member member, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		session.removeAttribute("loginUser");
+		return mv.setViewNameAndData("redirect:/", null);
+	}
+	
+	
 }

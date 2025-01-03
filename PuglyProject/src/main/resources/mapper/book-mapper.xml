@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.kh.pugly.book.model.dao.BookMapper">
+  	<sql id="bookColumn">
+  		SELECT
+  		      B.BOOK_NO bookNo,
+  		      BOOK_FARM_NO farmNo,
+  		      FARM_TITLE farmTitle,
+  		      BOOK_USER_NO memberNo,
+  		      NICKNAME nickname,
+  		      BOOK_DATE bookDate,
+  		      PLAY_DATE playDate,
+  		      BOOK_CONTENT bookContent,
+  		      ADULT adultNo,
+  		      KID kidNo,
+			  D.BOOK_NO as "decide",
+			  C.BOOK_NO as "cancel",
+			  PL.BOOK_NO as "play",
+			  PY.BOOK_NO as "pay" 		      
+  		 FROM
+  		      TB_BOOK B
+  		 JOIN
+  		      TB_MEMBER ON(MEMBER_NO = BOOK_USER_NO)
+  		 JOIN
+  		      TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_DECIDE D ON (D.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_CANCEL C ON (C.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_PLAY PL ON (PL.BOOK_NO = B.BOOK_NO)
+  		 LEFT
+  		 JOIN
+  		      TB_BOOK_PAY PY ON (PY.BOOK_NO = B.BOOK_NO)
+  	</sql>
+  	<insert id="insertBook" parameterType="book">
+  		INSERT
+  		  INTO
+  		       TB_BOOK
+  		       (
+  		       BOOK_NO,
+  		       BOOK_FARM_NO,
+  		       BOOK_USER_NO,
+  		       PLAY_DATE,
+  		       BOOK_CONTENT,
+  		       ADULT,
+  		       KID
+  		       )
+  		VALUES
+  		       (
+  		       SEQ_BOOK.NEXTVAL,
+  		       #{farmNo},
+  		       #{nickname},
+  		       #{playDate},
+  		       #{bookContent},
+  		       #{adultNo},
+  		       #{kidNo}
+  		       )
+  	</insert>
+  	<select id="bookListCount" parameterType="long" resultType="_int">
+  		SELECT
+  		       COUNT(BOOK_NO)
+  		  FROM
+  		       TB_BOOK
+  		 WHERE
+  		       BOOK_USER_NO = #{memberNo}
+  	</select>
+  	<select id="selectBookList" parameterType="long" resultType="book">
+  		<include refid="bookColumn" />
+  		WHERE
+  		      BOOK_USER_NO = #{memberNo}
+  	</select>
+  	
+  	<select id="selectBookDecide" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      DECIDE_DATE as "date"
+  		 FROM
+  		      TB_BOOK_DECIDE
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookCancel" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      CANCEL_DATE as "date",
+  		      CANCEL_CONTENT content
+  		 FROM
+  		      TB_BOOK_CANCEL
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookPay" parameterType="long" resultType="bookStatus">
+  		SELECT
+  		      BOOK_NO bookNo,
+  		      PAY_DATE as "date"
+  		 FROM
+  		      TB_BOOK_PAY
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	
+  	<select id="selectBookPlay" parameterType="long" resultType="long">
+  		SELECT
+  		      BOOK_NO
+  		 FROM
+  		      TB_BOOK_PLAY
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	<select id="selectBookListFarmer" parameterType="long" resultType="book">
+  		SELECT
+		       B.BOOK_NO bookNo,
+		       BOOK_FARM_NO farmNo,
+		       FARM_TITLE farmTitle,
+		       BOOK_USER_NO memberNo,
+		       M2.NICKNAME nickname,
+		       BOOK_DATE bookDate,
+		       PLAY_DATE playDate,
+		       BOOK_CONTENT bookContent,
+		       ADULT adultNo,
+		       KID kidNo,
+		       D.BOOK_NO as "decide",
+			   C.BOOK_NO as "cancel",
+			   PL.BOOK_NO as "play",
+			   PY.BOOK_NO as "pay"
+		  FROM
+		       TB_BOOK B
+		  JOIN
+		       TB_FARM ON (BOOK_FARM_NO = FARM_NO)
+		  JOIN
+		       TB_MEMBER M1 ON(M1.MEMBER_NO = SELLER_NO)
+		  JOIN
+		       TB_MEMBER M2 ON(M2.MEMBER_NO = BOOK_USER_NO)
+		  LEFT
+  		  JOIN
+  		      TB_BOOK_DECIDE D ON (D.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_CANCEL C ON (C.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_PLAY PL ON (PL.BOOK_NO = B.BOOK_NO)
+  		  LEFT
+  		  JOIN
+  		      TB_BOOK_PAY PY ON (PY.BOOK_NO = B.BOOK_NO)
+		 WHERE
+		       SELLER_NO = #{memberNo}
+  	</select>
+  	<select id="selectBookCountFarmer" parameterType="long" resultType="_int">
+  		SELECT
+		      COUNT(BOOK_NO)
+		  FROM
+		       TB_BOOK
+		  JOIN
+		       TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+		 WHERE
+		       SELLER_NO = #{memberNo}
+  	</select>
+  	<select id="selectByNo" resultType="book" parameterType="long">
+  		<include refid="bookColumn" />
+  		WHERE
+  		      BOOK_NO = #{bookNo}
+  	</select>
+  	<insert id="insertDecide" parameterType="long">
+  		INSERT
+  		  INTO
+  		      TB_BOOK_DECIDE
+  		      (
+  		      BOOK_NO
+  		      )
+  	   VALUES
+  	          (
+  	          #{bookNo}
+  	          )
+  	</insert>
+  </mapper>

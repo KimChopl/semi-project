@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +23,8 @@
         } 
 
         #type > select{
-            width: 70px;
-            height: 25px;
+            width: 120px;
+            height: 30px;
             text-align: center;
         }
 
@@ -40,14 +41,14 @@
             border: 2px double rgb(88, 88, 88);
         }
 
-        a{
+        .a{
             font-size: small;
             font-family: 'Courier New', Courier, monospace;
         }
 
         #memberInfo > input{
             width: 200px;
-            height: 30px;
+            height: 40px;
             margin-top: 5px;
         }
 
@@ -93,9 +94,11 @@
             </div>
             <div id="type">
                 <select name="categoryNo" id="memberType">
-                    <option value="3">일반</option>
-                    <option value="2">판매자</option>
-                    <option value="1">관리자</option>
+					<c:forEach items="${ memberCategory }" var="mc">
+						<c:if test="${ mc.categoryName ne '정지' }">
+	                    	<option value="${ mc.categoryNo }">${ mc.categoryName }</option>
+						</c:if>
+					</c:forEach>                
                 </select>
             </div>
             <br>
@@ -107,14 +110,14 @@
         <br>
         <div id="user-find-or-join">
             <!-- header에 회원가입이 있다면 사라질 요소 -->
-            <a href="join_enroll_form.member"> 회원가입 </a>|
+            <a href="join_enroll_form.member" class="a"> 회원가입 </a>|
 
-            <a href="find_id.member"> 아이디 찾기 </a>|
-            <a href="find_pwd.member"> 비밀번호 찾기</a>
+            <a href="find_id.member" class="a"> 아이디 찾기 </a>|
+            <a href="find_pwd.member" class="a"> 비밀번호 찾기</a>
         </div>
     </div>
 
-
+	<jsp:include page="../common/footer.jsp" />
 
 
 

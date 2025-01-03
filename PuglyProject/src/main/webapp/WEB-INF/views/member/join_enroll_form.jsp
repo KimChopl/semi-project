@@ -8,34 +8,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #wrap{
+    	div{
             box-sizing: border-box;
+            /*border:1px solid red;*/
+    	}
+    
+        #wrap{
             margin: auto;
-            /*border: 1px solid red;*/
-            text-align: center;
-            width: 400px;
-            height: 300px;
+            width: 500px;
+            height: 500px;
             background-color: rgb(243, 243, 243);
             border-radius: 5px;
+            text-align: center;
+           	margin-top:10px;
         }
 
         input{
-            width: 250px;
-            height: 30px;
-            margin-top: 10px;
-            margin-bottom: 3px;
+            width: 280px;
+            height: 35px;
             border-radius: 5px;
             border: 1px solid;
+            padding: 10px;
         }
 
-        div{
+        .div{
             width: 400px;
             height: 50px;
+            padding: auto;
+            margin: auto;
+            margin-top:10px;
         }
 
         select{
-            width: 70px;
-            height: 25px;
+            width: 110px;
+            height: 30px;
             margin-left: 10px;
         }
 
@@ -52,52 +58,86 @@
             background-color: green;
             border: 3px double rgb(0, 141, 7);
         }
+        
+        .p{
+        	color: green;
+        	font-size: 14px;
+        	font-weight: bolder;
+        	margin-top:0;
+        	padding-top:0;
+        }
 
+		.file{
+			border:none;
+		}
     </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     
     <jsp:include page="../common/menubar.jsp" />
     
+   <form action="insert.member" method="post" enctype="multipart/form-data">
     <div id="wrap">
-        <form action="insert.member" method="post">
-            <div>
+		<div class="custom-file">
+			  <input type="file" class="custom-file-input" id="customFile" name="upfile">
+			  <label class="custom-file-label" for="customFile">Choose file</label>
+			</div>
+		
+			<script>
+				// Add the following code if you want the name of the file appear on select
+				$(".custom-file-input").on("change", function() {
+				  var fileName = $(this).val().split("\\").pop();
+				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+				});
+			</script>
+			
+            <div class="div">
                 <input type="text" placeholder="이름" name="memberName" required/>
             </div>
-            <div>
+           
+            <div class="div">
                 <input type="text" placeholder="아이디" name="memberId" required/>
             </div>
-            <div>
+            <div class="div">
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
-            <div>
-                <input type="text" placeholder="닉네임" name="nickname" />
+            <div class="div">
+                <input type="text" placeholder="닉네임" name="nickName" />
             </div>
-            <div>
-                <input type="text" placeholder="전화번호 (-포함)" required/>
+            	<p class="p">
+            		※닉네임을 작성하지 않을 시 아이디가 닉네임으로 지정됩니다.
+            	</p>
+            <div class="div">
+                <input type="text" placeholder="전화번호(-포함)" required name="phone"/>
             </div>
-            <div>
+                <input type="hidden" name="addressType" value="1"/>
+            <div class="div">
                 <select name="stateCode">
                 <c:forEach var="s" items="${ stateCategory }">
                     <option value="${ s.stateCode }">${ s.stateName }</option>
                 </c:forEach>
                 </select>
-                <input type="text" placeholder="상세주소" required />
+                <input type="text" placeholder="상세주소" required name="district" />
             </div>
-            <div>
+            <div class="div">
                 <button>회원가입</button>
                 <select name="categoryNo">
-                    <option value="3">일반</option>
-                    <option value="2">판매자</option>
-                    <option value="1">관리자</option>
+                <c:forEach var="mc" items="${ memberCategory }">
+                <c:if test="${ mc.categoryName ne '정지' }">
+                    <option value="${ mc.categoryNo }"<c:if test="${ mc.categoryName eq '관리자' }"> disabled=disabled </c:if>>${ mc.categoryName }</option>
+                </c:if>
+                </c:forEach>
                 </select>
-        	</div>
-            </form>
-    </div>
+    		</div>
+        </div>
+      </form>
 
-
+	<jsp:include page="../common/footer.jsp" />
 
 
     

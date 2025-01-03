@@ -15,17 +15,19 @@ import lombok.ToString;
 @ToString
 public class Book {
 	private Long bookNo;
-	private Long bookFarmNo;
-	private String userNickname;
+	private Long farmNo;
+	private String nickname;
+	private Long memberNo;
 	private Date bookDate;
 	private Date playDate;
-	private String bookCheck;
-	private String bookCancel;
-	private String bookPay;
-	private String playCheck;
-	private String bookComplete;
 	private int adultNo;
 	private int kidNo;
-	private String deletePlayer;
-	private String deleteSeller;
+	private String bookContent;
+	private String farmTitle;
+	private String bookSub;
+	private String phone;
+	private String decide;
+	private String cancel;
+	private String play;
+	private String pay;
 }

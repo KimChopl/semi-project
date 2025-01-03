@@ -48,18 +48,23 @@
 
 	 -->
  	<mybatis-spring:scan base-package="com.kh.pugly.member.model.dao"/>
+ 	<mybatis-spring:scan base-package="com.kh.pugly.member.mypage.model.dao"/>
 	<mybatis-spring:scan base-package="com.kh.pugly.farm.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.board.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.common.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.product.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.reply.model.dao"/>
  	<mybatis-spring:scan base-package="com.kh.pugly.review.model.dao"/>
+ 	<mybatis-spring:scan base-package="com.kh.pugly.book.model.dao"/>
+
  	
  	<!--  File Upload Bean Regist -->
  	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
  		<property name="maxUploadSize" value="100000000" />
  		<property name="maxInMemorySize" value="10000000" />
  	</bean>
+	 
+	
 	 
 	 
 </beans>

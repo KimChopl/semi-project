@@ -22,5 +22,5 @@ public class MyStore {
 	private String storeContent;	// 상점 소개
 	private int storeCount;		// 상점 조회수
 	
-
+	private Long userNo;
 }

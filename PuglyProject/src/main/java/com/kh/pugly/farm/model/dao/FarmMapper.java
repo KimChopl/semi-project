@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
+import com.kh.pugly.farm.model.vo.Facility;
 import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
@@ -50,5 +51,9 @@ public interface FarmMapper {
 	List<FarmProduct> selectFarmProduct();
 	
 	int countSuchList(Map<String, Object> suchMap);
+	
+	List<Facility> selectFacility();
+
+	int insertFacility(Facility fac);
 
 }

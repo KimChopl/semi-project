@@ -15,6 +15,7 @@ public class Member {
 	
 	private Long memberNo;
 	private int categoryNo;
+	private String categoryName;
 	private String memberId;
 	private String memberPwd;
 	private String nickName;

@@ -42,17 +42,15 @@
                        REVIEW_POST_NO = TB_FARM.FARM_NO
                  GROUP
                     BY
-                       REVIEW_POST_NO),0) rating
+                       REVIEW_POST_NO),0) rating,
+                IMG_PATH imgPath
 		  FROM
 		       TB_FARM
 		  JOIN
 		       TB_MEMBER M ON(SELLER_NO = M.MEMBER_NO)
 		  LEFT
 		  JOIN
-		       TB_IMAGE_BRIGE ON (IMG_POST_NO = FARM_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON(IMG_NO = IMG_BRIGE_NO)
+		       TB_IMAGE ON(IMG_POST_NO = FARM_NO)
 		  JOIN
 		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
 		  JOIN
@@ -62,9 +60,11 @@
 		 WHERE
 		       DELETE_ASK = 'N'
 		   AND
-		       IMG_LEVEL = 1
+		       (IMG_LEVEL = 1 OR IMG_LEVEL IS NULL)
 		   AND
-		       IMG_CA_NO = 3
+		       (CATEGORY_NO = 3
+           OR
+               CATEGORY_NO IS NULL)
 		   AND
 		       ADDRESS_TYPE = 1
 	</sql>
@@ -95,6 +95,7 @@
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
+			<result property="imgPath" column="imgPath" />
 		</collection>
 	</resultMap>
 	<select id="selectFarmList" resultMap="farmList">
@@ -211,9 +212,11 @@
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
+			<result property="imgLevel" column="imgLevel"/>
+			<result property="imgPath" column="imgPath" />
 		</collection>
 			
-		<collection property="facility" ofType="fac">
+		<collection property="facility" ofType="facility">
 			<result property="facilityNo" column="facilityNo"/>
 			<result property="facilityName" column="facilityName"/>
 		</collection>
@@ -263,17 +266,16 @@
 		                   REVIEW_POST_NO),0) rating,
 		       PRODUCT_NAME productName,
 		       CATEGORY_NAME categoryName,
-		       CATEGORY_NO categoryNo
+		       CATEGORY_NO categoryNo,
+		       IMG_LEVEL imgLevel,
+		       IMG_PATH imgPath
 		  FROM
 		       TB_FARM
 		  JOIN
 		       TB_MEMBER M ON (M.MEMBER_NO = SELLER_NO)
 		  LEFT
 		  JOIN
-		       TB_IMAGE_BRIGE ON(FARM_NO = IMG_POST_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON (IMG_POST_NO = IMG_BR_NO)
+		       TB_IMAGE ON (IMG_POST_NO = FARM_NO)
 		  JOIN
 		       TB_FARM_PRODUCT ON (FARM_PRODUCT_NO = PRODUCT_NO)
 		  LEFT
@@ -292,6 +294,8 @@
 		       DELETE_ASK = 'N'
 		   AND
 		       IMG_STATUS = 'Y'
+		   AND
+		       TB_IMAGE.CATEGORY_NO = 3
 	</select>
 	<update id="updateCount" parameterType="long">
 		UPDATE
@@ -303,4 +307,52 @@
 		   AND
 		       DELETE_ASK = 'N'
 	</update>
+	<select id="selectFacility" resultType="facility">
+		SELECT
+		      FACILITY_NO facilityNo,
+		      FACILITY_NAME facilityName
+		 FROM
+		      TB_FACILITY
+	</select>
+	<insert id="insertFarm" parameterType="farm" useGeneratedKeys="true">
+		<selectKey keyProperty="farmNo" resultType="long" order="BEFORE">
+			SELECT
+			      SEQ_FARM.NEXTVAL
+			  FROM
+			      DUAL
+		</selectKey>
+		INSERT
+		  INTO
+		       TB_FARM
+		       (
+				FARM_NO,
+				SELLER_NO,
+				FARM_PRODUCT_NO,
+				FARM_TITLE,
+				FARM_CONTENT,
+				BEWARE_LIST,
+				FARM_PRICE,
+				FARM_ADDRESS_NO
+		       )
+		VALUES
+		       (
+		       #{farmNo},
+		       #{seller},
+		       #{productName},
+		       #{farmTitle},
+		       #{farmContent},
+		       #{bewareList},
+		       #{farmPrice},
+		       #{address}
+		       )
+	</insert>
+	
+	<insert id="insertFacility" parameterType="facility">
+		INSERT
+		  INTO
+		      TB_FAC_BRIGE
+		VALUES
+		      (#{facilityName},
+		       #{facilityNo})
+	</insert>
 </mapper>

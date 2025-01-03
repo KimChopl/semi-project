@@ -45,16 +45,19 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: 600;
             margin:20px;
+            font-family: 'SUITE-Regular';
         }
         
-        a{
+        .a{
         	text-decoration: none;
         	color: black;
+        	font-family: 'SUITE-Regular';
+
         }
         
-        a:hover{
+        .a:hover{
             list-style: none;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'SUITE-Regular';
             color: rgb(121, 121, 121);
             cursor: pointer;
             text-decoration: underline;
@@ -74,35 +77,56 @@
             left: 280px;
             bottom: 100px;
             margin-left: 20px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #address{
             width: 400px;
             height: 50px;
             margin-left: 20px;
+            position: relative;
+            bottom: 80px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #member-name{
             width: 300px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            bottom: 70px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
         #phone{
             width: 350px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            left: 280px;
+            bottom: 125px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #member-type{
             width: 200px;
             height: 30px;
             margin-left: 20px;
+            position: relative;
+            bottom: 60px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #enroll-date{
             position: relative;
             left: 300px;
             bottom: 90px;
+            font-family: 'SUITE-Regular';
+            font-weight: 700;
         }
 
         #img{
@@ -111,14 +135,35 @@
             height: 100px;
             border-radius: 100px;
             display: inline-block;
-            border: 1px solid black;
             background-color: rgb(255, 255, 255) ;
+        }
+        
+        .img{
+            vertical-align: middle;
+            width: 100px;
+            height : 100px;
+            border-radius: 100px;
+            margin: 0;
+            padding: 0;
         }
 
         #address-update{
+        	width: 100px;
+        	height: 40px;
+        	background-color: orange;
+        	border: outset;
             position: relative;
-            left: 380px;
+            left: 360px;
             bottom: 40px;
+            font-family: 'SUITE-Regular';
+            font-weight: 900;
+        }
+        
+        @font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
         }
 
         
@@ -133,66 +178,68 @@
     <div id="body">
         <div id="page-bar">
             <ul id="menu">
-                <li><a href="update.member">내 정보 수정</a></li>
+                <li><a href="update_enroll_form.member" class="a">내 정보 수정</a></li>
                 
-                <li><a href="select.cart">장바구니</a></li>
+                <li><a href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }" class="a">장바구니</a></li>
                 
-                <li><a href="select.myBook">내 예약 목록</a></li>
+                <li><a href="select.myBook?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 예약 목록</a></li>
                 
-                <li><a href="select.myOrder">내 주문 목록</a></li>
+                <li><a href="select.myOrder?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 주문 목록</a></li>
                 
-                <li><a href="select.attention">찜 목록</a></li>
+                <li><a href="select.attention?memberNo=${ sessionScope.loginUser.memberNo }" class="a">찜 목록</a></li>
                 
-                <li><a href="select.myBoardList">내 게시글</a></li>
+                <li><a href="select.myBoardList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 게시글</a></li>
                 
-                <li><a href="select.myReplyList">내 댓글</a></li>
-                <c:choose>
-                    <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
-                        
-                        <!-- 판매자 유저에게만 띄울 메뉴-->
-                        <li><a href="select.myFarmList">내 농장</a></li>
-                        
-                        <li><a href="select.myProductList">내 판매 목록</a></li>
-                        <!-- 여기까지 판매자 -->
-                    </c:when>
-                    <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
-                        
-                        <!-- 일반 유저에게만 띄울 메뉴 -->
-                        <li><a href="update.seller">판매자 신청하기</a></li>   
-                    </c:when>
-                </c:choose>
+                <li><a href="select.myReplyList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 댓글</a></li>
+	                <c:choose>
+	                    <c:when test="${ sessionScope.loginUser.categoryName eq '판매자' }">
+	                        
+	                        <!-- 판매자 유저에게만 띄울 메뉴-->
+	                        <li><a href="select.myFarmList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 농장</a></li>
+	                        
+	                        <li><a href="select.myProductList?memberNo=${ sessionScope.loginUser.memberNo }" class="a">내 판매 목록</a></li>
+	                        <!-- 여기까지 판매자 -->
+	                    </c:when>
+	                    <c:when test="${ sessionScope.loginUser.categoryName eq '일반이용자' }">
+	                        
+	                        <!-- 일반 유저에게만 띄울 메뉴(폼 작성) -->
+	                        <li><a href="update.seller" class="a">판매자 신청</a></li>   
+	                    </c:when>
+	                </c:choose>
             </ul>
         </div>
         <div id="memberInfo">
             <div id="info">
-                <div id="img"><img src="" alt=""></div>
+            	
+                <div id="img">
+                	<c:if test="${ not empty memberImage }">
+                		<img src="${ memberImage.changeImgName }" class="img">
+                	</c:if>
+                </div>
                 <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
-                <c:choose>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 3 }">
-	                	<label>일반</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 2 }">
-	                	<label>판매자</label>
-	                </c:when>
-	                <c:when test="${ sessionScope.loginUser.categoryNo eq 1 }">
-	                	<label>관리자</label>
-	                </c:when>
+                <c:forEach items="${ memberCategory }" var="m">
+                <c:if test="${ m.categoryNo eq sessionScope.loginUser.categoryNo }">
+	                	<label>${ m.categoryName }</label>
+                </c:if>
+                </c:forEach>
 	                
-                </c:choose>
                 </div>
                 <br>
                 <div id="member-name">이름 : <label>${ sessionScope.loginUser.memberName }</label></div>
                 <br>
-                
-                <c:forEach var="address" items="${ sessionScope.addresses }">
-                <div id="address">주소 : 
-            							<label>${ address.stateName }</label><br>
-                                        <label>${ address.district }</label></div>
-                </c:forEach>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
+                
                 <br>
+                <c:forEach var="address" items="${ addresses }">
+		            <c:if test="${ address.addressType eq 1 }">
+		                <div id="address">주소 : 
+							<label>${ address.stateName }</label><br>
+                          	<label>${ address.district }</label>
+		                </div>
+		            </c:if>
+                </c:forEach>
                 <button id="address-update">주소 수정</button>
             </div>
         </div>
@@ -208,6 +255,8 @@
             
         })
 </script>
+
+	<jsp:include page="../common/footer.jsp" />
 
 
 </body>

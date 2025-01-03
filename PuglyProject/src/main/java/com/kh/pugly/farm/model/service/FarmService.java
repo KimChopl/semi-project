@@ -3,8 +3,10 @@ package com.kh.pugly.farm.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
-import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -21,21 +23,22 @@ public interface FarmService {
 	
 	Map<String, Object> suchByKeyword(Map<String, Object> suchMap);
 
-	void insertFarm(Farm farm, Image img, Member member);
+	void insertFarm(Farm farm, MultipartFile[] multi, Member member, Address ad, int[] facilityNo);
 	
 	void likeFarm(LikeAndAttention like);
 
 	void attetionFarm(LikeAndAttention attention);
 	
-	void deleteFarm(ImageBrige ib, Member member);
-	
-	void updateFarm(ImageBrige ib, Member member);
 	
 	List<FarmProduct> selectFarmProduct();
 
 	FarmPrice selectMmPrice();
 
 	List<StateCategory> selectState();
+	
+	Farm selectBookFarm(Long farmNo);
+
+	Map<String, Object> getRegistInfo(Member member);
 	
 	
 }

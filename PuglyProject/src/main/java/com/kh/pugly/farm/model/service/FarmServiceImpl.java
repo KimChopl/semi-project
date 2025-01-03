@@ -1,27 +1,30 @@
 package com.kh.pugly.farm.model.service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pugly.common.model.dao.AddressMapper;
 import com.kh.pugly.common.model.dao.ImageMapper;
+import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
-import com.kh.pugly.common.model.vo.ImageBrige;
 import com.kh.pugly.common.model.vo.MoreInfo;
+import com.kh.pugly.common.template.ChangeImage;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.common.template.ReplaceXss;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
+import com.kh.pugly.farm.model.vo.Facility;
 import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
+import com.kh.pugly.member.model.dao.MemberMapper;
+import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.vo.Member;
 import com.kh.pugly.review.model.service.ReviewService;
 import com.kh.pugly.review.model.vo.Review;
@@ -39,6 +42,9 @@ public class FarmServiceImpl implements FarmService {
 	private final ImageMapper im;
 	private final ReplaceXss rx;
 	private final ReviewService rs;
+	private final ChangeImage ci;
+	private final MemberMapper mm;
+	private final AddressMapper am;
 	
 	
 	private int countFarm() {
@@ -113,10 +119,12 @@ public class FarmServiceImpl implements FarmService {
 		Farm farm =  checkedDetailFarm(farmNo);
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
-		log.info("{}", farm);
+		//log.info("{}", farm);
+		moreNo += 3;
 		Map<String, Object> detail = new HashMap();
 		detail.put("farm", farm);
 		detail.put("review", review);
+		detail.put("plusNo", moreNo);
 		return detail;
 	}
 	
@@ -155,29 +163,6 @@ public class FarmServiceImpl implements FarmService {
 		}
 	}
 	
-	private ImageBrige makedImageBrige(int farmNo, Farm farm, Image img) {
-		checkedImg(img);
-		ImageBrige ib = new ImageBrige();
-		ib.setFarmNo(farmNo);
-		ib.setCategoryNo(farm.getCategoryNo());
-		return ib;
-	}
-	/*
-	private int cehckedInsertImageBrige(ImageBrige ib) {
-		int brigeNo = im.insertImageBrige(ib);
-		if(brigeNo < 1) {
-			return 0;
-		}
-		return brigeNo;
-	}
-	
-	private void checkedInsertImage(Image img){
-		int result = im.insertImage(img);
-		if(result < 0) {
-			// Exception
-		}
-	}
-	*/
 	private void checkedVacuum(Farm farm) {
 		if(farm.getFarmTitle().trim().equals("") || farm.getFarmContent().trim().equals("")) {
 			//Exception
@@ -190,18 +175,6 @@ public class FarmServiceImpl implements FarmService {
 		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
 		return farm;
 	}
-	/*
-	@Override
-	public void insertFarm(Farm farm, Image img, Member member) { // 이미지 이름 변환 만들어야함
-		checkedFarmContent(farm, member);
-		Farm newFarm = replaceContent(farm);
-		int farmNo = checkedInsertFarm(newFarm);
-		ImageBrige ib = makedImageBrige(farmNo, newFarm, img);
-		int brigeNo = cehckedInsertImageBrige(ib);
-		img.setBrigeNo(brigeNo);
-		checkedInsertImage(img);
-	}
-	 */
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
@@ -228,18 +201,87 @@ public class FarmServiceImpl implements FarmService {
 		fm.likeFarm(attention);
 	}
 
-	@Override
-	public void deleteFarm(ImageBrige ib, Member member) {
+	private Long checkAddress(Address ad, Member member) {
+		List<Address> list = mm.selectAddresses(member.getMemberNo());
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getStateCode().equals(ad.getStateCode()) && list.get(i).getDistrict().equals(ad.getDistrict()) && list.get(i).getMemberNo().equals(member.getMemberNo())) {
+				return Long.parseLong("0");
+			}
+		}
+		return Long.parseLong("1");
+	}
+	
+	private Long checkedNewAddress(Address ad, Member member) {
+		Long result = checkAddress(ad, member);
+		if(result == 1) {
+			am.insertAddress(ad);
+			return ad.getAddressNo();
+		} else {
+			return ad.getAddressNo();
+		}
 		
 	}
-
-	@Override
-	public void updateFarm(ImageBrige ib, Member member) {
+	
+	private Farm plusFarm(Farm farm, Long addressNo) {
+		farm.setAddress(String.valueOf(addressNo));
+		return farm;
 	}
-
+	
+	private Long checkedInsert(Farm newFarm, List<Image> list) {
+		int result = fm.insertFarm(newFarm);
+		if(result < 1) {
+			
+			ci.deleteImage(list);
+			// Exception
+		}
+		log.info("{}", newFarm.getFarmNo());
+		return newFarm.getFarmNo();
+	}
+	
+	private int insertImageList(List<Image> img, Long farmNo) {
+		int result = 0;
+		for(int i = 0; i < img.size(); i ++) {
+			img.get(i).setPostNo(farmNo);
+			result = 1 * im.insertImage(img.get(i));
+		}
+		return result;
+	}
+	
+	private void checkedInsertImg(List<Image> img, Long farm) {
+		int result = insertImageList(img, farm);
+		if(result != 1) {
+			ci.deleteImage(img);
+			//Exception
+		}
+	}
+	
+	private void insertFac(int[] facilityNo, Farm farm, List<Image> list) {
+		int result = 0;
+		for(int i = 0; i < facilityNo.length; i++) {
+			Facility fac = new Facility();
+			fac.setFacilityName(String.valueOf(facilityNo[i]));
+			fac.setFacilityNo(Integer.parseInt(String.valueOf(farm.getFarmNo())));
+			result = 1 * fm.insertFacility(fac);
+		}
+		if(result == 0) {
+			ci.deleteImage(list);
+			//Exception
+		}
+	}
+	
 	@Override
-	public void insertFarm(Farm farm, Image img, Member member) {
-		// TODO Auto-generated method stub
+	public void insertFarm(Farm farm, MultipartFile[] multi, Member member, Address ad, int[] facilityNo) {
+		List<Image> img = ci.changeImgName(multi);
+		Long addressNo = checkedNewAddress(ad, member);
+		Farm newFarm = plusFarm(farm, addressNo);
+		log.info("{}", newFarm);
+		Long farmNo = checkedInsert(newFarm, img);
+		checkedInsertImg(img, farmNo);
+		insertFac(facilityNo, newFarm, img);
+		
+		
+		
+		//log.info("{}", addressNo);
 		
 	}
 
@@ -257,6 +299,40 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public List<FarmProduct> selectFarmProduct() {
 		return fm.selectFarmProduct();
+	}
+
+	@Override
+	public Farm selectBookFarm(Long farmNo) {
+		return checkedDetailFarm(farmNo);
+	}
+	
+	private List<Facility> selectFacility(){
+		return fm.selectFacility();
+	}
+	
+	private Address returnAddress(List<Address> ad) {
+		for(int i = 0; i < ad.size(); i++) {
+			if(ad.get(i).getAddressType() == 1) {
+				return ad.get(i);
+			}
+		}
+		
+		return null;
+	}
+	
+	@Override
+	public Map<String, Object> getRegistInfo(Member member) {
+		List<FarmProduct> product = selectFarmProduct();
+		List<StateCategory> state = selectState();
+		List<Facility> facility = selectFacility();
+		List<Address> adList = mm.selectAddresses(member.getMemberNo());
+		Address ad = returnAddress(adList);	
+		Map<String, Object> map = new HashMap();
+		map.put("product", product);
+		map.put("state", state);
+		map.put("facility", facility);
+		map.put("address", ad);
+		return map;
 	}
 
 }
