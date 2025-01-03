@@ -53,7 +53,7 @@ public class AjaxFarmController {
 		map.put("plusNo", plusNo);
 		//log.info("{}", map);
 		Map<String, Object>list = fs.suchByKeyword(map);
-		//log.info("{}", list);
+		log.info("{}", list);
 		return list;
 		
 	}

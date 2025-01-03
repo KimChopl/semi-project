@@ -42,7 +42,8 @@
                        REVIEW_POST_NO = TB_FARM.FARM_NO
                  GROUP
                     BY
-                       REVIEW_POST_NO),0) rating
+                       REVIEW_POST_NO),0) rating,
+                IMG_PATH imgPath
 		  FROM
 		       TB_FARM
 		  JOIN
@@ -59,9 +60,11 @@
 		 WHERE
 		       DELETE_ASK = 'N'
 		   AND
-		       IMG_LEVEL = 1
+		       (IMG_LEVEL = 1 OR IMG_LEVEL IS NULL)
 		   AND
-		       TB_IMAGE.CATEGORY_NO = 3
+		       (CATEGORY_NO = 3
+           OR
+               CATEGORY_NO IS NULL)
 		   AND
 		       ADDRESS_TYPE = 1
 	</sql>
@@ -92,6 +95,7 @@
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
+			<result property="imgPath" column="imgPath" />
 		</collection>
 	</resultMap>
 	<select id="selectFarmList" resultMap="farmList">
@@ -209,9 +213,10 @@
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
 			<result property="imgLevel" column="imgLevel"/>
+			<result property="imgPath" column="imgPath" />
 		</collection>
 			
-		<collection property="facility" ofType="fac">
+		<collection property="facility" ofType="facility">
 			<result property="facilityNo" column="facilityNo"/>
 			<result property="facilityName" column="facilityName"/>
 		</collection>
@@ -262,7 +267,8 @@
 		       PRODUCT_NAME productName,
 		       CATEGORY_NAME categoryName,
 		       CATEGORY_NO categoryNo,
-		       IMG_LEVEL imgLevel
+		       IMG_LEVEL imgLevel,
+		       IMG_PATH imgPath
 		  FROM
 		       TB_FARM
 		  JOIN
@@ -301,4 +307,52 @@
 		   AND
 		       DELETE_ASK = 'N'
 	</update>
+	<select id="selectFacility" resultType="facility">
+		SELECT
+		      FACILITY_NO facilityNo,
+		      FACILITY_NAME facilityName
+		 FROM
+		      TB_FACILITY
+	</select>
+	<insert id="insertFarm" parameterType="farm" useGeneratedKeys="true">
+		<selectKey keyProperty="farmNo" resultType="long" order="BEFORE">
+			SELECT
+			      SEQ_FARM.NEXTVAL
+			  FROM
+			      DUAL
+		</selectKey>
+		INSERT
+		  INTO
+		       TB_FARM
+		       (
+				FARM_NO,
+				SELLER_NO,
+				FARM_PRODUCT_NO,
+				FARM_TITLE,
+				FARM_CONTENT,
+				BEWARE_LIST,
+				FARM_PRICE,
+				FARM_ADDRESS_NO
+		       )
+		VALUES
+		       (
+		       #{farmNo},
+		       #{seller},
+		       #{productName},
+		       #{farmTitle},
+		       #{farmContent},
+		       #{bewareList},
+		       #{farmPrice},
+		       #{address}
+		       )
+	</insert>
+	
+	<insert id="insertFacility" parameterType="facility">
+		INSERT
+		  INTO
+		      TB_FAC_BRIGE
+		VALUES
+		      (#{facilityName},
+		       #{facilityNo})
+	</insert>
 </mapper>
