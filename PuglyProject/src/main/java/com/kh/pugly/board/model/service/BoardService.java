@@ -2,8 +2,6 @@ package com.kh.pugly.board.model.service;
 
 import java.util.Map;
 
-import java.util.Map;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.board.model.vo.Board;
@@ -25,6 +23,5 @@ public interface BoardService {
 	// 아이디검색
 	Map<String, Object> selectById(Long boardNo);
 	
-	// 검색 조회
-	Map<String, Object> selectByKeyword(String keyword);
+	Map<String, Object> searchBoard(Map<String, Object> map);
 }

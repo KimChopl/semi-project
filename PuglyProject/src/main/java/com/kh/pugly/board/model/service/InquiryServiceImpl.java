@@ -1,7 +1,9 @@
 package com.kh.pugly.board.model.service;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
@@ -120,8 +122,33 @@ public class InquiryServiceImpl implements InquiryService {
 	}
 
 	@Override
-	public List<Inquiry> selectByKeyword(String keyword) {
-		return null;
+	public Map<String, Object> searchInquiry(Map<String, Object> map) {
+		
+		String keyword = (String) map.get("keyword");
+		int page = (int)map.get("page");
+		
+		validateKeyword(keyword);
+
+	    int totalCount = inquiryMapper.countSearchInquiry(map);
+
+	    PageInfo pageInfo = getPageInfo(totalCount, page);
+
+	    int offset = (pageInfo.getCurrentPage() - 1) * pageInfo.getBoardLimit();
+	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
+	    List<Inquiry> inquiryList = inquiryMapper.searchInquiryList(map, rowBounds);
+
+	    // 결과를 Map으로 반환
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("inquiryList", inquiryList);
+	    resultMap.put("pageInfo", pageInfo);
+
+	    return resultMap;
+	}
+	
+	private void validateKeyword(String keyword) {
+	    if (keyword == null || keyword.trim().isEmpty()) {
+	        throw new InvalidParameterException("검색어를 입력해주세요.");
+	    }
 	}
 
 }

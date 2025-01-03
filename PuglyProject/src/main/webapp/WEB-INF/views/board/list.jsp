@@ -65,8 +65,7 @@
                         <th>첨부파일</th>
                     </tr>
                 </thead>
-                <tbody>
-                
+                <tbody id="boardListBody">
                 	<c:forEach items="${boards}" var="board">
 	                    <tr onclick="detail('${board.boardNo}')">
 	                        <td>${board.boardNo}</td>
@@ -74,11 +73,6 @@
 	                        <td>${board.nickName }</td>
 	                        <td>${board.count }</td>
 	                        <td>${board.createDate}</td>
-	                        <td>
-	                        <c:if test="첨부파일 있을 시"> -->
-	                        		🖼️
-	                        </c:if>	
-	                        </td>
 	                    </tr>
                     </c:forEach>
                     
@@ -97,20 +91,28 @@
                 <ul class="pagination">
                 <c:choose>
                     <c:when test="${pageInfo.currentPage ne 1 }">
-                    	<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage}">이전</a></li>
+                    	<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage - 1}">이전</a></li>
                    </c:when>
                    <c:otherwise>
                    		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
                    </c:otherwise>
                 </c:choose>
                    
-                   <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
-                    	<li class="page-item">
-                    		<a class="page-link" href="boards?page=${num}">${num}</a>
-                    	</li>
-                    </c:forEach>
-                    
-                    <li class="page-item"><a class="page-link" href="#">다음</a></li>
+                <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
+                 	<li class="page-item">
+                 		<a class="page-link" href="boards?page=${num}">${num}</a>
+                 	</li>
+                </c:forEach>
+                
+                <c:choose>
+                	<c:when test="${pageInfo.currentPage eq pageInfo.endPage}">    
+                    	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+                    </c:when>
+                	<c:otherwise>
+                		<li class="page-item"><a class="page-link" href="boards?page=${pageInfo.currentPage +1}">다음</a></li>
+                	</c:otherwise>
+               	</c:choose>
+        
                 </ul>
             </div>
 
@@ -118,7 +120,7 @@
 
             <form id="searchForm" action="" method="get" align="center">
                 <div class="select">
-                    <select class="custom-select" name="condition">
+                    <select class="custom-select" name="condition" id="condition">
                         <option value="writer">작성자</option>
                         <option value="title">제목</option>
                         <option value="content">내용</option>
@@ -127,13 +129,92 @@
                 <div class="text">
                     <input type="text" class="form-control" name="keyword">
                 </div>
-                <button type="submit" class="searchBtn btn btn-secondary">검색</button>
+                <button type="button" class="searchBtn btn btn-secondary" onclick="searchBoard()">검색</button>
             </form>
             <br><br>
         </div>
         <br><br>
 
     </div>
+    
+    <script>
+	    function searchBoard(){
+            const condition = $('option:selected').val();
+            const keyword = $('input[name="keyword"]').val();
+            const page = 1;
+	        
+	        if (!keyword) {
+	            alert('검색어를 입력해주세요.');
+	            return;
+	        }
+	        $.ajax({
+	            url: '/pugly/boards/search',
+	            type: 'get',
+	            data: {
+	                condition: condition,
+	                keyword: keyword,
+	                page: page
+	            },
+	            success: function(searchResult) {
+	            	
+	            	const boardList = searchResult.boardList;
+	            	const pageInfo = searchResult.pageInfo;
+	            	
+	            	updateBoardList(boardList, pageInfo, condition, keyword);
+	            }
+	           
+	        });
+	    }
+	    
+	    function updateBoardList(boardList, pageInfo, condition, keyword) {
+	        const boardListBody = $('#boardListBody');
+	        boardListBody.empty();
+	        
+	        const resultStr = boardList.map(e =>
+	        `<tr onclick="detail('\${e.boardNo}')">
+	            <td>\${e.boardNo}</td>
+	            <td>\${e.boardTitle}</td>
+	            <td>\${e.nickName}</td>
+	            <td>\${e.count}</td>
+	            <td>\${e.createDate}</td>
+	        </tr>`
+		    ).join('');
+		    boardListBody.html(resultStr);
+		    updatePageInfo(pageInfo, condition, keyword);
+	    }
+	    
+	    function updatePageInfo(pageInfo, condition, keyword) {
+	    	const pagingArea = $('#pagingArea');
+	        
+	        let pagingStr = 
+	        `<ul class="pagination">`;
+
+	        if (pageInfo.currentPage > 1) {
+	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage - 1}&condition=\${condition}&keyword=\${keyword}">이전</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>`;
+	        }
+	        
+	        for (let i = pageInfo.startPage; i <= pageInfo.endPage; i++) {
+	            pagingStr += `<li class="page-item \${i === pageInfo.currentPage ? 'active' : ''}">
+	                            <a class="page-link" href="boards?page=\${i}&condition=\${condition}&keyword=\${keyword}">\${i}</a>
+	                          </li>`;
+	        }
+
+	        if (pageInfo.currentPage < pageInfo.totalPages) {
+	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage + 1}&condition=\${condition}&keyword=\${keyword}">다음</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
+	        }
+
+	        pagingStr += `</ul>`;
+	        
+	        pagingArea.html(pagingStr);
+	    	
+	    }
+	    
+	    
+    </script>
 
     <jsp:include page="../common/footer.jsp" />
 

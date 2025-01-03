@@ -1,6 +1,7 @@
 package com.kh.pugly.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.kh.pugly.board.model.vo.Inquiry;
 
@@ -18,7 +19,6 @@ public interface InquiryService {
 	// 아이디검색
 	Inquiry selectById(Long inquiryNo);
 	
-	// 검색 조회
-	List<Inquiry> selectByKeyword(String keyword);
+	Map<String, Object> searchInquiry(Map<String, Object> map);
 
 }
