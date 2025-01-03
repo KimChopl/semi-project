@@ -2,6 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.product.model.dao.ProductMapper">
 	
+	<resultMap id="productWithImage" type="Product">
+	    <id property="productNo" column="productNo"/>
+	    <result property="productName" column="productName"/>
+	    <result property="productPrice" column="productPrice"/>
+	    <result property="productContent" column="productContent"/>
+	    <result property="productQuantity" column="productQuantity"/>
+	    <result property="productCount" column="productCount"/>
+	    <result property="unitName" column="unitName"/>
+	    <result property="deliveryPrice" column="deliveryPrice"/>
+	    <result property="productDate" column="productDate"/>
+	    <association property="image" javaType="Image">
+	        <result property="originImgName" column="originImgName"/>
+	        <result property="changeImgName" column="changeImgName"/>
+	        <result property="imgPath" column="imgPath"/>
+	        <result property="imgLevel" column="imgLevel"/>
+		</association>
+	</resultMap>
+	
+	
 	<insert id="insertProductImg" parameterType="Image">
 		INSERT
 		  INTO
@@ -64,50 +83,125 @@
 		 		STATUS = 'Y'
 	</select>
 	
-	<select id="listProduct" resultType="product">
-		SELECT
-		        PRODUCT_NO productNO,
-				PRODUCT_NAME productName, 
-				PRODUCT_PRICE productPrice, 
-				DELIVERY_PRICE deliveryPrice,
-				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
-		        ORIGIN_IMG_NAME originImgName,
-		        CHANGE_IMG_NAME changeImgName,
-		        IMG_LEVEL
-		  FROM
-		        TB_PRODUCT
-		  JOIN
-		        TB_IMAGE ON (PRODUCT_NO = IMG_POST_NO)
-		 WHERE
-		        STATUS = 'Y'
-		   AND
-		        IMG_LEVEL = 1
-		 ORDER
-		    BY
-		        PRODUCT_DATE DESC
+	<select id="listProduct" resultMap="productWithImage">
+	    SELECT
+		        p.PRODUCT_NO productNO,
+		        p.PRODUCT_NAME productName,
+		        p.PRODUCT_PRICE productPrice,
+		        p.DELIVERY_PRICE deliveryPrice,
+		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+		        i.ORIGIN_IMG_NAME originImgName,
+		        i.CHANGE_IMG_NAME changeImgName,
+		        i.IMG_LEVEL
+	    FROM
+	        	TB_PRODUCT p
+	    JOIN
+	        	TB_IMAGE i ON p.PRODUCT_NO = i.IMG_POST_NO
+	    WHERE
+	        	p.STATUS = 'Y' AND i.IMG_LEVEL = 1
+	      AND
+	      		i.CATEGORY_NO = p.FK_MAIN_NO	
+	    ORDER 
+	       BY
+	        	p.PRODUCT_DATE DESC
 	</select>
 	
-	<select id="deatailProduct" parameterType="long" resultType="product">
-		SELECT
-				PRODUCT_NO productNo,
-				PRODUCT_NAME productName,
-				PRODUCT_PRICE productPrice,
-				PRODUCT_QUANTITY productQuantity,
-				UNIT_NAME unitName,
-				DELIVERY_PRICE deliveryPrice,
-				TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
-				PRODUCT_CONTENT productContent,
-				NEW_PRODUCT_IMG newProductImg
-		  FROM
-		  		TB_PRODUCT
-		 WHERE
-		 		STATUS = 'Y'
-		   AND
-		   		PRODUCT_NO = #{ productNo }
+	<select id="detailProduct" parameterType="long" resultMap="productWithImage">
+	    SELECT
+		        p.PRODUCT_NO productNo,
+		        p.PRODUCT_NAME productName,
+		        p.PRODUCT_PRICE productPrice,
+		        p.PRODUCT_QUANTITY productQuantity,
+		        p.UNIT_NAME unitName,
+		        p.DELIVERY_PRICE deliveryPrice,
+		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+		        p.PRODUCT_CONTENT productContent,
+		        i.ORIGIN_IMG_NAME originImgName,
+		        i.CHANGE_IMG_NAME changeImgName,
+		        i.IMG_LEVEL
+	    FROM
+	        	TB_PRODUCT p
+	    LEFT 
+	    JOIN
+	        	TB_IMAGE i ON p.PRODUCT_NO = i.IMG_POST_NO
+	    WHERE
+	        	p.STATUS = 'Y'
+	      AND
+	      		i.CATEGORY_NO = p.FK_MAIN_NO
+	      AND
+	        	p.PRODUCT_NO = #{productNo}
 	</select>
 
+	<select id="findImagesByProductId" parameterType="long" resultType="Image">
+	    SELECT
+		        p.PRODUCT_NO productNo,
+		        p.PRODUCT_NAME productName,
+		        p.PRODUCT_PRICE productPrice,
+		        p.PRODUCT_QUANTITY productQuantity,
+		        p.UNIT_NAME unitName,
+		        p.DELIVERY_PRICE deliveryPrice,
+		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+		        p.PRODUCT_CONTENT productContent,
+		        i.ORIGIN_IMG_NAME originImgName,
+		        i.CHANGE_IMG_NAME changeImgName,
+		        i.IMG_LEVEL
+	    FROM
+	        	TB_PRODUCT p
+	    LEFT 
+	    JOIN
+	        	TB_IMAGE i ON p.PRODUCT_NO = i.IMG_POST_NO
+	    WHERE
+	        	p.STATUS = 'Y'
+	      AND
+	      		i.CATEGORY_NO = p.FK_MAIN_NO
+	      AND
+	        	p.PRODUCT_NO = #{productNo}
+	</select>
 
-
+	<insert id="insertMyStore" parameterType="myStore">
+		INSERT
+		  INTO
+		  		TB_MY_STORE
+		  		(
+		  		STORE_NO,
+		  		STORE_TITLE,
+		  		STORE_CONTENT,
+		  		FK_MAIN_NO,
+		  		FK_MEMBER_NO
+		  		)
+		VALUES
+				(
+				SEQ_STORE.NEXTVAL,
+				#{storeTitle},
+				#{storeContent},
+				5,
+				#{userNo}
+				)
+	</insert>
+	<insert id="insertMyStoreImg" parameterType="Image">
+		INSERT
+		  INTO
+		  		TB_IMAGE
+		  		(
+		  		IMG_NO,
+		  		ORIGIN_IMG_NAME,
+		  		CHANGE_IMG_NAME,
+		  		IMG_PATH,
+		  		IMG_LEVEL,
+		  		IMG_POST_NO,
+		  		CATEGORY_NO
+		  		)
+		 VALUES
+		 		(
+		  		SEQ_INO.NEXTVAL,
+				#{originImgName},
+				#{changeImgName},
+				#{imgPath},
+				#{imgLevel},
+				SEQ_STORE.CURRVAL,
+				5
+				)
+	</insert>
 
 
 

@@ -20,23 +20,55 @@
             margin:auto;
         }
         .cat-list {float: right;
-                    margin-right: 20px;
-                    margin-top: 50px;
-                }
-
+                    margin-top: 20px;
+                    margin-right: 10px;
+        }
+        .cat-select{ 
+            margin-top: 20px;
+            margin-left: 10px;
+        }
         .pro-img{width: 220px; height: 220px; display: inline-block;
         border-bottom: 1px solid black; }
 
-.pro-1{border: 1px solid black;
-    width: 222px;
-    height: 450px;
-    display: inline-block;
-    margin: 10px;
-    background-color: white;
-}
-.pro-2 > div{margin: 5px;}
+        .pro-1{border: 1px solid black;
+            width: 222px;
+            height: 450px;
+            display: inline-block;
+            margin: 10px;
+            background-color: white;
+        }
+        .pro-2 > div{margin: 5px;}
+        .user-a > a{
+            border: 1px solid black;
+            font-size: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            margin-right: 20px;
+            width: 100px;
+            text-align: center;
+            
+        }
+        .product-save{
+            float: right;
+            background-color: rgb(218, 130, 44);
+            color: white;
+        }
+        .mystore{
+            float: right;
+            color: black;
+        }
+        .mystore-save{
+            float: right;
+            background-color: rgb(218, 130, 44);
+            color: white;
+        }
 
-#pagingArea {width:fit-content; margin:auto;}
+        .store-img{
+            width: 200px;
+            height: 200px;
+        }
+
+        #pagingArea {width:fit-content; margin:auto;}
 
 
 
@@ -52,7 +84,31 @@
             <div class="col">
                 <h2 style="margin-left: 20px;">상품 리스트</h2>
             </div>
-            <div class="col"></div>
+            <div class="user-a">
+                <c:if test="${ not empty sessionScope.loginUser and sessionScope.loginUser.categoryNo eq 2 }">
+					<c:choose>
+						<c:when test="${ !sessionScope.myStore.storeNo eq null }">
+	                    <a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save">상점등록</a>
+	                    </c:when>
+	                <c:otherwise>
+	                    <a href="insert_form" class="product-save">상품등록</a>
+	                    <a href="mystore" class="mystore">내상점</a>
+	                </c:otherwise>
+	                </c:choose>
+                </c:if>
+            
+            </div>
+            <div class="col">
+                <form class="cat-select">카테고리 >
+                    <select>
+                        <option>전체</option>
+                        <option>유기농과일</option>
+                        <option>유기농채소</option>
+                        <option>못난이과일</option>
+                        <option>못난이채소</option>
+                    </select>
+                </form>
+            </div>
             <div class="col">
                 <div class="cat-list">
                 <a href="#">최신순</a> |
@@ -69,7 +125,7 @@
 		    <div class="pro-1" onclick="datail('${product.productNo }')">
 		        <form>
 		           <div>
-		               <img src="${ Image.changeImgName }" alt="상품이미지" class="pro-img">
+		               <img src="${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
 			       <div class="pro-2">
 			           <div style="font-size: 20px; height: 60px;">${ product.productName }</div>
@@ -93,18 +149,30 @@
         
         <div id="pagingArea">
             <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item"><a class="page-link" href="#">8</a></li>
-                <li class="page-item"><a class="page-link" href="#">9</a></li>
-                <li class="page-item"><a class="page-link" href="#">10</a></li>
-                <li class="page-item"><a class="page-link" href="#">다음</a></li>
+            
+            <c:choose>
+            	<c:when test="${ pageInfo.currentPage ne 1 }" >
+                	<li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage - 1 }">이전</a></li>
+                </c:when>
+                <c:otherwise>
+                	<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
+				</c:otherwise>
+            </c:choose>
+            
+            <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
+            	<li class="page-item"><a class="page-link" href="products?page=${ num }">${ num }</a></li>
+            </c:forEach>
+            
+            <c:choose>
+            	<c:when test="${ pageInfo.currentPage != pageInfo.endPage }">
+                <li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage + 1 }">다음</a></li>
+                </c:when>
+                <c:otherwise>
+                	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
+                </c:otherwise>
+            </c:choose>
+            
+            
             </ul>
         </div>
     </div>
@@ -112,6 +180,82 @@
     <br><br>
 
     </div>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="mystoreSave" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">상점 등록하기</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/pugly/insert.store" method="post" enctype="multipart/form-data">
+        	<div class="modal-body">
+            	<div class="row">
+                	<div class="col">
+                    	<div class="img-fom">
+                        	<label>상점 이미지</label><br>
+                        	<img src="resources/img/내상점이미지.png" class="store-img" id="title-img">
+                    	</div>
+                	</div>
+                <div class="col">
+                    <label>상점명</label>
+                    <input type="text" name="storeTitle">
+                    <label>상점 소개글</label>
+                    <textarea name="storeContent" style="resize: none; width: 200px; height: 150px;"></textarea>
+                </div>
+            	</div>
+        	</div>
+        	<div class="modal-footer">
+        	    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+    	        <button type="submit" class="btn btn-primary">등록하기</button>
+	        </div>
+	          <div id="file-area">
+			    <input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
+			  </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function loadImg(inputFile, num){
+    
+        console.log(inputFile.files);
+        
+        if(inputFile.files.length === 1){
+            const reader = new FileReader();
+            reader.readAsDataURL(inputFile.files[0]);
+            reader.onload = function(e){
+            
+                const url = e.target.result;
+    
+                switch(num){
+                case 1 : $('#title-img').attr('src', url); break;
+                }
+            }
+        } else {
+            const crapImg = 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1veWFv.img?w=800&h=435&q=60&m=2&f=jpg';
+            switch(num){
+            case 1 : $('#title-img').attr('src',crapImg); break;
+            }
+        }
+    };
+    $(function(){
+        $('#file-area').hide();
+        $('#title-img').click(function(){
+            $('#file1').click();
+        });
+    })
+    
+</script>   
+
+
+
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     
