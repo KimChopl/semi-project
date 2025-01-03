@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,8 +23,8 @@
         } 
 
         #type > select{
-            width: 70px;
-            height: 25px;
+            width: 120px;
+            height: 30px;
             text-align: center;
         }
 
@@ -47,7 +48,7 @@
 
         #memberInfo > input{
             width: 200px;
-            height: 30px;
+            height: 40px;
             margin-top: 5px;
         }
 
@@ -93,9 +94,11 @@
             </div>
             <div id="type">
                 <select name="categoryNo" id="memberType">
-                    <option value="3">일반</option>
-                    <option value="2">판매자</option>
-                    <option value="1">관리자</option>
+					<c:forEach items="${ memberCategory }" var="mc">
+						<c:if test="${ mc.categoryName ne '정지' }">
+	                    	<option value="${ mc.categoryNo }">${ mc.categoryName }</option>
+						</c:if>
+					</c:forEach>                
                 </select>
             </div>
             <br>

@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -28,8 +29,9 @@ public class MemberController {
 	
 	
 	@GetMapping("login_form.member")
-	public String loginEnrollForm() {
-		return "member/login_form";
+	public ModelAndView loginEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("/member/login_form", responseData);
 	}
 	
 	@PostMapping("login.member")
@@ -42,11 +44,40 @@ public class MemberController {
 	@GetMapping("logout.member")
 	public String logout(HttpSession session) {
 		session.removeAttribute("loginUser");
-		session.removeAttribute("addresses");
 		return "redirect:/";
 	}
 	
-	// 서비스 1개만 쓰기
+	@GetMapping("find_id.member")// 아이디찾기 폼
+	public ModelAndView findIdEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("member/find_member_id_form", responseData);
+	}
+	
+	@PostMapping("find_id.member")// 아이디찾기
+	public ModelAndView findMemberId(Member member) {
+		Map<String, Object> responseData = memberService.findMemberId(member);
+		return mv.setViewNameAndData("/member/find_member_id_form", responseData);
+	}
+	
+	@GetMapping("find_pwd.member")
+	public ModelAndView findPwdEnrollForm() {
+		Map<String, Object> responseData = memberService.selectCategory();
+		return mv.setViewNameAndData("member/find_member_pwd_form", responseData);
+	}
+	
+	@PostMapping("find_pwd.member")
+	public ModelAndView findMemberPassword(Member member) {
+		
+		Map<String, Object> responseData = memberService.findMemberPassword(member);
+		return mv.setViewNameAndData("/member/new_password_form", responseData);
+	}
+	
+	@PostMapping("change_password.member")
+	public ModelAndView changeNewPassword(Member member) {
+		memberService.changePassword(member);
+		return mv.setViewNameAndData("redirect:/login_form.member", null);
+	}
+	
 	@GetMapping("my_page.member")
 	public ModelAndView myPage(HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
@@ -54,19 +85,16 @@ public class MemberController {
 		return mv.setViewNameAndData("member/my_page", map);
 	}
 	
-	// 서비스 1개만 쓰기
 	@GetMapping("enroll_form.address")
 		public ModelAndView updateFormAddress(HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo());
 		return mv.setViewNameAndData("member/enroll_form_address", map);
-
-
 	}
 	
 	@GetMapping("join_enroll_form.member")
 	public ModelAndView joinEnrollForm() {
-		Map<String, Object> map = memberService.selectStateCategory();
+		Map<String, Object> map = memberService.selectCategory();
 		return mv.setViewNameAndData("member/join_enroll_form", map);
 	}
 	
@@ -77,20 +105,29 @@ public class MemberController {
 	}
 	
 	@PostMapping("insert.address")
-	public ModelAndView insertAddress(Long memberNo, Address address) {
-		memberService.insertNewAddress(memberNo, address);
-		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
+	public ModelAndView insertAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.insertNewAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
 	@PostMapping("update.address")
-	public ModelAndView updateAddress(Long memberNo, Address address) {
-		memberService.updateAddress(memberNo, address);
-		return mv.setViewNameAndData("redirect:/member/enroll_form_address", null);
+	public ModelAndView updateAddress(Long memberNo, Address address, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.updateAddress(memberNo, loginUser.getMemberNo(), address);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
+	}
+	
+	@PostMapping("delete.address")
+	public ModelAndView deleteAddress(Long memberNo, Long addressNo, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteAddress(memberNo, loginUser.getMemberNo(),addressNo);
+		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
 	@GetMapping("update_enroll_form.member")
 	public ModelAndView updateEnrollForm() {
-		// session에 값이 있어서 따로 뽑을 필요가 없음
+		// session에 값이 있어서 따로 뽑을 필요가 없음 (회원정보수정)
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")

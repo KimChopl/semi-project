@@ -21,8 +21,14 @@ public interface MemberMapper {
 	// 전체 stateCategory 가져오기
 	List<Address> selectStateCategory();
 	
+	// 전체 memberType 가져오기
+	List<Member> selectMemberCategory();
+	
 	// 로그인 유저의 전체 주소 리스트 가져오기
 	List<Address> selectAddresses(Long memberNo);
+	
+	// 아이디 찾기
+	List<Member> findMemberId(Member member);
 	
 	// 회원가입(회원추가)
 	int insertMember(Member member);
@@ -40,8 +46,12 @@ public interface MemberMapper {
 	
 	// 주소변경
 	int updateAddress(Map<String, Object> map);
+	// 주소 메인배송지 변경
+	int changeAddressType(Long memberNo);
 	// 새 주소 추가
 	int insertNewAddress(Map<String, Object> address);
+	// 주소 삭제
+	int deleteAddress(Map<String, Object> map);
 	
 	
 	// 회원탈퇴

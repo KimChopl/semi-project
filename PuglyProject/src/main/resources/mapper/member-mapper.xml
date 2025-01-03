@@ -2,10 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kh.pugly.member.model.dao.MemberMapper">
+
 	<select id="selectMember" parameterType="member" resultType="member">
 		SELECT
                MEMBER_NO memberNo,
-               FK_CATEGORY_NO categoryNo,
+               me.FK_CATEGORY_NO categoryNo,
+               my.MB_CATEGORY_NAME categoryName,
                MEMBER_ID memberId,
                MEMBER_PWD memberPwd,
                NICKNAME nickName,
@@ -13,14 +15,15 @@
                PHONE phone,
                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate
           FROM
-               TB_MEMBER
+               TB_MEMBER me
+          JOIN
+               TB_MEMBER_TYPE my ON (me.FK_CATEGORY_NO = my.MB_CATEGORY_NO)
          WHERE
                STATUS = 'Y'
            AND
                MEMBER_ID = #{memberId}
-           AND
-               FK_CATEGORY_NO = #{categoryNo}
 	</select>
+	
 	<select id="selectAddresses" parameterType="long" resultType="address">
 		SELECT
                ADDRESS_NO addressNo,
@@ -51,6 +54,17 @@
 		 ORDER
 		    BY
 		       STATE_CODE
+	</select>
+	
+	<select id="selectMemberCategory" resultType="member">
+		SELECT
+		       MB_CATEGORY_NO categoryNo,
+		       MB_CATEGORY_NAME categoryName
+		  FROM
+		       TB_MEMBER_TYPE
+		 ORDER
+		    BY
+		       MB_CATEGORY_NO DESC
 	</select>
 	
 	<insert id="insertMember" parameterType="member">
@@ -98,6 +112,7 @@
 	           #{district}
 	           )
 	</insert>
+	
 	<insert id="insertMemberImage" parameterType="image">
 		INSERT
 		  INTO
@@ -145,6 +160,7 @@
 		 WHERE
 		       MEMBER_NO = #{memberNo} 
 	</update>
+	
 	<update id="updateMemberImage" parameterType="map">
 		UPDATE
 		       TB_MEMBER_IMAGE
@@ -155,6 +171,7 @@
 		   AND
 		       MEMBER_IMG_NO = #{imgNo}
 	</update>
+	
 	<insert id="updateMemberInsertImage" parameterType="map">
 		INSERT
 		  INTO
@@ -173,6 +190,7 @@
 		       #{changeImgName}
 		       )
 	</insert>
+	
 	<update id="deleteMember" parameterType="member">
 		UPDATE
 		       TB_MEMBER
@@ -188,30 +206,71 @@
                TB_ADDRESS
            SET
                STATE_CODE = #{stateCode},
-               ADDRESS_TYPE = #{addressType},
-               DISTRICT = #{district}
+               DISTRICT = #{district},
+               ADDRESS_TYPE = #{addressType}
          WHERE
                MEMBER_NO = #{memberNo}
            AND
                ADDRESS_NO = #{addressNo}
 	</update>
-
-	<select id="selectMemberInfo" parameterType="long" resultType="member">
+	
+	<update id="changeAddressType" parameterType="long">
+		UPDATE
+               TB_ADDRESS
+           SET
+               ADDRESS_TYPE = 2
+         WHERE
+               MEMBER_NO = #{memberNo}
+	</update>
+	
+	<insert id="insertNewAddress" parameterType="map">
+		INSERT
+          INTO
+               TB_ADDRESS
+               (
+               ADDRESS_NO,
+               STATE_CODE,
+               MEMBER_NO,
+               ADDRESS_TYPE,
+               DISTRICT
+               )
+        VALUES
+	           (
+	           SEQ_ANO.NEXTVAL,
+	           #{stateCode},
+	           #{memberNo},
+	           #{addressType},
+	           #{district}
+	           )
+	</insert>
+	
+	<delete id="deleteAddress" parameterType="map">
+		DELETE
+          FROM
+               TB_ADDRESS
+         WHERE
+               ADDRESS_NO = #{addressNo}
+           AND
+               MEMBER_NO = #{memberNo}
+	</delete>
+	
+	<select id="findMemberId" parameterType="member" resultType="String">
 		SELECT
-               MEMBER_NO memberNo,
-               FK_CATEGORY_NO categoryNo,
-               MEMBER_ID memberId,
-               MEMBER_PWD memberPwd,
-               NICKNAME nickName,
-               MEMBER_NAME memberName,
-               PHONE phone,
-               TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS createDate
+               MEMBER_ID memberId
           FROM
                TB_MEMBER
          WHERE
-               STATUS = 'Y'
+               MEMBER_NAME = #{memberName}
            AND
-               MEMBER_NO = #{memberNo}
+               PHONE = #{phone}
+           AND
+               FK_CATEGORY_NO = #{categoryNo}
+           AND
+               STATUS = 'Y'
+         ORDER
+            BY
+               MEMBER_NO DESC
 	</select>
+
 
 </mapper>

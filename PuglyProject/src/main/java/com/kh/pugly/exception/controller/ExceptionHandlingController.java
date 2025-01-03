@@ -1,6 +1,5 @@
 package com.kh.pugly.exception.controller;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,15 +7,17 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
+import com.kh.pugly.exception.FailDeleteAddressException;
 import com.kh.pugly.exception.FailDeleteMemberException;
+import com.kh.pugly.exception.FailInsertAddressException;
 import com.kh.pugly.exception.FailInsertMemberException;
-import com.kh.pugly.exception.FailUpdateMemberException;
-
 import com.kh.pugly.exception.FailToFileUploadException;
-
-import com.kh.pugly.exception.InvalidRequestException;
+import com.kh.pugly.exception.FailUpdateAddressException;
+import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidParameterException;
+import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
+import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -74,6 +75,28 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailDeleteMemberException.class)
 	protected ModelAndView failDeleteMemberError(FailDeleteMemberException e) {
 		return createErrorResponse("회원탈퇴에 실패했습니다, 관리자에게 문의해주세요.", e);
+	}
+	
+	@ExceptionHandler(FailInsertAddressException.class)
+	protected ModelAndView failInsertAddressError(FailInsertAddressException e) {
+		return createErrorResponse("주소 추가에 실패했습니다.", e);
+	}
+	
+	@ExceptionHandler(FailUpdateAddressException.class)
+	protected ModelAndView failUpdateAddressError(FailUpdateAddressException e) {
+		return createErrorResponse("주소 수정에 실패했습니다.", e);
+	}
+	
+	@ExceptionHandler(FailDeleteAddressException.class)
+	protected ModelAndView failDeleteAddressError(FailDeleteAddressException e) {
+		return createErrorResponse("주소 삭제에 실패했습니다.", e);
+	}
+	
+	//---------------------------------------------------------------------
+	
+	@ExceptionHandler(NotFoundCartListException.class)
+	protected ModelAndView noSearchCartListEroor(NotFoundCartListException e) {
+		return createErrorResponse("장바구니가 비어있습니다.", e);
 	}
 	
 	

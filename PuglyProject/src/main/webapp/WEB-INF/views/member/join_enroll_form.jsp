@@ -95,6 +95,7 @@
 				  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 				});
 			</script>
+			
             <div class="div">
                 <input type="text" placeholder="이름" name="memberName" required/>
             </div>
@@ -126,9 +127,11 @@
             <div class="div">
                 <button>회원가입</button>
                 <select name="categoryNo">
-                    <option value="3">일반</option>
-                    <option value="2">판매자</option>
-                    <option value="1">관리자</option>
+                <c:forEach var="mc" items="${ memberCategory }">
+                <c:if test="${ mc.categoryName ne '정지' }">
+                    <option value="${ mc.categoryNo }"<c:if test="${ mc.categoryName eq '관리자' }"> disabled=disabled </c:if>>${ mc.categoryName }</option>
+                </c:if>
+                </c:forEach>
                 </select>
     		</div>
         </div>

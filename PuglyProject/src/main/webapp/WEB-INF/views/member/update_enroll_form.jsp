@@ -17,21 +17,12 @@
         #wrap{
             margin: auto;
             width: 400px;
-            height: 415px;
+            height: 460px;
             text-align: center;
             border-radius: 20px;
             background-color: rgb(245, 245, 245);
         }
 
-        #image{
-            border-radius: 100px;
-            width: 100px;
-            height: 100px;
-            margin-left: 15px;
-            margin-top: 15px;
-            border: 1px solid black;
-            background-color: white;
-        }
 
         #file{
             position: relative;
@@ -39,10 +30,10 @@
             bottom: 80px;
         }
 
-        input{
+        .input{
             width: 250px;
-            height: 30px;
-            margin: 10px;
+            height: 40px;
+            margin: 5px;
             border-radius: 5px;
             text-align: center;
         }
@@ -51,13 +42,7 @@
             height: 25px;
         }
 
-        button{
-            width: 150px;
-            height: 30px;
-            margin-top: 5px;
-            border-radius: 5px;
-            
-        }
+        
 
         #update-member{
             background-color: rgb(68, 68, 255);
@@ -85,26 +70,40 @@
 	<jsp:include page="../common/menubar.jsp" />
 
     <div id="wrap">
-        <div id="image"></div>
         <form action="update.memberInfo" method="post" enctype="multipart/form-data">
-            <input type="hidden" value="${ sessionScope.loginUser.memberNo }" name="memberNo"/>
-            <input type="file" id="file" name="upfile"/>
-            <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName"/>
-           	<input type="text" placeholder="새로운 이름을 입력해주세요" value="${ sessionScope.loginUser.memberName }" name="memberName" />
-            <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required />
+        	
+		  <div class="custom-file">
+		    <input type="file" class="custom-file-input" id="customFile" name="upfile">
+		    <label class="custom-file-label" for="customFile">Choose file</label>
+		  </div>
+
+			<br>
+			<br>
+			<script>
+			// Add the following code if you want the name of the file appear on select
+			$(".custom-file-input").on("change", function() {
+			  var fileName = $(this).val().split("\\").pop();
+			  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+			});
+			</script>
+            <input type="hidden" value="${ sessionScope.loginUser.memberNo }" name="memberNo" class="input"/>
+            
+            <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName" class="input"/>
+           	<input type="text" placeholder="새로운 이름을 입력해주세요" value="${ sessionScope.loginUser.memberName }" name="memberName" class="input" />
+            <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required class="input"/>
             <br>
-            <input type="password" placeholder="새 비밀번호" name="memberPwd" required />
+            <input type="password" placeholder="새 비밀번호" name="memberPwd" required class="input"/>
             <br>
-            <input type="text" value="${ sessionScope.loginUser.phone }" name="phone"/>
+            <input type="text" value="${ sessionScope.loginUser.phone }" name="phone" class="input"/>
             <br>
             <br>
-            <button id="update-member">수정하기</button>
+            <button class="btn btn-primary btn-block">수정하기</button>
         </form>
         <br>
         
     
     <!-- Button to Open the Modal -->
-	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">
+	<button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#myModal">
         회원탈퇴
 	</button>
 	
