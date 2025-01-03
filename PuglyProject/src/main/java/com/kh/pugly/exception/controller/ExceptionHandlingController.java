@@ -1,5 +1,7 @@
 package com.kh.pugly.exception.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -10,14 +12,19 @@ import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailDeleteAddressException;
 import com.kh.pugly.exception.FailDeleteMemberException;
 import com.kh.pugly.exception.FailInsertAddressException;
+import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.FailUpdateAddressException;
+import com.kh.pugly.exception.FailUpdateCountException;
+import com.kh.pugly.exception.FailUpdateException;
 import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
+import com.kh.pugly.exception.NotFoundDetailFarmException;
+import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -33,6 +40,13 @@ public class ExceptionHandlingController {
 		  .setViewName("common/error-page");
 		log.info("발생예외 : {}", e.getMessage(), e);
 		return mv;
+	}
+	
+	private ModelAndView createAlertByError(String errorMsg, Exception e) {
+		ModelAndView mv = new ModelAndView();
+		
+		
+		return null; 
 	}
 	
 	@ExceptionHandler(TooLargeValueException.class)
@@ -124,6 +138,25 @@ public class ExceptionHandlingController {
 	}
 	
 	
+	//--------------------------------------------------------------------
+	@ExceptionHandler(NotMatchUserInfomationException.class)
+	protected ModelAndView failMatchInfomationError(NotMatchUserInfomationException e) {
+		return createErrorResponse("잘못된 정보 입니다.", e);
+	}
 	
+	@ExceptionHandler(FailInsertFarmException.class)
+	protected ModelAndView failInsertError(FailInsertFarmException e) {
+		return createErrorResponse("등록에 실패 했습니다. 다시 시도해주세요.", e);
+	}
+	
+	@ExceptionHandler(NotFoundDetailFarmException.class)
+	protected ModelAndView failSelectDetailError(NotFoundDetailFarmException e) {
+		return createErrorResponse("해당 체험을 불러 올 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(FailUpdateException.class)
+	protected ModelAndView failCountError(FailUpdateException e) {
+		return createErrorResponse("삭제되거나 없는 게시글입니다.", e);
+	}
 	
 }

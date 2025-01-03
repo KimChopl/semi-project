@@ -14,8 +14,12 @@ import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.ChangeImage;
+import com.kh.pugly.common.template.ChangeStringContext;
 import com.kh.pugly.common.template.MoreInfomation;
-import com.kh.pugly.common.template.ReplaceXss;
+import com.kh.pugly.exception.FailInsertFarmException;
+import com.kh.pugly.exception.FailUpdateCountException;
+import com.kh.pugly.exception.InvalidRequestException;
+import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.dto.LikeAndAttention;
@@ -24,7 +28,6 @@ import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;
 import com.kh.pugly.member.model.dao.MemberMapper;
-import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.model.vo.Member;
 import com.kh.pugly.review.model.service.ReviewService;
 import com.kh.pugly.review.model.vo.Review;
@@ -40,11 +43,11 @@ public class FarmServiceImpl implements FarmService {
 
 	private final FarmMapper fm;
 	private final ImageMapper im;
-	private final ReplaceXss rx;
 	private final ReviewService rs;
 	private final ChangeImage ci;
 	private final MemberMapper mm;
 	private final AddressMapper am;
+	private final ChangeStringContext xss;
 	
 	
 	private int countFarm() {
@@ -53,11 +56,7 @@ public class FarmServiceImpl implements FarmService {
 	
 	private MoreInfo getPageInfo(int plusNo, int boardLimit) {
 		int listCount = countFarm();
-		if(listCount > 0) {
-			return MoreInfomation.getMoreInfo(listCount, plusNo, boardLimit);
-		} else {
-			return null;
-		}
+		return MoreInfomation.getMoreInfo(listCount, plusNo, boardLimit);
 	
 	}
 	
@@ -67,26 +66,18 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
-		if(farm != null) {
 			Map<String, Object> map = new HashMap();
-
 			map.put("mi", mi);
-
 			map.put("farm", farm);
 			return map;
-		} else {
-			return null;
-		}
 	}
 	
 	@Override
 	public Map<String, Object> selectFarmList(int plusNo) {
-		//log.info("{}", plusNo);
 		int boardLimit = 6;
 		MoreInfo mi = getPageInfo(plusNo, boardLimit);
 		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
-		List<Farm> farm = fm.selectFarmList(rowNum);
-		//log.info("{}", plusNo);
+		List<Farm> farm = checkedSelectListFormat(fm.selectFarmList(rowNum));
 		Map<String, Object> map = checkedMap(farm, mi);
 		return map;
 	}
@@ -94,13 +85,13 @@ public class FarmServiceImpl implements FarmService {
 	private void checkedFarm(Long farmNo) {
 		int farm = fm.updateCount(farmNo);
 		if(farm < 0) {
-			// Exception
+			throw new FailUpdateException("조회수 증가 실패");
 		} 
 	}
 	
 	private void checkedFarmNo(Long farmNo) {
 		if(farmNo < 1) {
-			// 예외 처리
+			throw new InvalidRequestException("농장에서 장난질?");
 		}
 	}
 	
@@ -116,10 +107,9 @@ public class FarmServiceImpl implements FarmService {
 	public Map<String, Object> selectDetailFarm(Long farmNo) {
 		checkedFarmNo(farmNo);
 		checkedFarm(farmNo);
-		Farm farm =  checkedDetailFarm(farmNo);
+		Farm farm =  checkedSelectFormat(checkedDetailFarm(farmNo));
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
-		//log.info("{}", farm);
 		moreNo += 3;
 		Map<String, Object> detail = new HashMap();
 		detail.put("farm", farm);
@@ -135,9 +125,7 @@ public class FarmServiceImpl implements FarmService {
 		int boardLimit = 6;
 		MoreInfo mi = getSuchPageInfo(suchMap, boardLimit);
 		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
-		//log.info("{}", rowNum.getOffset());
-		
-		List<Farm> list = fm.suchByKeyword(suchMap, rowNum);
+		List<Farm> list = checkedSelectListFormat(fm.suchByKeyword(suchMap, rowNum));
 		Map<String, Object> map = checkedMap(list, mi);
 		return map;
 		
@@ -145,41 +133,25 @@ public class FarmServiceImpl implements FarmService {
 	
 	private void checkedFarmContent(Farm farm, Member member) {
 		if(!!!farm.getSeller().equals(member.getNickname())) {
-			
-		}
-	}
-	
-	private int checkedInsertFarm(Farm farm) {
-		int farmNo = fm.insertFarm(farm); // selectKey사용
-		if(farmNo < 1) {
-			return 0;
-		}
-		return farmNo;
-	}
-	
-	private void checkedImg(Image img) {
-		if(img == null) {
-			// 예외처리
+			throw new NotMatchUserInfomationException("유저 정보 불일치");
 		}
 	}
 	
 	private void checkedVacuum(Farm farm) {
 		if(farm.getFarmTitle().trim().equals("") || farm.getFarmContent().trim().equals("")) {
-			//Exception
+			throw new InvalidRequestException("빈칸만 넣어???");
 		}
 	}
 	
-	private Farm replaceContent(Farm farm) {
-		checkedVacuum(farm);
-		farm.setFarmTitle(rx.replaceXss(farm.getFarmTitle()));
-		farm.setFarmContent(rx.replaceCrlf(rx.replaceXss(farm.getFarmContent())));
-		return farm;
+	private String changeInsertForMat(String originString) {
+		return xss.changeInsertFormat(originString);
 	}
+	
 	@Override
 	public void likeFarm(LikeAndAttention like) {
 		Farm farm = fm.selectDetailFarm(like.getFarmNo());
 		if(farm == null) {
-			// Exception
+			throw new FailUpdateException("조회수 증가 실패");
 		}
 		List<LikeAndAttention> list = fm.checkLike(like.getMemberNo());
 		if(!!!list.isEmpty()) {
@@ -214,6 +186,7 @@ public class FarmServiceImpl implements FarmService {
 	private Long checkedNewAddress(Address ad, Member member) {
 		Long result = checkAddress(ad, member);
 		if(result == 1) {
+			ad.setDistrict(changeInsertForMat(ad.getDistrict()));
 			am.insertAddress(ad);
 			return ad.getAddressNo();
 		} else {
@@ -251,7 +224,7 @@ public class FarmServiceImpl implements FarmService {
 		int result = insertImageList(img, farm);
 		if(result != 1) {
 			ci.deleteImage(img);
-			//Exception
+			throw new FailInsertFarmException("이미지 등록 실패");
 		}
 	}
 	
@@ -265,24 +238,49 @@ public class FarmServiceImpl implements FarmService {
 		}
 		if(result == 0) {
 			ci.deleteImage(list);
-			//Exception
+			throw new FailInsertFarmException("시설 등록 실패");
 		}
+	}
+	
+	
+	private List<Farm> checkedSelectListFormat(List<Farm> farms){
+		for(int i = 0; i < farms.size(); i++) {
+			farms.get(i).setFarmTitle(changeSelectFormat(farms.get(i).getFarmTitle()));
+			farms.get(i).setFarmContent(changeSelectFormat(farms.get(i).getFarmContent()));
+			farms.get(i).setAddress(changeSelectFormat(farms.get(i).getAddress()));
+			farms.get(i).setBewareList(changeSelectFormat(farms.get(i).getBewareList()));
+		}
+		return farms;
+	}
+	
+	private Farm checkedChangeFormat(Farm farm) {
+		farm.setFarmTitle(changeInsertForMat(farm.getFarmTitle()));
+		farm.setFarmContent(changeInsertForMat(farm.getFarmContent()));
+		farm.setBewareList(changeInsertForMat(farm.getBewareList()));
+		return farm;
+	}
+	
+	private Farm checkedSelectFormat(Farm farm) {
+		farm.setFarmTitle(changeSelectFormat(farm.getFarmTitle()));
+		farm.setFarmContent(changeSelectFormat(farm.getFarmContent()));
+		farm.setAddress(changeSelectFormat(farm.getAddress()));
+		farm.setBewareList(changeSelectFormat(farm.getBewareList()));
+		return farm;
+	}
+	
+	private String changeSelectFormat(String changeString) {
+		return xss.changeSelectFormat(changeString);
 	}
 	
 	@Override
 	public void insertFarm(Farm farm, MultipartFile[] multi, Member member, Address ad, int[] facilityNo) {
+		checkedFarmContent(farm, member);
+		checkedVacuum(farm);
 		List<Image> img = ci.changeImgName(multi);
-		Long addressNo = checkedNewAddress(ad, member);
-		Farm newFarm = plusFarm(farm, addressNo);
-		log.info("{}", newFarm);
+		Farm newFarm = checkedChangeFormat(plusFarm(farm, checkedNewAddress(ad, member)));
 		Long farmNo = checkedInsert(newFarm, img);
 		checkedInsertImg(img, farmNo);
 		insertFac(facilityNo, newFarm, img);
-		
-		
-		
-		//log.info("{}", addressNo);
-		
 	}
 
 
