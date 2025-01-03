@@ -18,5 +18,5 @@ public class Address {
 	private String stateName;
 	private int addressType;
 	private String district;
-	
+	private Long memberNo;
 }

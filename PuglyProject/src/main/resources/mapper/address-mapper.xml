@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.kh.pugly.common.model.dao.AddressMapper">
+  
+  	<select id="selectAddress" parameterType="long" resultType="address">
+  		SELECT
+  		       ADDRESS_NO addressNo,
+  		       STATE_CODE stateCode,
+  		       MEMBER_NO memberNo,
+  		       ADDRESS_TYPE addressType,
+  		       DISTRICT district
+  		 FROM
+  		      TB_ADDRESS
+  		WHERE
+  		      ADDRESS_NO = #{addressNo}
+  		       
+  	</select>
+  	
+  	<insert id="insertAddress" parameterType="address" useGeneratedKeys="true">
+		INSERT
+          INTO
+               TB_ADDRESS
+               (
+               ADDRESS_NO,
+               STATE_CODE,
+               MEMBER_NO,
+               ADDRESS_TYPE,
+               DISTRICT
+               )
+        VALUES
+	           (
+	           #{addressNo},
+	           #{stateCode},
+	           #{memberNo},
+	           2,
+	           #{district}
+	           )
+  	<selectKey keyProperty="addressNo" resultType="long" order="BEFORE">
+  		SELECT SEQ_ANO.NEXTVAL FROM DUAL
+  	</selectKey>
+	 </insert>
+  
+  </mapper>

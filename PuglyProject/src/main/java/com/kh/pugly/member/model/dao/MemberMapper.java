@@ -57,7 +57,8 @@ public interface MemberMapper {
 	// 회원탈퇴
 	int deleteMember(Member member);
 	
-	
+	// 유저 정보 가져오기
+	Member selectMemberInfo(Long memberNo);
 	
 
 	

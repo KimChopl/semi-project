@@ -30,7 +30,8 @@
                SC.STATE_CODE stateCode,
                STATE_NAME stateName,
                ADDRESS_TYPE addressType,
-               DISTRICT district
+               DISTRICT district,
+               AD.MEMBER_NO memberNo
           FROM
                TB_ADDRESS AD
           JOIN
@@ -271,5 +272,5 @@
                MEMBER_NO DESC
 	</select>
 
-	
+
 </mapper>

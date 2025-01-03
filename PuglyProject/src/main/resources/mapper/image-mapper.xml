@@ -3,4 +3,29 @@
 
 <mapper namespace ="com.kh.pugly.common.model.dao.ImageMapper">
 
+	<insert id="insertImage" parameterType="image">
+		INSERT
+		  INTO
+		       TB_IMAGE
+		       (
+		       IMG_NO,
+		       ORIGIN_IMG_NAME,
+		       CHANGE_IMG_NAME,
+		       IMG_PATH,
+		       IMG_LEVEL,
+		       IMG_POST_NO,
+		       CATEGORY_NO
+		       )
+		VALUES
+		       (
+		       SEQ_INO.NEXTVAL,
+		       #{originImgName},
+		       #{changeImgName},
+		       #{imgPath},
+		       #{imgLevel},
+		       #{postNo},
+		       3
+		       )
+	</insert>
+
 </mapper>
