@@ -42,12 +42,6 @@ public class ExceptionHandlingController {
 		return mv;
 	}
 	
-	private ModelAndView createAlertByError(String errorMsg, Exception e) {
-		ModelAndView mv = new ModelAndView();
-		
-		
-		return null; 
-	}
 	
 	@ExceptionHandler(TooLargeValueException.class)
 	protected ModelAndView tooLargeValueError(TooLargeValueException e) {

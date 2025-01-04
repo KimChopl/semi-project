@@ -66,7 +66,7 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Map<String, Object> checkedMap(List<Farm> farm, MoreInfo mi){
-			Map<String, Object> map = new HashMap();
+			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("mi", mi);
 			map.put("farm", farm);
 			return map;
@@ -111,7 +111,7 @@ public class FarmServiceImpl implements FarmService {
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
 		moreNo += 3;
-		Map<String, Object> detail = new HashMap();
+		Map<String, Object> detail = new HashMap<String, Object>();
 		detail.put("farm", farm);
 		detail.put("review", review);
 		detail.put("plusNo", moreNo);
@@ -143,9 +143,6 @@ public class FarmServiceImpl implements FarmService {
 		}
 	}
 	
-	private String changeInsertForMat(String originString) {
-		return xss.changeInsertFormat(originString);
-	}
 	
 	@Override
 	public void likeFarm(LikeAndAttention like) {
@@ -186,7 +183,7 @@ public class FarmServiceImpl implements FarmService {
 	private Long checkedNewAddress(Address ad, Member member) {
 		Long result = checkAddress(ad, member);
 		if(result == 1) {
-			ad.setDistrict(changeInsertForMat(ad.getDistrict()));
+			ad.setDistrict(xss.changeInsertFormat(ad.getDistrict()));
 			am.insertAddress(ad);
 			return ad.getAddressNo();
 		} else {
@@ -245,33 +242,28 @@ public class FarmServiceImpl implements FarmService {
 	
 	private List<Farm> checkedSelectListFormat(List<Farm> farms){
 		for(int i = 0; i < farms.size(); i++) {
-			farms.get(i).setFarmTitle(changeSelectFormat(farms.get(i).getFarmTitle()));
-			farms.get(i).setFarmContent(changeSelectFormat(farms.get(i).getFarmContent()));
-			farms.get(i).setAddress(changeSelectFormat(farms.get(i).getAddress()));
-			farms.get(i).setBewareList(changeSelectFormat(farms.get(i).getBewareList()));
+			farms.get(i).setFarmTitle(xss.changeSelectFormat(farms.get(i).getFarmTitle()));
+			farms.get(i).setFarmContent(xss.changeSelectFormat(farms.get(i).getFarmContent()));
+			farms.get(i).setAddress(xss.changeSelectFormat(farms.get(i).getAddress()));
+			farms.get(i).setBewareList(xss.changeSelectFormat(farms.get(i).getBewareList()));
 		}
 		return farms;
 	}
 	
 	private Farm checkedChangeFormat(Farm farm) {
-		farm.setFarmTitle(changeInsertForMat(farm.getFarmTitle()));
-		farm.setFarmContent(changeInsertForMat(farm.getFarmContent()));
-		farm.setBewareList(changeInsertForMat(farm.getBewareList()));
+		farm.setFarmTitle(xss.changeInsertFormat(farm.getFarmTitle()));
+		farm.setFarmContent(xss.changeInsertFormat(farm.getFarmContent()));
+		farm.setBewareList(xss.changeInsertFormat(farm.getBewareList()));
 		return farm;
 	}
 	
 	private Farm checkedSelectFormat(Farm farm) {
-		farm.setFarmTitle(changeSelectFormat(farm.getFarmTitle()));
-		farm.setFarmContent(changeSelectFormat(farm.getFarmContent()));
-		farm.setAddress(changeSelectFormat(farm.getAddress()));
-		farm.setBewareList(changeSelectFormat(farm.getBewareList()));
+		farm.setFarmTitle(xss.changeSelectFormat(farm.getFarmTitle()));
+		farm.setFarmContent(xss.changeSelectFormat(farm.getFarmContent()));
+		farm.setAddress(xss.changeSelectFormat(farm.getAddress()));
+		farm.setBewareList(xss.changeSelectFormat(farm.getBewareList()));
 		return farm;
 	}
-	
-	private String changeSelectFormat(String changeString) {
-		return xss.changeSelectFormat(changeString);
-	}
-	
 	@Override
 	public void insertFarm(Farm farm, MultipartFile[] multi, Member member, Address ad, int[] facilityNo) {
 		checkedFarmContent(farm, member);
@@ -325,7 +317,7 @@ public class FarmServiceImpl implements FarmService {
 		List<Facility> facility = selectFacility();
 		List<Address> adList = mm.selectAddresses(member.getMemberNo());
 		Address ad = returnAddress(adList);	
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("product", product);
 		map.put("state", state);
 		map.put("facility", facility);
