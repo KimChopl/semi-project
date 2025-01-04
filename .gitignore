@@ -31,4 +31,4 @@ target/
 .project
 .springBeans
 #PuglyProject/src/main/java/com/kh/pugly/board/model/service/BoardServiceImpl.java
-/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk11.0.25_9
+"/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk11.0.25_9"
