@@ -29,4 +29,6 @@ public interface BoardMapper {
 
 	List<Board> searchBoardList(Map<String, Object> map, RowBounds rowBounds);
 
+	List<Board> selectBoardListByCount(Map<String, Object> map, RowBounds rowBounds);
+
 }

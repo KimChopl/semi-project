@@ -177,7 +177,6 @@ public class BoardServiceImpl implements BoardService {
 	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
 	    List<Board> boardList = mapper.searchBoardList(map, rowBounds);
 
-	    // 결과를 Map으로 반환
 	    Map<String, Object> resultMap = new HashMap<>();
 	    resultMap.put("boardList", boardList);
 	    resultMap.put("pageInfo", pageInfo);
@@ -189,6 +188,32 @@ public class BoardServiceImpl implements BoardService {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        throw new InvalidParameterException("검색어를 입력해주세요.");
 	    }
+	}
+
+	@Override
+	public Map<String, Object> selectBoardListBySort(Map<String, Object> map) {
+		
+		String sort = (String)map.get("sort");
+		int page = (int)map.get("page"); 
+		
+		int totalCount = getTotalCount();
+		PageInfo pi = getPageInfo(totalCount, page);
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		List<Board> boardList;
+		
+		if ("count".equals(sort)) {
+			boardList = mapper.selectBoardListByCount(map, rowBounds);
+		} else {
+			boardList = mapper.selectBoardList(rowBounds);
+		}
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		map.put("boardList", boardList);
+		map.put("pageInfo", pi);
+		
+		return resultMap;
 	}
 
 }

@@ -51,6 +51,13 @@
 		       BOARD_NO DESC
 	</select>
 	
+	<select id="selectBoardListByCount" resultType="board">
+		<include refid="selectList"/>
+		 ORDER
+		 	BY
+		       COUNT DESC
+	</select>
+	
 	<update id="increaseCount" parameterType="long">
 		UPDATE
 			   TB_BOARD

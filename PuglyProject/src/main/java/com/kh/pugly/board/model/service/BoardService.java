@@ -24,4 +24,6 @@ public interface BoardService {
 	Map<String, Object> selectById(Long boardNo);
 	
 	Map<String, Object> searchBoard(Map<String, Object> map);
+
+	Map<String, Object> selectBoardListBySort(Map<String, Object> map);
 }
