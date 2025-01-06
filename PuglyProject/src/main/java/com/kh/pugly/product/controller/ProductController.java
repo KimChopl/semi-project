@@ -28,14 +28,7 @@ public class ProductController {
 
 	private final ProductService productService;
 	private final ModelAndViewUtil mv;
-	
-	
-	// 내상점 화면 호출
-	@GetMapping("/mystores")
-	public String myStore() {
-		
-		return "product/my_store";
-	}
+
 	
 	// 상품등록 화면 호출
 	@GetMapping("/insert_form")
@@ -49,9 +42,6 @@ public class ProductController {
 		myStore.setUserNo(member.getMemberNo());
 		
 		session.setAttribute("myStore", myStore);
-		log.info("{}", member);
-		log.info("{}", session);
-		log.info("게시글 정보 : {}, 파일 정보: {}", myStore, upfile);
 		productService.insertMyStore(myStore, upfile);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
@@ -59,7 +49,6 @@ public class ProductController {
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session, Image image) {
 		
-		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
 		productService.insertProduct(product, upfile);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
@@ -67,36 +56,51 @@ public class ProductController {
 	@GetMapping("products")
 	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page, HttpSession session) {
 		
-		Map<String, Object> map = productService.listProduct(page);
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		
-		// 로그인한 사용자 정보를 세션에서 뽑음
-		Object loginUser = session.getAttribute("loginUser");
+		Map<String, Object> map = productService.listProduct(page, loginUser.getMemberNo());
 		
-		// 로그인유저가 myStore 정보가있는지 확인!
-		if (loginUser != null && loginUser instanceof Member) {
-	        Member member = (Member) loginUser;
-	        // 상점정보가 세션에있는지 확인
-	        MyStore myStore = (MyStore) session.getAttribute("myStore");
-	        
-	        // 만약 상점 정보가 없다면 가져오기
-	        if(myStore == null) {
-	        	myStore = productService.getStoreByUserNo(member.getMemberNo());
-	        }
-	        // 상점 정보가 있으면 map에 추가
-	        map.put("myStore", myStore);
-		}
+		Long userNo = (Long) map.get("userNo");
+		session.setAttribute("userNo", userNo);
+		Long storeNo = (Long) map.get("storeNo");
+		session.setAttribute("storeNo", storeNo);
+		Long memberNo = (Long) map.get("memberNo");
+		session.setAttribute("memberNo", memberNo);
 		
+
 		return mv.setViewNameAndData("product/list_product", map);
 	}
 	// 상품상세 화면 호출
 	@GetMapping("products/{id}")
 	public ModelAndView detailProduct(@PathVariable(name="id") Long id) {
-		//log.info("{}", id);
 		Map<String, Object> reponseData = productService.deatailProduct(id);
 		return mv.setViewNameAndData("/product/detail_product", reponseData);
 	}
-	
-	
+	// 내상점 화면 호출
+	@GetMapping("stores/{id}")
+	public ModelAndView detailMyStore(@PathVariable(name="id")@RequestParam(value="page", defaultValue="1")int page, Long id, HttpSession session) {
+		
+		Member loginUser= (Member) session.getAttribute("loginUser");
+		
+		Map<String, Object> reponseData = productService.deatailMyStore(page, id, loginUser.getMemberNo());
+		
+		Long storeNo = (Long) reponseData.get("storeNo");
+		session.setAttribute("storeNo", storeNo);
+		MyStore myStore = (MyStore) reponseData.get("myStore");
+		session.setAttribute("myStore", myStore);
+		Long memberNo = (Long) reponseData.get("memberNo");
+		session.setAttribute("memberNo", memberNo);
+		
+		
+		if(loginUser != null) {
+			id = loginUser.getMemberNo();
+			reponseData.put("loginUser", loginUser);
+		} 
+			
+		
+		return mv.setViewNameAndData("/product/my_store", reponseData);
+	}
+
 	
 	
 	

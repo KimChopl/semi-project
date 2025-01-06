@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
     
@@ -21,13 +22,13 @@
     margin:auto;
     }
 
-    .main-img{width: 250px; margin: 1px;}
+    .main-img{width: 300px; height: 300px; margin: 1px;}
 
-    textarea{width: 500px; height: 300px;}
     
     .stor-title{font-size: 20px; font-weight: 1000;}
 
-    .btn-1, .btn-2, .btn-3, .btn-4{width: 250px;
+    .btn-1, .btn-2, .btn-3, .btn-4{
+    		width: 250px;
             margin-top: 10px;
             margin-left: 20px;
             border-radius: 10px;
@@ -72,51 +73,96 @@
         font-size: 25px;
     }
 
+    .mystore{
+        float: right;
+        color: black;
+    }
+    .mystore-save{
+        float: right;
+        background-color: rgb(218, 130, 44);
+        color: white;
+    }
+
+    .store-img{
+        width: 200px;
+        height: 200px;
+    }
+    .main-h2{
+        margin-left: 5px;
+        margin-top: 10px;
+    }
+
+
     #pagingArea {width:fit-content; margin:auto;}
     </style>
 </head>
-<body>  <!-- 합 12 관격 정할수 있음 (col-1, col-9,) -->
+<body>  
 
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="container" id="content">
         <div class="row">
             <div class="col">
-                <h2>내상점</h2>
-                <h2>상점정보</h2>
+            <c:choose>
+            	<c:when test="${ (sessionScope.loginUser.memberNo eq sessionScope.myStore.userNo) and (not empty sessionScope.myStore.storeNo) }">
+                	<h2 class="main-h2">내상점</h2>
+                </c:when>
+                <c:otherwise>
+                	<h2 class="main-h2">상점정보</h2>
+                </c:otherwise>
+             </c:choose>   
+             
+             <!-- 
+             <p>storeNo : ${ sessionScope.myStore.storeNo }</p>
+             <p>myStore 유저번호 : ${ sessionScope.myStore.userNo }</p>
+             <p>loginUser 정보 : ${ sessionScope.loginUser.memberNo }</p>
+              -->
+             
+             
                 <br>
             </div>
-            <hr>
+            
             <div class="col"></div>
             <div class="col"></div>
             <div class="col"></div>
         </div>
+        <hr>
         <div class="row">
-            <div class="col-3">
+            <div class="col-4">
                 <div class="row">
                     <form>
-                        <label class="stor-title">일이삼사오육칠팔구십</label>
-                        <button type="submit" style="margin-bottom: 5px;">상점명수정</button>   <!-- 로그인 유저만 보이게 -->
+                        <label class="stor-title">${ myStore.storeTitle }</label>
                     </form>
                 </div>
-                <button>
-                    <img src="resources/내상점이미지.png" alt="내상점이미지" class="main-img">
-                </button>
+                <div>
+                    <img src="${ image.changeImgName }" alt="내상점이미지" class="main-img">
+                </div>
                 <div class="row">
-                    <button class="btn-1">문의하기</button>
-                    <button class="btn-2">신고하기</button>
-                    <button class="btn-3">수정하기</button>
-                    <button class="btn-4">상품등록</button>
+                	<c:choose>
+						<c:when test="${ sessionScope.loginUser.memberNo eq sessionScope.myStore.userNo }">                	
+
+
+                            <form action="/pugly/insert_form" method="get" style="margin: 0;">
+			                    <button type="button" class="btn-3" data-bs-toggle="modal" data-bs-target="#mystoreUpdate">상 점 수 정</button>
+		                        <button class="btn-4" type="submit">상 품 등 록</button>
+                            </form>
+                            
+	                    </c:when>
+                    	<c:otherwise>
+		                    <button class="btn-1">문의하기</button>
+		                    <button class="btn-2">신고하기</button>
+                    	</c:otherwise>
+                    </c:choose>
+                    
                 </div>
             </div>
             <div class="col">
                 <div class="row">
                     <div class="col">
                         <br><br><br>
-                        <label style="font-size: 20px;">상점 소개글</label>
-                        <button type="ubmit">소개글수정</button>
+                        <label style="font-size: 20px;">소개글</label>
                         <div style="border: 1px solid black; height: 305px; width: 500px; background-color: white; margin-top: 5px;" >
-                            여기는 소개글 들어간다.
+                            ${ myStore.storeContent }
                         </div>
                     </div>
                 </div>
@@ -216,11 +262,88 @@
             </c:choose>
             
             
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
 
+
+    <!-- Modal -->
+<div class="modal fade" id="mystoreUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">상점 업데이트</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+          <form action="/pugly/update.store" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    <div class="img-fom">
+                        <label>상점 이미지</label><br>
+                        <img src="/resources/img/myStore.png" class="store-img" id="title-img">
+                    </div>
+                    클릭하여 사진을 설정하세요.
+                </div>
+                <div class="col">
+                    <label>상점명</label>
+                    <input type="text">
+                    <label>상점 소개글</label>
+                    <textarea style="resize: none; width: 200px; height: 150px;"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary">수정하기</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
+ 
+
+  <div id="file-area">
+    <input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
+  </div>
+
+  <script>
+    function loadImg(inputFile, num){
+    
+        console.log(inputFile.files);
+        
+        if(inputFile.files.length === 1){
+            const reader = new FileReader();
+            reader.readAsDataURL(inputFile.files[0]);
+            reader.onload = function(e){
+            
+                const url = e.target.result;
+    
+                switch(num){
+                case 1 : $('#title-img').attr('src', url); break;
+                }
+            }
+        } else {
+            const crapImg = 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1veWFv.img?w=800&h=435&q=60&m=2&f=jpg';
+            switch(num){
+            case 1 : $('#title-img').attr('src',crapImg); break;
+            }
+        }
+    };
+    $(function(){
+        $('#file-area').hide();
+        $('#title-img').click(function(){
+            $('#file1').click();
+        });
+    })
+    
+</script>  
+
+
+
+
+
+
     
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     

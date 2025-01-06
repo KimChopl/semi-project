@@ -106,6 +106,30 @@
 	        	p.PRODUCT_DATE DESC
 	</select>
 	
+	<select id="myStoreProduct" resultMap="productWithImage">
+	    SELECT
+		        p.PRODUCT_NO productNO,
+		        p.PRODUCT_NAME productName,
+		        p.PRODUCT_PRICE productPrice,
+		        p.DELIVERY_PRICE deliveryPrice,
+		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+		        i.ORIGIN_IMG_NAME originImgName,
+		        i.CHANGE_IMG_NAME changeImgName,
+		        i.IMG_LEVEL
+	    FROM
+	        	TB_PRODUCT p
+	    JOIN
+	        	TB_IMAGE i ON p.PRODUCT_NO = i.IMG_POST_NO
+	    WHERE
+	        	p.STATUS = 'Y' AND i.IMG_LEVEL = 1
+	      AND
+	      		i.CATEGORY_NO = p.FK_MAIN_NO	
+	    ORDER 
+	       BY
+	        	p.PRODUCT_DATE DESC
+				
+	</select>
+	 
 	<select id="detailProduct" parameterType="long" resultMap="productWithImage">
 	    SELECT
 		        p.PRODUCT_NO productNo,
@@ -203,19 +227,61 @@
 				)
 	</insert>
 
-	    <select id="selectStoreByUserNo" resultType="myStore">
+	<select id="getStoreByuserNo" resultType="_long" parameterType="_long">
         SELECT
-            STORE_NO,
-            STORE_TITLE,
-            STORE_CONTENT,
-            STORE_COUNT,
-            FK_MEMBER_NO AS userNo
-        FROM
-            TB_MY_STORE
+            	STORE_NO storeNo
+         FROM
+            	TB_MY_STORE
         WHERE
-            FK_MEMBER_NO = #{userNo}
+            	FK_MEMBER_NO = #{userNo}
+          AND
+          		STORE_NO IS NOT NULL
+         
     </select>
-
+	
+	<select id="detailMyStore" resultType="myStore" parameterType="long">
+		SELECT
+		    	m.STORE_NO storeNo,               
+		    	m.STORE_TITLE storeTitle,         
+		    	m.STORE_CONTENT storeContent,     
+		    	i.CHANGE_IMG_NAME changeImgName,  
+		    	i.ORIGIN_IMG_NAME originImgName,
+		    	i.IMG_PATH,
+		    	m.FK_MEMBER_NO userNo             
+		  FROM
+		    	TB_MY_STORE m                       
+		  JOIN
+		    	TB_MAIN_CATEGORY c ON (m.FK_MAIN_NO = c.MAIN_CATEGORY_NO)  
+		  JOIN
+		    	TB_IMAGE i ON (i.IMG_POST_NO = m.STORE_NO)  
+		 WHERE
+		    	i.IMG_STATUS = 'Y'
+		   AND
+		    	m.FK_MEMBER_NO = #{memberNo}
+	</select>
+	
+	<select id="findImageByMyStore" resultType="image" parameterType="long">
+		SELECT
+		    	m.STORE_NO storeNo,               
+		    	m.STORE_TITLE storeTitle,         
+		    	m.STORE_CONTENT storeContent,     
+		    	i.CHANGE_IMG_NAME changeImgName,  
+		    	i.ORIGIN_IMG_NAME originImgName, 
+		    	i.IMG_PATH, 
+		    	m.FK_MEMBER_NO userNo             
+		  FROM
+		    	TB_MY_STORE m                       
+		  JOIN
+		    	TB_MAIN_CATEGORY c ON (m.FK_MAIN_NO = c.MAIN_CATEGORY_NO)  
+		  JOIN
+		    	TB_IMAGE i ON (i.IMG_POST_NO = m.STORE_NO)  
+		 WHERE
+		    	i.IMG_STATUS = 'Y'
+		   AND
+		    	m.FK_MEMBER_NO = #{memberNo}
+	</select>
+	
+	
 
 
 

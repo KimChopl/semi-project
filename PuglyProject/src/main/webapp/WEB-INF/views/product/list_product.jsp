@@ -84,21 +84,24 @@
             <div class="col">
                 <h2 style="margin-left: 20px;">상품 리스트</h2>
             </div>
-            상점번호 ${sessionScope.myStore.storeNo } <br/>
-            유저번호 ${sessionScope.loginUser.memberNo } <br/>
-            상점주인번호 ${sessionScope.myStore.userNo }<br/>
             <div class="user-a">
                 <c:if test="${ not empty sessionScope.loginUser and sessionScope.loginUser.categoryNo eq 2 }">
-					<c:choose>
-						<c:when test="${ (sessionScope.loginUser.memberNo eq sessionScope.myStore.userNo) and (empty sessionScope.myStore.storeNo) }">
-	                    <a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save">상점등록</a>
+                	<c:choose>
+                		<c:when test="${ (sessionScope.loginUser.memberNo eq sessionScope.userNo) and (empty sessionScope.storeNo) }">
+	                    	<a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save">상점등록</a>
 	                    </c:when>
-	                <c:otherwise>
-	                    <a href="insert_form" class="product-save">상품등록</a>
-	                    <a href="mystore" class="mystore">내상점</a>
-	                </c:otherwise>
+	                    <c:otherwise>
+		                    <a href="insert_form" class="product-save">상품등록</a>
+		                    <a href="stores/${ loginUser.memberNo }"  class="mystore">내상점</a>
+	                    </c:otherwise>
 	                </c:choose>
                 </c:if>
+        <!--         
+        <p>userNo : ${ sessionScope.userNo }</p>
+        <p>memberNo : ${ sessionScope.loginUser.memberNo }</p>
+        <p>storeNo : ${ sessionScope.storeNo }</p>
+         -->       
+                
             
             </div>
             <div class="col">
@@ -123,7 +126,6 @@
         </div>
         <hr>
         <br>
-        
         <c:forEach items="${ products }" var="product">
 		    <div class="pro-1" onclick="datail('${product.productNo }')">
 		        <form>
@@ -201,8 +203,9 @@
                 	<div class="col">
                     	<div class="img-fom">
                         	<label>상점 이미지</label><br>
-                        	<img src="resources/img/내상점이미지.png" class="store-img" id="title-img">
+                        	<img src="resources/img/myStore.png" class="store-img" id="title-img">
                     	</div>
+                    	클릭하여 사진을 설정하세요.
                 	</div>
                 <div class="col">
                     <label>상점명</label>

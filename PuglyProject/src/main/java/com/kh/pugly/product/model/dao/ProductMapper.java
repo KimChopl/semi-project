@@ -15,8 +15,12 @@ public interface ProductMapper {
 
 	// 갯수조회
 	 int selectTotalCount();
+	 // 상점번호조회
+	 Long getStoreByuserNo(Long userNo);
+	 
 	// 목록조회
 	 List<Product> listProduct(RowBounds rowBounds);
+	
 	 // 상세조회
 	Product detailProduct(Long productNo);
 			
@@ -27,7 +31,11 @@ public interface ProductMapper {
 	// 내상점 등록
 	void insertMyStore(MyStore myStore);
 	void insertMyStoreImg(Image img);
-	MyStore selectStoreByUserNo(Long memberNo);
+	// 내상점 보여줄래
+	MyStore detailMyStore(Long myStoreNo);
+	Image findImageByMyStore(Long myStoreNo);
+	List<Product> myStoreProduct(RowBounds rowBounds);
+	
 
 
 	
