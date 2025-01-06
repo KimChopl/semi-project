@@ -246,7 +246,7 @@
             const imageItem = document.createElement('div');
             imageItem.classList.add('image-item');
             imageItem.appendChild(imgElement);
-         // 이미지 클릭 시 삭제 기능 추가
+            
             imageItem.addEventListener('click', (e) => {
                 imageItem.remove();
                 //console.log(e.target.src.substring(43))

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.common.model.vo.Image;
+import com.kh.pugly.exception.FailDeleteObjectException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,9 +68,19 @@ public class ChangeImage {
 		
 		for(int i = 0; i < img.size(); i++) {
 			
-			new File(img.get(i).getImgPath() + img.get(i).getChangeImgName()).delete();
+			if(!(new File(img.get(i).getImgPath() + img.get(i).getChangeImgName()).delete())) {
+				
+				throw new FailDeleteObjectException("사진 삭제 실패");
+			} 
 		}
 		
+	}
+	
+	public void deleteImageOne(Image img) {
+		if(!(new File(img.getImgPath() + img.getChangeImgName()).delete())) {
+			
+			throw new FailDeleteObjectException("사진 삭제 실패");
+		} 
 	}
 	
 }

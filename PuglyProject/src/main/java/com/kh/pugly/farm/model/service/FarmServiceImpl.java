@@ -343,5 +343,28 @@ public class FarmServiceImpl implements FarmService {
 		
 		return map;
 	}
+	
+	private Farm checkedFarm(Farm farm, Farm beforeFarm) {
+		
+		List<Image> img = farm.getImgList();
+		List<Image> beforeImg = beforeFarm.getImgList();
+		for(int i = 0; i < img.size(); i++) {
+			for(int j = 0; j < beforeImg.size(); j++) {
+				if(!!!img.get(i).getChangeImgName().equals(beforeImg.get(j).getChangeImgName())) {
+					ci.deleteImageOne(img.get(i));
+				}
+			}
+		}
+		return farm;
+	}
+
+	@Override
+	public void updateFarm(Map<String, Object> map) {
+		checkedMember((Member)map.get("member"));
+		Farm farm = (Farm)map.get("farm");
+		Farm beforeFarm = fm.selectDetailFarm(farm.getFarmNo());
+		checkedFarm(farm, beforeFarm);
+		
+	}
 
 }

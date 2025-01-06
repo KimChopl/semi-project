@@ -11,6 +11,7 @@ import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailDeleteAddressException;
 import com.kh.pugly.exception.FailDeleteMemberException;
+import com.kh.pugly.exception.FailDeleteObjectException;
 import com.kh.pugly.exception.FailInsertAddressException;
 import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailInsertMemberException;
@@ -150,6 +151,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailUpdateException.class)
 	protected ModelAndView failCountError(FailUpdateException e) {
 		return createErrorResponse("삭제되거나 없는 게시글입니다.", e);
+	}
+	
+	@ExceptionHandler(FailDeleteObjectException.class)
+	protected ModelAndView faildeleteError(FailDeleteObjectException e) {
+		return createErrorResponse("수정 실패", e);
 	}
 	
 }

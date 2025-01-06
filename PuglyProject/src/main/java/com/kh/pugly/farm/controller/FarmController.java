@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
@@ -34,6 +35,8 @@ public class FarmController {
 	
 	private final FarmService fs;
 	private final ModelAndViewUtil mv;
+	private final Gson gson;
+	
 	
 	@GetMapping("farms")
 	public ModelAndView farmsPage() {
@@ -87,10 +90,15 @@ public class FarmController {
 	
 	@PostMapping("modify/update.farm")
 	public String updateFarm(Farm farm, MultipartFile[] files, HttpSession ssn, int[] facilityNo, Address ad, @RequestParam("originNames") String originNames) {
-		log.info("{}", originNames);
-		for(int i = 0; i< files.length; i++) {
-			log.info("{}", files[i]);
-		}
+		Map<String, Object> map = gson.fromJson(originNames, Map.class);
+		List<String> changeImgName = (List<String>)map.get("change");
+		Member member = (Member)ssn.getAttribute("loginUser");
+		Map<String, Object> updateInfo = new HashMap<String, Object>();
+		updateInfo.put("changeImg", changeImgName);
+		updateInfo.put("member", member);
+		updateInfo.put("facilitNo", facilityNo);
+		updateInfo.put("address", ad);
+		updateInfo.put("farm", farm);
 		
 		return null;
 	}
