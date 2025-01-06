@@ -33,7 +33,6 @@
  		SELECT
 		       REVIEW_NO reviewNo,
 		       NICKNAME reviewer,
-		       REVIEW_TITLE reviewTitle,
 		       REVIEW_CONTENT reviewContent,
 		       RATING rating,
 		       REVIEW_POST_NO reviewPostNo,

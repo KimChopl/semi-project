@@ -216,7 +216,7 @@
                 		<img src="${ memberImage.changeImgName }" class="img">
                 	</c:if>
                 </div>
-                <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
+                <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickname }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
                 <c:forEach items="${ memberCategory }" var="m">

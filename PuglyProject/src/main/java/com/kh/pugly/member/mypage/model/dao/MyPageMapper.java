@@ -14,4 +14,6 @@ public interface MyPageMapper {
 	
 	List<Product> selectMyCartList(Long memberNo, RowBounds rowBounds);
 	
+	int selectMyFarmCount(Long memberNo);
+	
 }

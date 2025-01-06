@@ -18,6 +18,7 @@ import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
+import com.kh.pugly.exception.NotFoundFarmListException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -95,10 +96,14 @@ public class ExceptionHandlingController {
 	//---------------------------------------------------------------------
 	
 	@ExceptionHandler(NotFoundCartListException.class)
-	protected ModelAndView noSearchCartListEroor(NotFoundCartListException e) {
+	protected ModelAndView noSearchCartListError(NotFoundCartListException e) {
 		return createErrorResponse("장바구니가 비어있습니다.", e);
 	}
 	
+	@ExceptionHandler(NotFoundFarmListException.class)
+	protected ModelAndView noSearchFarmListError(NotFoundFarmListException e) {
+		return createErrorResponse("농장목록을 찾을 수 없습니다.", e);
+	}
 	
 	//---------------------------------------------------------------------
 

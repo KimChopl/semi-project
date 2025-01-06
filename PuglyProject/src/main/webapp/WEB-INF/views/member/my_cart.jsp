@@ -151,9 +151,9 @@
     <div id="body">
         <form action="insert.myOrder" method="post">
         <c:forEach items="${ cartList }" var="c">
-            <div id="wrap">
+            <div id="wrap" onclick="detailProduct('${c.productNo}')">
                 <input type="hidden" name="productNo" value="${ c.productNo }" />
-                <div id="img"><img src="" class="img"></div>
+                <div id="img"><img src="${ c.image.changeImgName }" class="img"></div>
                 <div id="category-name"><span class="span">${ c.productType }</span></div>
                 <div id="product-name"><span class="span">${ c.productName }</span></div>
                 <div id="product-price"><span class="span">${ c.productPrice }원</span></div>
@@ -165,7 +165,11 @@
                 <input type="checkbox" class="checkbox">
             </div>
         </c:forEach>
-         
+         <script>
+         	function detailProduct(num) {
+         		location.href = `products/\${num}`;
+			}
+         </script>
             
             <button type="submit" class="button">주문하기</button>   
         </form>
@@ -201,6 +205,7 @@
     	}
     	
     </script>
+    
    
 	<jsp:include page="../common/footer.jsp" />
 

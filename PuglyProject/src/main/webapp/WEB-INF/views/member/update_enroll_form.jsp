@@ -88,7 +88,7 @@
 			</script>
             <input type="hidden" value="${ sessionScope.loginUser.memberNo }" name="memberNo" class="input"/>
             
-            <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName" class="input"/>
+            <input type="text" value="${ sessionScope.loginUser.nickname }" name="nickname" class="input"/>
            	<input type="text" placeholder="새로운 이름을 입력해주세요" value="${ sessionScope.loginUser.memberName }" name="memberName" class="input" />
             <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required class="input"/>
             <br>

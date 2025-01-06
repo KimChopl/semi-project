@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.NotFoundCartListException;
+import com.kh.pugly.exception.NotFoundFarmListException;
+import com.kh.pugly.farm.model.dao.FarmMapper;
+import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.member.mypage.model.dao.MyPageMapper;
 import com.kh.pugly.product.model.vo.Product;
 
@@ -22,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MyPageServiceImpi implements MyPageService {
 
 	private final MyPageMapper mapper;
+	private final FarmMapper farmMapper;
 	
 	private PageInfo getPageInfo(int totalCount, int page, int boardLimit, int pageLimit) {
 		return PagiNation.getPageInfo(totalCount, page, boardLimit, pageLimit);
@@ -40,8 +44,8 @@ public class MyPageServiceImpi implements MyPageService {
 			throw new NotFoundCartListException("장바구니 목록 없음");
 		}
 		PageInfo pi = getPageInfo(pageCount, currentPage, 3, 3);
-		log.info("{}", pi);
 		List<Product> list = getProductList(pi, memberNo);
+		//log.info("{}", list);
 		Map<String, Object> map = new HashMap();
 		
 		map.put("pageInfo", pi);
@@ -49,5 +53,21 @@ public class MyPageServiceImpi implements MyPageService {
 		
 		return map;
 	}
+
+	@Override
+	public Map<String, Object> selectMyFarmList(Long memberNo, int currentPage) {
+		int pageCount = mapper.selectMyFarmCount(memberNo);
+		if(pageCount == 0) {
+			throw new NotFoundFarmListException("내 농장 목록 없음");
+		}
+		PageInfo pi = getPageInfo(pageCount, currentPage, 3, 3);
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		//List<Farm> list = mapper.selectMyFarmList(memberNo, rowBounds);
+		//log.info("{}", list);
+		return null;
+	}
+	
+	
 
 }

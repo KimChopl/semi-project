@@ -152,6 +152,7 @@ public class MemberController {
 	@PostMapping("delete.member")
 	public ModelAndView deleteMember(Member member, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteMember(member, loginUser);
 		session.removeAttribute("loginUser");
 		session.setAttribute("alertMsg", "탈퇴하셨습니다.");
 		return mv.setViewNameAndData("redirect:/", null);

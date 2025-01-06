@@ -159,7 +159,7 @@
 
                         <c:if test="${ not empty sessionScope.loginUser }">
 	                        <div id="profile-menu">
-	                            <label style="color: black;">${ sessionScope.loginUser.nickName }님</label>
+	                            <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
 	                            <a href="/pugly/my_page.member">마이페이지</a>
 	                            <a href="/pugly/list.book">예약상태</a>
 	                            <a href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }">장바구니</a>

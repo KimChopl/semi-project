@@ -355,4 +355,5 @@
 		      (#{facilityName},
 		       #{facilityNo})
 	</insert>
+	
 </mapper>
