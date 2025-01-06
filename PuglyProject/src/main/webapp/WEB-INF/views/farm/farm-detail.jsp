@@ -47,9 +47,13 @@
         .col > div{
             width: 100%;
         }
-        #review-img-box{
+        .review-img-box{
             width: 100%;
             height: 200px;
+        }
+        .review-img-box > img{
+        	width : 100%;
+        	height : 200px;
         }
         a{
             text-decoration: none;
@@ -158,7 +162,12 @@
                 <div class="col-3">
                     <div id="book-btn-cover">
                     	<input type="hidden" id="farmNo" value="${ farmNo }" name="farmNo"/>
+                    	<c:if test="${ not empty sessionScope.loginUser && farm.seller ne sessionScope.loginUser.nickname}">
                         <button id="book">예약 하기</button>
+                    	</c:if>
+                    	<c:if test="${farm.seller eq sessionScope.loginUser.nickname }">
+                    	<button type="button" id="modify">수정 하기</button>
+                    	</c:if>
                     </div>
                 </div>
             </div>
@@ -188,13 +197,14 @@
                 <div class="col">
                     <div id="review">
                     <c:forEach items="${ review }" var="r">
+                   
                     <c:choose>
                     <c:when test="${ not empty r }">
                         <div class="container">
                             <div class="row">
                                 <div class="col-4">
-                                    <div id="review-img-box">
-                                        <img src="" alt="${ r.imgList[0].originImgName}">
+                                    <div class="review-img-box">
+                                        <img src="/pugly/${ r.imgList[0].imgPath }${ r.imgList[0].changeImgName}" alt="${ r.imgList[0].originImgName}">
                                     </div>
                                 </div>
                                 <div class="col-8">
@@ -282,6 +292,14 @@
 			})
 		}
 	}
+	</script>
+	<script>
+		const modifyBtn = document.getElementById('modify');
+		const farm = document.getElementById('farmNo');
+		const farmNo = farm.value;
+		modifyBtn.addEventListener('click', () => {
+			location.href = `/pugly/modify/farm?farmNo=\${farmNo}`
+		})
 	</script>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

@@ -208,6 +208,8 @@
 		<result property="productName" column="productName" />
 		<result property="categoryNo" column="categoryNo" />
 		<result property="categoryName" column="categoryName" />
+		<result property="stateCode" column="stateCode" />
+		<result property="productName" column="productName" />
 		<collection property="imgList" ofType="image">
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
@@ -223,21 +225,29 @@
 	</resultMap>
 	<select id="selectDetailFarm" parameterType="long" resultMap="detailFarm">
 		SELECT
-		      FARM_NO farmNo,
-		      NICKNAME seller,
-		      FARM_TITLE farmTitle,
-		      FARM_CONTENT farmContent,
-		      BEWARE_LIST bewareList,
-		      IMG_NO imgNo,
-		      ORIGIN_IMG_NAME originImgName,
-		      CHANGE_IMG_NAME changeImgName,
-		      FACILITY_NO facilityNo,
-		      FACILITY_NAME facilityName,
-		      DISTRICT address,
-		      FARM_CREATE_DATE farmCreateDate,
-		      FARM_MODIFY_DATE farmModifyDate,
-		      FARM_PRICE farmPrice,
-		      NVL((SELECT
+		       FARM_NO farmNo,
+		       NICKNAME seller,
+		       FARM_TITLE farmTitle,
+		       FARM_CONTENT farmContent,
+		       PRODUCT_NAME prodictName,
+		       BEWARE_LIST bewareList,
+		       FARM_CREATE_DATE farmCresteDate,
+		       FARM_MODIFY_DATE farmModifyDate,
+		       FACILITY_NO facilityNo,
+		       FACILITY_NAME facilityName,
+		       CATEGORY_NO categoryNo,
+		       CATEGORY_NAME categoryName,
+		       ADDRESS_NO addressNo,
+		       STATE_NAME stateName,
+		       DISTRICT address,
+		       IMG_PATH imgPath,
+		       ORIGIN_IMG_NAME originImgName,
+		       CHANGE_IMG_NAME changeImgName,
+		       IMG_LEVEL imgLevel,
+		       IMG_NO imgNo,
+		       A.STATE_CODE stateCode,
+		       PRODUCT_NAME productName,
+		        NVL((SELECT
 		                   COUNT(ATT_BY_FARM)
 		              FROM
 		                   TB_FARM_ATTENTION
@@ -263,39 +273,37 @@
 		                   REVIEW_POST_NO = TB_FARM.FARM_NO
 		             GROUP
 		                BY
-		                   REVIEW_POST_NO),0) rating,
-		       PRODUCT_NAME productName,
-		       CATEGORY_NAME categoryName,
-		       CATEGORY_NO categoryNo,
-		       IMG_LEVEL imgLevel,
-		       IMG_PATH imgPath
+		                   REVIEW_POST_NO),0) rating
 		  FROM
 		       TB_FARM
-		  JOIN
-		       TB_MEMBER M ON (M.MEMBER_NO = SELLER_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON (IMG_POST_NO = FARM_NO)
-		  JOIN
-		       TB_FARM_PRODUCT ON (FARM_PRODUCT_NO = PRODUCT_NO)
 		  LEFT
 		  JOIN
 		       TB_FAC_BRIGE ON (BR_FARM_NO = FARM_NO)
 		  LEFT
 		  JOIN
-		       TB_FACILITY ON (BR_FACILITY_NO = FACILITY_NO)
+		       TB_FACILITY ON (FACILITY_NO = BR_FACILITY_NO)
+		  LEFT
 		  JOIN
-		       TB_MAIN_CATEGORY ON (CATEGORY_NO = MAIN_CATEGORY_NO)
+		       TB_IMAGE ON(IMG_POST_NO = FARM_NO)
+		  LEFT
 		  JOIN
-		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
+		       TB_MAIN_CATEGORY ON(MAIN_CATEGORY_NO = CATEGORY_NO)
+		  JOIN
+		       TB_ADDRESS A ON(FARM_ADDRESS_NO = A.ADDRESS_NO)
+		  JOIN
+		       TB_FARM_PRODUCT ON (PRODUCT_NO = FARM_PRODUCT_NO)
+		  JOIN
+		       TB_MEMBER M ON (SELLER_NO = M.MEMBER_NO)
+		  JOIN
+		       TB_STATE_CATEGORY S ON (S.STATE_CODE = A.STATE_CODE)
 		 WHERE
-		        FARM_NO = #{farmNo}
+		       FARM_NO = #{farmNo}
+		   AND
+		       (CATEGORY_NO = 3
+		    OR
+		       CATEGORY_NO IS NULL)
 		   AND
 		       DELETE_ASK = 'N'
-		   AND
-		       IMG_STATUS = 'Y'
-		   AND
-		       TB_IMAGE.CATEGORY_NO = 3
 	</select>
 	<update id="updateCount" parameterType="long">
 		UPDATE

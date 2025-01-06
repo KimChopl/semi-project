@@ -16,6 +16,8 @@ public interface ReviewMapper {
 	int updateCount(Long reviewNo);
 	
 	int reviewCount(Long farmNo);
+
+	int insertReview(Review review);
 	
 	
 }

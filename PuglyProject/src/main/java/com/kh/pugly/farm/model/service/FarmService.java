@@ -39,6 +39,8 @@ public interface FarmService {
 	Farm selectBookFarm(Long farmNo);
 
 	Map<String, Object> getRegistInfo(Member member);
+
+	Map<String, Object> selectUpdateForm(Long farmNo, Member member);
 	
 	
 }

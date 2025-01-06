@@ -204,13 +204,14 @@ public class FarmServiceImpl implements FarmService {
 			ci.deleteImage(list);
 			// Exception
 		}
-		log.info("{}", newFarm.getFarmNo());
+		//log.info("{}", newFarm.getFarmNo());
 		return newFarm.getFarmNo();
 	}
 	
 	private int insertImageList(List<Image> img, Long farmNo) {
 		int result = 0;
 		for(int i = 0; i < img.size(); i ++) {
+			img.get(i).setCategoryNo(Long.parseLong("3"));
 			img.get(i).setPostNo(farmNo);
 			result = 1 * im.insertImage(img.get(i));
 		}
@@ -243,9 +244,7 @@ public class FarmServiceImpl implements FarmService {
 	private List<Farm> checkedSelectListFormat(List<Farm> farms){
 		for(int i = 0; i < farms.size(); i++) {
 			farms.get(i).setFarmTitle(xss.changeSelectFormat(farms.get(i).getFarmTitle()));
-			farms.get(i).setFarmContent(xss.changeSelectFormat(farms.get(i).getFarmContent()));
 			farms.get(i).setAddress(xss.changeSelectFormat(farms.get(i).getAddress()));
-			farms.get(i).setBewareList(xss.changeSelectFormat(farms.get(i).getBewareList()));
 		}
 		return farms;
 	}
@@ -322,6 +321,26 @@ public class FarmServiceImpl implements FarmService {
 		map.put("state", state);
 		map.put("facility", facility);
 		map.put("address", ad);
+		return map;
+	}
+
+	private void checkedMember(Member loginUser) {
+		Member checkMember = mm.selectMemberInfo(loginUser.getMemberNo());
+		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!!loginUser.getNickname().equals(checkMember.getNickname())
+				|| !!!loginUser.getMemberName().equals(checkMember.getMemberName())) {
+			throw new NotMatchUserInfomationException("유저 정보가 일치하지 않습니다.(농장)");
+		}
+		
+	}
+	@Override
+	public Map<String, Object> selectUpdateForm(Long farmNo, Member member) {
+		checkedMember(member);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("product", selectFarmProduct());
+		map.put("state", selectState());
+		map.put("facility", selectFacility());
+		map.put("farm", fm.selectDetailFarm(farmNo));
+		
 		return map;
 	}
 

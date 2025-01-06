@@ -24,4 +24,5 @@ public class Image {
 	private String imgStatus;
 	private int imgLevel;
 	private Long postNo;
+	private Long categoryNo;
 }

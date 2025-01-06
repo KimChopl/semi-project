@@ -34,8 +34,7 @@ public class BookServiceImpl implements BookService {
 	
 	private void checkedMember(Member loginUser) {
 		Member checkMember = mm.selectMemberInfo(loginUser.getMemberNo());
-		
-		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!loginUser.getNickname().equals(checkMember.getNickname())
+		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!!loginUser.getNickname().equals(checkMember.getNickname())
 				|| !!!loginUser.getMemberName().equals(checkMember.getMemberName())) {
 			throw new NotMatchUserInfomationException("유저 정보가 일치하지 않습니다.");
 		}
@@ -85,8 +84,9 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public void insertPlay(Long bookNo) {
-
+	public void insertPlay(Long bookNo, Member member) {
+		checkedMember(member);
+		checkedInsert(bm.insertPlay(bookNo));
 	}
 	
 	private MoreInfo checkedListCount(int bookLimit, int moreNo, int listCount) {
@@ -183,6 +183,7 @@ public class BookServiceImpl implements BookService {
 
 	private Book checkedContent(Long bookNo) {
 		Book book = bm.selectByNo(bookNo);
+		log.info("{}", book);
 		if(book == null) {
 			// Exception
 		}

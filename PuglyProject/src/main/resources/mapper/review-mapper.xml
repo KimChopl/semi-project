@@ -15,7 +15,6 @@
  	<resultMap id="reviewMap" type="review">
  		<id property="reviewNo" column="reviewNo" />
  		<result property="reviewer" column="reviewer" />
- 		<result property="reviewTitle" column="reviewTitle" />
  		<result property="reviewContent" column="reviewContent" />
  		<result property="rating" column="rating" />
  		<result property="reviewPostNo" column="reviewPostNo" />
@@ -26,6 +25,7 @@
  			<result property="imgLevel" column="imgLevel" />
  			<result property="originImgName" column="originImgName" />
  			<result property="changeImgName" column="changeImgName" />
+ 			<result property="imgPath" column="imgPath" />
  		</collection>
  	</resultMap>
  	
@@ -33,7 +33,6 @@
  		SELECT
 		       REVIEW_NO reviewNo,
 		       NICKNAME reviewer,
-		       REVIEW_TITLE reviewTitle,
 		       REVIEW_CONTENT reviewContent,
 		       RATING rating,
 		       REVIEW_POST_NO reviewPostNo,
@@ -42,7 +41,8 @@
 		       IMG_NO imgNo,
 		       ORIGIN_IMG_NAME originImgName,
 		       CHANGE_IMG_NAME changeImgName,
-		       IMG_LEVEL imgLevel
+		       IMG_LEVEL imgLevel,
+		       IMG_PATH imgPath
 		  FROM
 		       TB_REVIEW
 		  JOIN
@@ -60,4 +60,32 @@
 		   AND
 		       REVIEW_POST_NO = ${farmNo}
  	</select>
+ 	<insert id="insertReview" parameterType="review">
+ 		<selectKey keyProperty="reviewNo" order="BEFORE" resultType="long">
+			SELECT
+			       SEQ_REVIEWNO.NEXTVAL
+			  FROM
+			       DUAL
+ 		</selectKey>
+ 		INSERT
+ 		  INTO
+ 		       TB_REVIEW
+ 		       (
+ 		       REVIEW_NO,
+ 		       REVIEW_MB_NO,
+ 		       REVIEW_CONTENT,
+ 		       RATING,
+ 		       REVIEW_POST_NO,
+ 		       POST_CATEGORY_NO
+ 		       )
+ 		VALUES
+ 		       (
+ 		       #{reviewNo},
+ 		       #{reviewer},
+ 		       #{reviewContent},
+ 		       #{rating},
+ 		       #{reviewPostNo},
+ 		       #{postCategoryNo}
+ 		       )
+ 	</insert>
  </mapper>

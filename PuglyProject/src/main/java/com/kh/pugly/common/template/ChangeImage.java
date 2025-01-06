@@ -26,7 +26,10 @@ public class ChangeImage {
 	
 	public List<Image> changeImgName(MultipartFile[] multi) {
 		List<Image> imgList = new ArrayList();
-		log.info("{}", multi.length);
+		//log.info("{}", multi.length);
+		if(multi == null) {
+			return null;
+		}
 		int imgLevel = 2;
 		for(int i = 0; i < multi.length; i++) {
 			if(i == 0) {
@@ -47,7 +50,7 @@ public class ChangeImage {
 				//log.info("{} : {}", changeName, savePath);
 				Image img = Image.builder().originImgName(originName).changeImgName(changeName).imgPath(filePath).imgLevel(imgLevel).build();
 				imgList.add(img);
-				
+				//log.info("{}", img);
 				try {
 					multi[i].transferTo(new File(savePath + changeName));
 				} catch (IllegalStateException | IOException e) {
@@ -64,7 +67,7 @@ public class ChangeImage {
 		
 		for(int i = 0; i < img.size(); i++) {
 			
-			new File(img.get(i).getImgPath() + "/" + img.get(i).getChangeImgName()).delete();
+			new File(img.get(i).getImgPath() + img.get(i).getChangeImgName()).delete();
 		}
 		
 	}

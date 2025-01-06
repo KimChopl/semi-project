@@ -24,7 +24,7 @@
 		       #{imgPath},
 		       #{imgLevel},
 		       #{postNo},
-		       3
+		       #{categoryNo}
 		       )
 	</insert>
 

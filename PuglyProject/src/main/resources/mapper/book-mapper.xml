@@ -181,4 +181,13 @@
   	          #{bookNo}
   	          )
   	</insert>
+  	<insert id="insertPlay" parameterType="long">
+  		INSERT
+  		  INTO
+  		       TB_BOOK_PLAY
+  		VALUES
+  		       (
+  		       #{bookNo}
+  		       )
+  	</insert>
   </mapper>

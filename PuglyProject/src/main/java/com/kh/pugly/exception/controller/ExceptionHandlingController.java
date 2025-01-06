@@ -16,7 +16,6 @@ import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailInsertMemberException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.FailUpdateAddressException;
-import com.kh.pugly.exception.FailUpdateCountException;
 import com.kh.pugly.exception.FailUpdateException;
 import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidParameterException;

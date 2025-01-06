@@ -17,7 +17,7 @@ public interface BookService {
 	
 	void insertCancel(BookCondition condition);
 	
-	void insertPlay(Long bookNo);
+	void insertPlay(Long bookNo, Member member);
 	
 	Map<String, Object> selectBookList(Member loginUser);
 

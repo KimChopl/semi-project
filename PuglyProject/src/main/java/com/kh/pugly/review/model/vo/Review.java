@@ -30,6 +30,7 @@ public class Review {
 	private Long reviewPostNo;
 	private Date reviewCreateDate;
 	private Date reviewModifyDate;
+	private int postCategoryNo;
 	private List<Image> imgList;
 
 }
