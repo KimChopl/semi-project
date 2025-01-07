@@ -36,6 +36,7 @@ public class BoardController {
 		return mv.setViewNameAndData("board/list", map);
 	}
 	
+	
 	@GetMapping("boards/{id}")
 	public ModelAndView selectById(@PathVariable(name="id") Long boardNo) {
 		Map<String, Object> responsData = boardService.selectById(boardNo);
