@@ -59,6 +59,10 @@
                         <th><label for="content">내용</label></th>
                         <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="inquiryContent" required></textarea></td>
                     </tr>
+                    <tr>
+					    <th><label for="password">비밀번호</label></th>
+					    <td><input type="text" id="password" class="form-control" name="inquiryPassword"></td>
+					</tr>
                 </table>
                 <br>
 

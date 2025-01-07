@@ -80,7 +80,6 @@
         	   INQUIRY_WRITER,
         	   INQUIRY_TITLE,
         	   INQUIRY_CONTENT,
-        	   COUNT,
         	   INQUIRY_GROUP
     		   )
     	VALUES 
@@ -89,7 +88,6 @@
         	   #{inquiryWriter},
         	   #{inquiryTitle},
         	   #{inquiryContent},
-        	   #{count},
         	   (
                SELECT 
                	 CASE WHEN NICKNAME = '관리자' THEN 2 ELSE 1 END

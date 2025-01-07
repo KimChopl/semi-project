@@ -24,5 +24,5 @@ public class Inquiry {
 	private int inquiryGroup;
 	private String status;
 	private int count;
-	private int password;
+	private String inquiryPassword;
 }
