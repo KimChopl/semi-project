@@ -64,7 +64,7 @@
 			    </ul>
 			</div>
 			
-            <table id="boardList" class="table table-hover" align="center" style = "padding : 10px;">
+            <table id="boardList" class="table table-hover"  style = "padding : 10px; text-align : center;">
                 <thead>
                     <tr>
                         <th>글번호</th>
@@ -72,7 +72,6 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
-                        <th>첨부파일</th>
                     </tr>
                 </thead>
                 <tbody id="boardListBody">
@@ -80,7 +79,7 @@
 	                    <tr onclick="detail('${board.boardNo}')">
 	                        <td>${board.boardNo}</td>
 	                        <td>${board.boardTitle }</td>
-	                        <td>${board.nickName }</td>
+	                        <td>${board.nickname }</td>
 	                        <td>${board.count }</td>
 	                        <td>${board.createDate}</td>
 	                    </tr>
@@ -210,7 +209,7 @@
 	        									`<tr onclick="detail('\${e.boardNo}')">
 										            <td>\${e.boardNo}</td>
 										            <td>\${e.boardTitle}</td>
-										            <td>\${e.nickName}</td>
+										            <td>\${e.nickname}</td>
 										            <td>\${e.count}</td>
 										            <td>\${e.createDate}</td>
 										         </tr>`

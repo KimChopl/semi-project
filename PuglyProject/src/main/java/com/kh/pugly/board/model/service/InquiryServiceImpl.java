@@ -45,7 +45,7 @@ public class InquiryServiceImpl implements InquiryService {
 		if(inquiry == null ||
 		   inquiry.getInquiryTitle() == null || inquiry.getInquiryTitle().trim().isEmpty() ||
 		   inquiry.getInquiryContent() == null || inquiry.getInquiryContent().trim().isEmpty() ||
-		   inquiry.getNickName() == null || inquiry.getNickName().trim().isEmpty()) {
+		   inquiry.getNickname() == null || inquiry.getNickname().trim().isEmpty()) {
 			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		

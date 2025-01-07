@@ -90,7 +90,7 @@
                #{categoryNo},
                #{memberId},
                #{memberPwd},
-               #{nickName},
+               #{nickname},
                #{memberName},
                #{phone}
                )
@@ -156,7 +156,7 @@
 		UPDATE
 		       TB_MEMBER
 		   SET
-		       NICKNAME = #{nickName},
+		       NICKNAME = #{nickname},
 		       MEMBER_PWD = #{memberPwd},
 		       MEMBER_NAME = #{memberName},
 		       PHONE = #{phone},

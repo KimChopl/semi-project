@@ -53,7 +53,7 @@
                     </tr>
                     <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="${sessionScope.loginUser.nickName }" name="nickName" readonly></td>
+                        <td><input type="text" id="writer" class="form-control" value="${sessionScope.loginUser.nickname }" name="nickname" readonly></td>
                     </tr>
                     <tr>
                         <th><label for="content">내용</label></th>

@@ -11,7 +11,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         .content {
-            background-color:rgb(247, 245, 245);
             width:80%;
             margin:auto;
         }
@@ -39,6 +38,8 @@
         .select {width:20%;}
         .text {width:53%;}
         .searchBtn {width:20%;}
+        
+        
     </style>
 </head>
 <body>
@@ -48,14 +49,14 @@
     <div class="content">
         <br><br>
         <div class="innerOuter" style="padding:5% 10%;">
-            <h2>게시판</h2>
+            <h2>문의게시판</h2>
             <br>
             <c:if test="${not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="insertInquiryForm">글쓰기</a>
             </c:if>
             <br>
             <br>
-            <table id="inquiryList" class="table table-hover" align="center">
+            <table id="inquiryList" class="table table-hover" style="text-align: center">
                 <thead>
                     <tr>
                         <th>글번호</th>
@@ -63,21 +64,31 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
+                        <th>답변상태</th>
                     </tr>
                 </thead>
-                <tbody id="inquiryListBody">
+                <tbody id="inquiryListBody" >
                 
                 	<c:forEach items="${inquiries}" var="inquiry">
-	                    <tr onclick="detail('${inquiry.inquiryNo}')">
+	                    <tr onclick="detail('${inquiry.inquiryNo}')"
+	                    	style="<c:if test='${inquiry.inquiryGroup eq 2}'>background-color: lightgray;</c:if>"
+	                    >
 	                        <td>${inquiry.inquiryNo}</td>
-	                        <td>${inquiry.inquiryTitle }</td>
-	                        <td>${inquiry.nickName }</td>
+	                        <c:choose>
+		                        <c:when test="${inquiry.inquiryGroup eq 2}">
+		                        	<td>${inquiry.inquiryTitle}</td>
+		                        </c:when>
+		                        <c:otherwise>
+		                        	<td>🔒고객 문의</td>
+		                        </c:otherwise>
+	                        </c:choose>
+	                        <td>${inquiry.nickname }</td>
 	                        <td>${inquiry.count }</td>
 	                        <td>${inquiry.createDate}</td>
-	                        <td>
-	                        <c:if test="답변완료시"> -->
+	                        <td> 
+	                        	<c:if test="${inquiry.answerStatus eq 'Y'}"> 
 	                        		✔️
-	                        </c:if>	
+	                        	</c:if>	
 	                        </td>
 	                    </tr>
                     </c:forEach>
@@ -85,6 +96,7 @@
                 </tbody>
             </table>
             <br>
+            
             <script>
             	function detail(num) {
             		location.href=`inquiries/\${num}`;
@@ -171,7 +183,7 @@
 	        `<tr onclick="detail('\${e.inquiryNo}')">
 	            <td>\${e.inquiryNo}</td>
 	            <td>\${e.inquiryTitle}</td>
-	            <td>\${e.nickName}</td>
+	            <td>\${e.nickname}</td>
 	            <td>\${e.count}</td>
 	            <td>\${e.createDate}</td>
 	        </tr>`

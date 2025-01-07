@@ -56,7 +56,7 @@ public class BoardController {
 	@PostMapping("boards/delete")
 	public ModelAndView deleteBoard(Long boardNo) {
 		boardService.deleteBoard(boardNo);
-		return mv.setViewNameAndData("redirect:boards", null);
+		return mv.setViewNameAndData("redirect:/boards", null);
 	}
 	
 	@PostMapping("boards/update-form")
