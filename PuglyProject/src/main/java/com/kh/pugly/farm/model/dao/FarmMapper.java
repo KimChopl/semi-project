@@ -56,6 +56,7 @@ public interface FarmMapper {
 
 	int insertFacility(Facility facility);
 
+
 	int deleteFacility(Facility facility);
 
 	

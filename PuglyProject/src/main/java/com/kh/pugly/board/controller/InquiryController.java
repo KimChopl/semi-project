@@ -22,12 +22,11 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class InquiryController {
 	private final InquiryService inquiryService;
-	private final ModelAndView mv;
 	
 	@GetMapping("inquiries")
 	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {
 		List<Inquiry> inquiryList = inquiryService.selectInquiryList(page);
-				
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/list");
 		mv.addObject("inquiries", inquiryList);
 		
@@ -37,7 +36,7 @@ public class InquiryController {
 	@GetMapping("inquiries/{id}")
 	public ModelAndView selectById(@PathVariable(name="id") Long inquiryNo) {
 		Inquiry responsData = inquiryService.selectById(inquiryNo);
-
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/detail");
 	    mv.addObject("inquiry", responsData); // 모델에 데이터를 추가
 	    return mv;
@@ -52,7 +51,7 @@ public class InquiryController {
 	public ModelAndView save(Inquiry inquiry, HttpSession session) {
 		inquiryService.insertInquiry(inquiry);
 		session.setAttribute("altMsg", "문의글 등록 성공");
-		
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		return mv;
 	}
@@ -60,6 +59,7 @@ public class InquiryController {
 	@PostMapping("inquiries/delete")
 	public ModelAndView deleteInquiry(Long inquiryNo) {
 		inquiryService.deleteInquiry(inquiryNo);
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		
 		return mv;
