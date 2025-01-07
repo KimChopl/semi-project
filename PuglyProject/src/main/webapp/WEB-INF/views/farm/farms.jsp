@@ -139,7 +139,16 @@
                                     <c:forEach items="${ farm.farm }" var="farm">
                                         <div class="col-4 farms" onclick="farms(${farm.farmNo})">
                                             <div class="farms-content">
-                                                <div class="img"><img src="/pugly/${farm.imgList[0].imgPath }${ farm.imgList[0].changeImgName }" alt="${farm.imgList[0].originImgName }"></div>
+                                                <div class="img">
+                                                <c:choose>
+        		                                    <c:when test="${ farm.imgList[0].status eq 'Y' }">
+                		                                <img src="/pugly/${farm.imgList[0].imgPath }${ farm.imgList[0].changeImgName }" alt="${farm.imgList[0].originImgName }">
+		                                            </c:when>
+		                                            <c:otherwise>
+		                                            	<img src="" alt="이미지 없음">
+		                                            </c:otherwise>
+                                                </c:choose>
+                                                </div>
                                                 <div class="farm-explain">
                                                     <div class="title">${ farm.farmTitle }</div>
                                                     <div class="score">
@@ -194,7 +203,7 @@
 			const result = replies.map(e =>
 					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
 	                     <div class="farms-content">
-			             \${e.imgList.length === 1
+			             \${e.imgList.length === 1 && e.imgList.status === 'y'
 	                    	? 
 	                        	`<div class="img"><img src="/pugly/\${e.imgList[0]?.imgPath}\${e.imgList[0]?.changeImgName}" alt="\${e.imgList[0]?.originImgName}"></div>`
 	                        :  

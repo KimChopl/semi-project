@@ -10,11 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.service.FarmService;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -32,6 +35,9 @@ public class FarmController {
 	
 	private final FarmService fs;
 	private final ModelAndViewUtil mv;
+	
+	
+	
 	
 	@GetMapping("farms")
 	public ModelAndView farmsPage() {
@@ -53,8 +59,9 @@ public class FarmController {
 	
 	@GetMapping("farms/{farmNo}") // 일로 들어옴(12.31)
 	public ModelAndView detailFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
+		//log.info("{}",farmNo);
 		Map<String, Object> detail = fs.selectDetailFarm(farmNo);
-		log.info("{}", detail);
+		//log.info("{}", detail);
 		return mv.setViewNameAndData("/farm/farm-detail", detail);
 	}
 	
@@ -74,5 +81,13 @@ public class FarmController {
 		fs.insertFarm(farm, multi, loginUser, ad, facilityNo);
 		return "redirect:/farms";
 	}
+	
+	@GetMapping("modify/farm")
+	public ModelAndView modifyFarm(Long farmNo, HttpSession ssn) {
+		//log.info("{}", farmNo);
+		Member member = (Member)ssn.getAttribute("loginUser");
+		return mv.setViewNameAndData("farm/update_form_farm", fs.selectUpdateForm(farmNo, member));
+	}
+
 	
 }
