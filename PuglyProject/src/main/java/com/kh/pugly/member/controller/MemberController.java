@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,6 +39,7 @@ public class MemberController {
 	public ModelAndView selectMember(Member member, HttpSession session) {
 		Member loginUser = memberService.selectMember(member);
 		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("alertMsg", "로그인에 성공하셨습니다!");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -66,15 +68,17 @@ public class MemberController {
 	}
 	
 	@PostMapping("find_pwd.member")
-	public ModelAndView findMemberPassword(Member member) {
+	public ModelAndView findMemberPassword(Member member, HttpSession session) {
 		
 		Map<String, Object> responseData = memberService.findMemberPassword(member);
+		session.setAttribute("alertMsg", "새로운 비밀번호를 입력해주세요!");
 		return mv.setViewNameAndData("/member/new_password_form", responseData);
 	}
 	
 	@PostMapping("change_password.member")
-	public ModelAndView changeNewPassword(Member member) {
+	public ModelAndView changeNewPassword(Member member, HttpSession session) {
 		memberService.changePassword(member);
+		session.setAttribute("alertMsg", "비밀번호가 변경되었습니다.");
 		return mv.setViewNameAndData("redirect:/login_form.member", null);
 	}
 	
@@ -86,9 +90,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-		public ModelAndView updateFormAddress(HttpSession session) {
+		public ModelAndView updateFormAddress(HttpSession session, @RequestParam(defaultValue="1") int currentPage) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo());
+		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo(), currentPage);
 		return mv.setViewNameAndData("member/enroll_form_address", map);
 	}
 	
@@ -99,8 +103,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("insert.member")
-	public ModelAndView insertMember(@RequestPart(value="upfile",required = false) MultipartFile upfile, Member member, Address address) {
+	public ModelAndView insertMember(@RequestPart(value="upfile",required = false) MultipartFile upfile, Member member, Address address, HttpSession session) {
 		memberService.insertMember(member, address, upfile);
+		session.setAttribute("alertMsg", "회원가입에 성공했습니다!");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	
@@ -108,6 +113,7 @@ public class MemberController {
 	public ModelAndView insertAddress(Long memberNo, Address address, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		memberService.insertNewAddress(memberNo, loginUser.getMemberNo(), address);
+		session.setAttribute("alertMsg", "주소 추가에 성공했습니다!");
 		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
@@ -115,6 +121,7 @@ public class MemberController {
 	public ModelAndView updateAddress(Long memberNo, Address address, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		memberService.updateAddress(memberNo, loginUser.getMemberNo(), address);
+		session.setAttribute("alertMsg", "주소 수정에 성공했습니다!");
 		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
@@ -122,6 +129,7 @@ public class MemberController {
 	public ModelAndView deleteAddress(Long memberNo, Long addressNo, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		memberService.deleteAddress(memberNo, loginUser.getMemberNo(),addressNo);
+		session.setAttribute("alertMsg", "주소를 삭제했습니다.");
 		return mv.setViewNameAndData("redirect:/enroll_form.address", null);
 	}
 	
@@ -137,6 +145,7 @@ public class MemberController {
 		Member loginUser = memberService.updateMember(member, loginMember, upfile);
 
 		session.setAttribute("loginUser", loginUser);
+		session.setAttribute("alertMsg", "정보 수정에 성공했습니다!");
 
 		return mv.setViewNameAndData("redirect:/my_page.member", null);
 	}	
@@ -144,7 +153,9 @@ public class MemberController {
 	@PostMapping("delete.member")
 	public ModelAndView deleteMember(Member member, HttpSession session) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
+		memberService.deleteMember(member, loginUser);
 		session.removeAttribute("loginUser");
+		session.setAttribute("alertMsg", "탈퇴하셨습니다.");
 		return mv.setViewNameAndData("redirect:/", null);
 	}
 	

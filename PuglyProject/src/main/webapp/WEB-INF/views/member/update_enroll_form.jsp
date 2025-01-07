@@ -36,10 +36,12 @@
             margin: 5px;
             border-radius: 5px;
             text-align: center;
+            font-family: 'SUITE-Regular';
         }
         select{
             width: 100px;
             height: 25px;
+            font-family: 'SUITE-Regular';
         }
 
         
@@ -54,7 +56,13 @@
             background-color: rgb(30, 30, 253);
             border:2px double rgb(68, 68, 255)
         }
-
+	
+		@font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
         
         
 
@@ -88,7 +96,7 @@
 			</script>
             <input type="hidden" value="${ sessionScope.loginUser.memberNo }" name="memberNo" class="input"/>
             
-            <input type="text" value="${ sessionScope.loginUser.nickName }" name="nickName" class="input"/>
+            <input type="text" value="${ sessionScope.loginUser.nickname }" name="nickname" class="input"/>
            	<input type="text" placeholder="새로운 이름을 입력해주세요" value="${ sessionScope.loginUser.memberName }" name="memberName" class="input" />
             <input type="password" placeholder="변경 전 비밀번호를 입력해주세요" name="password" required class="input"/>
             <br>

@@ -53,10 +53,12 @@
                     </tr>
                     <tr>
                         <th><label for="writer">작성자</label></th>
+
                         <td>
                         	<input type="text" class="form-control" value="${sessionScope.loginUser.nickname}" readonly>
 					        <!-- memberNo는 hidden 필드로 전달 -->
 					        <input type="hidden" id="writer" name="boardWriter" value="${sessionScope.loginUser.memberNo}"></td>
+
                     </tr>
                     <tr>
                         <th><label for="upfile">첨부파일</label></th>

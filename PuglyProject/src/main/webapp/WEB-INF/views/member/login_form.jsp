@@ -26,6 +26,7 @@
             width: 120px;
             height: 30px;
             text-align: center;
+            font-family: 'SUITE-Regular';
         }
 
         #type > select:hover{
@@ -50,6 +51,7 @@
             width: 200px;
             height: 40px;
             margin-top: 5px;
+            font-family: 'SUITE-Regular';
         }
 
         #submit > button{
@@ -58,6 +60,7 @@
             background-color: rgb(220, 143, 0);
             border: 1px solid rgb(220, 143, 0);
             border-radius: 5px;
+            font-family: 'SUITE-Regular';
         }
 
         #submit > button:hover{
@@ -76,6 +79,13 @@
         #user-find-or-join > a:hover{
             color: rgb(126, 126, 126);
             cursor: pointer;
+        }
+        
+        @font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
         }
 
     </style>

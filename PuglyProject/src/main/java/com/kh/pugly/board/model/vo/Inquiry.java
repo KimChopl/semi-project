@@ -14,8 +14,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 public class Inquiry {
+
 	private Long inquiryNo;
 	private Long inquiryWriter;
+
 	private String nickname;
 	private String inquiryTitle;
 	private String inquiryContent;

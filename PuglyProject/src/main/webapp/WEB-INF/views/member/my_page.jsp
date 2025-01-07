@@ -11,7 +11,6 @@
     <style>
         div{
             box-sizing: border-box;
-            /*border: 1px solid red;*/
         }
 
         #body{
@@ -42,7 +41,6 @@
 
         #page-bar > ul > li{
             list-style: none;
-            font-family: 'Courier New', Courier, monospace;
             font-weight: 600;
             margin:20px;
             font-family: 'SUITE-Regular';
@@ -69,6 +67,7 @@
             height: 80%;
             margin: 55px auto;
             background-color: rgb(241, 241, 241);
+            border-radius: 15px;
         }
         #nick-name{
             width: 200px;
@@ -154,7 +153,7 @@
         	border: outset;
             position: relative;
             left: 360px;
-            bottom: 40px;
+            bottom: 90px;
             font-family: 'SUITE-Regular';
             font-weight: 900;
         }
@@ -216,7 +215,7 @@
                 		<img src="${ memberImage.changeImgName }" class="img">
                 	</c:if>
                 </div>
-                <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickName }</label></div>
+                <div id="nick-name">닉네임 : <label>${ sessionScope.loginUser.nickname }</label></div>
                 <div id="enroll-date">가입일 : <label>${ sessionScope.loginUser.createDate }</label></div>
                 <div id="member-type">사용자 유형 : 
                 <c:forEach items="${ memberCategory }" var="m">
@@ -231,13 +230,14 @@
                 <br>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 
-                <br>
-                <c:forEach var="address" items="${ addresses }">
+                
+                <c:forEach var="address" items="${ addresses }" begin="0" end="1">
 		            <c:if test="${ address.addressType eq 1 }">
 		                <div id="address">주소 : 
 							<label>${ address.stateName }</label><br>
                           	<label>${ address.district }</label>
 		                </div>
+		                <br>
 		            </c:if>
                 </c:forEach>
                 <button id="address-update">주소 수정</button>

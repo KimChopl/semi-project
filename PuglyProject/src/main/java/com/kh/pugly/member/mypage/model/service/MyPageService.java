@@ -7,4 +7,5 @@ public interface MyPageService {
 	
 	Map<String, Object> selectCart(Long memberNo, int currentPage);
 	
+	Map<String, Object> selectMyFarmList(Long memberNo, int currentPage);
 }

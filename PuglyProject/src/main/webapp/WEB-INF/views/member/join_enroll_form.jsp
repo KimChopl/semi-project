@@ -29,6 +29,7 @@
             border-radius: 5px;
             border: 1px solid;
             padding: 10px;
+            font-family: 'SUITE-Regular';
         }
 
         .div{
@@ -43,6 +44,7 @@
             width: 110px;
             height: 30px;
             margin-left: 10px;
+            font-family: 'SUITE-Regular';
         }
 
         button{
@@ -52,6 +54,7 @@
             border-radius: 3px;
             background-color: rgb(0, 141, 7);
             border: none;
+            font-family: 'SUITE-Regular';
         }
 
         button:hover{
@@ -65,11 +68,19 @@
         	font-weight: bolder;
         	margin-top:0;
         	padding-top:0;
+        	font-family: 'SUITE-Regular';
         }
 
 		.file{
 			border:none;
 		}
+		
+		@font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
     </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -107,7 +118,7 @@
                 <input type="password" placeholder="비밀번호" name="memberPwd" required/>
             </div>
             <div class="div">
-                <input type="text" placeholder="닉네임" name="nickName" />
+                <input type="text" placeholder="닉네임" name="nickname" />
             </div>
             	<p class="p">
             		※닉네임을 작성하지 않을 시 아이디가 닉네임으로 지정됩니다.
