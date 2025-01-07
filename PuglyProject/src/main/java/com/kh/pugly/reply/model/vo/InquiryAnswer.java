@@ -18,7 +18,7 @@ public class InquiryAnswer {
 	private Long inquiryAnswerNo;
 	private String inquiryAnswer;
 	private Long refIno;
-	private String nickName;
+	private String nickname;
 	private String createDate;
 	private String status;
 }

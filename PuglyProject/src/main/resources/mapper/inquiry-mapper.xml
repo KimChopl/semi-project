@@ -9,7 +9,7 @@
 			   INQUIRY_NO inquiryNo,
 			   INQUIRY_TITLE inquiryTitle,
 			   INQUIRY_CONTENT inquiryContent,
-			   M.NICKNAME nickName,
+			   M.NICKNAME nickname,
 			   COUNT,
 			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
@@ -25,9 +25,10 @@
 		SELECT
 			   INQUIRY_NO inquiryNo,
 			   INQUIRY_TITLE inquiryTitle,
-			   M.NICKNAME nickName,
+			   M.NICKNAME nickname,
 			   COUNT,
 			   ANSWER_STATUS answerStatus,
+			   INQUIRY_GROUP inquiryGroup,
 			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate
 		  FROM
 		       TB_INQUIRY I
@@ -79,7 +80,6 @@
         	   INQUIRY_WRITER,
         	   INQUIRY_TITLE,
         	   INQUIRY_CONTENT,
-        	   COUNT,
         	   INQUIRY_GROUP
     		   )
     	VALUES 
@@ -88,7 +88,6 @@
         	   #{inquiryWriter},
         	   #{inquiryTitle},
         	   #{inquiryContent},
-        	   #{count},
         	   (
                SELECT 
                	 CASE WHEN NICKNAME = '관리자' THEN 2 ELSE 1 END
@@ -97,7 +96,7 @@
             	WHERE 
             		  MEMBER_NO = #{inquiryWriter}
         	   )
-               )
+        	   )
 	</insert>	
 	
 	<delete id="deleteInquiry" parameterType="long">

@@ -10,16 +10,16 @@
 	 	  	   TB_INQUIRY_ANSWER
 	 	  	   (
 	 	  	   INQUIRY_ANSWER_NO,
-    		   INQUIRY_ANSWER ,
+    		   INQUIRY_ANSWER,
     		   NICKNAME,
 			   REF_INO,
 			   ANSWER_STATUSE
 	 	  	   )
 	 	VALUES
 	 		   (
-	 		   #{inquiryAnswerNo},
+	 		   SEQ_QANO.NEXTVAL,
 	 		   #{inquiryAnswer},
-	 		   #{nickName},
+	 		   #{nickname},
 	 		   #{refIno},
 	 		   'Y'
 	 		   )
@@ -29,7 +29,7 @@
 	 	SELECT
 	 		   INQUIRY_ANSWER_NO inquiryAnswerNo,
 	 		   INQUIRY_ANSWER inquiryAnswer,
-	 		   NICKNAME nickName,
+	 		   NICKNAME nickname,
 	 		   TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') as createDate
 	 	  FROM
 	 	  	   TB_INQUIRY_ANSWER

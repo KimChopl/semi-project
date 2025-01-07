@@ -13,7 +13,11 @@ import com.kh.pugly.board.model.vo.Inquiry;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
+import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ProductValueException;
+import com.kh.pugly.exception.TooLargeValueException;
+import com.kh.pugly.member.model.service.PasswordEncoder;
+import com.kh.pugly.member.model.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class InquiryServiceImpl implements InquiryService {
 	
 	private final InquiryMapper inquiryMapper;
+	private final PasswordEncoder passwordEncrypt; 
+	
 	
 	private int getTotalCount() {
 		int totalCount = inquiryMapper.totalCount();
@@ -45,7 +51,7 @@ public class InquiryServiceImpl implements InquiryService {
 		if(inquiry == null ||
 		   inquiry.getInquiryTitle() == null || inquiry.getInquiryTitle().trim().isEmpty() ||
 		   inquiry.getInquiryContent() == null || inquiry.getInquiryContent().trim().isEmpty() ||
-		   inquiry.getNickName() == null || inquiry.getNickName().trim().isEmpty()) {
+		   inquiry.getNickname() == null || inquiry.getNickname().trim().isEmpty()) {
 			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		
@@ -63,9 +69,22 @@ public class InquiryServiceImpl implements InquiryService {
 		return value.replaceAll("\n","<br>");
 	}
 	
+	private void encryptionPassword(Inquiry inquiry) {
+		String securityPass = passwordEncrypt.encode(inquiry.getInquiryPassword());
+		inquiry.setInquiryPassword(securityPass);
+	}
+	
+	private void validationPassword(Inquiry inquiry) {
+		if(inquiry.getInquiryPassword().length() > 25) {
+			throw new TooLargeValueException("비밀번호가 너무 깁니다.");
+		}
+	}
+	
 	@Override
 	public void insertInquiry(Inquiry inquiry) {
 		validatInquiry(inquiry);
+		encryptionPassword(inquiry);
+		validationPassword(inquiry);
 		
 		inquiryMapper.insertInquiry(inquiry);
 		
