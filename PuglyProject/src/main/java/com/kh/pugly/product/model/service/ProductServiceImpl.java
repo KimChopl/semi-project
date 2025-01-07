@@ -85,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	// 내상점 이미지 저장
 	private Image myStoreSaveImg(MultipartFile upfile) {
+		
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
@@ -250,31 +251,49 @@ public class ProductServiceImpl implements ProductService {
 	}
 	@Override
 	public void storeUpdate(MyStore myStore, MultipartFile upfile) {
-		Image img = myStoreSaveImg(upfile);
+		
 		findMyStoreById(myStore.getStoreNo());
-		findImageByMyStore(img.getImgNo());
-		log.info("image: {}", img);
+		Image image = findImageByMyStore(myStore.getStoreNo());
 		
-		if(upfile.getOriginalFilename().equals("")) {
+		if(image != null && !upfile.getOriginalFilename().equals("")) {
 			
-			if(img.getChangeImgName() != null) {
-				new File(context.getRealPath(img.getChangeImgName())).delete();
+			String filePath = context.getRealPath(image.getChangeImgName());
+			log.info("{} / {}",image,filePath);
+			if(filePath != null) {
+				File file = new File(filePath);
+				
+	
+				log.info("File object: " + file);  // File 객체 확인
+				if (file.exists()) {
+				    log.info("파일 존재: " + file.getAbsolutePath());
+				    if (file.delete()) {
+				        log.info("삭제 성공!");
+				    } else {
+				        log.error("파일 삭제 실패: 권한 문제?");
+				    }
+				} else {
+				    log.error("파일 존재하지 않음: " + filePath);
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				if(file.exists() && file.delete()) {
+					log.info("삭제성공!");
+				} else {
+					log.info("삭제실패!");
+				}
 			}
-			myStoreSaveImg(upfile);
-		}
-		int result = mapper.storeUpdate(myStore);
-		
-		if(result < 1) {
-			System.out.println("스토어실패!");
-		}
-		mapper.storeImgUpdate(img);
-		
-		
-		
-		log.info("{}", myStore);
-		log.info("{}",img);
+			Image img = myStoreSaveImg(upfile);
+			mapper.storeImgUpdate(img);
 			
-		
+		}
+		// 상점수정은 정상작동해~
+		mapper.storeUpdate(myStore);
 	}
 
 

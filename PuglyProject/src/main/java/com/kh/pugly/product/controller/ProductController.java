@@ -107,7 +107,6 @@ public class ProductController {
 	@PostMapping("update.store")
 	public ModelAndView storeUpdate(MyStore myStore, MultipartFile upfile) {
 		
-		log.info("{} / {}", myStore, upfile);
 		
 		productService.storeUpdate(myStore, upfile);
 		

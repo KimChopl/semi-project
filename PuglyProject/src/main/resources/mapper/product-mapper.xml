@@ -280,8 +280,9 @@
 		    	m.STORE_CONTENT storeContent,     
 		    	i.CHANGE_IMG_NAME changeImgName,  
 		    	i.ORIGIN_IMG_NAME originImgName, 
-		    	i.IMG_PATH, 
-		    	m.FK_MEMBER_NO userNo             
+		    	i.IMG_PATH imgPath, 
+		    	m.FK_MEMBER_NO userNo,
+                i.IMG_NO imgNo
 		  FROM
 		    	TB_MY_STORE m                       
 		  JOIN
@@ -310,10 +311,10 @@
 		   SET
 		   		ORIGIN_IMG_NAME = #{originImgName},
 		   		CHANGE_IMG_NAME = #{changeImgName},
-		   		IMG_PATH = #{imgPath},
-		   		IMG_LEVEL = #{imgLevel}
+		   		IMG_PATH = #{imgPath}
 		 WHERE
 		 		IMG_NO = #{imgNo}
+
 	</update>
 
 

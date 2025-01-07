@@ -135,7 +135,7 @@
                     </form>
                 </div>
                 <div>
-                    <img src="${ image.changeImgName }" alt="내상점이미지" class="main-img">
+                    <img src="${ image.changeImgName }" alt="${ image.originImgName }" class="main-img">
                 </div>
                 <div class="row">
                 	<c:choose>
@@ -276,19 +276,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
           <form action="/pugly/update.store" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="storeNo" value="${ myStore.storeNo }" />
         <div class="modal-body">
             <div class="row">
                 <div class="col">
                     <div class="img-fom">
                         <label>상점 이미지</label><br>
-                        <img src="${ product.image.changeImgName }" class="store-img" id="title-img">
+                        <img src="${ image.changeImgName }" class="store-img" id="title-img">
                     </div>
                     클릭하여 사진을 설정하세요.
                 </div>
                 <div class="col">
                     <label>상점명</label>
                     <input type="text" name="storeTitle" placeholder="${ myStore.storeTitle }">
-                    <label></label>
+                    <label>상점 소개글</label>
                     <textarea style="resize: none; width: 200px; height: 150px;" name="storeContent" placeholder="${ myStore.storeContent } "></textarea>
                 </div>
             </div>
