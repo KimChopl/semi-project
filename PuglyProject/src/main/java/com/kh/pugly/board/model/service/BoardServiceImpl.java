@@ -39,17 +39,18 @@ public class BoardServiceImpl implements BoardService {
 		return PagiNation.getPageInfo(totalCount, page, 5, 10);
 	}
 	
-	private List<Board> getBoardList(PageInfo pi){
+	private List<Board> getBoardList(PageInfo pi, String sortType){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return mapper.selectBoardList(rowBounds);
+		return mapper.selectBoardList(rowBounds, sortType);
 	}
 	
 	private void validateBoard(Board board) {
 		if(board == null ||
 		   board.getBoardTitle() == null || board.getBoardTitle().trim().isEmpty() ||
-		   board.getBoardContent() == null || board.getBoardContent().trim().isEmpty() ||
-		   board.getNickname() == null || board.getNickname().trim().isEmpty()) {
+
+		   board.getBoardContent() == null || board.getBoardContent().trim().isEmpty()) {
+
 			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		
@@ -77,11 +78,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Map<String, Object> selectBoardList(int currentPage) {
+	public Map<String, Object> selectBoardList(int currentPage, String sortType) {
 		int totalCount = getTotalCount();
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
-		List<Board> boards = getBoardList(pi);
+		List<Board> boards = getBoardList(pi, sortType);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boards", boards);
 		map.put("pageInfo", pi);
@@ -177,7 +178,6 @@ public class BoardServiceImpl implements BoardService {
 	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
 	    List<Board> boardList = mapper.searchBoardList(map, rowBounds);
 
-	    // 결과를 Map으로 반환
 	    Map<String, Object> resultMap = new HashMap<>();
 	    resultMap.put("boardList", boardList);
 	    resultMap.put("pageInfo", pageInfo);
@@ -189,6 +189,25 @@ public class BoardServiceImpl implements BoardService {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        throw new InvalidParameterException("검색어를 입력해주세요.");
 	    }
+	}
+
+	@Override
+	public Map<String, Object> selectBoardListBySort(Map<String, Object> map) {
+		
+		int page = (int)map.get("page"); 
+		
+		int totalCount = getTotalCount();
+		PageInfo pi = getPageInfo(totalCount, page);
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		List<Board> boardList = mapper.selectBoardListByCount(map, rowBounds);
+			
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		map.put("boardList", boardList);
+		map.put("pageInfo", pi);
+		
+		return resultMap;
 	}
 
 }

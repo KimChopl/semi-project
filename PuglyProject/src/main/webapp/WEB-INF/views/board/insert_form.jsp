@@ -42,9 +42,9 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 작성하기</h2>
+			<a class="btn btn-secondary" style="float:right;" href="/pugly/boards">목록으로</a>
             <br>
-
+			
             <form id="enrollForm" method="post" action="boards" enctype="multipart/form-data">
                 <table align="center">
                     <tr>
@@ -53,7 +53,12 @@
                     </tr>
                     <tr>
                         <th><label for="writer">작성자</label></th>
-                        <td><input type="text" id="writer" class="form-control" value="${sessionScope.loginUser.nickname }" name="nickname" readonly></td>
+
+                        <td>
+                        	<input type="text" class="form-control" value="${sessionScope.loginUser.nickname}" readonly>
+					        <!-- memberNo는 hidden 필드로 전달 -->
+					        <input type="hidden" id="writer" name="boardWriter" value="${sessionScope.loginUser.memberNo}"></td>
+
                     </tr>
                     <tr>
                         <th><label for="upfile">첨부파일</label></th>

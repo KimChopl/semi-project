@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Reply {
 	private Long replyNo;
 	private Long refBno;
-	private String nickName;
+	private String nickname;
 	private String replyContent;
 	private String createDate;
 	private String status;

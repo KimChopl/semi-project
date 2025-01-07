@@ -52,9 +52,19 @@
             <br>
             <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
             	<a class="btn btn-secondary" style="float:right;" href="insertForm">글쓰기</a>
-            <br>
-            <br>
-            <table id="boardList" class="table table-hover" align="center">
+
+			<div class="list_sort_wrap" style="clear:both;">
+			    <ul class="list_sort" style="list-style: none; display: flex; gap: 10px; float:right; margin-top : 10px;">
+			       <li>
+				        <a class="btn btn-link" onclick="selectBySort(1, 'date')">최신순</a>
+				   </li>
+				   <li>
+				   		<a class="btn btn-link" onclick="selectBySort(1, 'count')">조회순</a>
+				   </li>
+			    </ul>
+			</div>
+			
+            <table id="boardList" class="table table-hover"  style = "padding : 10px; text-align : center;">
                 <thead>
                     <tr>
                         <th>글번호</th>
@@ -62,7 +72,6 @@
                         <th>작성자</th>
                         <th>조회수</th>
                         <th>작성일</th>
-                        <th>첨부파일</th>
                     </tr>
                 </thead>
                 <tbody id="boardListBody">
@@ -82,7 +91,7 @@
             <script>
             	function detail(num) {
             		location.href=`boards/\${num}`;
-            	}	
+            	}
             
             </script>
             
@@ -97,13 +106,11 @@
                    		<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
                    </c:otherwise>
                 </c:choose>
-                   
                 <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
                  	<li class="page-item">
                  		<a class="page-link" href="boards?page=${num}">${num}</a>
                  	</li>
                 </c:forEach>
-                
                 <c:choose>
                 	<c:when test="${pageInfo.currentPage eq pageInfo.endPage}">    
                     	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
@@ -129,7 +136,7 @@
                 <div class="text">
                     <input type="text" class="form-control" name="keyword">
                 </div>
-                <button type="button" class="searchBtn btn btn-secondary" onclick="searchBoard()">검색</button>
+                <button type="button" class="searchBtn btn btn-secondary" onclick="searchBoard(1)">검색</button>
             </form>
             <br><br>
         </div>
@@ -138,11 +145,17 @@
     </div>
     
     <script>
-	    function searchBoard(){
+    
+	    function searchBoard(num){
             const condition = $('option:selected').val();
             const keyword = $('input[name="keyword"]').val();
-            const page = 1;
-	        
+            const currentPage = num;
+            /*
+            	152(const currentPage)행은 서버에서 만들어짐=> pageInfo.current로 하고 아래에 따로 부여를 안 할 경우 페이지는 1로 유지가 됨.
+            	searchBoard()에 새롭게 만들어진 페이지를 받을 수 있는 num을 집어 넣음.
+            	214(<a class="page-link" onclick="searchBoard(\${i})">\${i}</a>)행에 반복적으로 들어갈 숫자 i 를 입력함.
+            */
+            
 	        if (!keyword) {
 	            alert('검색어를 입력해주세요.');
 	            return;
@@ -153,56 +166,77 @@
 	            data: {
 	                condition: condition,
 	                keyword: keyword,
-	                page: page
+	                page: currentPage
 	            },
 	            success: function(searchResult) {
 	            	
 	            	const boardList = searchResult.boardList;
 	            	const pageInfo = searchResult.pageInfo;
 	            	
-	            	updateBoardList(boardList, pageInfo, condition, keyword);
+	            	updateBoardList(boardList);
+	            	updatePageInfo(pageInfo);
 	            }
 	           
 	        });
 	    }
 	    
-	    function updateBoardList(boardList, pageInfo, condition, keyword) {
+	    function selectBySort(num, sortType) {
+	    	const currentPage = num;
+	    	
+	    	$.ajax({
+	    		url: '/pugly/boards/selectBySort',
+	    		type: 'get',
+	    		data: {
+	    			page: currentPage,
+	    			sort : sortType
+	    		},
+	    		success: function(response) {
+	    			const boardList = response.boards;
+	    			const pageInfo = response.pageInfo;
+	    			
+	    			updateBoardList(boardList);
+	    			updatePaging(pageInfo, sortType);
+	    			
+	    		}
+	    	});
+	    }
+	    
+	    function updateBoardList(boardList) {
 	        const boardListBody = $('#boardListBody');
 	        boardListBody.empty();
 	        
 	        const resultStr = boardList.map(e =>
-	        `<tr onclick="detail('\${e.boardNo}')">
-	            <td>\${e.boardNo}</td>
-	            <td>\${e.boardTitle}</td>
-	            <td>\${e.nickName}</td>
-	            <td>\${e.count}</td>
-	            <td>\${e.createDate}</td>
-	        </tr>`
-		    ).join('');
-		    boardListBody.html(resultStr);
-		    updatePageInfo(pageInfo, condition, keyword);
+	        									`<tr onclick="detail('\${e.boardNo}')">
+										            <td>\${e.boardNo}</td>
+										            <td>\${e.boardTitle}</td>
+										            <td>\${e.nickname}</td>
+										            <td>\${e.count}</td>
+										            <td>\${e.createDate}</td>
+										         </tr>`
+		    								).join('');
+		    boardListBody.html(resultStr);   
 	    }
 	    
-	    function updatePageInfo(pageInfo, condition, keyword) {
+	    function updatePageInfo(pageInfo) {
 	    	const pagingArea = $('#pagingArea');
 	        
 	        let pagingStr = 
 	        `<ul class="pagination">`;
 
 	        if (pageInfo.currentPage > 1) {
-	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage - 1}&condition=\${condition}&keyword=\${keyword}">이전</a></li>`;
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="searchBoard(\${pageInfo.currentPage - 1})">이전</a></li>`;
 	        } else {
 	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>`;
 	        }
 	        
 	        for (let i = pageInfo.startPage; i <= pageInfo.endPage; i++) {
-	            pagingStr += `<li class="page-item \${i === pageInfo.currentPage ? 'active' : ''}">
-	                            <a class="page-link" href="boards?page=\${i}&condition=\${condition}&keyword=\${keyword}">\${i}</a>
+	            pagingStr += `<li class="page-item">
+	                            <a class="page-link" onclick="searchBoard(\${i})">\${i}</a>
 	                          </li>`;
 	        }
 
-	        if (pageInfo.currentPage < pageInfo.totalPages) {
-	            pagingStr += `<li class="page-item"><a class="page-link" href="boards?page=\${pageInfo.currentPage + 1}&condition=\${condition}&keyword=\${keyword}">다음</a></li>`;
+	        if (pageInfo.currentPage != pageInfo.endPage) {
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="searchBoard(\${pageInfo.currentPage + 1})">다음</a></li>`;
 	        } else {
 	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
 	        }
@@ -210,7 +244,37 @@
 	        pagingStr += `</ul>`;
 	        
 	        pagingArea.html(pagingStr);
-	    	
+	        
+	    }
+	    
+	    function updatePaging(pageInfo, sortType) {
+			const pagingArea = $('#pagingArea');
+	        
+	        let pagingStr = 
+	        `<ul class="pagination">`;
+
+	        if (pageInfo.currentPage > 1) {
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="selectBySort(\${pageInfo.currentPage - 1}, '\${sortType}')">이전</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>`;
+	        }
+	        
+	        for (let i = pageInfo.startPage; i <= pageInfo.endPage; i++) {
+	            pagingStr += `<li class="page-item">
+	                            <a class="page-link" onclick="selectBySort(\${i}, '\${sortType}')">\${i}</a>
+	                          </li>`;
+	        }
+
+	        if (pageInfo.currentPage != pageInfo.endPage) {
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="selectBySort(\${pageInfo.currentPage + 1}, '\${sortType}')">다음</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
+	        }
+
+	        pagingStr += `</ul>`;
+	        
+	        pagingArea.html(pagingStr);
+	        
 	    }
 	    
 	    

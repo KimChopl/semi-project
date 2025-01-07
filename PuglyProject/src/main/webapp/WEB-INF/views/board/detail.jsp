@@ -71,11 +71,10 @@
             <br>
 
             <div align="center">
-                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-                
+                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.nickname eq '관리자'}">
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
-            	
+            	</c:if>
             </div>
             
             <script>
@@ -155,7 +154,7 @@
     				data : {
     					refBno : ${board.boardNo},
     					replyContent : $('#content').val(),
-    					WriterNickName : '${sessionScope.loginUser.nickName}'
+    					nickname : '${sessionScope.loginUser.nickname}'
     				},
     				success : function(result){
     					

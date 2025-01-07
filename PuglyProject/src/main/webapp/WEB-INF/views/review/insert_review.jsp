@@ -1,8 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>Document</title>
@@ -127,31 +133,31 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                농장 제목
+                                ${ farm.farmTitle }
                             </div>
                             <div class="col-4">
-                                체험일
+                                ${ book.playDate }
                             </div>
                             <div class="col-4">
-                                체험 품목
+                                ${ farm.productName }
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                금액
+                                ${ farm.farmPrice }
                             </div>
                             <div class="col-4">
-                                총 인원
+                                총 인원 : ${ book.adultNo + book.kidNo }
                             </div>
                             <div class="col-2">
-                                세부 인원 어린이
+                                어린이 : ${ book.kidNo }
                             </div>
                             <div class="col-2">
-                                세부 인원 성인
+                                성인 : ${ book.adultNo }
                             </div>
                         </div>
-                        <form action="" method="post" enctype="multipart/form-data">
-                            
+                        <form action="/pugly/insert.review" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="reviewPostNo" value="${ farm.farmNo }">
                             <div class="row">
                                 <div class="col">
                                     
@@ -161,8 +167,9 @@
                                         </div>
                                     </div>
                                 
-                                    <input type="file" id="image-upload" class="hidden-input" accept="image/*" multiple>
+                                    <input type="file" id="image-upload" class="hidden-input" name="files" accept="image/*" multiple>
                                     <p class="message" id="message">이미지는 최대 5장까지만 업로드할 수 있습니다.</p>
+							    </div>
                             </div>
                             <div class="row">
                                 <div class="col">
@@ -181,8 +188,13 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <textarea name="" id="reviewContent" name="reviewContent"></textarea>
+                                    <textarea id="reviewContent" name="reviewContent"></textarea>
                                 </div>
+                            </div>
+                            <div class="row">
+                            	<div class="col">
+                            		<button class="btn btn-success">작성하기</button>
+                            	</div>
                             </div>
                         </form>
                         </div>
@@ -190,7 +202,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <script>
         const imageGallery = document.getElementById('image-gallery');
         const addImage = document.getElementById('add-image');
@@ -200,55 +211,55 @@
 
         let uploadedImages = [];
 
-// 이미지 업로드 트리거
-addImage.addEventListener('click', () => {
-    if (uploadedImages.length < maxImages) {
-        imageUpload.click();
-    } else {
-        alert("최대 5장까지만 업로드 가능합니다.");
-    }
-});
-
-// 파일이 선택되었을 때 처리
-imageUpload.addEventListener('change', (event) => {
-    const files = event.target.files;
-
-    if (files.length + uploadedImages.length > maxImages) {
-        alert("최대 5장까지만 업로드 가능합니다.");
-        return;
-    }
-
-    // 이미지 업로드 처리
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-
-        reader.onload = function(e) {
-            const imgElement = document.createElement('img');
-            imgElement.src = e.target.result;
-            const imageItem = document.createElement('div');
-            imageItem.classList.add('image-item');
-            imageItem.appendChild(imgElement);
-
-            // 이미지 클릭 시 삭제 기능 추가
-            imageItem.addEventListener('click', () => {
-                imageItem.remove();
-                uploadedImages = uploadedImages.filter(image => image !== file);
-                updateAddImageButton();  // 삭제 후 +버튼 갱신
-            });
-
-            // 업로드된 이미지 배열에 추가
-            uploadedImages.push(file);
-
-            // 이미지를 갤러리에 추가
-            imageGallery.insertBefore(imageItem, addImage);
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // 이미지 업로드 후 '이미지 추가' 버튼 상태 업데이트
-    updateAddImageButton();
-});
+		// 이미지 업로드 트리거
+		addImage.addEventListener('click', () => {
+		    if (uploadedImages.length < maxImages) {
+		        imageUpload.click();
+		    } else {
+		        alert("최대 5장까지만 업로드 가능합니다.");
+		    }
+		});
+		
+		// 파일이 선택되었을 때 처리
+		imageUpload.addEventListener('change', (event) => {
+		    const files = event.target.files;
+		
+		    if (files.length + uploadedImages.length > maxImages) {
+		        alert("최대 5장까지만 업로드 가능합니다.");
+		        return;
+		    }
+		
+		    // 이미지 업로드 처리
+		    for (let i = 0; i < files.length; i++) {
+		        const file = files[i];
+		        const reader = new FileReader();
+		
+		        reader.onload = function(e) {
+		            const imgElement = document.createElement('img');
+		            imgElement.src = e.target.result;
+		            const imageItem = document.createElement('div');
+		            imageItem.classList.add('image-item');
+		            imageItem.appendChild(imgElement);
+		
+		            // 이미지 클릭 시 삭제 기능 추가
+		            imageItem.addEventListener('click', () => {
+		                imageItem.remove();
+		                uploadedImages = uploadedImages.filter(image => image !== file);
+		                updateAddImageButton();  // 삭제 후 +버튼 갱신
+		            });
+		
+		            // 업로드된 이미지 배열에 추가
+		            uploadedImages.push(file);
+		
+		            // 이미지를 갤러리에 추가
+		            imageGallery.insertBefore(imageItem, addImage);
+		        };
+		        reader.readAsDataURL(file);
+		    }
+		
+		    // 이미지 업로드 후 '이미지 추가' 버튼 상태 업데이트
+		    updateAddImageButton();
+		});
     </script>
 
 <script>

@@ -47,8 +47,22 @@
 	<select id="selectBoardList" resultType="board">
 		<include refid="selectList"/>
 		 ORDER
+		    BY
+		 <choose>
+         	<when test="sortType == 'count'">
+                COUNT DESC
+            </when>
+            <otherwise>
+                B.CREATE_DATE DESC
+            </otherwise>
+        </choose>
+	</select>
+	
+	<select id="selectBoardListByCount" resultType="board">
+		<include refid="selectList"/>
+		 ORDER
 		 	BY
-		       BOARD_NO DESC
+		       COUNT DESC
 	</select>
 	
 	<update id="increaseCount" parameterType="long">
@@ -76,18 +90,14 @@
 		  	   BOARD_NO,
 		  	   BOARD_WRITER,
 		  	   BOARD_TITLE,
-		  	   BOARD_CONTENT,
-		  	   MAIN_CATEGORY_NO,
-		  	   COUNT
+		  	   BOARD_CONTENT
 		  	   )
 		VALUES
 			   (
 			    SEQ_BNO.NEXTVAL,
 			    #{boardWriter},
 			    #{boardTitle},
-			    #{boardContent},
-			    #{mainCategoryNo},
-			    #{count} 
+			    #{boardContent}
 			   )
 	</insert>	
 	

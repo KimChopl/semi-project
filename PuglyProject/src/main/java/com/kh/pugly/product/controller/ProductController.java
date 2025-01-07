@@ -28,14 +28,7 @@ public class ProductController {
 
 	private final ProductService productService;
 	private final ModelAndViewUtil mv;
-	
-	
-	// 내상점 화면 호출
-	@GetMapping("/mystores")
-	public String myStore() {
-		
-		return "product/my_store";
-	}
+
 	
 	// 상품등록 화면 호출
 	@GetMapping("/insert_form")
@@ -47,38 +40,80 @@ public class ProductController {
 	public ModelAndView insertStore(MyStore myStore, MultipartFile upfile, HttpSession session, Image image) {
 		Member member = (Member)session.getAttribute("loginUser");
 		myStore.setUserNo(member.getMemberNo());
-		session.setAttribute("myStore", myStore);
-		log.info("{}", member);
 		
-		log.info("게시글 정보 : {}, 파일 정보: {}", myStore, upfile);
 		productService.insertMyStore(myStore, upfile);
+		
+		session.setAttribute("myStore", myStore);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
 	// 상품등록 
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session, Image image) {
-		
-		log.info("게시글 정보 : {}, 파일 정보 : {}", product, upfile);
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if(loginUser != null) {
+			Long memberNo = loginUser.getMemberNo();
+			// 로그인 유저로 상점번호 조회
+			Long storeNo = productService.getStoreNoByMemberNo(memberNo);
+			
+			if (storeNo != null) {
+				product.setStoreNo(storeNo);
+			}
+		}
 		productService.insertProduct(product, upfile);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
 	// 상품리스트 화면 호출
 	@GetMapping("products")
-	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page) {
+	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page, HttpSession session) {
 		
-		Map<String, Object> map = productService.listProduct(page);
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		
+		Map<String, Object> map = productService.listProduct(page, loginUser.getMemberNo());
+		
+		Long userNo = (Long) map.get("userNo");
+		session.setAttribute("userNo", userNo);
+		Long storeNo = (Long) map.get("storeNo");
+		session.setAttribute("storeNo", storeNo);
+		Long memberNo = (Long) map.get("memberNo");
+		session.setAttribute("memberNo", memberNo);
+
 		return mv.setViewNameAndData("product/list_product", map);
 	}
 	// 상품상세 화면 호출
 	@GetMapping("products/{id}")
 	public ModelAndView detailProduct(@PathVariable(name="id") Long id) {
-		//log.info("{}", id);
+		
 		Map<String, Object> reponseData = productService.deatailProduct(id);
+		
 		return mv.setViewNameAndData("/product/detail_product", reponseData);
 	}
-	
-	
+	// 내상점 화면 호출
+	@GetMapping("stores/{storeNo}")
+	public ModelAndView detailMyStore(@PathVariable(name="storeNo")Long storeNo, @RequestParam(value="page", defaultValue="1")int page, HttpSession session) {
+		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+		}
+		session.setAttribute("storeNo", storeNo);
+		
+		Map<String, Object> reponseData = productService.deatailMyStore(page, storeNo);
+		MyStore myStore = (MyStore) reponseData.get("myStore");
+		session.setAttribute("myStore", myStore);
+		
+		return mv.setViewNameAndData("/product/my_store", reponseData);
+	}
+	// 내상점 업데이트할꺼야~
+	@PostMapping("update.store")
+	public ModelAndView storeUpdate(MyStore myStore, MultipartFile upfile) {
+		
+		log.info("{} / {}", myStore, upfile);
+		
+		productService.storeUpdate(myStore, upfile);
+		
+		
+		return mv.setViewNameAndData("redirect:products", null);
+	}
 	
 	
 	

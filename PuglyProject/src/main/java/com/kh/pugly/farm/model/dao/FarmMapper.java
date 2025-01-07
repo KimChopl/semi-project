@@ -54,7 +54,9 @@ public interface FarmMapper {
 	
 	List<Facility> selectFacility();
 
-	int insertFacility(Facility fac);
+	int insertFacility(Facility facility);
+
+	int deleteFacility(Facility facility);
 
 	
 }

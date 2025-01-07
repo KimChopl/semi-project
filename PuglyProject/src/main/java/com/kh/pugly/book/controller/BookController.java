@@ -56,17 +56,27 @@ public class BookController {
 	public ModelAndView bookList(HttpSession ssn) {
 		Member m = (Member)ssn.getAttribute("loginUser");
 		Map<String, Object> map = bs.selectBookList(m);
-		log.info("{}", map);
+		//log.info("{}", map);
 		return mv.setViewNameAndData("book/list-book", map);
 	}
 	
 	@GetMapping("decide/play/{bookNo}")
 	public String playDecide(@PathVariable(name="bookNo") Long bookNo, HttpSession ssn) {
-		log.info("{}", bookNo);
+		//log.info("{}", bookNo);
 		Member member = (Member)ssn.getAttribute("loginUser");
 		bs.insertDecide(bookNo, member);
 		ssn.setAttribute("alertMsg", "확정이 완료되었습니다.");
 		return "redirect:/farms";
 	}
+	
+	@GetMapping("play/done/{value}")
+	public String insertPlay(@PathVariable(name="value") Long bookNo, HttpSession ssn) {
+		Member member = (Member)ssn.getAttribute("loginUser");
+		bs.insertPlay(bookNo, member);
+		ssn.setAttribute("alertMsg", "체험이 완료되었습니다. 리뷰를 받아보세요");
+		return "redirect:/list.book";
+	}
+	
+	
 	
 }

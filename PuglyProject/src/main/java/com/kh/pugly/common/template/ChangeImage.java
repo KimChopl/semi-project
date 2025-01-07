@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.common.model.vo.Image;
+import com.kh.pugly.exception.FailDeleteObjectException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,10 @@ public class ChangeImage {
 	
 	public List<Image> changeImgName(MultipartFile[] multi) {
 		List<Image> imgList = new ArrayList();
-		log.info("{}", multi.length);
+		//log.info("{}", multi.length);
+		if(multi == null) {
+			return null;
+		}
 		int imgLevel = 2;
 		for(int i = 0; i < multi.length; i++) {
 			if(i == 0) {
@@ -47,7 +51,7 @@ public class ChangeImage {
 				//log.info("{} : {}", changeName, savePath);
 				Image img = Image.builder().originImgName(originName).changeImgName(changeName).imgPath(filePath).imgLevel(imgLevel).build();
 				imgList.add(img);
-				
+				//log.info("{}", img);
 				try {
 					multi[i].transferTo(new File(savePath + changeName));
 				} catch (IllegalStateException | IOException e) {
@@ -64,9 +68,20 @@ public class ChangeImage {
 		
 		for(int i = 0; i < img.size(); i++) {
 			
-			new File(img.get(i).getImgPath() + "/" + img.get(i).getChangeImgName()).delete();
+			if(!(new File(img.get(i).getImgPath() + img.get(i).getChangeImgName()).delete())) {
+				
+				throw new FailDeleteObjectException("사진 삭제 실패");
+			} 
 		}
 		
+	}
+	
+	public void deleteImageOne(Image img) {
+		log.info("{}", c.getRealPath(img.getImgPath()) + img.getChangeImgName());
+		if(!(new File(c.getRealPath(img.getImgPath()) + img.getChangeImgName()).delete())) {
+			
+			throw new FailDeleteObjectException("사진 삭제 실패");
+		} 
 	}
 	
 }

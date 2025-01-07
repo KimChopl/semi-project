@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${inquiry.nickName}</td>
+                    <td>${inquiry.nickname}</td>
                     <th>작성일</th>
                     <td>${inquiry.createDate}</td>
                 </tr>
@@ -141,7 +141,7 @@
     				data : {
     					refIno : ${inquiry.inquiryNo},
     					inquiryAnswer : $('#content').val(),
-    					nickName : '${sessionScope.loginUser.nickName}'
+    					nickname : '${sessionScope.loginUser.nickname}'
     				},
     				success : function(result){
     					
@@ -175,7 +175,7 @@
     				
     				const resultStr = replies.map(e =>
 								    					`<tr>
-								    					<td>\${e.nickName}</td>
+								    					<td>\${e.nickname}</td>
 								    					<td>\${e.inquiryAnswer}</td>
 								    					<td>\${e.createDate}</td>
 								    					</tr>`
