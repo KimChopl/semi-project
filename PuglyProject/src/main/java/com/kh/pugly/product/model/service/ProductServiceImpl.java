@@ -27,7 +27,8 @@ import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @EnableTransactionManagement
 @RequiredArgsConstructor
 @Service
@@ -35,7 +36,6 @@ public class ProductServiceImpl implements ProductService {
 	
 	private final ProductMapper mapper;
 	private final ServletContext context;
-	private MultipartFile upfile;
 	
 	// 상품등록 정상값 확인 메소드
 	private void validateProduct(Product product) {
@@ -54,18 +54,23 @@ public class ProductServiceImpl implements ProductService {
 		boolean firstFile = true;					// 첫번째 사진은 true
 		
 		for(MultipartFile file : upfile) {
+			
 			if(!file.isEmpty()) {
 				String fileName = file.getOriginalFilename();
 				String ext = fileName.substring(fileName.lastIndexOf("."));
 				String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+				
 				int randomNum = (int)(Math.random() * 90000) + 10000;
-				String changeName = currentTime + randomNum + ext;
+				
+				String changeName = "ProductImg" + currentTime + randomNum + ext;
 				String savePath = context.getRealPath("/resources/upload_files/");
+				
 				try {
 					file.transferTo(new File(savePath + changeName));
 				} catch(IOException e) {
 					throw new FailToFileUploadException("파일오류!");
 				}
+				
 				Image image = new Image();
 				image.setOriginImgName(fileName);
 				image.setChangeImgName("/pugly/resources/upload_files/" + changeName);
@@ -78,25 +83,30 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return imagesList;
 	}
-	
+	// 내상점 이미지 저장
 	private Image myStoreSaveImg(MultipartFile upfile) {
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+		
 		int randomNum = (int)(Math.random() * 90000) + 10000;
-		String changeName = currentTime + randomNum + ext;
+		
+		String changeName = "StoreImg" + currentTime + randomNum + ext;
 		String savePath = context.getRealPath("/resources/mystore_profile/");
+		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch(IOException e) {
 			throw new FailToFileUploadException("파일오류!");
 		}
+		
 		Image image = new Image();
 		image.setOriginImgName(fileName);
-		image.setChangeImgName("/resources/mystore_profile/" + changeName);
+		image.setChangeImgName("/pugly/resources/mystore_profile/" + changeName);
 		image.setImgLevel(1);
 		image.setImgPath("/resources/mystore_profile/");
-		return image;
+		
+		return image;	   
 	}
 	
 	// 페이지 체크
@@ -109,29 +119,58 @@ public class ProductServiceImpl implements ProductService {
 		}
 		return totalCount;
 	}
+	// 상점 숫자 체크
+	private Long getMySotreNoList(Long userNo) {
+		Long storeNo = mapper.getStoreByuserNo(userNo);
+		return storeNo;
+		
+	}
 	// 페이지 수
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return PagiNation.getPageInfo(totalCount, page, 10, 5);
 	}
+	// 내상점 페이지수
+	private PageInfo getStorePage(int totalCount, int page) {
+		return PagiNation.getPageInfo(totalCount, page, 5, 5);
+	}
+	
 	// 상품수
 	private List<Product> getProductList(PageInfo pi){
 		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return mapper.listProduct(rowBounds);
 	}
-	// 상품이 삭제될때
+	// 내상점 상품수
+	private List<Product> getProductStore(PageInfo pi, Long storeNo){
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return mapper.myStoreProduct(rowBounds, storeNo);
+	}
+	// 상품전체조회
 	private Product findProductById(Long productNo) {
 		Product product = mapper.detailProduct(productNo);
-		
 		return product;
 	}
-	// 사진리스트 꺼내오기
+	
+	// 내상점보여줄래
+	private MyStore findMyStoreById(Long storeNo) {
+		MyStore myStore = mapper.detailMyStore(storeNo);
+		return myStore;
+	}
+	// 내상점 사진꺼낼래
+	private Image findImageByMyStore(Long myStoreNo) {
+		Image img = mapper.findImageByMyStore(myStoreNo);
+		return img;
+	}
+	// 상품사진리스트 꺼내오기
 	private List<Image> findImagesByProductId(Long productNo) {
 		List<Image> imageList = (List<Image>) mapper.findImagesByProductId(productNo);
-		System.out.println(imageList);
 		return imageList;
 	}
-	
+	// 유저번호로 이용하여 상점번호 조회
+	public Long getStoreNoByMemberNo(Long memberNo) {
+		return mapper.selectStoreNoByMemberNo(memberNo);
+	}
 
 	// 상품등록 메소드 
 	@Override
@@ -147,15 +186,25 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	// 상품 리스트 메소드
-	public Map<String, Object>listProduct(int currentPage){
+	public Map<String, Object>listProduct(int currentPage, Long userNo){
+		// 상품수
 		int totalCount = getTotalCount();
+		
+		// 상점번호 있는지 확인
+		Long storeNo = getMySotreNoList(userNo);
+		//페이지 정보
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
+		// 상품리스트
 		List<Product> products = getProductList(pi);
+		
 		
 		Map<String, Object> map = new HashMap();
 		map.put("products", products);
 		map.put("pageInfo", pi);
+		map.put("storeNo", storeNo);
+		map.put("userNo", userNo);
+		
 		return map;
 	}
 	// 상품 상세보기
@@ -172,14 +221,66 @@ public class ProductServiceImpl implements ProductService {
 		
 		return responseData;
 	}
+	// 내상점 등록
 	@Override
 	public void insertMyStore(MyStore myStore, MultipartFile upfile) {
 		Image img = myStoreSaveImg(upfile);
 		mapper.insertMyStore(myStore);
 		mapper.insertMyStoreImg(img);
 	}
-	
 
+	// 내상점 보여주기
+	@Override
+	public Map<String, Object> deatailMyStore(int currentPage, Long storeNo) {
+		
+		int totalCount = getTotalCount();
+		PageInfo pi = getStorePage(totalCount, currentPage);
+		
+		MyStore myStore = findMyStoreById(storeNo);
+		Image image = findImageByMyStore(storeNo);
+		List<Product> products = getProductStore(pi, storeNo);
+		
+		Map<String, Object> responseData = new HashMap();
+		responseData.put("products", products);
+		responseData.put("myStore", myStore);
+		responseData.put("image", image);
+		responseData.put("storeNo", storeNo);
+		
+		return responseData;
+	}
+	@Override
+	public void storeUpdate(MyStore myStore, MultipartFile upfile) {
+		Image img = myStoreSaveImg(upfile);
+		findMyStoreById(myStore.getStoreNo());
+		findImageByMyStore(img.getImgNo());
+		log.info("image: {}", img);
+		
+		if(upfile.getOriginalFilename().equals("")) {
+			
+			if(img.getChangeImgName() != null) {
+				new File(context.getRealPath(img.getChangeImgName())).delete();
+			}
+			myStoreSaveImg(upfile);
+		}
+		int result = mapper.storeUpdate(myStore);
+		
+		if(result < 1) {
+			System.out.println("스토어실패!");
+		}
+		mapper.storeImgUpdate(img);
+		
+		
+		
+		log.info("{}", myStore);
+		log.info("{}",img);
+			
+		
+	}
+
+
+
+	
+	
 
 
 

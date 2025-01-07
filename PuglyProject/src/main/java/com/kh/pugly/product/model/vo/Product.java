@@ -30,7 +30,8 @@ public class Product {
 	private String deliveryPrice;			// 배송비
 	private String productType;				// 상품타입
 	
-	
+	private Long storeNo;					// 상점외래키
+	private Long userNo;					// 로그인 유저번호
 	
 	private Image image;					
 	private List<Image> imageList;

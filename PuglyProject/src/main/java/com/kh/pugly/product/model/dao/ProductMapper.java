@@ -10,13 +10,18 @@ import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 
+import lombok.extern.slf4j.Slf4j;
 @Mapper
 public interface ProductMapper {
 
 	// 갯수조회
 	 int selectTotalCount();
+	 // 상점번호조회
+	 Long getStoreByuserNo(Long userNo);
+	 
 	// 목록조회
 	 List<Product> listProduct(RowBounds rowBounds);
+	
 	 // 상세조회
 	Product detailProduct(Long productNo);
 			
@@ -24,9 +29,18 @@ public interface ProductMapper {
 	void insertProduct(Product product);
 	void insertProductImg(Image image);
 	List<Image> findImagesByProductId(Long productNo);
+	Long selectStoreNoByMemberNo(Long memberNo);
 	// 내상점 등록
 	void insertMyStore(MyStore myStore);
 	void insertMyStoreImg(Image img);
+	// 내상점 보여줄래
+	MyStore detailMyStore(Long storeNo);
+	Image findImageByMyStore(Long myStoreNo);
+	List<Product> myStoreProduct(RowBounds rowBounds, Long storeNo);
+	// 상점업데이트
+	int storeUpdate(MyStore myStore);
+	void storeImgUpdate(Image image);
+	
 
 
 	
