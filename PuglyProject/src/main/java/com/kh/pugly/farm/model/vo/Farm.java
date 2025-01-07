@@ -34,6 +34,8 @@ public class Farm {
 	private Date farmCreateDate;
 	private Date farmModifyDate;
 	private int farmPrice;
+	private String stateCode;
+	private Long addressNo;
 	List<Image> imgList;
 	List<Facility> facility;
 }

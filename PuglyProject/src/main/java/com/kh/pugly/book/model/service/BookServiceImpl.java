@@ -1,6 +1,5 @@
 package com.kh.pugly.book.model.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +10,12 @@ import org.springframework.stereotype.Service;
 import com.kh.pugly.book.model.dao.BookMapper;
 import com.kh.pugly.book.model.dto.BookCondition;
 import com.kh.pugly.book.model.vo.Book;
-import com.kh.pugly.book.model.vo.BookStatus;
 import com.kh.pugly.common.model.vo.MoreInfo;
+import com.kh.pugly.common.template.ChangeStringContext;
 import com.kh.pugly.common.template.MoreInfomation;
 import com.kh.pugly.exception.BoardNotFoundException;
+import com.kh.pugly.exception.FailUpdateException;
+import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
@@ -28,37 +29,35 @@ public class BookServiceImpl implements BookService {
 
 	private final BookMapper bm;
 	private final MemberMapper mm;
+	private final ChangeStringContext xss;
 	
 	
 	private void checkedMember(Member loginUser) {
 		Member checkMember = mm.selectMemberInfo(loginUser.getMemberNo());
-		
-		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!loginUser.getNickname().equals(checkMember.getNickname())
+		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!!loginUser.getNickname().equals(checkMember.getNickname())
 				|| !!!loginUser.getMemberName().equals(checkMember.getMemberName())) {
-			//Exception
+			throw new NotMatchUserInfomationException("유저 정보가 일치하지 않습니다.");
 		}
 		
 	}
 	
-	private void checkedInsertBook(int result) {
-		if(result < 1) {
-			throw new BoardNotFoundException("??");
-		}
-	}
 	
 	private Book insertBookToMember(Book book, Member loginUser) {
 		book.setNickname(String.valueOf(loginUser.getMemberNo()));
-		
+		return book;
+	}
+	
+	private Book changeInsertBook(Book book) {
+		book.setBookContent(xss.changeInsertFormat(book.getBookContent()));
 		return book;
 	}
 	
 	@Override
 	public void insertBook(Book book, Member loginUser) {
 		checkedMember(loginUser);
-		Book newBook = insertBookToMember(book, loginUser);
+		Book newBook = changeInsertBook(insertBookToMember(book, loginUser));
 		int result = bm.insertBook(newBook);
-		//log.info("{}", newBook);
-		checkedInsertBook(result);
+		checkedInsert(result);
 		}
 
 	@Override
@@ -85,8 +84,9 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public void insertPlay(Long bookNo) {
-
+	public void insertPlay(Long bookNo, Member member) {
+		checkedMember(member);
+		checkedInsert(bm.insertPlay(bookNo));
 	}
 	
 	private MoreInfo checkedListCount(int bookLimit, int moreNo, int listCount) {
@@ -114,7 +114,7 @@ public class BookServiceImpl implements BookService {
 	
 	private Map<String, Object> selectbookStatus(List<Book> books) {
 		log.info("{}", books);
-		Map<String, Object> bookStatus = new HashMap();
+		Map<String, Object> bookStatus = new HashMap<String, Object>();
 		bookStatus.put("books", books);
 		
 		return bookStatus;
@@ -143,7 +143,6 @@ public class BookServiceImpl implements BookService {
 		} else {
 			books = selectBookListBooker(memberNo, rb);
 		}
-		//log.info("{} : {}", books, category);
 		
 		return books;
 	}
@@ -179,14 +178,14 @@ public class BookServiceImpl implements BookService {
 		checkedMember(member);
 		Book book = checkedContent(bookNo);
 		book.setPhone(member.getPhone());
-		//log.info("{}", book);
 		return book;
 	}
 
 	private Book checkedContent(Long bookNo) {
 		Book book = bm.selectByNo(bookNo);
+		log.info("{}", book);
 		if(book == null) {
-			//Exception
+			// Exception
 		}
 		return book;
 	}

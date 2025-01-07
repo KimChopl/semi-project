@@ -47,9 +47,13 @@
         .col > div{
             width: 100%;
         }
-        #review-img-box{
+        .review-img-box{
             width: 100%;
             height: 200px;
+        }
+        .review-img-box > img{
+        	width : 100%;
+        	height : 200px;
         }
         a{
             text-decoration: none;
@@ -72,6 +76,10 @@
             width: 100%;
             height: 598px;
         }
+        .text-box{
+        	width : 100%;
+        	height : 400px;
+        }
     </style>
 </head>
 <body>
@@ -91,16 +99,19 @@
 		                 <div id="farms" class="carousel slide">
                             <div class="carousel-indicators">
                             <c:forEach items="${ farm.imgList }" var="img" varStatus="crrent">
-                            	<c:if test="${ img.imgLevel eq 1 }">
+                            	<c:if test="${ img.status eq 'Y' }">
+                            	<c:if test="${ img.imgLevel eq 1}">
 	                             	 <button type="button" data-bs-target="#farms" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                             	</c:if>
                             	<c:if test="${ img.imgLevel ne 1 }"> 
                               		<button type="button" data-bs-target="#farms" data-bs-slide-to="${ crrent.index }" aria-label="Slide ${ crrent.count }"></button>
                             	</c:if>
+                            	</c:if>
                             </c:forEach>
                             </div>
                             <div class="carousel-inner">
                             <c:forEach items="${ farm.imgList }" var="img" varStatus="crrent">
+                            <c:if test="${ img.status eq 'Y' }">
                             	<c:choose>
                             		<c:when test="${ img.imgLevel eq 1 }">
                               <div class="carousel-item active">
@@ -113,6 +124,7 @@
                               </div>
                             		</c:when>
                             	</c:choose>
+                            </c:if>
                             </c:forEach>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#farms" data-bs-slide="prev">
@@ -158,7 +170,12 @@
                 <div class="col-3">
                     <div id="book-btn-cover">
                     	<input type="hidden" id="farmNo" value="${ farmNo }" name="farmNo"/>
+                    	<c:if test="${ not empty sessionScope.loginUser && farm.seller ne sessionScope.loginUser.nickname}">
                         <button id="book">예약 하기</button>
+                    	</c:if>
+                    	<c:if test="${farm.seller eq sessionScope.loginUser.nickname }">
+                    	<button type="button" id="modify">수정 하기</button>
+                    	</c:if>
                     </div>
                 </div>
             </div>
@@ -173,14 +190,14 @@
             <div class="row">
                 <div class="col">
                     <div id="content-box">
-                        <p>${ farm.farmContent }</p>
+                        <textarea class="text-box" disabled>${ farm.farmContent }</textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div id="beware-box">
-                        <p>${ farm.bewareList }</p>
+                        <textarea class="text-box" disabled>${ farm.bewareList }</textarea>
                     </div>
                 </div>
             </div>
@@ -188,13 +205,14 @@
                 <div class="col">
                     <div id="review">
                     <c:forEach items="${ review }" var="r">
+                   
                     <c:choose>
                     <c:when test="${ not empty r }">
                         <div class="container">
                             <div class="row">
                                 <div class="col-4">
-                                    <div id="review-img-box">
-                                        <img src="" alt="${ r.imgList[0].originImgName}">
+                                    <div class="review-img-box">
+                                        <img src="/pugly/${ r.imgList[0].imgPath }${ r.imgList[0].changeImgName}" alt="${ r.imgList[0].originImgName}">
                                     </div>
                                 </div>
                                 <div class="col-8">
@@ -282,6 +300,14 @@
 			})
 		}
 	}
+	</script>
+	<script>
+		const modifyBtn = document.getElementById('modify');
+		const farm = document.getElementById('farmNo');
+		const farmNo = farm.value;
+		modifyBtn.addEventListener('click', () => {
+			location.href = `/pugly/modify/farm?farmNo=\${farmNo}`
+		})
 	</script>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

@@ -91,15 +91,18 @@
                                         </div>
                                     </div>
                                     <div class="btn">
-                                    	<c:if test="${ empty b.cancel }">
-                                    	<input type="hidden" value="${ b.bookNo }" class="book-hidden">
+                                    	<input type="hidden" value="${ b.bookNo }" class="book-hidden" id="book-no">
+                                    	<c:if test="${ empty b.cancel  && empty b.play}">
                                         <button data-bs-toggle="modal" data-bs-target="#cancel" class="btn btn-danger cancel-btn">취소하기</button>
                                     	</c:if>
                                         <c:if test="${ sessionScope.loginUser.categoryNo eq 2 && empty b.decide && empty b.play}">
                                         <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" data-bs-target="#acceptance-btn" class="btn btn-primary decide-btn">확정하기</button>
                                         </c:if>
-                                        <c:if test="${ not empty b.play }">
-                                        <button>리뷰하기</button>
+                                        <c:if test="${ sessionScope.loginUser.categoryNo eq 2 && not empty b.decide && empty b.play }">
+                                        <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" class="btn btn-primary play-btn">체험 진행 확인</button>
+                                        </c:if>
+                                        <c:if test="${ not empty b.play && sessionScope.loginUser.categoryNo eq 3}">
+                                        <button value="${ b.farmNo }" type="button" class="btn btn-sm btn-success review-btn">리뷰하기</button>
                                         </c:if>
                                     </div>
                                 </div>
@@ -182,6 +185,31 @@
       </div>
     </div>
   </div>
+  <script>
+  	const review = document.getElementsByClassName('review-btn');
+  	const book = document.getElementById('book-no');
+  	const bookNo = book.value;
+  	for(let i of review){
+  		const farmNo = i.value;
+  		console.log(farmNo);
+  		i.addEventListener('click', () => {
+  			location.href = `review/post/\${farmNo}/\${bookNo}`;
+  		})
+  	}
+  </script>
+  <script>
+   const play = document.getElementsByClassName('play-btn');
+   for(let i of play){
+	   const value = i.value;
+	   i.addEventListener('click', () => {
+		  const playResult =  confirm('확정하시겠습니까?');
+		  if(playResult){
+			 console.log(value);
+			 location.href = `play/done/\${value}`;
+		  }
+      })
+   }
+  </script>
   <script>
   	const moreContent = document.getElementsByClassName('book-content');
   	for(let i = 0; i < moreContent.length; i += 2){

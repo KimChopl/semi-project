@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.kh.pugly.common.model.vo.Image;
+import com.kh.pugly.common.model.vo.SelectImageByFarm;
 
 @Mapper
 public interface ImageMapper {
@@ -17,5 +18,10 @@ public interface ImageMapper {
 
 
 	int insertImage(Image image);
+
+
+	int deleteImage(String changeImgName);
+	
+	List<Image> selectByFarmNo(SelectImageByFarm no);
 }
 
