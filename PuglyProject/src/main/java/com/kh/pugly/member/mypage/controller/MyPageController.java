@@ -43,17 +43,17 @@ public class MyPageController {
 	@GetMapping("select.attention")
 	public ModelAndView selectMyattention(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
 		
-		return mv.setViewNameAndData("redirect:/", null);
+		return mv.setViewNameAndData("member/my_attention_list", null);
 	}
 	@GetMapping("select.myBoardList")
 	public ModelAndView selectMyboardList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
 		
-		return mv.setViewNameAndData("redirect:/", null);
+		return mv.setViewNameAndData("member/my_board_list", null);
 	}
 	@GetMapping("select.myReplyList")
 	public ModelAndView selectMyReplyList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
 		
-		return mv.setViewNameAndData("redirect:/", null);
+		return mv.setViewNameAndData("member/my_reply_list", null);
 	}
 	@GetMapping("select.myFarmList")
 	public ModelAndView selectMyFarmList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
@@ -63,7 +63,7 @@ public class MyPageController {
 	@GetMapping("select.myProductList")
 	public ModelAndView selectMyProductList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
 		
-		return mv.setViewNameAndData("redirect:/", null);
+		return mv.setViewNameAndData("member/my_product_list", null);
 	}
 	
 	

@@ -11,7 +11,6 @@
     <style>
         div{
             box-sizing: border-box;
-            /*border: 1px solid red;*/
         }
 
         #body{
@@ -68,6 +67,7 @@
             height: 80%;
             margin: 55px auto;
             background-color: rgb(241, 241, 241);
+            border-radius: 15px;
         }
         #nick-name{
             width: 200px;
