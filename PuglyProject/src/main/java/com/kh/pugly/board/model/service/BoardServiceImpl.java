@@ -48,7 +48,9 @@ public class BoardServiceImpl implements BoardService {
 	private void validateBoard(Board board) {
 		if(board == null ||
 		   board.getBoardTitle() == null || board.getBoardTitle().trim().isEmpty() ||
+
 		   board.getBoardContent() == null || board.getBoardContent().trim().isEmpty()) {
+
 			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		

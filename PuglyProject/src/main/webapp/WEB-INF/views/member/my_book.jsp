@@ -7,8 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        div{
+
+<style>
+    	div{
             box-sizing: border-box;
         }
 
@@ -16,10 +17,9 @@
             width: 650px;
             height: 500px;
             margin: auto;
-            text-align: center;
         }
 
-		.text-center{
+        .text-center{
 			margin: auto;
 			width: 220px;
 			text-align: center;
@@ -33,7 +33,7 @@
 
         #wrap{
             width: 600px;
-            height: 140px;
+            height: 180px;
             margin: auto;
             margin-top: 10px;
             border-radius: 5px;
@@ -42,20 +42,13 @@
             border: outset;
         }
 
-        .checkbox{
-            width: 25px;
-            height: 25px;
-            position: relative;
-            bottom: 215px;
-            left: 275px;
-        }
 
         #img{
             border-radius: 5px;
             position: relative;
             width: 100px;
             height: 100px;
-            top: 16px;
+            top: 35px;
             left: 10px;
         }
 
@@ -65,52 +58,69 @@
             border-radius: 5px;
         }
 
-        #product-name{
-            width: 250px;
+        #book-date{
+            width: 120px;
             height: 25px;
             position: relative;
             bottom: 90px;
-            left: 150px;
+            left: 450px;
         }
 
-        #category-name{
-            width: 100px;
-            height: 22px;
-            position: relative;
-            bottom: 95px;
-            left: 150px;
-        }
-
-        #unit-name{
-            width: 40px;
+        #play-date{
+            width: 120px;
             height: 25px;
             position: relative;
-            bottom: 75px;
-            left: 180px;
+            bottom: 85px;
+            left: 450px;
         }
 
-        #product-quantity{
-            width: 30px;
+        
+        #farm-name{
+            width: 150px;
             height: 25px;
             position: relative;
             left: 149px;
-            bottom: 100px;
+            bottom: 90px;
         }
-
-        #delivery-price{
+        
+        #total-play-people{
             width: 90px;
             height: 25px;
             position: relative;
-            left: 500px;
-            bottom: 130px;
+            bottom: 75px;
+            left: 400px;
         }
 
-        #product-price{
+        #adult{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            bottom: 70px;
+            left: 360px;
+        }
+
+        #kid{
+            width: 80px;
+            height: 25px;
+            position: relative;
+            bottom: 95px;
+            left: 450px;
+        }
+
+        #farm-product{
             width: 100px;
             height: 25px;
             position: relative;
-            left: 250px;
-            bottom: 50px;
+            bottom: 200px;
+            left: 150px;
+        }
+
+        #farm-price{
+            width: 100px;
+            height: 25px;
+            position: relative;
+            bottom: 150px;
+            left: 150px;
         }
 
         .button{
@@ -118,7 +128,9 @@
             height: 30px;
             background-color: rgb(87, 87, 255);
             color: white;
+            position: relative;
             margin-top: 5px;
+            left: 25px;
             font-family: 'SUITE-Regular';
         }
 
@@ -138,7 +150,8 @@
             font-style: normal;
         }
 
-    </style>
+</style>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -146,47 +159,46 @@
 </head>
 <body>
 
-	<jsp:include page="../common/menubar.jsp" />
+<jsp:include page="../common/menubar.jsp" />
 
     <div id="body">
-        <form action="insert.myOrder" method="post">
-        <c:forEach items="${ cartList }" var="c">
-            <div id="wrap" onclick="detailProduct('${c.productNo}')">
-                <input type="hidden" name="productNo" value="${ c.productNo }" />
-                <div id="img"><img src="${ c.image.changeImgName }" class="img"></div>
-                <div id="category-name"><span class="span">${ c.productType }</span></div>
-                <div id="product-name"><span class="span">${ c.productName }</span></div>
-                <div id="product-price"><span class="span">${ c.productPrice }원</span></div>
-                <div id="unit-name"><span class="span">${ c.unitName }</span></div>
-                <div id="product-quantity"><span class="span">${ c.productQuantity }</span></div>
-                <c:if test="${ c.deliveryPrice ne '무료' }">
-                <div id="delivery-price"><span class="span">${ c.deliveryPrice }원</span></div>
-                </c:if>
-                <input type="checkbox" class="checkbox">
+        <div id="wrap">
+            <div id="img"><img src="" class="img"></div>
+            <div id="farm-name">
+                <span class="span">농장이름</span>
             </div>
-        </c:forEach>
-         <script>
-         	function detailProduct(num) {
-         		location.href = `products/\${num}`;
-			}
-         </script>
-            
-            <button type="submit" class="button">주문하기</button>   
-        </form>
-        <br>
-        <div class="text-center">
-	        <ul class="pagination">
-		            <li class="page-item" id="pro"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
-		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
-		        
-		            <li class="page-item"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
-		        
-		        </c:forEach>
-		            <li class="page-item" id="next"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
-	        </ul>
+            <div id="book-date">
+                <span class="span">예약추가한날짜</span>
+            </div>
+            <div id="play-date">
+                <span class="span">예약일</span>
+            </div>
+            <div id="total-play-people">
+                <span class="span">예약 인원</span>
+            </div>
+            <div id="adult">
+                <span class="span">성인 :</span>
+            </div>
+            <div id="kid">
+                <span class="span">아이 :</span>
+            </div>
+            <div id="farm-product">
+                <span class="span">농장대표작물</span>
+            </div>
+            <div id="farm-price">
+                <span class="span">체험가격</span>
+            </div>
         </div>
+    <div class="text-center">
+	    <ul class="pagination">
+	        <li class="page-item"><a class="page-link" href="#">이전</a></li>
+	        <li class="page-item"><a class="page-link" href="#">1</a></li>
+	        <li class="page-item"><a class="page-link" href="#">다음</a></li>
+	    </ul>
     </div>
-    <script>
+</div>
+
+<script>
     	let endPage = "${pageInfo.endPage}";
     	let maxPage = "${pageInfo.maxPage}";
     	let pageLimit = "${pageInfo.pageLimit}";
@@ -205,9 +217,8 @@
     	}
     	
     </script>
-    
-   
-	<jsp:include page="../common/footer.jsp" />
+
+<jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

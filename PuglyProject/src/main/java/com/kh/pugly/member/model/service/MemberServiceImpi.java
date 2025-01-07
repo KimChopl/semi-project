@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.security.auth.login.FailedLoginException;
 import javax.servlet.ServletContext;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
+import com.kh.pugly.common.model.vo.PageInfo;
+import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailDeleteAddressException;
@@ -149,7 +152,9 @@ public class MemberServiceImpi implements MemberService {
 		map.put("addressNo", address.getAddressNo());
 	}
 	
-	
+	private PageInfo getPageInfo(int totalCount, int page, int boardLimit, int pageLimit) {
+		return PagiNation.getPageInfo(totalCount, page, boardLimit, pageLimit);
+	}
 	
 	@Override
 	public Member selectMember(Member member) {
@@ -270,19 +275,10 @@ public class MemberServiceImpi implements MemberService {
 		
 		processUpdateAddress(map, memberNo, address);
 		
-		if(address.getAddressType() != 1) {
-			if(mapper.updateAddress(map) == 0) {
-				throw new FailDeleteAddressException("주소 수정 실패");
-			}
-		} else {
-			int addressTypeResult = mapper.changeAddressType(memberNo);
-			int updateAddressResult = mapper.updateAddress(map);
-			if(addressTypeResult * updateAddressResult == 0) {
-				throw new FailDeleteAddressException("주소 수정 실패");
-			}
-		}
-
 		
+		if(mapper.updateAddress(map) == 0) {
+			throw new FailDeleteAddressException("주소 수정 실패");
+		}
 		
 	}
 	
@@ -339,16 +335,9 @@ public class MemberServiceImpi implements MemberService {
 		
 		processUpdateAddress(map, memberNo, address);
 		
-		if(address.getAddressType() != 1) {
-			if(mapper.insertNewAddress(map) == 0) {
-				throw new FailInsertAddressException("주소 추가 실패");
-			}
-		} else {
-			int addressTypeResult = mapper.changeAddressType(memberNo);
-			int newAddressResult = mapper.insertNewAddress(map);
-			if(addressTypeResult * newAddressResult == 0) {
-				throw new FailInsertAddressException("주소 추가 실패");
-			}
+	
+		if(mapper.insertNewAddress(map) == 0) {
+			throw new FailInsertAddressException("주소 추가 실패");
 		}
 		
 	}
@@ -368,10 +357,18 @@ public class MemberServiceImpi implements MemberService {
 	
 	
 	@Override
-	public Map<String, Object> selectMemberAddresses(Long memberNo) {
+	public Map<String, Object> selectMemberAddresses(Long memberNo, int currentPage) {
 		Map<String, Object> responseData = new HashMap();
+		
+		PageInfo pi = getPageInfo(mapper.selectAddressCount(memberNo), currentPage, 2, 3);
+		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
 		responseData.put("stateCategory", mapper.selectStateCategory());
-		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		
+		responseData.put("addresses", mapper.selectAddresses(memberNo, rowBounds));
+		
+		responseData.put("pageInfo", pi);
 		
 		return responseData;
 	}
@@ -379,7 +376,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Map<String, Object> selectMemberInfo(Long memberNo) {
 		Map<String, Object> responseData = new HashMap();
-		responseData.put("addresses", mapper.selectAddresses(memberNo));
+		responseData.put("addresses", mapper.selectInfoAddresses(memberNo));
 		responseData.put("memberImage", mapper.selectMemberImage(memberNo));
 		responseData.put("memberCategory", mapper.selectMemberCategory());
 		return responseData;

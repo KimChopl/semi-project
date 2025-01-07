@@ -372,6 +372,7 @@
 		      (#{facilityNo},
 		       #{facilityName})
 	</insert>
+
 	<update id="updateFarm" parameterType="farm">
 		UPDATE
 		       TB_FARM
@@ -397,4 +398,5 @@
 		   AND
 		       BR_FARM_NO = #{facilityName}
 	</delete>
+
 </mapper>

@@ -145,6 +145,7 @@
                    	<a href="/pugly/login_form.member" style = "color : white;">로그인</a>
                     <div style="position: relative; display: inline-block;">
                         <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
+
                         <div id="profile-menu">
                             <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
                             <a href="/pugly/my_page.member">마이페이지</a>
@@ -152,6 +153,7 @@
                             <a href="장바구니핸들러">장바구니</a>
                             <a href="/pugly/logout.member">로그아웃</a>
                         </div>
+
                     </div>
          </div>
     </div>

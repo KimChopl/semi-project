@@ -31,7 +31,7 @@ public interface MemberService {
 	
 	void insertNewAddress(Long memberNo, Long userNo, Address address);
 
-	Map<String, Object> selectMemberAddresses(Long memberNo);
+	Map<String, Object> selectMemberAddresses(Long memberNo, int currentPage);
 	
 	Map<String, Object> selectMemberInfo(Long memberNo);
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
@@ -24,8 +25,14 @@ public interface MemberMapper {
 	// 전체 memberType 가져오기
 	List<Member> selectMemberCategory();
 	
-	// 로그인 유저의 전체 주소 리스트 가져오기
-	List<Address> selectAddresses(Long memberNo);
+	// 로그인 유저의 전체 주소 리스트 가져오기(주소 수정페이지)
+	List<Address> selectAddresses(Long memberNo, RowBounds rowBounds);
+	
+	// 로그인 유저의 리스트(마이페이지 출력)
+	List<Address> selectInfoAddresses(Long memberNo);
+	
+	// 페이징 처리(주소)
+	int selectAddressCount(Long memberNo);
 	
 	// 아이디 찾기
 	List<Member> findMemberId(Member member);
@@ -46,8 +53,6 @@ public interface MemberMapper {
 	
 	// 주소변경
 	int updateAddress(Map<String, Object> map);
-	// 주소 메인배송지 변경
-	int changeAddressType(Long memberNo);
 	// 새 주소 추가
 	int insertNewAddress(Map<String, Object> address);
 	// 주소 삭제

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.common.ModelAndViewUtil;
+import com.kh.pugly.member.model.service.MemberService;
 import com.kh.pugly.member.mypage.model.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,43 @@ public class MyPageController {
 		Map<String, Object> map = myPageService.selectCart(memberNo, currentPage);
 		return mv.setViewNameAndData("member/my_cart", map);
 	}
+	
+	@GetMapping("select.myBook")
+	public ModelAndView selectMyBook(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_book", null);
+	}
+	@GetMapping("select.myOrder")
+	public ModelAndView selectMyOrder(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_order", null);
+	}
+	@GetMapping("select.attention")
+	public ModelAndView selectMyattention(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_attention_list", null);
+	}
+	@GetMapping("select.myBoardList")
+	public ModelAndView selectMyboardList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_board_list", null);
+	}
+	@GetMapping("select.myReplyList")
+	public ModelAndView selectMyReplyList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_reply_list", null);
+	}
+	@GetMapping("select.myFarmList")
+	public ModelAndView selectMyFarmList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		Map<String, Object> map = myPageService.selectMyFarmList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_farm_list", map);
+	}
+	@GetMapping("select.myProductList")
+	public ModelAndView selectMyProductList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
+		
+		return mv.setViewNameAndData("member/my_product_list", null);
+	}
+	
 	
 	
 	

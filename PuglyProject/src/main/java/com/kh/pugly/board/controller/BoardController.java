@@ -20,7 +20,9 @@ import com.kh.pugly.common.ModelAndViewUtil;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Controller
+
 @RequiredArgsConstructor
 public class BoardController {
 	
