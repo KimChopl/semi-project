@@ -118,9 +118,9 @@
                    
                    <c:forEach begin="${ pageInfo.startPage }" end="${pageInfo.endPage }" var="num"> 
                     
-		                    	<li class="page-item">
-		                    		<a class="page-link" href="inquiries?page=${num}">${num}</a>
-		                    	</li>
+                    	<li class="page-item">
+                    		<a class="page-link" href="inquiries?page=${num}">${num}</a>
+                    	</li>
                     </c:forEach>
                     
                     <li class="page-item"><a class="page-link" href="#">다음</a></li>
