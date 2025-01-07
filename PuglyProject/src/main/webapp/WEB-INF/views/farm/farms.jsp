@@ -140,14 +140,16 @@
                                         <div class="col-4 farms" onclick="farms(${farm.farmNo})">
                                             <div class="farms-content">
                                                 <div class="img">
-                                                <c:choose>
-        		                                    <c:when test="${ farm.imgList[0].status eq 'Y' }">
-                		                                <img src="/pugly/${farm.imgList[0].imgPath }${ farm.imgList[0].changeImgName }" alt="${farm.imgList[0].originImgName }">
-		                                            </c:when>
-		                                            <c:otherwise>
-		                                            	<img src="" alt="이미지 없음">
-		                                            </c:otherwise>
-                                                </c:choose>
+                                                <c:forEach items="${ farm.imgList }" var="img">
+	                                                <c:choose>
+	        		                                    <c:when test="${ img.status eq 'Y' && img.imgLevel eq 1}">
+	                		                                <img src="/pugly/${img.imgPath }${ img.changeImgName }" alt="${img.originImgName }">
+			                                            </c:when>
+			                                            <c:otherwise>
+			                                            	<img src="" alt="이미지 없음">
+			                                            </c:otherwise>
+	                                                </c:choose>
+                                                </c:forEach>
                                                 </div>
                                                 <div class="farm-explain">
                                                     <div class="title">${ farm.farmTitle }</div>

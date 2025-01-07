@@ -14,7 +14,8 @@
 		       IMG_PATH,
 		       IMG_LEVEL,
 		       IMG_POST_NO,
-		       CATEGORY_NO
+		       CATEGORY_NO,
+		       IMG_STATUS
 		       )
 		VALUES
 		       (
@@ -24,7 +25,8 @@
 		       #{imgPath},
 		       #{imgLevel},
 		       #{postNo},
-		       #{categoryNo}
+		       #{categoryNo},
+		       'Y'
 		       )
 	</insert>
 	
@@ -52,5 +54,14 @@
 		 AND
 		      CATEGORY_NO = #{categoryNo}    
 	</select>
+	
+	<update id="updateImage" parameterType="image">
+		UPDATE
+		       TB_IMAGE
+		   SET
+		       IMG_LEVEL = #{imgLevel}
+		 WHERE
+		       CHANGE_IMG_NAME = #{changeImgName}
+	</update>
 	
 </mapper>

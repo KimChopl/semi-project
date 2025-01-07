@@ -107,6 +107,7 @@
 										<input type="text" style="display:none;" name="imgPath" class="path" value="${ img.imgPath }" />
 										<input type="text" style="display:none;" name="originImgName" class="origin" value="${ img.originImgName }" >
 										<input type="text" style="display:none;" name="changeImgName" class="change" value="${ img.changeImgName }" >  
+										<input type="text" style="display:none;" name="changeImgName" class="imgLevel" value="${ img.imgLevel }" >  
                                 		</c:if>
                                 	</c:forEach>
 										<input type="text" style="display:none;" name="originNames" id="originNames">                              		
@@ -231,11 +232,13 @@
         const path = document.getElementsByClassName('path');
         const origin = document.getElementsByClassName('origin');
         const change = document.getElementsByClassName('change');
+        const imgLevel = document.getElementsByClassName('imgLevel');
         
-        const imgList = { 'path' : '', 'origin' : [], 'change' : []};
+        const imgList = { 'path' : '', 'origin' : [], 'change' : [], 'imgLevel' : []};
         for(let i = 0; i < origin.length; i++){
         	imgList.origin.push(origin[i].value);
         	imgList.change.push(change[i].value);
+        	imgList.imgLevel.push(imgLevel[i].value);
         }
         	imgList.path = ('/pugly/'+path[0].value);
         //console.log(imgList);
@@ -247,6 +250,7 @@
         	const imgElement = document.createElement('img');
             imgElement.src = imgList.path+imgList.change[i];
             imgElement.alt = imgList.origin[i];
+            imgElement.value = i
             console.log(imgElement);
             const imageItem = document.createElement('div');
             imageItem.classList.add('image-item');
@@ -257,7 +261,8 @@
                 console.log(e.target.src.substring(43))
                 imgList.origin = imgList.origin.filter(origin => origin !== e.target.alt)
                 imgList.change = imgList.change.filter(change => change !== e.target.src.split('/').pop())
-                console.log(imgList.change)
+                imgList.imgLevel = imgList.imgLevel.filter((imgLevel, index) => index !== e.target.value)
+                console.log(imgList.imgLevel);
                 uploadedImages = uploadedImages.filter(image => image !== file);
                 const originNames = document.getElementById('originNames');
                 originNames.value = JSON.stringify(imgList);
