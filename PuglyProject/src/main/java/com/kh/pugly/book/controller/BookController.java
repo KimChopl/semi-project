@@ -56,6 +56,7 @@ public class BookController {
 	public ModelAndView bookList(HttpSession ssn) {
 		Member m = (Member)ssn.getAttribute("loginUser");
 		Map<String, Object> map = bs.selectBookList(m);
+		log.info("{}", map);
 		return mv.setViewNameAndData("book/list-book", map);
 	}
 	

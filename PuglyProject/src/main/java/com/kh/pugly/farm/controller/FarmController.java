@@ -10,16 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.pugly.common.ModelAndViewUtil;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.farm.model.dto.FarmPrice;
 import com.kh.pugly.farm.model.service.FarmService;
-import com.kh.pugly.farm.model.vo.Facility;
 import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.farm.model.vo.FarmProduct;
 import com.kh.pugly.farm.model.vo.StateCategory;

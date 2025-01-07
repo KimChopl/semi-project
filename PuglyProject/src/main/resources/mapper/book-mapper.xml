@@ -167,7 +167,7 @@
   	<select id="selectByNo" resultType="book" parameterType="long">
   		<include refid="bookColumn" />
   		WHERE
-  		      BOOK_NO = #{bookNo}
+  		      B.BOOK_NO = #{bookNo}
   	</select>
   	<insert id="insertDecide" parameterType="long">
   		INSERT

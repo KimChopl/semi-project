@@ -21,16 +21,7 @@
 	      
 	</sql>
 	
-	<select id="totalCount" resultType="_int">
-		SELECT
-			   COUNT(*)
-		  FROM	
-		       TB_INQUIRY
-		 WHERE
-		       STATUS = 'Y'
-	</select>
-
-	<select id="selectInquiryList" resultType="inquiry">
+	<sql id="selectList">
 		SELECT
 			   INQUIRY_NO inquiryNo,
 			   INQUIRY_TITLE inquiryTitle,
@@ -44,6 +35,19 @@
 		  	   TB_MEMBER M ON (M.MEMBER_NO = I.INQUIRY_WRITER)
 		 WHERE
 		  	   I.STATUS = 'Y'
+	</sql>
+	
+	<select id="totalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM	
+		       TB_INQUIRY
+		 WHERE
+		       STATUS = 'Y'
+	</select>
+
+	<select id="selectInquiryList" resultType="inquiry">
+		<include refid="selectList"/>
 		 ORDER
 		 	BY
 		       INQUIRY_GROUP DESC, INQUIRY_NO DESC
@@ -80,7 +84,7 @@
     		   )
     	VALUES 
     		   (
-        	   SEQ_INO.NEXTVAL,
+        	   SEQ_QNO.NEXTVAL,
         	   #{inquiryWriter},
         	   #{inquiryTitle},
         	   #{inquiryContent},
@@ -94,7 +98,7 @@
             		  MEMBER_NO = #{inquiryWriter}
         	   )
                )
-</insert>	
+	</insert>	
 	
 	<delete id="deleteInquiry" parameterType="long">
 		UPDATE
@@ -106,5 +110,49 @@
 		   AND
 		   	   INQUIRY_NO = #{inquiryNo}
 	</delete>
+	
+	<select id="countSearchInquiry" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_INQUIRY I
+		  JOIN
+		  	   TB_MEMBER M ON (INQUIRY_WRITER = M.MEMBER_NO)
+		 WHERE
+		 	   I.STATUS = 'Y'
+		 <if test="condition == 'content'">
+		   AND	
+		       INQUIRY_CONTENT
+		 </if>  
+		 <if test="condition == 'writer'">
+		   AND	
+		       M.NICKNAME
+		 </if>
+		 <if test="condition == 'title'">
+		   AND	
+		       INQUIRY_TITLE
+		 </if>  
+		 LIKE '%' || #{keyword} || '%'
+	</select>
+	
+	<select id="searchInquiryList" parameterType="map" resultType="inquiry">
+    	<include refid="selectList" />
+    	AND
+    	<choose>
+        	<when test="condition == 'writer'">
+            	M.NICKNAME
+        	</when>
+        	<when test="condition == 'title'">
+            	INQUIRY_TITLE
+	        </when>
+	        <otherwise>
+	            INQUIRY_CONTENT
+	        </otherwise>
+    	</choose>
+    	LIKE '%' || #{keyword} || '%'
+     ORDER
+		BY
+		   INQUIRY_GROUP DESC, INQUIRY_NO DESC
+	</select>
  
  </mapper>

@@ -1,6 +1,8 @@
 package com.kh.pugly.board.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -64,6 +66,21 @@ public class InquiryController {
 		mv.setViewName("redirect:inquiries");
 		
 		return mv;
+	}
+	
+	@GetMapping("inquiries/search")
+	public Map<String, Object> searchInquiry(@RequestParam("condition") String condition, 
+									@RequestParam("keyword") String keyword,
+									@RequestParam(value = "page", defaultValue = "1") int page) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("page", page);
+	    map.put("condition", condition);
+	    map.put("keyword", keyword);      
+		
+		Map<String, Object> searchResult = inquiryService.searchInquiry(map);
+		
+	   return searchResult;
 	}
 
 }

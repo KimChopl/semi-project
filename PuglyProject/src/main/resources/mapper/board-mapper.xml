@@ -18,19 +18,9 @@
 		 	  TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER) 
 		WHERE
 			  B.STATUS = 'Y'
-	      
 	</sql>
 	
-	<select id="selectTotalCount" resultType="_int">
-		SELECT
-			   COUNT(*)
-		  FROM	
-		       TB_BOARD
-		 WHERE
-		       STATUS = 'Y'
-	</select>
-
-	<select id="selectBoardList" resultType="board">
+	<sql id="selectList">
 		SELECT
 			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
@@ -43,6 +33,19 @@
 		  	   TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER)
 		 WHERE
 		  	   B.STATUS = 'Y'
+	</sql>
+	
+	<select id="selectTotalCount" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM	
+		       TB_BOARD
+		 WHERE
+		       STATUS = 'Y'
+	</select>
+
+	<select id="selectBoardList" resultType="board">
+		<include refid="selectList"/>
 		 ORDER
 		 	BY
 		       BOARD_NO DESC
@@ -111,6 +114,48 @@
 		   	   BOARD_NO = #{boardNo}			  
 	</update>
 	
+	<select id="countSearchBoard" parameterType="hashmap" resultType="_int">
+		SELECT
+			   COUNT(*)
+		  FROM
+		  	   TB_BOARD B
+		  JOIN
+		  	   TB_MEMBER M ON (BOARD_WRITER = M.MEMBER_NO)
+		 WHERE
+		 	   B.STATUS = 'Y'
+		 <if test="condition == 'content'">
+		   AND	
+		       BOARD_CONTENT
+		 </if>  
+		 <if test="condition == 'writer'">
+		   AND	
+		       M.NICKNAME
+		 </if>
+		 <if test="condition == 'title'">
+		   AND	
+		       BOARD_TITLE
+		 </if>  
+		 LIKE '%' || #{keyword} || '%'
+	</select>
 	
+	<select id="searchBoardList" parameterType="map" resultType="board">
+    	<include refid="selectList" />
+    	AND
+    	<choose>
+        	<when test="condition == 'writer'">
+            	M.NICKNAME
+        	</when>
+        	<when test="condition == 'title'">
+            	BOARD_TITLE
+	        </when>
+	        <otherwise>
+	            BOARD_CONTENT
+	        </otherwise>
+    	</choose>
+    	LIKE '%' || #{keyword} || '%'
+     ORDER 
+     	BY
+     	   BOARD_NO DESC
+	</select>
 
 </mapper>
