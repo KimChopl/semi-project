@@ -11,68 +11,78 @@
     <style>
         
         div{
-            border: 1px solid red;
             box-sizing: border-box;
         }
         
-        #wrap{
-            width: 700px;
-            height: 170px;
+        .wrap{
+            width: 420px;
+            height: 130px;
             margin: auto;
             font-family: 'SUITE-Regular';
             border: 2px outset;
             border-radius: 5px;
+            background-color: rgb(245, 245, 245);
         }
         
-        #img{
+        #farm-modify-date{
             width: 130px;
-            height: 130px;
-            border-radius: 5px;
+            height: 25px;
             position: relative;
-            left: 130px;
-            bottom: 5px;
+            left: 260px;
+            bottom: 10px;
         }
         
         #farm-no{
             width: 80px;
             height: 25px;
             position: relative;
-            left: 25px;
-            top: 70px;
+            left: 5px;
+            top: 50px;
             text-align: center;
         }
 
         #farm-title{
-            width: 300px;
+            width: 150px;
             height: 25px;
             position: relative;
-            left: 280px;
-            bottom: 140px;
+            left: 100px;
+            bottom: 35px;
         }
 
         #farm-price{
             width: 140px;
             height: 25px;
             position: relative;
-            left: 530px;
-            bottom: 130px;
+            left: 100px;
+            bottom:25px;
         }
 
-        #state-name{
+        #seller{
+            width: 90px;
+            height: 25px;
+            position: relative;
+            left: 100px;
+            bottom:15px;
+        }
+
+        #count{
             width: 90px;
             height: 25px;
             position: relative;
             left: 300px;
-            bottom: 140px;
+            bottom: 65px;
         }
-
-        #district{
-            width: 300px;
-            height: 45px;
-            position: relative;
-            left: 300px;
-            bottom: 135px;
-        }
+        
+        .text-center{
+			margin: auto;
+			width: 220px;
+			text-align: center;
+		}
+        
+        .text-center > ul > li{
+	        margin:0 auto;
+			text-align: center;
+		}
 
         @font-face {
             font-family: 'SUITE-Regular';
@@ -89,13 +99,58 @@
     
 </head>
 <body>
-    <div id="wrap">
-        <div id="farm-no">11</div>
-        <div id="img"><img src=""></div>
-        <div id="farm-title">농장이름</div>
-        <div id="farm-price">체험 가격 : 10000원</div>
-        <div id="state-name">서울시</div>
-        <div id="district">상세주소</div>
-    </div>
+
+<jsp:include page="../common/menubar.jsp" />
+<br>
+	
+	
+	<c:forEach items="${ farmList }" var="f">
+	    <div class="wrap" onclick="detailFarm('${f.farmNo}')">
+	        <div id="farm-no">${ f.farmNo }</div>
+	        <div id="farm-modify-date"><c:if test="${ not empty f.farmModifyDate }">수정일 : ${ f.farmModifyDate }</c:if></div>
+	        <div id="farm-title">${ f.farmTitle }</div>
+	        <div id="farm-price">체험 가격 : ${ f.farmPrice }</div>
+	        <div id="seller">${ f.seller }</div>
+	        <div id="count">조회수 : ${ f.farmCount }</div>
+	    </div>
+	</c:forEach>
+    <div class="text-center">
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.cart?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
+	        </ul>
+        </div>
+    <script>
+    	let endPage = "${pageInfo.endPage}";
+    	let maxPage = "${pageInfo.maxPage}";
+    	let pageLimit = "${pageInfo.pageLimit}";
+    	let currentPage = "${pageInfo.currentPage}";
+    	
+    	if(maxPage <= pageLimit){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(endPage == maxPage){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(currentPage <= pageLimit){
+    		$("#pro").attr("class", "page-item disabled")
+    	}
+    	
+    </script>
+    <script>
+	    function detailFarm(num) {
+	 		location.href = `my_farm_detail.member?memberNo=\${num}`;
+		}
+    </script>
+    
+    <jsp:include page="../common/footer.jsp" />
+    
 </body>
 </html>

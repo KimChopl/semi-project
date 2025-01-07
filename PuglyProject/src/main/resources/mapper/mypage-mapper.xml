@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.member.mypage.model.dao.MyPageMapper">
 
-<resultMap id="productWithImage" type="Product">
+	<resultMap id="productWithImage" type="Product">
 	    <id property="productNo" column="productNo"/>
 	    <result property="productName" column="productName"/>
 	    <result property="productPrice" column="productPrice"/>
@@ -69,24 +69,23 @@
 </select>
 <select id="selectMyFarmList" parameterType="long" resultType="farm">
 	SELECT
-           FARM_PRODUCT_NO,
-           FARM_TITLE,
-           FARM_CONTENT,
-           BEWARE_LIST,
-           FARM_COUNT,
-           FARM_PRICE,
-           FARM_MODIFY_DATE,
-           NICKNAME,
-           PHONE
+	       FARM_NO farmNo,
+           FARM_TITLE farmTitle,
+           FARM_COUNT farmCount,
+           FARM_PRICE farmPrice,
+           FARM_MODIFY_DATE farmModifyDate,
+           NICKNAME seller
       FROM
            TB_FARM
       JOIN
            TB_MEMBER ON (SELLER_NO = MEMBER_NO)
      WHERE
-           TB_MEMBER.MEMBER_NO = 26
+           TB_MEMBER.MEMBER_NO = #{memberNo}
        AND
            DELETE_ASK = 'N'
 </select>
+  
+
 
 
 

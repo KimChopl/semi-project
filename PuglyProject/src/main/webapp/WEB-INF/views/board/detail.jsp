@@ -47,7 +47,7 @@
                 </tr>
                 <tr>
                     <th>작성자</th>
-                    <td>${board.nickName}</td>
+                    <td>${board.nickname}</td>
                     <th>작성일</th>
                     <td>${board.createDate}</td>
                 </tr>
@@ -189,7 +189,7 @@
     				
     				const resultStr = replies.map(e =>
 								    					`<tr>
-								    					<td>\${e.nickName}</td>
+								    					<td>\${e.nickname}</td>
 								    					<td>\${e.replyContent}</td>
 								    					<td>\${e.createDate}</td>
 								    					</tr>`

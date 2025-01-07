@@ -19,6 +19,7 @@
             background-color: rgb(243, 243, 243);
             border-radius: 10px;
             border: 3px outset;
+            font-family: 'SUITE-Regular';
         }
 
         #img{
@@ -123,13 +124,65 @@
             width: 20px;
             height: 20px;
         }
+        
+        @font-face {
+            font-family: 'SUITE-Regular';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
 
     </style>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
+<jsp:include page="../common/menubar.jsp" />
+
     <div id="wrap">
-        <div id="img"><img src="">농장이미지</div>
+        <div id="demo" class="carousel slide" data-ride="carousel">
+
+		  <!-- Indicators -->
+		  <ul class="carousel-indicators">
+		    <li data-target="#demo" data-slide-to="0" class="active"></li>
+		    <li data-target="#demo" data-slide-to="1"></li>
+		    <li data-target="#demo" data-slide-to="2"></li>
+		    <li data-target="#demo" data-slide-to="3"></li>
+		    <li data-target="#demo" data-slide-to="4"></li>
+		  </ul>
+		
+		  <!-- The slideshow -->
+		  <div class="carousel-inner">
+		    <div class="carousel-item active">
+		      <img src="la.jpg" alt="Los Angeles">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="chicago.jpg" alt="Chicago">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="ny.jpg" alt="New York">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="ny.jpg" alt="New York">
+		    </div>
+		    <div class="carousel-item">
+		      <img src="ny.jpg" alt="New York">
+		    </div>
+		  </div>
+		
+		  <!-- Left and right controls -->
+		  <a class="carousel-control-prev" href="#demo" data-slide="prev">
+		    <span class="carousel-control-prev-icon"></span>
+		  </a>
+		  <a class="carousel-control-next" href="#demo" data-slide="next">
+		    <span class="carousel-control-next-icon"></span>
+		  </a>
+		
+		</div>
         <div id="farm-count">조회 : 0000회</div>
         <div id="farm-title">농장명</div>
         <div id="farm-create-date">농장 생성일 : "2024-01-24"</div>
@@ -149,5 +202,8 @@
             <input type="checkbox" name="facilityName" class="checkbox" value="">
         </div>
     </div>
+    
+    <jsp:include page="../common/footer.jsp" />
+    
 </body>
 </html>

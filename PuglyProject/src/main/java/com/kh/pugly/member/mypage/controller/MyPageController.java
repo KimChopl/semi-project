@@ -57,8 +57,8 @@ public class MyPageController {
 	}
 	@GetMapping("select.myFarmList")
 	public ModelAndView selectMyFarmList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		//myPageService.selectMyFarmList(memberNo, currentPage);
-		return mv.setViewNameAndData("member/my_farm_list", null);
+		Map<String, Object> map = myPageService.selectMyFarmList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_farm_list", map);
 	}
 	@GetMapping("select.myProductList")
 	public ModelAndView selectMyProductList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {

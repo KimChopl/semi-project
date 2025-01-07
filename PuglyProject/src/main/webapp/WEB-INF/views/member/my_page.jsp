@@ -42,7 +42,6 @@
 
         #page-bar > ul > li{
             list-style: none;
-            font-family: 'Courier New', Courier, monospace;
             font-weight: 600;
             margin:20px;
             font-family: 'SUITE-Regular';
@@ -154,7 +153,7 @@
         	border: outset;
             position: relative;
             left: 360px;
-            bottom: 40px;
+            bottom: 90px;
             font-family: 'SUITE-Regular';
             font-weight: 900;
         }
@@ -231,13 +230,14 @@
                 <br>
                 <div id="phone">전화번호 : <label>${ sessionScope.loginUser.phone }</label></div>
                 
-                <br>
-                <c:forEach var="address" items="${ addresses }">
+                
+                <c:forEach var="address" items="${ addresses }" begin="0" end="1">
 		            <c:if test="${ address.addressType eq 1 }">
 		                <div id="address">주소 : 
 							<label>${ address.stateName }</label><br>
                           	<label>${ address.district }</label>
 		                </div>
+		                <br>
 		            </c:if>
                 </c:forEach>
                 <button id="address-update">주소 수정</button>

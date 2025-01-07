@@ -71,7 +71,7 @@
 	                    <tr onclick="detail('${board.boardNo}')">
 	                        <td>${board.boardNo}</td>
 	                        <td>${board.boardTitle }</td>
-	                        <td>${board.nickName }</td>
+	                        <td>${board.nickname }</td>
 	                        <td>${board.count }</td>
 	                        <td>${board.createDate}</td>
 	                        <td>

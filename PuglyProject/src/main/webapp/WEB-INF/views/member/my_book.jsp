@@ -20,10 +20,16 @@
             margin: auto;
         }
 
-        .pagination{
-            position: relative;
-            left: 190px;
-        }
+        .text-center{
+			margin: auto;
+			width: 220px;
+			text-align: center;
+		}
+        
+        .text-center > ul > li{
+	        margin:0 auto;
+			text-align: center;
+		}
         
 
         #wrap{
@@ -153,6 +159,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+
+<jsp:include page="../common/menubar.jsp" />
+
     <div id="body">
         <div id="wrap">
             <div id="img"><img src="" class="img"></div>
@@ -181,15 +190,36 @@
                 <span class="span">체험가격</span>
             </div>
         </div>
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
+    <div class="text-center">
+	    <ul class="pagination">
+	        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+	        <li class="page-item"><a class="page-link" href="#">1</a></li>
+	        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+	    </ul>
+    </div>
 </div>
 
+<script>
+    	let endPage = "${pageInfo.endPage}";
+    	let maxPage = "${pageInfo.maxPage}";
+    	let pageLimit = "${pageInfo.pageLimit}";
+    	let currentPage = "${pageInfo.currentPage}";
+    	
+    	if(maxPage <= pageLimit){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(endPage == maxPage){
+    		$("#next").attr("class", "page-item disabled")
+    	}
+    	
+    	if(currentPage <= pageLimit){
+    		$("#pro").attr("class", "page-item disabled")
+    	}
+    	
+    </script>
+
+<jsp:include page="../common/footer.jsp" />
 
 </body>
 </html>

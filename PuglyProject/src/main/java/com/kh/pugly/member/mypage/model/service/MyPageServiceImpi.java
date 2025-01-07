@@ -63,9 +63,12 @@ public class MyPageServiceImpi implements MyPageService {
 		PageInfo pi = getPageInfo(pageCount, currentPage, 3, 3);
 		int offset =(pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		//List<Farm> list = mapper.selectMyFarmList(memberNo, rowBounds);
+		List<Farm> list = mapper.selectMyFarmList(memberNo, rowBounds);
 		//log.info("{}", list);
-		return null;
+		Map<String, Object> map = new HashMap();
+		map.put("pageInfo", pi);
+		map.put("farmList", list);
+		return map;
 	}
 	
 	

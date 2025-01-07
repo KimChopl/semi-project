@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.product.model.vo.Product;
 
 @Mapper
@@ -15,5 +16,7 @@ public interface MyPageMapper {
 	List<Product> selectMyCartList(Long memberNo, RowBounds rowBounds);
 	
 	int selectMyFarmCount(Long memberNo);
+	
+	List<Farm> selectMyFarmList(Long memberNo, RowBounds rowBounds);
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -89,9 +90,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("enroll_form.address")
-		public ModelAndView updateFormAddress(HttpSession session) {
+		public ModelAndView updateFormAddress(HttpSession session, @RequestParam(defaultValue="1") int currentPage) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
-		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo());
+		Map<String, Object> map = memberService.selectMemberAddresses(loginUser.getMemberNo(), currentPage);
 		return mv.setViewNameAndData("member/enroll_form_address", map);
 	}
 	

@@ -9,7 +9,7 @@
 			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
 			   BOARD_CONTENT boardContent,
-			   M.NICKNAME nickName,
+			   M.NICKNAME nickname,
 			   COUNT,
 			   TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
@@ -34,7 +34,7 @@
 		SELECT
 			   BOARD_NO boardNo,
 			   BOARD_TITLE boardTitle,
-			   M.NICKNAME nickName,
+			   M.NICKNAME nickname,
 			   COUNT,
 			   TO_CHAR(B.CREATE_DATE,'YYYY-MM-DD') as createDate
 		  FROM

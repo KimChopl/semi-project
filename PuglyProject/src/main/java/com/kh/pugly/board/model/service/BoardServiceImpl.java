@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 		if(board == null ||
 		   board.getBoardTitle() == null || board.getBoardTitle().trim().isEmpty() ||
 		   board.getBoardContent() == null || board.getBoardContent().trim().isEmpty() ||
-		   board.getNickName() == null || board.getNickName().trim().isEmpty()) {
+		   board.getNickname() == null || board.getNickname().trim().isEmpty()) {
 			throw new ProductValueException("부적절한 입력값입니다.");
 		}
 		
