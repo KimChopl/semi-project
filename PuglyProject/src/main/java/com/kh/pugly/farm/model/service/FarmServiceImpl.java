@@ -358,14 +358,29 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private List<Image> checkedFarm(List<Image> img, List<Image> beforeImg) {
-		List<Image> imgList = new ArrayList<Image>();
-		log.info("{} : {}", img, beforeImg);
-		Set<Image> imgListSet = new HashSet<Image>(imgList);
-		Set<Image> beforeImgSet = new HashSet<Image>(beforeImg);
-		beforeImgSet.removeAll(imgListSet);
-		log.info("{}", beforeImg);
-		List<Image> deleteImg = new ArrayList<Image>(beforeImgSet);
-		log.info("{}", deleteImg);
+		Set<Image> imgListSet = new HashSet<>(img);
+		Set<Image> beforeImgSet = new HashSet<>(beforeImg);
+
+		// A - B 차집합 구하기 (beforeImgSet - imgListSet)
+		Set<Image> aa = new HashSet<>(beforeImgSet);
+		aa.removeAll(imgListSet);  // A - B (beforeImgSet - imgListSet)
+
+		// B - A 차집합 구하기 (imgListSet - beforeImgSet)
+		Set<Image> bb = new HashSet<>(imgListSet);
+		bb.removeAll(beforeImgSet);  // B - A (imgListSet - beforeImgSet)
+
+		// 차집합 결과를 합치기 (A - B와 B - A를 합침)
+		aa.addAll(bb);
+
+		// 삭제할 이미지 목록 구하기 (beforeImgSet에서 imgListSet에 포함된 값들 제거)
+		Set<Image> deleteImgSet = new HashSet<>(beforeImgSet);
+		deleteImgSet.removeAll(imgListSet);  // 삭제할 이미지는 beforeImgSet에서 imgListSet에 포함된 값들
+
+		// 결과 로그 출력
+		log.info("차집합 결과 A - B: {}", aa);
+		log.info("차집합 결과 B - A: {}", bb);
+		log.info("합친 차집합 결과: {}", aa);  // aa는 A - B와 B - A를 합친 결과
+		log.info("삭제할 이미지 목록: {}", deleteImgSet);
 		return  null;//deleteImg; //삭제용
 	}
 

@@ -58,7 +58,7 @@ public interface MemberMapper {
 	// 주소 삭제
 	int deleteAddress(Map<String, Object> map);
 	
-	
+	List<Address> selectAddresses(Long memberNo);
 	// 회원탈퇴
 	int deleteMember(Member member);
 	
