@@ -55,12 +55,12 @@
 
 			<div class="list_sort_wrap" style="clear:both;">
 			    <ul class="list_sort" style="list-style: none; display: flex; gap: 10px; float:right; margin-top : 10px;">
-			        <li>
-			            <a href="boards">최신순</a>
-			        </li>
-			        <li>
-			            <a href="#" >조회순</a>
-			        </li>
+			       <li>
+				        <a class="btn btn-link" onclick="selectBySort(1, 'date')">최신순</a>
+				   </li>
+				   <li>
+				   		<a class="btn btn-link" onclick="selectBySort(1, 'count')">조회순</a>
+				   </li>
 			    </ul>
 			</div>
 			
@@ -181,6 +181,27 @@
 	        });
 	    }
 	    
+	    function selectBySort(num, sortType) {
+	    	const currentPage = num;
+	    	
+	    	$.ajax({
+	    		url: '/pugly/boards/selectBySort',
+	    		type: 'get',
+	    		data: {
+	    			page: currentPage,
+	    			sort : sortType
+	    		},
+	    		success: function(response) {
+	    			const boardList = response.boards;
+	    			const pageInfo = response.pageInfo;
+	    			
+	    			updateBoardList(boardList);
+	    			updatePaging(pageInfo, sortType);
+	    			
+	    		}
+	    	});
+	    }
+	    
 	    function updateBoardList(boardList) {
 	        const boardListBody = $('#boardListBody');
 	        boardListBody.empty();
@@ -217,6 +238,36 @@
 
 	        if (pageInfo.currentPage != pageInfo.endPage) {
 	            pagingStr += `<li class="page-item"><a class="page-link" onclick="searchBoard(\${pageInfo.currentPage + 1})">다음</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
+	        }
+
+	        pagingStr += `</ul>`;
+	        
+	        pagingArea.html(pagingStr);
+	        
+	    }
+	    
+	    function updatePaging(pageInfo, sortType) {
+			const pagingArea = $('#pagingArea');
+	        
+	        let pagingStr = 
+	        `<ul class="pagination">`;
+
+	        if (pageInfo.currentPage > 1) {
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="selectBySort(\${pageInfo.currentPage - 1}, '\${sortType}')">이전</a></li>`;
+	        } else {
+	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>`;
+	        }
+	        
+	        for (let i = pageInfo.startPage; i <= pageInfo.endPage; i++) {
+	            pagingStr += `<li class="page-item">
+	                            <a class="page-link" onclick="selectBySort(\${i}, '\${sortType}')">\${i}</a>
+	                          </li>`;
+	        }
+
+	        if (pageInfo.currentPage != pageInfo.endPage) {
+	            pagingStr += `<li class="page-item"><a class="page-link" onclick="selectBySort(\${pageInfo.currentPage + 1}, '\${sortType}')">다음</a></li>`;
 	        } else {
 	            pagingStr += `<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>`;
 	        }

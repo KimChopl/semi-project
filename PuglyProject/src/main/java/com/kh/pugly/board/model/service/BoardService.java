@@ -18,7 +18,7 @@ public interface BoardService {
 	void deleteBoard(Long boardNo);
 	
 	// 리스트 조회
-	Map<String, Object> selectBoardList(int currentPage);
+	Map<String, Object> selectBoardList(int currentPage, String sortType);
 	
 	// 아이디검색
 	Map<String, Object> selectById(Long boardNo);

@@ -47,8 +47,15 @@
 	<select id="selectBoardList" resultType="board">
 		<include refid="selectList"/>
 		 ORDER
-		 	BY
-		       BOARD_NO DESC
+		    BY
+		 <choose>
+         	<when test="sortType == 'count'">
+                COUNT DESC
+            </when>
+            <otherwise>
+                B.CREATE_DATE DESC
+            </otherwise>
+        </choose>
 	</select>
 	
 	<select id="selectBoardListByCount" resultType="board">

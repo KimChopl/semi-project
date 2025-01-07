@@ -28,9 +28,9 @@ public class BoardController {
 	private final ModelAndViewUtil mv;
 	
 	@GetMapping("boards")
-	public ModelAndView selectBoardList(@RequestParam(value = "page", defaultValue = "1")int page) {
-		Map<String, Object> map = boardService.selectBoardList(page);
-		
+	public ModelAndView selectBoardList(@RequestParam(value = "page", defaultValue = "1")int page,
+			 							@RequestParam(value = "sort", defaultValue = "date") String sortType) {
+		Map<String, Object> map = boardService.selectBoardList(page, sortType);
 		return mv.setViewNameAndData("board/list", map);
 	}
 	
@@ -90,15 +90,11 @@ public class BoardController {
 	
 	@GetMapping("boards/selectBySort")
 	@ResponseBody
-	public Map<String, Object> selectBoardList(@RequestParam(value = "page", defaultValue = "1") int page,
-	        								   @RequestParam(value = "sort", defaultValue = "date") String sort) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("page", page);
-		map.put("sort", sort);
+	public Map<String, Object> selectBySort(@RequestParam(value = "page", defaultValue = "1") int page,
+											@RequestParam(value = "sort") String sortType) {
 		
-	    Map<String, Object> result = boardService.selectBoardListBySort(map);
-
-	    return result;
+		Map<String, Object> map = boardService.selectBoardList(page, sortType);
+		
+		return map;
 	}
-
 }

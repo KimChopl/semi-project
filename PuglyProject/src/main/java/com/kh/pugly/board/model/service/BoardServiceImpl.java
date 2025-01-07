@@ -39,10 +39,10 @@ public class BoardServiceImpl implements BoardService {
 		return PagiNation.getPageInfo(totalCount, page, 5, 10);
 	}
 	
-	private List<Board> getBoardList(PageInfo pi){
+	private List<Board> getBoardList(PageInfo pi, String sortType){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return mapper.selectBoardList(rowBounds);
+		return mapper.selectBoardList(rowBounds, sortType);
 	}
 	
 	private void validateBoard(Board board) {
@@ -77,11 +77,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Map<String, Object> selectBoardList(int currentPage) {
+	public Map<String, Object> selectBoardList(int currentPage, String sortType) {
 		int totalCount = getTotalCount();
 		PageInfo pi = getPageInfo(totalCount, currentPage);
 		
-		List<Board> boards = getBoardList(pi);
+		List<Board> boards = getBoardList(pi, sortType);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("boards", boards);
 		map.put("pageInfo", pi);
@@ -193,7 +193,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Map<String, Object> selectBoardListBySort(Map<String, Object> map) {
 		
-		String sort = (String)map.get("sort");
 		int page = (int)map.get("page"); 
 		
 		int totalCount = getTotalCount();
@@ -201,14 +200,8 @@ public class BoardServiceImpl implements BoardService {
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Board> boardList;
-		
-		if ("count".equals(sort)) {
-			boardList = mapper.selectBoardListByCount(map, rowBounds);
-		} else {
-			boardList = mapper.selectBoardList(rowBounds);
-		}
-		
+		List<Board> boardList = mapper.selectBoardListByCount(map, rowBounds);
+			
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		map.put("boardList", boardList);
 		map.put("pageInfo", pi);

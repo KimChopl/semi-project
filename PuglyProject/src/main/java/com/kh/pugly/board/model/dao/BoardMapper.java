@@ -13,7 +13,7 @@ public interface BoardMapper {
 
 	int selectTotalCount();
 
-	List<Board> selectBoardList(RowBounds rowBounds);
+	List<Board> selectBoardList(RowBounds rowBounds, String sortType);
 	
 	int increaseCount(Long boardNo);
 	
