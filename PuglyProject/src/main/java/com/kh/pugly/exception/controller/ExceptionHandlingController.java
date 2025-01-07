@@ -24,6 +24,7 @@ import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.NotFoundDetailFarmException;
+import com.kh.pugly.exception.NotFoundUserInfomation;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
@@ -34,10 +35,19 @@ import lombok.extern.slf4j.Slf4j;
 @ControllerAdvice
 public class ExceptionHandlingController {
 	
+	
 	private ModelAndView createErrorResponse(String errorMsg, Exception e) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("errorMsg", errorMsg)
 		  .setViewName("common/error-page");
+		log.info("발생예외 : {}", e.getMessage(), e);
+		return mv;
+	}
+	
+	private ModelAndView createErrorAlert(String errorMsg, Exception e) {
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("alertMsg", errorMsg)
+		  .setViewName("redirect:/");
 		log.info("발생예외 : {}", e.getMessage(), e);
 		return mv;
 	}
@@ -156,6 +166,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(FailDeleteObjectException.class)
 	protected ModelAndView faildeleteError(FailDeleteObjectException e) {
 		return createErrorResponse("수정 실패", e);
+	}
+	
+	@ExceptionHandler(NotFoundUserInfomation.class)
+	protected ModelAndView failFoundUserError(NotFoundUserInfomation e) {
+		return createErrorAlert("유저 정보가 없습니다. 로그인을 확인하세요.", e);
 	}
 	
 }

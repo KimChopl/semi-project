@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
+@EqualsAndHashCode
 public class Image {
 	private Long imgNo;
 	private String originImgName;
@@ -25,4 +27,5 @@ public class Image {
 	private int imgLevel;
 	private Long postNo;
 	private Long categoryNo;
+	private String status;
 }

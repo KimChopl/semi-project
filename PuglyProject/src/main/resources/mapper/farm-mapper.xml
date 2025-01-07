@@ -31,9 +31,12 @@
 		        FARM_CREATE_DATE farmCreateDate,
 		        FARM_MODIFY_DATE farmModifyDate,
 		        FARM_PRICE farmPrice,
+		        IMG_PATH imgPath,
 		        ORIGIN_IMG_NAME originImgName,
 		        CHANGE_IMG_NAME changeImgName,
         		IMG_NO imgNo,
+        		IMG_STATUS status,
+        		IMG_LEVEL imgLevel,
         		NVL((SELECT
                        ROUND(AVG(RATING), 1)
                   FROM
@@ -95,7 +98,9 @@
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
+			<result property="imgLevel" column="imgLevel"/>
 			<result property="imgPath" column="imgPath" />
+			<result property="status" column="status" />
 		</collection>
 	</resultMap>
 	<select id="selectFarmList" resultMap="farmList">
@@ -210,12 +215,14 @@
 		<result property="categoryName" column="categoryName" />
 		<result property="stateCode" column="stateCode" />
 		<result property="productName" column="productName" />
+		<result property="addressNo" column="addressNo" />
 		<collection property="imgList" ofType="image">
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
 			<result property="imgNo" column="imgNo" />
 			<result property="imgLevel" column="imgLevel"/>
 			<result property="imgPath" column="imgPath" />
+			<result property="status" column="status" />
 		</collection>
 			
 		<collection property="facility" ofType="facility">
@@ -247,6 +254,8 @@
 		       IMG_NO imgNo,
 		       A.STATE_CODE stateCode,
 		       PRODUCT_NAME productName,
+		       CATEGORY_NO categotyNo,
+		       IMG_STATUS status,
 		        NVL((SELECT
 		                   COUNT(ATT_BY_FARM)
 		              FROM
@@ -360,7 +369,32 @@
 		  INTO
 		      TB_FAC_BRIGE
 		VALUES
-		      (#{facilityName},
-		       #{facilityNo})
+		      (#{facilityNo},
+		       #{facilityName})
 	</insert>
+	<update id="updateFarm" parameterType="farm">
+		UPDATE
+		       TB_FARM
+		   SET
+		       FARM_TITLE = #{farmTitle},
+		       FARM_CONTENT = #{farmContent},
+		       FARM_MODIFY_DATE = SYSDATE,
+		       BEWARE_LIST = #{bewareList},
+		       FARM_PRICE = #{farmPrice},
+		       FARM_PRODUCT_NO = #{productName},
+		       FARM_ADDRESS_NO = #{addressNo}
+		 WHERE
+		       FARM_NO = #{farmNo}
+		   AND
+		       DELETE_ASK = 'N'
+	</update>
+	<delete id="deleteFacility" parameterType="facility">
+		DELETE
+		  FROM
+		       TB_FAC_BRIGE
+		 WHERE
+		       BR_FACILITY_NO = #{facilityNo}
+		   AND
+		       BR_FARM_NO = #{facilityName}
+	</delete>
 </mapper>

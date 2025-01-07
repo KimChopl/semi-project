@@ -29,7 +29,7 @@
 
     	<typeAlias type="com.kh.pugly.common.model.vo.Address" alias="address"/>
 		<typeAlias type="com.kh.pugly.common.model.vo.Image" alias="image" />
-		
+		<typeAlias type="com.kh.pugly.common.model.vo.SelectImageByFarm" alias="no" />
 
 		<typeAlias type="com.kh.pugly.board.model.vo.Board" alias="board" />
 		<typeAlias type="com.kh.pugly.board.model.vo.Inquiry" alias="inquiry" />

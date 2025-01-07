@@ -27,5 +27,30 @@
 		       #{categoryNo}
 		       )
 	</insert>
-
+	
+	<update id="deleteImage" parameterType="string">
+		UPDATE
+		       TB_IMAGE
+		   SET
+		       IMG_STATUS = 'N'
+		 WHERE
+		       CHANGE_IMG_NAME = #{changeImgName}
+	</update>
+	
+	<select id="selectByFarmNo" parameterType="no" resultType="image">
+		SELECT
+		       IMG_PATH imgPath,
+		       ORIGIN_IMG_NAME originImgName,
+		       CHANGE_IMG_NAME changeImgName,
+		       IMG_LEVEL imgLevel
+		 FROM
+		      TB_IMAGE
+		WHERE
+		      IMG_STATUS = 'Y'
+		 AND
+		      IMG_POST_NO = #{farmNo}
+		 AND
+		      CATEGORY_NO = #{categoryNo}    
+	</select>
+	
 </mapper>

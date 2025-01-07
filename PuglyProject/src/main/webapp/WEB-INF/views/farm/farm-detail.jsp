@@ -76,6 +76,10 @@
             width: 100%;
             height: 598px;
         }
+        .text-box{
+        	width : 100%;
+        	height : 400px;
+        }
     </style>
 </head>
 <body>
@@ -95,16 +99,19 @@
 		                 <div id="farms" class="carousel slide">
                             <div class="carousel-indicators">
                             <c:forEach items="${ farm.imgList }" var="img" varStatus="crrent">
-                            	<c:if test="${ img.imgLevel eq 1 }">
+                            	<c:if test="${ img.status eq 'Y' }">
+                            	<c:if test="${ img.imgLevel eq 1}">
 	                             	 <button type="button" data-bs-target="#farms" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                             	</c:if>
                             	<c:if test="${ img.imgLevel ne 1 }"> 
                               		<button type="button" data-bs-target="#farms" data-bs-slide-to="${ crrent.index }" aria-label="Slide ${ crrent.count }"></button>
                             	</c:if>
+                            	</c:if>
                             </c:forEach>
                             </div>
                             <div class="carousel-inner">
                             <c:forEach items="${ farm.imgList }" var="img" varStatus="crrent">
+                            <c:if test="${ img.status eq 'Y' }">
                             	<c:choose>
                             		<c:when test="${ img.imgLevel eq 1 }">
                               <div class="carousel-item active">
@@ -117,6 +124,7 @@
                               </div>
                             		</c:when>
                             	</c:choose>
+                            </c:if>
                             </c:forEach>
                             </div>
                             <button class="carousel-control-prev" type="button" data-bs-target="#farms" data-bs-slide="prev">
@@ -182,14 +190,14 @@
             <div class="row">
                 <div class="col">
                     <div id="content-box">
-                        <p>${ farm.farmContent }</p>
+                        <textarea class="text-box" disabled>${ farm.farmContent }</textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div id="beware-box">
-                        <p>${ farm.bewareList }</p>
+                        <textarea class="text-box" disabled>${ farm.bewareList }</textarea>
                     </div>
                 </div>
             </div>

@@ -86,6 +86,8 @@
     <div id="body">
     <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
         <form id="form" action="update.farm" method="post" enctype="multipart/form-data">
+        	<input type="hidden" value="${ farm.farmNo }" name="farmNo" />
+        	<input type="hidden" value="${ farm.categoryNo }" name="categoryNo" />
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -101,9 +103,11 @@
                             <div class="col">
                                 <div class="image-gallery" id="image-gallery">
                                 	<c:forEach items="${ farm.imgList }" var="img">
+                                		<c:if test="${ img.status eq 'Y' }">
 										<input type="text" style="display:none;" name="imgPath" class="path" value="${ img.imgPath }" />
 										<input type="text" style="display:none;" name="originImgName" class="origin" value="${ img.originImgName }" >
 										<input type="text" style="display:none;" name="changeImgName" class="change" value="${ img.changeImgName }" >  
+                                		</c:if>
                                 	</c:forEach>
 										<input type="text" style="display:none;" name="originNames" id="originNames">                              		
                                     <div class="add-image" id="add-image">
@@ -162,11 +166,12 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                주소
+                                주소 ${ farm.addressNo }
                                 <div class="container">
 			                        <div class="row">
 			                            <div class="col">
 			                            
+			                            <input type="hidden" value="${ farm.addressNo }" name="addressNo">
 			                                <c:forEach items="${ state }" var="s">
 			                                	<label>${ s.stateName }</label>
 			                                	<c:choose>
@@ -206,7 +211,6 @@
                             	<input type="hidden" name="seller" value="${ sessionScope.loginUser.memberNo }">
                             	<input type="hidden" name="memberNo" value="${ sessionScope.loginUser.memberNo }">
                             	<input type="hidden" name="addressNo" value="${ address.addressNo }">
-                            	<input type="hidden" name="categoryName" value="3">
                                 <button class="btn btn-sm btn-outline-danger" type="button">취소하기</button>
                                 <button class="btn btn-sm btn-outline-primary">등록하기</button></div>
                         </div>
@@ -227,13 +231,14 @@
         const path = document.getElementsByClassName('path');
         const origin = document.getElementsByClassName('origin');
         const change = document.getElementsByClassName('change');
+        
         const imgList = { 'path' : '', 'origin' : [], 'change' : []};
         for(let i = 0; i < origin.length; i++){
         	imgList.origin.push(origin[i].value);
         	imgList.change.push(change[i].value);
         }
         	imgList.path = ('/pugly/'+path[0].value);
-        console.log(imgList);
+        //console.log(imgList);
 		
         let uploadedImages = [];
         
@@ -249,10 +254,10 @@
             
             imageItem.addEventListener('click', (e) => {
                 imageItem.remove();
-                //console.log(e.target.src.substring(43))
+                console.log(e.target.src.substring(43))
                 imgList.origin = imgList.origin.filter(origin => origin !== e.target.alt)
-                imgList.change = imgList.change.filter(change => change !== e.target.src.substring(43))
-                //console.log(imgList.change)
+                imgList.change = imgList.change.filter(change => change !== e.target.src.split('/').pop())
+                console.log(imgList.change)
                 uploadedImages = uploadedImages.filter(image => image !== file);
                 const originNames = document.getElementById('originNames');
                 originNames.value = JSON.stringify(imgList);
@@ -335,10 +340,18 @@
                //  formData.append(`file_${index}`, file);
              //});
 
-             // AJAX를 통해 데이터 전송
-             fetch('update.farm', {
-                 method: 'POST',
-                 body: formData
+             $.ajax({
+            	url : '/pugly/modify/update.farm',
+            	type : 'post',
+            	data : formData,
+            	processData: false,
+            	contentType : false,
+            	success : function(r){
+            		console.log(r);
+            		alert('수정 성공.');
+            		location.href = '/pugly/farms'
+            	}
+       
              })
          })
     </script>

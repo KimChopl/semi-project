@@ -77,7 +77,8 @@ public class ChangeImage {
 	}
 	
 	public void deleteImageOne(Image img) {
-		if(!(new File(img.getImgPath() + img.getChangeImgName()).delete())) {
+		log.info("{}", c.getRealPath(img.getImgPath()) + img.getChangeImgName());
+		if(!(new File(c.getRealPath(img.getImgPath()) + img.getChangeImgName()).delete())) {
 			
 			throw new FailDeleteObjectException("사진 삭제 실패");
 		} 

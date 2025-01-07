@@ -1,8 +1,11 @@
 package com.kh.pugly.farm.model.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -13,12 +16,15 @@ import com.kh.pugly.common.model.dao.ImageMapper;
 import com.kh.pugly.common.model.vo.Address;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.MoreInfo;
+import com.kh.pugly.common.model.vo.SelectImageByFarm;
 import com.kh.pugly.common.template.ChangeImage;
 import com.kh.pugly.common.template.ChangeStringContext;
 import com.kh.pugly.common.template.MoreInfomation;
+import com.kh.pugly.exception.FailDeleteObjectException;
 import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailUpdateException;
 import com.kh.pugly.exception.InvalidRequestException;
+import com.kh.pugly.exception.NotFoundUserInfomation;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.dto.FarmPrice;
@@ -96,10 +102,12 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Farm checkedDetailFarm(Long farmNo) {
+		//log.info("{}", farmNo);
 		Farm farm = fm.selectDetailFarm(farmNo);
 		if(farm == null) {
 			return null;
 		}
+		//log.info("{}", farm);
 		return farm;
 	}
 	
@@ -108,6 +116,7 @@ public class FarmServiceImpl implements FarmService {
 		checkedFarmNo(farmNo);
 		checkedFarm(farmNo);
 		Farm farm =  checkedSelectFormat(checkedDetailFarm(farmNo));
+		//log.info("{}", farm);
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
 		moreNo += 3;
@@ -193,6 +202,7 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Farm plusFarm(Farm farm, Long addressNo) {
+		//log.info("{}", addressNo);
 		farm.setAddress(String.valueOf(addressNo));
 		return farm;
 	}
@@ -325,6 +335,9 @@ public class FarmServiceImpl implements FarmService {
 	}
 
 	private void checkedMember(Member loginUser) {
+		if(loginUser == null) {
+			throw new NotFoundUserInfomation("로그인 확인");
+		}
 		Member checkMember = mm.selectMemberInfo(loginUser.getMemberNo());
 		if(!!!loginUser.getMemberId().equals(checkMember.getMemberId()) || loginUser.getMemberNo() != checkMember.getMemberNo() || !!!loginUser.getNickname().equals(checkMember.getNickname())
 				|| !!!loginUser.getMemberName().equals(checkMember.getMemberName())) {
@@ -344,26 +357,165 @@ public class FarmServiceImpl implements FarmService {
 		return map;
 	}
 	
-	private Farm checkedFarm(Farm farm, Farm beforeFarm) {
+	private List<Image> checkedFarm(List<Image> img, List<Image> beforeImg) {
+		List<Image> imgList = new ArrayList<Image>();
+		log.info("{} : {}", img, beforeImg);
+		Set<Image> imgListSet = new HashSet<Image>(imgList);
+		Set<Image> beforeImgSet = new HashSet<Image>(beforeImg);
+		beforeImgSet.removeAll(imgListSet);
+		log.info("{}", beforeImg);
+		List<Image> deleteImg = new ArrayList<Image>(beforeImgSet);
+		log.info("{}", deleteImg);
+		return  null;//deleteImg; //삭제용
+	}
+
+	private List<Image> checkedImage(MultipartFile[] files) {
+		return ci.changeImgName(files);
 		
-		List<Image> img = farm.getImgList();
-		List<Image> beforeImg = beforeFarm.getImgList();
+	}
+	
+	private List<Image> settingImage(List<String> change, List<String> origin, String path){
+		List<Image> imgList = new ArrayList<Image>();
+		
+		if(change == null) {
+			return null;
+		}
+		for(int i = 0; i < change.size(); i++) {
+			Image img = new Image();
+			img.setImgPath(path);
+			img.setChangeImgName(change.get(i));
+			img.setOriginImgName(origin.get(i));
+			imgList.add(img);
+		}
+		//log.info("{}", imgList);
+		return imgList;
+	}
+	
+	private String deletePath(String path) {
+		if(path == null || path.equals("")) {
+			return null;
+		}
+		return path.substring(7);
+	}
+	
+	private List<Image> checkedImgLevel(List<Image> img, List<Image> newImg) {
 		for(int i = 0; i < img.size(); i++) {
-			for(int j = 0; j < beforeImg.size(); j++) {
-				if(!!!img.get(i).getChangeImgName().equals(beforeImg.get(j).getChangeImgName())) {
-					ci.deleteImageOne(img.get(i));
+			for(int j = 0; j < newImg.size(); j++) {
+				if(img.get(i).getImgLevel() == 1 && newImg.get(j).getImgLevel() == 1) {
+					newImg.get(j).setImgLevel(2);
 				}
 			}
 		}
-		return farm;
+		return newImg;
 	}
-
+	
+	private int deleteImage(List<Image> img) {
+		int result = 1;
+		for(int i = 0; i < img.size(); i++) {
+			log.info("{}", img.get(i).getChangeImgName());
+			result = result * im.deleteImage(img.get(i).getChangeImgName());
+		}
+		
+		return result;
+	}
+	
+	private void checkedDeleteImage(List<Image> img) {
+		int result = deleteImage(img);
+		if(result == 0) {
+			throw new FailDeleteObjectException("사진 삭제 실패");
+		}
+	}
+	
+	private int settingNewImage(List<Image> img, Farm farm) {
+		int result = 1;
+		for(int i = 0; i < img.size(); i++) {
+			img.get(i).setPostNo(farm.getFarmNo());
+			img.get(i).setCategoryNo(Long.parseLong(String.valueOf(farm.getCategoryNo())));
+			result = result * im.insertImage(img.get(i));
+		}
+		
+		return result;
+	}
+	
+	private void checkedNewImage(List<Image> img, Farm farm) {
+		int result = settingNewImage(img, farm);
+		if(result == 0) {
+			throw new FailDeleteObjectException("사진 삭제 실패");
+		}
+	}
+	
+	private void checkedUpdateFarm(Farm farm) {
+		int result = fm.updateFarm(farm);
+		if(result == 0) {
+			throw new FailDeleteObjectException("농장 수정 실패");
+		}
+	}
+	
+	private int deleteFacility(Farm farm) {
+		int result = 1;
+		for(int i = 0; i < farm.getFacility().size(); i++) {
+			//log.info("{}", farm.getFacility().get(i));
+			farm.getFacility().get(i).setFacilityName(String.valueOf(farm.getFarmNo()));
+			result = result * fm.deleteFacility(farm.getFacility().get(i));
+		}
+		return result;
+	}
+	
+	private int insertFacility(int[] facilityNo, Farm farm) {
+		int result = 1;
+		for(int i = 0; i < facilityNo.length; i++) {
+			Facility facility = new Facility();
+			facility.setFacilityNo(facilityNo[i]);
+			facility.setFacilityName(String.valueOf(farm.getFarmNo()));
+			//log.info("{}", facility);
+			result = result * fm.insertFacility(facility);
+		}
+		return result;
+	}
+	
+	private void updateFacility(int[] facilityNo, Farm farm) {
+		if(facilityNo != null) {
+			int delete = deleteFacility(farm);
+			int insert = insertFacility(facilityNo, farm);
+			if(delete * insert == 0) {
+				throw new FailDeleteObjectException("시설 목록 수정 실패");
+			}
+		}
+	}
+	
 	@Override
 	public void updateFarm(Map<String, Object> map) {
-		checkedMember((Member)map.get("member"));
+		Member member = (Member)map.get("member");
+		//log.info("{}", member);
+		checkedMember(member);
 		Farm farm = (Farm)map.get("farm");
-		Farm beforeFarm = fm.selectDetailFarm(farm.getFarmNo());
-		checkedFarm(farm, beforeFarm);
+		SelectImageByFarm no = new SelectImageByFarm();
+		no.setFarmNo(farm.getFarmNo());
+		no.setCategoryNo(3);
+		List<Image> beforeImg = im.selectByFarmNo(no);
+		//log.info("{}",beforeFarm);
+		Farm beFarm = fm.selectDetailFarm(farm.getFarmNo());
+		List<Image> imgList = checkedFarm(settingImage((List<String>)map.get("changeImg"), (List<String>)map.get("origin"), deletePath((String)map.get("path"))), beforeImg);
+		MultipartFile[] files = (MultipartFile[])map.get("files");
+		farm.setAddressNo(checkedNewAddress((Address)map.get("address"), member));
+		List<Image> newImgList = checkedImage(files); // 등록용
+		//log.info("{} : {}", imgList, newImgList);
+		int[] facility = (int[])map.get("facilityNo");
+		Address ad = (Address)map.get("address");
+		log.info("{}", imgList);
+		
+		
+		checkedUpdateFarm(checkedChangeFormat(plusFarm(farm, checkedNewAddress(ad, member))));
+		updateFacility(facility, beFarm);
+		if(imgList != null && newImgList != null && !!!imgList.isEmpty() && !!!newImgList.isEmpty()) { // 새로운 사진이 있으면서 삭제한 사진이 있을 때
+			checkedInsertImg(checkedImgLevel(imgList, newImgList), farm.getFarmNo());
+		}
+		if(imgList != null && !!!imgList.isEmpty()) { // 삭제한 사진만 있을 때
+			checkedDeleteImage(imgList);
+		}
+		if(newImgList != null && !!!newImgList.isEmpty()) { // 추가한 사진만 있을 때
+			checkedNewImage(newImgList, farm);
+		}
 		
 	}
 

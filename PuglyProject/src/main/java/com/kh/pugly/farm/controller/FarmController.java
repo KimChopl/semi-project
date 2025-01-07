@@ -35,7 +35,8 @@ public class FarmController {
 	
 	private final FarmService fs;
 	private final ModelAndViewUtil mv;
-	private final Gson gson;
+	
+	
 	
 	
 	@GetMapping("farms")
@@ -60,7 +61,7 @@ public class FarmController {
 	public ModelAndView detailFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
 		//log.info("{}",farmNo);
 		Map<String, Object> detail = fs.selectDetailFarm(farmNo);
-		log.info("{}", detail);
+		//log.info("{}", detail);
 		return mv.setViewNameAndData("/farm/farm-detail", detail);
 	}
 	
@@ -87,20 +88,6 @@ public class FarmController {
 		Member member = (Member)ssn.getAttribute("loginUser");
 		return mv.setViewNameAndData("farm/update_form_farm", fs.selectUpdateForm(farmNo, member));
 	}
-	
-	@PostMapping("modify/update.farm")
-	public String updateFarm(Farm farm, MultipartFile[] files, HttpSession ssn, int[] facilityNo, Address ad, @RequestParam("originNames") String originNames) {
-		Map<String, Object> map = gson.fromJson(originNames, Map.class);
-		List<String> changeImgName = (List<String>)map.get("change");
-		Member member = (Member)ssn.getAttribute("loginUser");
-		Map<String, Object> updateInfo = new HashMap<String, Object>();
-		updateInfo.put("changeImg", changeImgName);
-		updateInfo.put("member", member);
-		updateInfo.put("facilitNo", facilityNo);
-		updateInfo.put("address", ad);
-		updateInfo.put("farm", farm);
-		
-		return null;
-	}
+
 	
 }
