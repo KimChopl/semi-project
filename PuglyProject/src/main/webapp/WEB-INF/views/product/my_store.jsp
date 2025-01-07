@@ -269,7 +269,7 @@
 
     <!-- Modal -->
 <div class="modal fade" id="mystoreUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="staticBackdropLabel">상점 업데이트</h1>
@@ -281,31 +281,32 @@
                 <div class="col">
                     <div class="img-fom">
                         <label>상점 이미지</label><br>
-                        <img src="/resources/img/myStore.png" class="store-img" id="title-img">
+                        <img src="${ product.image.changeImgName }" class="store-img" id="title-img">
                     </div>
                     클릭하여 사진을 설정하세요.
                 </div>
                 <div class="col">
                     <label>상점명</label>
-                    <input type="text">
-                    <label>상점 소개글</label>
-                    <textarea style="resize: none; width: 200px; height: 150px;"></textarea>
+                    <input type="text" name="storeTitle" placeholder="${ myStore.storeTitle }">
+                    <label></label>
+                    <textarea style="resize: none; width: 200px; height: 150px;" name="storeContent" placeholder="${ myStore.storeContent } "></textarea>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary">수정하기</button>
+            <button type="submit" class="btn btn-primary">수정하기</button>
             </div>
+              <div id="file-area">
+    			<input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
+ 			  </div>
           </form>
         </div>
       </div>
     </div>
  
 
-  <div id="file-area">
-    <input type="file" name="upfile" id="file1" required onchange="loadImg(this, 1);">
-  </div>
+
 
   <script>
     function loadImg(inputFile, num){

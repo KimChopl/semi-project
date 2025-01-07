@@ -41,14 +41,24 @@ public class ProductController {
 		Member member = (Member)session.getAttribute("loginUser");
 		myStore.setUserNo(member.getMemberNo());
 		
-		session.setAttribute("myStore", myStore);
 		productService.insertMyStore(myStore, upfile);
+		
+		session.setAttribute("myStore", myStore);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
 	// 상품등록 
 	@PostMapping("insert.pro")
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session, Image image) {
-		
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if(loginUser != null) {
+			Long memberNo = loginUser.getMemberNo();
+			// 로그인 유저로 상점번호 조회
+			Long storeNo = productService.getStoreNoByMemberNo(memberNo);
+			
+			if (storeNo != null) {
+				product.setStoreNo(storeNo);
+			}
+		}
 		productService.insertProduct(product, upfile);
 		return mv.setViewNameAndData("redirect:products", null);
 	}
@@ -66,41 +76,44 @@ public class ProductController {
 		session.setAttribute("storeNo", storeNo);
 		Long memberNo = (Long) map.get("memberNo");
 		session.setAttribute("memberNo", memberNo);
-		
 
 		return mv.setViewNameAndData("product/list_product", map);
 	}
 	// 상품상세 화면 호출
 	@GetMapping("products/{id}")
 	public ModelAndView detailProduct(@PathVariable(name="id") Long id) {
+		
 		Map<String, Object> reponseData = productService.deatailProduct(id);
+		
 		return mv.setViewNameAndData("/product/detail_product", reponseData);
 	}
 	// 내상점 화면 호출
-	@GetMapping("stores/{id}")
-	public ModelAndView detailMyStore(@PathVariable(name="id")@RequestParam(value="page", defaultValue="1")int page, Long id, HttpSession session) {
+	@GetMapping("stores/{storeNo}")
+	public ModelAndView detailMyStore(@PathVariable(name="storeNo")Long storeNo, @RequestParam(value="page", defaultValue="1")int page, HttpSession session) {
 		
-		Member loginUser= (Member) session.getAttribute("loginUser");
-		
-		Map<String, Object> reponseData = productService.deatailMyStore(page, id, loginUser.getMemberNo());
-		
-		Long storeNo = (Long) reponseData.get("storeNo");
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		if(loginUser != null) {
+			session.setAttribute("loginUser", loginUser);
+		}
 		session.setAttribute("storeNo", storeNo);
+		
+		Map<String, Object> reponseData = productService.deatailMyStore(page, storeNo);
 		MyStore myStore = (MyStore) reponseData.get("myStore");
 		session.setAttribute("myStore", myStore);
-		Long memberNo = (Long) reponseData.get("memberNo");
-		session.setAttribute("memberNo", memberNo);
-		
-		
-		if(loginUser != null) {
-			id = loginUser.getMemberNo();
-			reponseData.put("loginUser", loginUser);
-		} 
-			
 		
 		return mv.setViewNameAndData("/product/my_store", reponseData);
 	}
-
+	// 내상점 업데이트할꺼야~
+	@PostMapping("update.store")
+	public ModelAndView storeUpdate(MyStore myStore, MultipartFile upfile) {
+		
+		log.info("{} / {}", myStore, upfile);
+		
+		productService.storeUpdate(myStore, upfile);
+		
+		
+		return mv.setViewNameAndData("redirect:products", null);
+	}
 	
 	
 	

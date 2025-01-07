@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 
@@ -15,10 +16,13 @@ public interface ProductService {
 	Map<String, Object> deatailProduct(Long productNo);
 	// 상품 등록
 	void insertProduct(Product product, MultipartFile[] upfile);
+	Long getStoreNoByMemberNo(Long memberNo);
 	// 내상점 등록
 	void insertMyStore(MyStore myStore, MultipartFile upfile);
 	// 내상점 보여주기
-	Map<String, Object> deatailMyStore(int currentPage, Long id, Long memberNo);
+	Map<String, Object> deatailMyStore(int currentPage, Long storeNo);
+	// 내상점 업데이트
+	void storeUpdate(MyStore myStore, MultipartFile upfile);
 	
 
 

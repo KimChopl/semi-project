@@ -92,7 +92,8 @@
 	                    </c:when>
 	                    <c:otherwise>
 		                    <a href="insert_form" class="product-save">상품등록</a>
-		                    <a href="stores/${ loginUser.memberNo }"  class="mystore">내상점</a>
+		                    <a href="stores/${ storeNo }"  class="mystore">내상점</a>
+		                    
 	                    </c:otherwise>
 	                </c:choose>
                 </c:if>

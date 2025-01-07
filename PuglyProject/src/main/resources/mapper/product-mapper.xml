@@ -20,6 +20,15 @@
 		</association>
 	</resultMap>
 	
+	<select id="selectStoreNoByMemberNo" resultType="Long" parameterType="Long">
+		SELECT 
+				STORE_NO storeNo
+		  FROM
+		  		TB_MY_STORE
+		 WHERE
+		 		FK_MEMBER_NO = #{memberNo}
+	</select>
+	
 	
 	<insert id="insertProductImg" parameterType="Image">
 		INSERT
@@ -59,7 +68,8 @@
 		  		PRODUCT_QUANTITY,
 		  		UNIT_NAME,
 		  		DELIVERY_PRICE,
-		  		PRODUCT_TYPE
+		  		PRODUCT_TYPE,
+		  		FK_STORE_NO
 		  		)
 		VALUES
 				(
@@ -70,7 +80,8 @@
 				#{productQuantity},
 				#{unitName},
 				#{deliveryPrice},
-				#{productType}
+				#{productType},
+				#{storeNo}
 				)
 	</insert>
 	
@@ -123,7 +134,9 @@
 	    WHERE
 	        	p.STATUS = 'Y' AND i.IMG_LEVEL = 1
 	      AND
-	      		i.CATEGORY_NO = p.FK_MAIN_NO	
+	      		i.CATEGORY_NO = p.FK_MAIN_NO
+          AND
+                p.FK_STORE_NO = #{storeNo}
 	    ORDER 
 	       BY
 	        	p.PRODUCT_DATE DESC
@@ -257,7 +270,7 @@
 		 WHERE
 		    	i.IMG_STATUS = 'Y'
 		   AND
-		    	m.FK_MEMBER_NO = #{memberNo}
+		    	m.STORE_NO = #{storeNo}
 	</select>
 	
 	<select id="findImageByMyStore" resultType="image" parameterType="long">
@@ -278,12 +291,30 @@
 		 WHERE
 		    	i.IMG_STATUS = 'Y'
 		   AND
-		    	m.FK_MEMBER_NO = #{memberNo}
+		    	m.STORE_NO = #{storeNo}
 	</select>
 	
-	
+	<update id="storeUpdate" parameterType="myStore">
+		UPDATE
+				TB_MY_STORE
+		   SET
+		   		STORE_TITLE = #{storeTitle},
+		   		STORE_CONTENT = #{storeContent}
+		 WHERE
+		 		STORE_NO = #{storeNo}		
+	</update>
 
-
+	<update id="storeImgUpdate" parameterType="image">
+		UPDATE
+				TB_IMAGE
+		   SET
+		   		ORIGIN_IMG_NAME = #{originImgName},
+		   		CHANGE_IMG_NAME = #{changeImgName},
+		   		IMG_PATH = #{imgPath},
+		   		IMG_LEVEL = #{imgLevel}
+		 WHERE
+		 		IMG_NO = #{imgNo}
+	</update>
 
 
 

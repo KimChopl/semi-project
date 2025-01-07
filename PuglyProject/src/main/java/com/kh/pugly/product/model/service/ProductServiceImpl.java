@@ -54,18 +54,23 @@ public class ProductServiceImpl implements ProductService {
 		boolean firstFile = true;					// 첫번째 사진은 true
 		
 		for(MultipartFile file : upfile) {
+			
 			if(!file.isEmpty()) {
 				String fileName = file.getOriginalFilename();
 				String ext = fileName.substring(fileName.lastIndexOf("."));
 				String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+				
 				int randomNum = (int)(Math.random() * 90000) + 10000;
-				String changeName = currentTime + randomNum + ext;
+				
+				String changeName = "ProductImg" + currentTime + randomNum + ext;
 				String savePath = context.getRealPath("/resources/upload_files/");
+				
 				try {
 					file.transferTo(new File(savePath + changeName));
 				} catch(IOException e) {
 					throw new FailToFileUploadException("파일오류!");
 				}
+				
 				Image image = new Image();
 				image.setOriginImgName(fileName);
 				image.setChangeImgName("/pugly/resources/upload_files/" + changeName);
@@ -83,19 +88,24 @@ public class ProductServiceImpl implements ProductService {
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+		
 		int randomNum = (int)(Math.random() * 90000) + 10000;
-		String changeName = currentTime + randomNum + ext;
+		
+		String changeName = "StoreImg" + currentTime + randomNum + ext;
 		String savePath = context.getRealPath("/resources/mystore_profile/");
+		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
 		} catch(IOException e) {
 			throw new FailToFileUploadException("파일오류!");
 		}
+		
 		Image image = new Image();
 		image.setOriginImgName(fileName);
 		image.setChangeImgName("/pugly/resources/mystore_profile/" + changeName);
 		image.setImgLevel(1);
 		image.setImgPath("/resources/mystore_profile/");
+		
 		return image;	   
 	}
 	
@@ -131,20 +141,20 @@ public class ProductServiceImpl implements ProductService {
 		return mapper.listProduct(rowBounds);
 	}
 	// 내상점 상품수
-	private List<Product> getProductStore(PageInfo pi){
+	private List<Product> getProductStore(PageInfo pi, Long storeNo){
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		return mapper.myStoreProduct(rowBounds);
+		return mapper.myStoreProduct(rowBounds, storeNo);
 	}
-	// 상품이 삭제될때
+	// 상품전체조회
 	private Product findProductById(Long productNo) {
 		Product product = mapper.detailProduct(productNo);
-		
 		return product;
 	}
+	
 	// 내상점보여줄래
-	private MyStore findMyStoreById(Long myStoreNo) {
-		MyStore myStore = mapper.detailMyStore(myStoreNo);
+	private MyStore findMyStoreById(Long storeNo) {
+		MyStore myStore = mapper.detailMyStore(storeNo);
 		return myStore;
 	}
 	// 내상점 사진꺼낼래
@@ -157,7 +167,10 @@ public class ProductServiceImpl implements ProductService {
 		List<Image> imageList = (List<Image>) mapper.findImagesByProductId(productNo);
 		return imageList;
 	}
-	
+	// 유저번호로 이용하여 상점번호 조회
+	public Long getStoreNoByMemberNo(Long memberNo) {
+		return mapper.selectStoreNoByMemberNo(memberNo);
+	}
 
 	// 상품등록 메소드 
 	@Override
@@ -218,23 +231,50 @@ public class ProductServiceImpl implements ProductService {
 
 	// 내상점 보여주기
 	@Override
-	public Map<String, Object> deatailMyStore(int currentPage, Long storeNo, Long memberNo) {
+	public Map<String, Object> deatailMyStore(int currentPage, Long storeNo) {
+		
 		int totalCount = getTotalCount();
 		PageInfo pi = getStorePage(totalCount, currentPage);
 		
 		MyStore myStore = findMyStoreById(storeNo);
 		Image image = findImageByMyStore(storeNo);
-		List<Product> products = getProductStore(pi);
-		
+		List<Product> products = getProductStore(pi, storeNo);
 		
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("products", products);
 		responseData.put("myStore", myStore);
 		responseData.put("image", image);
 		responseData.put("storeNo", storeNo);
-		responseData.put("memberNo", memberNo);
 		
 		return responseData;
+	}
+	@Override
+	public void storeUpdate(MyStore myStore, MultipartFile upfile) {
+		Image img = myStoreSaveImg(upfile);
+		findMyStoreById(myStore.getStoreNo());
+		findImageByMyStore(img.getImgNo());
+		log.info("image: {}", img);
+		
+		if(upfile.getOriginalFilename().equals("")) {
+			
+			if(img.getChangeImgName() != null) {
+				new File(context.getRealPath(img.getChangeImgName())).delete();
+			}
+			myStoreSaveImg(upfile);
+		}
+		int result = mapper.storeUpdate(myStore);
+		
+		if(result < 1) {
+			System.out.println("스토어실패!");
+		}
+		mapper.storeImgUpdate(img);
+		
+		
+		
+		log.info("{}", myStore);
+		log.info("{}",img);
+			
+		
 	}
 
 
