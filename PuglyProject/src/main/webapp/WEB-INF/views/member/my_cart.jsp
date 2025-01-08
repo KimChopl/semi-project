@@ -150,7 +150,7 @@
 
     <div id="body">
         <form action="insert.myOrder" method="post">
-        <c:forEach items="${ cartList }" var="c">
+        <c:forEach items="${ list }" var="c">
             <div id="wrap" onclick="detailProduct('${c.productNo}')">
                 <input type="hidden" name="productNo" value="${ c.productNo }" />
                 <div id="img"><img src="${ c.image.changeImgName }" class="img"></div>

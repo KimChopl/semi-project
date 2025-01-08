@@ -32,7 +32,7 @@
         
 
         #wrap{
-            width: 600px;
+            width: 550px;
             height: 180px;
             margin: auto;
             margin-top: 10px;
@@ -42,36 +42,53 @@
             border: outset;
         }
 
-
-        #img{
-            border-radius: 5px;
-            position: relative;
-            width: 100px;
-            height: 100px;
-            top: 35px;
-            left: 10px;
-        }
-
-        .img{
-            width: 100px;
-            height: 100px;
-            border-radius: 5px;
-        }
-
         #book-date{
-            width: 120px;
-            height: 25px;
+            width: 110px;
+            height: 50px;
             position: relative;
-            bottom: 90px;
-            left: 450px;
+            bottom: 20px;
+            left: 300px;
         }
+		
 
         #play-date{
-            width: 120px;
-            height: 25px;
+            width: 110px;
+            height: 50px;
+            position: relative;
+            bottom: 70px;
+            left: 420px;
+        }
+        
+		#decide{
+			width: 50px;
+            height: 50px;
             position: relative;
             bottom: 85px;
-            left: 450px;
+            left: 10px;		
+		}
+		
+        #pay{
+            width: 50px;
+            height: 50px;
+            position: relative;
+            bottom: 235px;
+            left: 70px;
+        }
+        
+        #play{
+            width: 50px;
+            height: 50px;
+            position: relative;
+            bottom: 185px;
+            left: 230px;
+        }
+
+        #cancel{
+        	width: 50px;
+            height: 50px;
+            position: relative;
+            bottom: 135px;
+            left: 170px;
         }
 
         
@@ -79,15 +96,16 @@
             width: 150px;
             height: 25px;
             position: relative;
-            left: 149px;
-            bottom: 90px;
+            left: 25px;
+            top: 10px;
+            text-align: left;
         }
         
         #total-play-people{
             width: 90px;
             height: 25px;
             position: relative;
-            bottom: 75px;
+            bottom: 50px;
             left: 400px;
         }
 
@@ -95,7 +113,7 @@
             width: 80px;
             height: 25px;
             position: relative;
-            bottom: 70px;
+            bottom: 35px;
             left: 360px;
         }
 
@@ -103,25 +121,19 @@
             width: 80px;
             height: 25px;
             position: relative;
-            bottom: 95px;
+            bottom: 60px;
             left: 450px;
         }
-
-        #farm-product{
-            width: 100px;
-            height: 25px;
+        
+        #content{
+        	width: 250px;
+            height: 70px;
             position: relative;
-            bottom: 200px;
-            left: 150px;
+            bottom: 360px;
+            left: 25px;
+            text-align: left;
         }
 
-        #farm-price{
-            width: 100px;
-            height: 25px;
-            position: relative;
-            bottom: 150px;
-            left: 150px;
-        }
 
         .button{
             width: 600px;
@@ -162,40 +174,78 @@
 <jsp:include page="../common/menubar.jsp" />
 
     <div id="body">
+    <c:forEach items="${ list }" var="b">
         <div id="wrap">
-            <div id="img"><img src="" class="img"></div>
             <div id="farm-name">
-                <span class="span">농장이름</span>
+                <span class="span">${ b.farmTitle }</span>
             </div>
             <div id="book-date">
-                <span class="span">예약추가한날짜</span>
+                <span class="span">예약 등록일<br>${ b.bookDate }</span>
             </div>
             <div id="play-date">
-                <span class="span">예약일</span>
+                <span class="span">체험일<br>${ b.playDate }</span>
             </div>
             <div id="total-play-people">
                 <span class="span">예약 인원</span>
             </div>
             <div id="adult">
-                <span class="span">성인 :</span>
+                <span class="span">성인 : ${ b.adultNo }</span>
             </div>
             <div id="kid">
-                <span class="span">아이 :</span>
+                <span class="span">아이 : ${ b.kidNo }</span>
             </div>
-            <div id="farm-product">
-                <span class="span">농장대표작물</span>
+            <div id="decide">
+	            <span class="span">승인<br> 
+		            <c:choose>
+						<c:when test="${ not empty b.decide }">
+							완료
+						</c:when>
+						<c:otherwise>
+							대기
+						</c:otherwise>
+					</c:choose>
+	            </span>
             </div>
-            <div id="farm-price">
-                <span class="span">체험가격</span>
+            <div id="cancel">
+	            <span class="span">
+					<c:if test="${ not empty b.cancel }">
+						취소완료
+					</c:if>
+	            </span>
+            </div>
+            <div id="play">
+                <span class="span">
+					<c:if test="${ not empty b.play }">
+						체험완료
+					</c:if>
+				</span>
+            </div>
+            <div id="pay">
+                <span class="span">결제<br> 
+	                <c:choose>
+		                <c:when test="${ not empty b.pay }">완료</c:when>
+		                <c:otherwise>
+		                	대기
+		                </c:otherwise>
+	                </c:choose>
+                </span>
+            </div>
+            <div id="content">
+            	<span class="span">${ b.bookContent }</span>
             </div>
         </div>
+    </c:forEach>
     <div class="text-center">
-	    <ul class="pagination">
-	        <li class="page-item"><a class="page-link" href="#">이전</a></li>
-	        <li class="page-item"><a class="page-link" href="#">1</a></li>
-	        <li class="page-item"><a class="page-link" href="#">다음</a></li>
-	    </ul>
-    </div>
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.myBook?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.myBook?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.myBook?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
+	        </ul>
+        </div>
 </div>
 
 <script>

@@ -63,30 +63,41 @@
 			    <tr>
 			      <th>번호</th>
 			      <th>제목</th>
+			      <th>작성자</th>
+			      <th>작성일</th>
 			      <th>조회수</th>
-			      <th>좋아요</th>
-			      <th>생성일</th>
 			    </tr>
 			  </thead>
 			  <tbody>
-			    <tr>
-			      <td>10000</td>
-			      <td>게시글제목10자</td>
-			      <td>100</td>
-			      <td>160</td>
-			      <td>2024-12-12</td>
+			  <c:forEach items="${ list }" var="b">
+			    <tr onclick="detailBoard('${b.boardNo}')">
+			      <td>${ b.boardNo }</td>
+			      <td>${ b.boardTitle }</td>
+			      <td>${ b.nickname }</td>
+			      <td>${ b.createDate }</td>
+			      <td>${ b.count }</td>
 			    </tr>
+			  </c:forEach>
 			    
 			  </tbody>
 			</table>
 			<div class="text-center">
-			    <ul class="pagination">
-			        <li class="page-item"><a class="page-link" href="#">이전</a></li>
-			        <li class="page-item"><a class="page-link" href="#">1</a></li>
-			        <li class="page-item"><a class="page-link" href="#">다음</a></li>
-			    </ul>
-			</div>
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.myBoardList?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.myBoardList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.myBoardList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1}">다음</a></li>
+	        </ul>
+        </div>
 		</div>
+		<script>
+			function detailBoard(num) {
+				location.href = `boards/\${num}`;
+			}
+		</script>
 		<script>
 		    	let endPage = "${pageInfo.endPage}";
 		    	let maxPage = "${pageInfo.maxPage}";
