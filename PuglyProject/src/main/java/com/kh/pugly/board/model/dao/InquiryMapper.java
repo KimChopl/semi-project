@@ -18,6 +18,8 @@ public interface InquiryMapper {
 	Inquiry selectById(Long inquiryNo);
 
 	void insertInquiry(Inquiry inquiry);
+	
+	void insertInquiryForAdmin(Inquiry inquiry);
 
 	List<Inquiry> selectInquiryList(RowBounds rowBounds);
 

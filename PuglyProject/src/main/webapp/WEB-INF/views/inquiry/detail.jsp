@@ -62,7 +62,7 @@
             <br>
 
             <div align="center">
-            	 <c:if test="${sessionScope.loginUser.nickname eq inquiry.nickname or sessionScope.loginUser.nickname eq '관리자'}">
+            	 <c:if test="${sessionScope.loginUser.nickname eq inquiry.nickname or sessionScope.loginUser.categoryNo eq 1}">
 	                <a class="btn btn-danger"  onclick="postSubmit()">삭제하기</a>
             	</c:if>
             </div>
@@ -85,7 +85,15 @@
                 <thead>
                 
                 	<c:choose>
-                		<c:when test="${empty sessionScope.loginUser}">
+                		<c:when test="${sessionScope.loginUser.nickname eq inquiry.nickname or sessionScope.loginUser.categoryNo eq 1}">
+		                    <tr>
+		                        <th colspan="2">
+		                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+		                        </th>
+		                        <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
+		                    </tr>
+		                </c:when>
+		                <c:when test="${empty sessionScope.loginUser }">
 		                    <tr>
 		                        <th colspan="2">
 		                            <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
@@ -96,9 +104,9 @@
 		                <c:otherwise>    
 		                    <tr>
 		                        <th colspan="2">
-		                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+		                            <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">작성자와 관리자만 입력가능합니다.</textarea>
 		                        </th>
-		                        <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
+		                        <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
 		                    </tr>
 		           		</c:otherwise>
                    </c:choose> 

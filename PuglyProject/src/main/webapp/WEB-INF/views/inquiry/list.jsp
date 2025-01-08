@@ -68,9 +68,8 @@
                     </tr>
                 </thead>
                 <tbody id="inquiryListBody" >
-                
                 	<c:forEach items="${inquiries}" var="inquiry">
-	                    <tr onclick="detail('${inquiry.inquiryNo}')"
+	                    <tr onclick="detail('${inquiry.inquiryNo}', '${inquiry.inquiryGroup}')"
 	                    	style="<c:if test='${inquiry.inquiryGroup eq 2}'>background-color: lightgray;</c:if>"
 	                    >
 	                        <td>${inquiry.inquiryNo}</td>
@@ -97,10 +96,74 @@
             </table>
             <br>
             
+            <div class="modal" id="passwordModal">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <!-- 모달 헤더 -->
+			            <div class="modal-header">
+			                <h4 class="modal-title">비밀번호 확인</h4>
+			                <button type="button" class="close" data-dismiss="modal">&times;</button>
+			            </div>
+			
+			            <!-- 모달 본문 -->
+			            <div class="modal-body">
+			                <input type="password" id="inputPassword" class="form-control" placeholder="비밀번호를 입력하세요">
+			            </div>
+			
+			            <!-- 모달 푸터 -->
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-primary" id="passwordSubmitBtn">확인</button>
+			                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>
+            
             <script>
-            	function detail(num) {
-            		location.href=`inquiries/\${num}`;
-            	}	
+            let selectedInquiryNo = null; 
+			let selectedInquiryGroup= null;
+			const loginUserCategoryNo = '${sessionScope.loginUser.categoryNo}';
+            
+            function detail(inquiryNo, inquiryGroup) {
+                selectedInquiryNo = inquiryNo;
+                selectedInquiryGroup = inquiryGroup;
+                if (selectedInquiryGroup === "2" || loginUserCategoryNo === "1") {
+                    location.href = `inquiries/\${inquiryNo}`;
+                } else {
+                    $('#passwordModal').modal('show');
+                    console.log(selectedInquiryGroup);
+                }
+            }
+
+            $('#passwordSubmitBtn').click(function () {
+                const inputPassword = $('#inputPassword').val();
+
+                if (!inputPassword) {
+                    alert('비밀번호를 입력해주세요.');
+                    return;
+                }
+
+                $.ajax({
+                    url: '/pugly/inquiries/checkPassword',
+                    type: 'POST',
+                    data: {
+                        inquiryNo: selectedInquiryNo,
+                        password: inputPassword
+                    },
+                    success: function (response) {
+                        if (response.valid) {
+                            location.href = `inquiries/\${selectedInquiryNo}`;
+                        } else {
+                            alert('비밀번호가 올바르지 않습니다.');
+                            $('#inputPassword').val('');
+                        }
+                    }
+                });
+            });
+            
+            $('#passwordModal').on('hidden.bs.modal', function () {
+                $('#inputPassword').val('');
+            });
             
             </script>
             

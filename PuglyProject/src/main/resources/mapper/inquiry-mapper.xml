@@ -11,7 +11,8 @@
 			   INQUIRY_CONTENT inquiryContent,
 			   M.NICKNAME nickname,
 			   COUNT,
-			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate
+			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   INQUIRY_PASSWORD inquiryPassword
 		 FROM
 		 	  TB_INQUIRY I
 		 JOIN
@@ -29,7 +30,8 @@
 			   COUNT,
 			   ANSWER_STATUS answerStatus,
 			   INQUIRY_GROUP inquiryGroup,
-			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate
+			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate,
+			   INQUIRY_PASSWORD inquiryPassword
 		  FROM
 		       TB_INQUIRY I
 		  JOIN
@@ -80,6 +82,27 @@
         	   INQUIRY_WRITER,
         	   INQUIRY_TITLE,
         	   INQUIRY_CONTENT,
+        	   INQUIRY_PASSWORD
+    		   )
+    	VALUES 
+    		   (
+        	   SEQ_QNO.NEXTVAL,
+        	   #{inquiryWriter},
+        	   #{inquiryTitle},
+        	   #{inquiryContent},
+        	   #{inquiryPassword}
+        	   )
+	</insert>
+	
+	<insert id="insertInquiryForAdmin" parameterType="inquiry">
+    	INSERT 
+    	  INTO 
+    	  	   TB_INQUIRY 
+    	  	   (
+        	   INQUIRY_NO,
+        	   INQUIRY_WRITER,
+        	   INQUIRY_TITLE,
+        	   INQUIRY_CONTENT,
         	   INQUIRY_GROUP
     		   )
     	VALUES 
@@ -88,16 +111,10 @@
         	   #{inquiryWriter},
         	   #{inquiryTitle},
         	   #{inquiryContent},
-        	   (
-               SELECT 
-               	 CASE WHEN NICKNAME = '관리자' THEN 2 ELSE 1 END
-            	 FROM 
-            	 	  TB_MEMBER
-            	WHERE 
-            		  MEMBER_NO = #{inquiryWriter}
+        	   2
         	   )
-        	   )
-	</insert>	
+	</insert>
+	
 	
 	<delete id="deleteInquiry" parameterType="long">
 		UPDATE

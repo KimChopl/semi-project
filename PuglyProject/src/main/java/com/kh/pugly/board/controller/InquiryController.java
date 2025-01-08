@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.board.model.service.InquiryService;
 import com.kh.pugly.board.model.vo.Inquiry;
+import com.kh.pugly.common.model.vo.PageInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,12 +27,15 @@ public class InquiryController {
 	
 	@GetMapping("inquiries")
 	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {
-		List<Inquiry> inquiryList = inquiryService.selectInquiryList(page);
-				
+		Map<String, Object> result = inquiryService.selectInquiryList(page);
+		
+		List<Inquiry> inquiries = (List<Inquiry>) result.get("inquiries");
+	    PageInfo pageInfo = (PageInfo) result.get("pageInfo");
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/list");
-		mv.addObject("inquiries", inquiryList);
-		mv.addObject("page", page);
+		mv.addObject("inquiries", inquiries);
+	    mv.addObject("pageInfo", pageInfo); 
 		
 		return mv;
 	}
@@ -53,7 +57,7 @@ public class InquiryController {
 	
 	@PostMapping("inquiries")
 	public ModelAndView save(Inquiry inquiry, HttpSession session) {
-		inquiryService.insertInquiry(inquiry);
+		inquiryService.insertInquiry(inquiry, session);
 		session.setAttribute("altMsg", "문의글 등록 성공");
 		
 		ModelAndView mv = new ModelAndView();
@@ -86,5 +90,16 @@ public class InquiryController {
 		
 	   return searchResult;
 	}
+	
+	@PostMapping("inquiries/checkPassword")
+	@ResponseBody
+    public Map<String, Object> checkPassword(@RequestParam("inquiryNo") Long inquiryNo, 
+			 								 @RequestParam("password") String password) {
+        boolean valid = inquiryService.checkPassword(inquiryNo, password);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("valid", valid);
+        return response;
+    }
 
 }

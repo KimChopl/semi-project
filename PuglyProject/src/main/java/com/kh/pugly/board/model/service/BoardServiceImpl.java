@@ -66,14 +66,6 @@ public class BoardServiceImpl implements BoardService {
 				
 	}	
 
-	private Board findByBoard(Long boardNo) {
-		Board board = mapper.selectById(boardNo);
-		if(board == null) {
-			//예외처리
-		}
-		return board;
-	}
-
 	@Override
 	public Map<String, Object> selectBoardList(int currentPage, String sortType) {
 		int totalCount = getTotalCount();
