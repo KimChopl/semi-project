@@ -20,7 +20,9 @@ import com.kh.pugly.common.ModelAndViewUtil;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Controller
+
 @RequiredArgsConstructor
 public class BoardController {
 	
@@ -33,6 +35,7 @@ public class BoardController {
 		Map<String, Object> map = boardService.selectBoardList(page, sortType);
 		return mv.setViewNameAndData("board/list", map);
 	}
+	
 	
 	@GetMapping("boards/{id}")
 	public ModelAndView selectById(@PathVariable(name="id") Long boardNo) {

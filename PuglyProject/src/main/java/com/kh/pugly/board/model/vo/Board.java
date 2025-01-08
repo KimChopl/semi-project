@@ -17,7 +17,9 @@ import lombok.ToString;
 @Builder
 public class Board {
 	private Long boardNo;
+
 	private Long boardWriter;
+
 	private String nickname;
 	private String boardTitle;
 	private String boardContent;

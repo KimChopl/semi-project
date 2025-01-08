@@ -75,10 +75,12 @@ public class AjaxFarmController {
 		Map<String, Object> map = gson.fromJson(originNames, Map.class);
 		List<String> changeImgName = (List<String>)map.get("change");
 		List<String> origin = (List<String>)map.get("origin");
+		List<String> imgLevel = (List<String>)map.get("imgLevel");
 		String path = (String)map.get("path");
 		updateInfo.put("changeImg", changeImgName);
 		updateInfo.put("origin", origin);
 		updateInfo.put("path", path);
+		updateInfo.put("imgLevel", imgLevel);
 		}
 		//log.info("{}", facilityNo);
 		Member member = (Member)ssn.getAttribute("loginUser");

@@ -68,7 +68,7 @@ public class ChangeImage {
 		
 		for(int i = 0; i < img.size(); i++) {
 			
-			if(!(new File(img.get(i).getImgPath() + img.get(i).getChangeImgName()).delete())) {
+			if(!(new File(c.getRealPath(img.get(i).getImgPath()) + img.get(i).getChangeImgName()).delete())) {
 				
 				throw new FailDeleteObjectException("사진 삭제 실패");
 			} 

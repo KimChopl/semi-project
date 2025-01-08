@@ -26,12 +26,10 @@ public class InquiryController {
 	private final InquiryService inquiryService;
 	
 	@GetMapping("inquiries")
-	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {
-		Map<String, Object> result = inquiryService.selectInquiryList(page);
-		
-		List<Inquiry> inquiries = (List<Inquiry>)result.get("inquiries");
-	    PageInfo pageInfo = (PageInfo)result.get("pageInfo");
-		
+	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {		
+	  List<Inquiry> inquiries = (List<Inquiry>)result.get("inquiries");
+	  PageInfo pageInfo = (PageInfo)result.get("pageInfo");
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/list");
 		mv.addObject("inquiries", inquiries);
@@ -59,7 +57,7 @@ public class InquiryController {
 	public ModelAndView save(Inquiry inquiry, HttpSession session) {
 		inquiryService.insertInquiry(inquiry, session);
 		session.setAttribute("altMsg", "문의글 등록 성공");
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		return mv;
@@ -68,7 +66,7 @@ public class InquiryController {
 	@PostMapping("inquiries/delete")
 	public ModelAndView deleteInquiry(Long inquiryNo) {
 		inquiryService.deleteInquiry(inquiryNo);
-		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		

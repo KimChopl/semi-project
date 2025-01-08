@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.member.mypage.model.dao.MyPageMapper">
 
+	<resultMap id="productWithImage" type="Product">
+	    <id property="productNo" column="productNo"/>
+	    <result property="productName" column="productName"/>
+	    <result property="productPrice" column="productPrice"/>
+	    <result property="productContent" column="productContent"/>
+	    <result property="productQuantity" column="productQuantity"/>
+	    <result property="productCount" column="productCount"/>
+	    <result property="unitName" column="unitName"/>
+	    <result property="deliveryPrice" column="deliveryPrice"/>
+	    <result property="productDate" column="productDate"/>
+	    <association property="image" javaType="Image">
+	        <result property="originImgName" column="originImgName"/>
+	        <result property="changeImgName" column="changeImgName"/>
+	        <result property="imgPath" column="imgPath"/>
+	        <result property="imgLevel" column="imgLevel"/>
+		</association>
+	</resultMap>
+
 <select id="selectMyCartAll" parameterType="long" resultType="_int">
 	SELECT
 	       COUNT(PRODUCT_NO)
@@ -10,7 +28,7 @@
 	 WHERE
 	       MEMBER_NO = #{memberNo}
 </select>
-<select id="selectMyCartList" parameterType="long" resultType="product">
+<select id="selectMyCartList" parameterType="long" resultMap="productWithImage">
 	SELECT
            pr.PRODUCT_NO productNo,
            PRODUCT_NAME productName,
@@ -18,16 +36,59 @@
            PRODUCT_QUANTITY productQuantity,
            PRODUCT_TYPE productType,
            UNIT_NAME unitName,
-           DELIVERY_PRICE deliveryPrice
+           DELIVERY_PRICE deliveryPrice,
+           im.ORIGIN_IMG_NAME originImgName,
+	       im.CHANGE_IMG_NAME changeImgName
       FROM
            TB_CART ct
       JOIN
            TB_PRODUCT pr ON(pr.PRODUCT_NO = ct.PRODUCT_NO)
+      JOIN
+           TB_IMAGE im ON(pr.PRODUCT_NO = im.IMG_POST_NO)
      WHERE
            pr.STATUS = 'Y'
        AND
+           im.IMG_LEVEL = 1
+       AND
+           im.CATEGORY_NO = pr.FK_MAIN_NO
+       AND
            ct.MEMBER_NO = #{memberNo}
+     ORDER
+        BY
+           PRODUCT_DATE DESC
 </select>
+<select id="selectMyFarmCount" parameterType="long" resultType="_int">
+	SELECT
+	       COUNT(*)
+	  FROM
+	       TB_FARM
+	 WHERE
+	       SELLER_NO = #{memberNo}
+	   AND
+	       DELETE_ASK = 'N'
+</select>
+<select id="selectMyFarmList" parameterType="long" resultType="farm">
+	SELECT
+	       FARM_NO farmNo,
+           FARM_TITLE farmTitle,
+           FARM_COUNT farmCount,
+           FARM_PRICE farmPrice,
+           FARM_MODIFY_DATE farmModifyDate,
+           NICKNAME seller
+      FROM
+           TB_FARM
+      JOIN
+           TB_MEMBER ON (SELLER_NO = MEMBER_NO)
+     WHERE
+           TB_MEMBER.MEMBER_NO = #{memberNo}
+       AND
+           DELETE_ASK = 'N'
+</select>
+  
+
+
+
+
 
 
 </mapper>
