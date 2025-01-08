@@ -51,9 +51,9 @@ public class ProductController {
 	public ModelAndView insertProduct(Product product, MultipartFile[] upfile, HttpSession session, Image image) {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		if(loginUser != null) {
-			Long memberNo = loginUser.getMemberNo();
+			Long userNo = loginUser.getMemberNo();
 			// 로그인 유저로 상점번호 조회
-			Long storeNo = productService.getStoreNoByMemberNo(memberNo);
+			Long storeNo = productService.getStoreNoByMemberNo(userNo);
 			
 			if (storeNo != null) {
 				product.setStoreNo(storeNo);
@@ -65,19 +65,25 @@ public class ProductController {
 	// 상품리스트 화면 호출
 	@GetMapping("products")
 	public ModelAndView listProduct(@RequestParam(value="page", defaultValue="1") int page, HttpSession session) {
-		
+
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		
-		Map<String, Object> map = productService.listProduct(page, loginUser.getMemberNo());
-		
-		Long userNo = (Long) map.get("userNo");
-		session.setAttribute("userNo", userNo);
-		Long storeNo = (Long) map.get("storeNo");
-		session.setAttribute("storeNo", storeNo);
-		Long memberNo = (Long) map.get("memberNo");
-		session.setAttribute("memberNo", memberNo);
-
+		//로그인한 판매자 계정 버튼 요소를 보이기 위해 세션값이 필요함
+		if(loginUser != null) {
+			
+			Long userNo = loginUser.getMemberNo();
+			Map<String, Object> map = productService.listProduct(page, userNo);
+			Object storeNo = map.get("storeNo");
+			Object memberNo = map.get("userNo");
+			session.setAttribute("storeNo", storeNo);
+			session.setAttribute("userNo", memberNo);
+			
+			return mv.setViewNameAndData("product/list_product", map);
+		}
+		// 조건문을 안쓰면 비로그인은 아예 못들어감 그럼 위에 만든게 의미없음
+		Map<String, Object> map = productService.listProduct(page, null);
 		return mv.setViewNameAndData("product/list_product", map);
+		
 	}
 	// 상품상세 화면 호출
 	@GetMapping("products/{id}")
@@ -92,9 +98,7 @@ public class ProductController {
 	public ModelAndView detailMyStore(@PathVariable(name="storeNo")Long storeNo, @RequestParam(value="page", defaultValue="1")int page, HttpSession session) {
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
-		if(loginUser != null) {
-			session.setAttribute("loginUser", loginUser);
-		}
+
 		session.setAttribute("storeNo", storeNo);
 		
 		Map<String, Object> reponseData = productService.deatailMyStore(page, storeNo);
@@ -105,16 +109,27 @@ public class ProductController {
 	}
 	// 내상점 업데이트할꺼야~
 	@PostMapping("update.store")
-	public ModelAndView storeUpdate(MyStore myStore, MultipartFile upfile) {
-		
-		log.info("{} / {}", myStore, upfile);
+	public ModelAndView storeUpdate(MyStore myStore, MultipartFile upfile, HttpSession session) {
 		
 		productService.storeUpdate(myStore, upfile);
-		
-		
-		return mv.setViewNameAndData("redirect:products", null);
+		Long storeNo = (Long) session.getAttribute("storeNo");
+		return mv.setViewNameAndData("redirect:/stores/" + storeNo, null);
+	}
+	// 상품 업데이트할꺼야~
+	@GetMapping("updateProduct")
+	public String productUpdatePage() {
+		return "product/update_product";
 	}
 	
+	
+	// 상품 삭제할꺼야~
+	@PostMapping("/delete.product")
+	public ModelAndView deleteProduct(Long productNo, String changeImgName, HttpSession session) {
+		productService.deleteProduct(productNo, changeImgName);
+		
+		Long storeNo = (Long) session.getAttribute("storeNo");
+		return mv.setViewNameAndData("redirect:/stores/" + storeNo , null);
+	}
 	
 	
 }

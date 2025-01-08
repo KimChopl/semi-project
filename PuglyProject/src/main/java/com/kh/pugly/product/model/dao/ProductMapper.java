@@ -3,6 +3,7 @@ package com.kh.pugly.product.model.dao;
 
 import java.util.List;
 
+import org.apache.catalina.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
@@ -21,7 +22,7 @@ public interface ProductMapper {
 	 
 	// 목록조회
 	 List<Product> listProduct(RowBounds rowBounds);
-	
+	 Long getUserNoSelectStoreNo(Long myStore);
 	 // 상세조회
 	Product detailProduct(Long productNo);
 			
@@ -29,7 +30,7 @@ public interface ProductMapper {
 	void insertProduct(Product product);
 	void insertProductImg(Image image);
 	List<Image> findImagesByProductId(Long productNo);
-	Long selectStoreNoByMemberNo(Long memberNo);
+	Long selectStoreNoByMemberNo(Long userNo);
 	// 내상점 등록
 	void insertMyStore(MyStore myStore);
 	void insertMyStoreImg(Image img);
@@ -40,6 +41,10 @@ public interface ProductMapper {
 	// 상점업데이트
 	int storeUpdate(MyStore myStore);
 	void storeImgUpdate(Image image);
+	void storeImgDelete(Image image);
+	// 상품삭제
+	int deleteProduct(Long productNo);
+	
 	
 
 

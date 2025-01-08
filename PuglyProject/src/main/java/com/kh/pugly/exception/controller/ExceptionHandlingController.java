@@ -1,7 +1,5 @@
 package com.kh.pugly.exception.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,15 +23,15 @@ import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
-
-
 import com.kh.pugly.exception.NotFoundFarmListException;
 import com.kh.pugly.exception.NotFoundObjectException;
 import com.kh.pugly.exception.NotFoundDetailFarmException;
+import com.kh.pugly.exception.NotFoundFarmListException;
+import com.kh.pugly.exception.NotFoundProductException;
+import com.kh.pugly.exception.NotFoundReplyException;
+import com.kh.pugly.exception.NotFoundBookException;
 import com.kh.pugly.exception.NotFoundUserInfomation;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
-
-
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 
@@ -130,6 +128,20 @@ public class ExceptionHandlingController {
 		return createErrorResponse("농장목록을 찾을 수 없습니다.", e);
 	}
 	
+	@ExceptionHandler(NotFoundBookException.class)
+	protected ModelAndView noSearchBookListError(NotFoundBookException e) {
+		return createErrorResponse("예약목록을 찾을 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(NotFoundReplyException.class)
+	protected ModelAndView noSearchReplyListError(NotFoundReplyException e) {
+		return createErrorResponse("댓글목록을 찾을 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(NotFoundProductException.class)
+	protected ModelAndView noSearchProductListError(NotFoundProductException e) {
+		return createErrorResponse("상품목록을 찾을 수 없습니다.", e);
+	}
 	//---------------------------------------------------------------------
 
 

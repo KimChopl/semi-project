@@ -25,5 +25,4 @@ public interface BoardService {
 	
 	Map<String, Object> searchBoard(Map<String, Object> map);
 
-	Map<String, Object> selectBoardListBySort(Map<String, Object> map);
 }

@@ -42,11 +42,11 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 작성하기</h2>
+        	<a class="btn btn-secondary" style="float:right;" href="/pugly/inquiries">목록으로</a>
             <br>
 
             <form id="enrollForm" method="post" action="inquiries" enctype="multipart/form-data">
-                <table align="center">
+                <table style = "text-align : center">
                     <tr>
                         <th><label for="title">제목</label></th>
                         <td><input type="text" id="title" class="form-control" name="inquiryTitle" required></td>
@@ -54,14 +54,17 @@
                     <tr>
                         <th><label for="writer">작성자</label></th>
                         <td><input type="text" id="writer" class="form-control" value="${sessionScope.loginUser.nickname }" name="nickname" readonly></td>
+                        <td><input type="hidden" id="writer" name="inquiryWriter" value="${sessionScope.loginUser.memberNo}"></td>
                     </tr>
                     <tr>
                         <th><label for="content">내용</label></th>
                         <td><textarea id="content" class="form-control" rows="10" style="resize:none;" name="inquiryContent" required></textarea></td>
                     </tr>
                     <tr>
-					    <th><label for="password">비밀번호</label></th>
-					    <td><input type="text" id="password" class="form-control" name="inquiryPassword"></td>
+                    	<c:if test="${sessionScope.loginUser.categoryNo ne 1}">
+						    <th><label for="password">비밀번호</label></th>
+						    <td><input type="password" id="password" class="form-control" name="inquiryPassword"></td>
+						</c:if>
 					</tr>
                 </table>
                 <br>

@@ -11,7 +11,9 @@
 			   INQUIRY_CONTENT inquiryContent,
 			   M.NICKNAME nickname,
 			   COUNT,
-			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate
+			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   INQUIRY_GROUP inquiryGroup,
+			   INQUIRY_PASSWORD inquiryPassword
 		 FROM
 		 	  TB_INQUIRY I
 		 JOIN
@@ -29,7 +31,8 @@
 			   COUNT,
 			   ANSWER_STATUS answerStatus,
 			   INQUIRY_GROUP inquiryGroup,
-			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate
+			   TO_CHAR(I.CREATE_DATE,'YYYY-MM-DD') as createDate,
+			   INQUIRY_PASSWORD inquiryPassword
 		  FROM
 		       TB_INQUIRY I
 		  JOIN
@@ -80,6 +83,27 @@
         	   INQUIRY_WRITER,
         	   INQUIRY_TITLE,
         	   INQUIRY_CONTENT,
+        	   INQUIRY_PASSWORD
+    		   )
+    	VALUES 
+    		   (
+        	   SEQ_QNO.NEXTVAL,
+        	   #{inquiryWriter},
+        	   #{inquiryTitle},
+        	   #{inquiryContent},
+        	   #{inquiryPassword}
+        	   )
+	</insert>
+	
+	<insert id="insertInquiryForAdmin" parameterType="inquiry">
+    	INSERT 
+    	  INTO 
+    	  	   TB_INQUIRY 
+    	  	   (
+        	   INQUIRY_NO,
+        	   INQUIRY_WRITER,
+        	   INQUIRY_TITLE,
+        	   INQUIRY_CONTENT,
         	   INQUIRY_GROUP
     		   )
     	VALUES 
@@ -88,16 +112,10 @@
         	   #{inquiryWriter},
         	   #{inquiryTitle},
         	   #{inquiryContent},
-        	   (
-               SELECT 
-               	 CASE WHEN NICKNAME = '관리자' THEN 2 ELSE 1 END
-            	 FROM 
-            	 	  TB_MEMBER
-            	WHERE 
-            		  MEMBER_NO = #{inquiryWriter}
+        	   2
         	   )
-        	   )
-	</insert>	
+	</insert>
+	
 	
 	<delete id="deleteInquiry" parameterType="long">
 		UPDATE
@@ -119,39 +137,28 @@
 		  	   TB_MEMBER M ON (INQUIRY_WRITER = M.MEMBER_NO)
 		 WHERE
 		 	   I.STATUS = 'Y'
-		 <if test="condition == 'content'">
 		   AND	
-		       INQUIRY_CONTENT
-		 </if>  
-		 <if test="condition == 'writer'">
-		   AND	
-		       M.NICKNAME
-		 </if>
-		 <if test="condition == 'title'">
-		   AND	
-		       INQUIRY_TITLE
-		 </if>  
-		 LIKE '%' || #{keyword} || '%'
+		       M.NICKNAME LIKE '%' || #{keyword} || '%'
 	</select>
 	
 	<select id="searchInquiryList" parameterType="map" resultType="inquiry">
     	<include refid="selectList" />
     	AND
-    	<choose>
-        	<when test="condition == 'writer'">
-            	M.NICKNAME
-        	</when>
-        	<when test="condition == 'title'">
-            	INQUIRY_TITLE
-	        </when>
-	        <otherwise>
-	            INQUIRY_CONTENT
-	        </otherwise>
-    	</choose>
-    	LIKE '%' || #{keyword} || '%'
-     ORDER
-		BY
+            M.NICKNAME LIKE '%' || #{keyword} || '%'
+      ORDER
+		 BY
 		   INQUIRY_GROUP DESC, INQUIRY_NO DESC
 	</select>
+	
+	<update id="updateAnswerState" parameterType="long">
+		UPDATE
+			   TB_INQUIRY
+		   SET
+		   	   ANSWER_STATUS = 'Y'
+		 WHERE
+		 	   ANSWER_STATUS = 'N'
+		   AND
+		   	   INQUIRY_NO = #{inquiryNo}
+	</update>
  
  </mapper>

@@ -32,6 +32,7 @@ import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.TooLargeValueException;
+import com.kh.pugly.member.common.ValidateMember;
 import com.kh.pugly.member.model.dao.MemberMapper;
 import com.kh.pugly.member.model.vo.Member;
 
@@ -47,51 +48,9 @@ public class MemberServiceImpi implements MemberService {
 	private final MemberMapper mapper;
 	private final ServletContext context;
 	private final PasswordEncoder passwordEncrypt;
+	private final ValidateMember validateUser;
 	
-	private void validationMember(Member member) {
-		if(20 <= member.getMemberId().length() || 25 <= member.getMemberPwd().length()) {
-			throw new TooLargeValueException("지나치게 큰 값");
-		}
-		
-		if("".equals(member.getMemberId().trim()) || "".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 값");
-		}
-	}
 	
-	private void noExistingMember(Member member) {
-		if(member == null) {
-			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
-		}
-	}
-	
-	private void invalidRequestMemberNo(Long memberNo, Long userNo) {
-		if(memberNo != userNo) {
-			throw new InvalidRequestException("유효하지 않은 요청");
-		}
-	}
-	
-	private void validationPassword(Member member) {
-		if(member.getMemberPwd().length() >= 25) {
-			throw new TooLargeValueException("비밀번호가 너무 김");
-		}
-		
-		if("".equals(member.getMemberPwd().trim())) {
-			throw new InvalidRequestException("유효하지 않은 값");
-		}
-	}
-	
-	private void existingMemberId(Member member) {
-		Member checkMember = mapper.selectMember(member);
-		if(checkMember != null) {
-			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
-		}
-	}
-	
-	private void checkPwd(Member member, Member loginUser) {
-		if(!(passwordEncrypt.matches(member.getMemberPwd(), loginUser.getMemberPwd()))) {
-			throw new ComparedPasswordException("비밀번호가 일치하지 않습니다.");
-		}
-	}
 	
 	private Image memberImgSave(MultipartFile upfile) {
 		if(!upfile.isEmpty()) {
@@ -138,8 +97,8 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	private void updateUser(Member member, Member loginMember) {
-		validationPassword(member);
-		invalidRequestMemberNo(member.getMemberNo(), loginMember.getMemberNo());
+		validateUser.validationPassword(member);
+		validateUser.invalidRequestMemberNo(member.getMemberNo(), loginMember.getMemberNo());
 		encryptionPassword(member);
 		changeNickName(member);
 	}
@@ -159,16 +118,16 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
-		validationMember(member);
+		validateUser.validationMember(member);
 		Member loginUser = mapper.selectMember(member);
 		
-		noExistingMember(loginUser);
+		validateUser.noExistingMember(loginUser);
 		
 		if(member.getCategoryNo() != loginUser.getCategoryNo()) {
 			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
 		}
 		
-		checkPwd(member, loginUser);
+		validateUser.checkPwd(member, loginUser);
 		
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
@@ -194,8 +153,8 @@ public class MemberServiceImpi implements MemberService {
 		// 아이디가 20자가 넘는다.
 		// 비밀번호가 25자가 넘는다.
 		// 닉네임을 입력하지 않았다.
-		existingMemberId(member);
-		validationMember(member);
+		validateUser.existingMemberId(member);
+		validateUser.validationMember(member);
 		Image image = memberImgSave(upfile);
 		
 		encryptionPassword(member);
@@ -259,7 +218,7 @@ public class MemberServiceImpi implements MemberService {
 
 	@Override
 	public void deleteMember(Member member, Member loginUser) {
-		checkPwd(member, loginUser);
+		validateUser.checkPwd(member, loginUser);
 		if(mapper.deleteMember(member) == 0) {
 			throw new FailDeleteMemberException("회원탈퇴 실패");
 		}
@@ -269,7 +228,7 @@ public class MemberServiceImpi implements MemberService {
 	@Transactional
 	public void updateAddress(Long memberNo, Long userNo, Address address) {
 		
-		invalidRequestMemberNo(memberNo, userNo);
+		validateUser.invalidRequestMemberNo(memberNo, userNo);
 		
 		Map<String, Object> map = new HashMap();
 		
@@ -300,12 +259,8 @@ public class MemberServiceImpi implements MemberService {
 	public Map<String, Object> findMemberPassword(Member member) {
 		Map<String, Object> map = new HashMap();
 		Member loginMember = mapper.selectMember(member);
-		log.info("{}, {}", loginMember, member);
-		if(loginMember == null ||
-		   loginMember.getCategoryNo() != member.getCategoryNo() ||
-		   !(loginMember.getPhone().equals(member.getPhone()))) {
-			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
-		}
+		//log.info("{}, {}", loginMember, member);
+		validateUser.checkMember(member, loginMember);
 		map.put("loginMember", loginMember);
 		
 		return map;
@@ -329,7 +284,7 @@ public class MemberServiceImpi implements MemberService {
 		// 경우의 수
 		// memberNo와 loginUser의 memberNo가 일치하지 않을 때
 		
-		invalidRequestMemberNo(memberNo, userNo);
+		validateUser.invalidRequestMemberNo(memberNo, userNo);
 		
 		Map<String, Object> map = new HashMap();
 		
@@ -344,7 +299,7 @@ public class MemberServiceImpi implements MemberService {
 	
 	@Override
 	public void deleteAddress(Long memberNo, Long userNo, Long addressNo) {
-		invalidRequestMemberNo(memberNo, userNo);
+		validateUser.invalidRequestMemberNo(memberNo, userNo);
 		
 		Map<String, Object> map = new HashMap();
 		map.put("memberNo", memberNo);

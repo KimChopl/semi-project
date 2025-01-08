@@ -32,8 +32,8 @@ public class MyPageController {
 	
 	@GetMapping("select.myBook")
 	public ModelAndView selectMyBook(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		
-		return mv.setViewNameAndData("member/my_book", null);
+		Map<String, Object> map = myPageService.selectMyBookList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_book", map);
 	}
 	@GetMapping("select.myOrder")
 	public ModelAndView selectMyOrder(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
@@ -47,13 +47,13 @@ public class MyPageController {
 	}
 	@GetMapping("select.myBoardList")
 	public ModelAndView selectMyboardList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		
-		return mv.setViewNameAndData("member/my_board_list", null);
+		Map<String, Object> map = myPageService.selectMyBoardList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_board_list", map);
 	}
 	@GetMapping("select.myReplyList")
 	public ModelAndView selectMyReplyList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		
-		return mv.setViewNameAndData("member/my_reply_list", null);
+		Map<String, Object> map = myPageService.selectMyReplyList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_reply_list", map);
 	}
 	@GetMapping("select.myFarmList")
 	public ModelAndView selectMyFarmList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
@@ -62,8 +62,8 @@ public class MyPageController {
 	}
 	@GetMapping("select.myProductList")
 	public ModelAndView selectMyProductList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		
-		return mv.setViewNameAndData("member/my_product_list", null);
+		Map<String, Object> map = myPageService.selectMyProductList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_product_list", map);
 	}
 	
 	

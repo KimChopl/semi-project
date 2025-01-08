@@ -48,12 +48,12 @@
             width: 100px;
             height: 100px;
             top: 16px;
-            left: 10px;
+            left: 17px;
         }
     
         .img{
-            width: 100px;
-            height: 100px;
+            width: 100%;
+            height: 100%;
             border-radius: 5px;
         }
     
@@ -63,6 +63,7 @@
             position: relative;
             bottom: 90px;
             left: 150px;
+            text-align: left;
         }
     
         #category-name{
@@ -71,6 +72,7 @@
             position: relative;
             bottom: 95px;
             left: 150px;
+            text-align: left;
         }
     
         #unit-name{
@@ -81,15 +83,13 @@
             left: 180px;
         }
     
-        #order-quantity{
+        #product-quantity{
             width: 30px;
             height: 25px;
             position: relative;
             left: 149px;
             bottom: 100px;
         }
-    
-        
     
         #product-price{
             width: 100px;
@@ -99,6 +99,22 @@
             bottom: 50px;
         }
     
+		#product-date{
+			width: 120px;
+            height: 50px;
+            position: relative;
+            left: 450px;
+            bottom: 210px;
+		}
+		
+		#product-count{
+			width: 60px;
+            height: 50px;
+            position: relative;
+            left: 480px;
+            bottom: 200px;
+		}
+
         .button{
             width: 100px;
             height: 30px;
@@ -139,33 +155,43 @@
 
 	<jsp:include page="../common/menubar.jsp" />
 	    <div id="body">
+	    	<c:forEach items="${ list }" var="p">
 	        <div id="wrap">
-	            <div id="img"><img src="" class="img"></div>
+	            <div id="img"><img src="${ p.image.changeImgName }" class="img"></div>
 	            <div id="category-name">
-	                <span class="span">상품카테고리</span>
+	                <span class="span">${ p.productType }</span>
 	            </div>
 	            <div id="product-name">
-	                <span class="span">상품명</span>
+	                <span class="span">${ p.productName }</span>
 	            </div>
 	            <div id="product-price">
-	                <span class="span">상품가격</span>
+	                <span class="span">${ p.productPrice }원</span>
 	            </div>
 	            <div id="unit-name">
-	                <span class="span">단위</span>
+	                <span class="span">${ p.unitName }</span>
 	            </div>
-	            <div id="order-quantity">
-	                <span class="span">개수</span>
+	            <div id="product-quantity">
+	                <span class="span">${ p.productQuantity }</span>
+	            </div>
+	            <div id="product-date">
+	                <span class="span">상품 등록일<br>${ p.productDate }</span>
+	            </div>
+	            <div id="product-count">
+	                <span class="span">조회수<br>${ p.productCount }</span>
 	            </div>
 	        </div>
+	    	</c:forEach>
 	        <div class="text-center">
-	            <ul class="pagination">
-	                <li class="page-item"><a class="page-link" href="#">이전</a></li>
-	                <li class="page-item"><a class="page-link" href="#">1</a></li>
-	                <li class="page-item"><a class="page-link" href="#">2</a></li>
-	                <li class="page-item"><a class="page-link" href="#">3</a></li>
-	                <li class="page-item"><a class="page-link" href="#">다음</a></li>
-	            </ul>
-	        </div>
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.myProductList?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.myProductList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.myProductList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
+	        </ul>
+        </div>
 		</div>
 		<script>
 	    	let endPage = "${pageInfo.endPage}";
