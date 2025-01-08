@@ -43,5 +43,7 @@ public interface FarmService {
 	Map<String, Object> selectUpdateForm(Long farmNo, Member member);
 	
 	void updateFarm(Map<String, Object> map);
+
+	void deleteFarm(Long farmNo, int i);
 	
 }

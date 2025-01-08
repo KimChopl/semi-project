@@ -16,8 +16,10 @@ import com.kh.pugly.common.model.vo.MoreInfo;
 import com.kh.pugly.common.template.ChangeImage;
 import com.kh.pugly.common.template.ChangeStringContext;
 import com.kh.pugly.common.template.MoreInfomation;
+import com.kh.pugly.exception.FailDeleteException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.NotFoundDetailFarmException;
+import com.kh.pugly.exception.NotFoundObjectException;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.farm.model.dao.FarmMapper;
 import com.kh.pugly.farm.model.vo.Farm;
@@ -44,7 +46,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	private void checkedReview(List<Review> review) {
 		if(review == null) {
-			//Exception
+			throw new NotFoundObjectException("리뷰 없음");
 		}
 	}
 	
@@ -60,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
 	private int reviewCount(Long farmNo) {
 		int reviewCount = rm.reviewCount(farmNo);
 		if(reviewCount < 0) {
-			//Exception
+			throw new NotFoundObjectException("해당 리뷰 없음");
 		}
 		return reviewCount;
 	}
@@ -96,7 +98,7 @@ public class ReviewServiceImpl implements ReviewService {
 	public List<Review> selectReviewList(int moreNo, Long farmNo) {
 		int reviewLimit = 3;
 		MoreInfo mi = getMoreInfo(farmNo, moreNo, reviewLimit);
-		return selectReview(mi, farmNo);
+		return makingReviewTitle(selectReview(mi, farmNo));
 	}
 
 	@Override
@@ -109,12 +111,26 @@ public class ReviewServiceImpl implements ReviewService {
 		return 0;
 	}
 
+	private List<Review> makingReviewTitle(List<Review> reviews) {
+		if(reviews != null && !(reviews.isEmpty())){
+			for(int i = 0; i < reviews.size(); i++) {
+				if(reviews.get(i).getReviewContent().length() > 30) {
+					
+					reviews.get(i).setReviewTitle(reviews.get(i).getReviewContent().substring(0, 30) + "...");
+				} else {
+					reviews.get(i).setReviewTitle(reviews.get(i).getReviewContent());
+				}
+				//log.info("{}", reviews.get(i).getReviewTitle());
+			}
+		}
+		return reviews;
+	}
 
 	@Override
 	public Map<String, Object> selectMoreReview(int moreNo, Long farmNo) {
 		int reviewLimit = 5;
 		MoreInfo mi = getMoreInfo(farmNo, moreNo, reviewLimit);
-		List<Review> review= selectReview(mi, farmNo);
+		List<Review> review= makingReviewTitle(selectReview(mi, farmNo));
 		Map<String, Object> map = new HashMap();
 		map.put("review", review);
 		mi.setPlusNo(mi.getPlusNo()+reviewLimit);
@@ -162,7 +178,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public void insertReview(Review review, MultipartFile[] files, Member member) {
 		checkedMember(member);
-		log.info("{}", files);
+		//log.info("{}", files);
 		checkedInsertReview(rm.insertReview(changeXss(insertCategoryByReview(settingReviewer(review, member)))));
 		Long postNo = review.getReviewNo();
 		List<Image> img = ci.changeImgName(files);
@@ -189,6 +205,25 @@ public class ReviewServiceImpl implements ReviewService {
 		if(result== 0) {
 			ci.deleteImage(img);
 			throw new FailToFileUploadException("리뷰사진 업로드 실패");
+		}
+	}
+
+	@Override
+	public List<Review> selectReviewAll(Long farmNo) {
+		return rm.selectReviewList(farmNo);
+	}
+	
+	
+
+	@Override
+	public void deleteReview(Long farmNo) {
+		//log.info("들어와서 : {}", farmNo);
+		List<Review> list = rm.selectReviewList(farmNo);
+		if(list != null && !(list.isEmpty())) {
+			int result = rm.deleteReview(farmNo);
+			if(result == 0) {
+				throw new FailDeleteException("리뷰 삭제 실패");
+			}
 		}
 	}
 	

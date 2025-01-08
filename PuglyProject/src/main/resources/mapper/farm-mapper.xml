@@ -6,6 +6,7 @@
 		SELECT
 		       FARM_NO farmNo,
 		       NICKNAME seller,
+		       SELLER_NO memberNo,
 		       FARM_TITLE farmTitle,
 		       NVL((SELECT
 		               COUNT(ATT_BY_FARM)
@@ -47,29 +48,21 @@
                     BY
                        REVIEW_POST_NO),0) rating,
                 IMG_PATH imgPath
-		  FROM
-		       TB_FARM
-		  JOIN
-		       TB_MEMBER M ON(SELLER_NO = M.MEMBER_NO)
-		  LEFT
-		  JOIN
-		       TB_IMAGE ON(IMG_POST_NO = FARM_NO)
-		  JOIN
-		       TB_ADDRESS TA ON (SELLER_NO = TA.MEMBER_NO)
-		  JOIN
-		       TB_FARM_PRODUCT ON(PRODUCT_NO = FARM_PRODUCT_NO)
-		  JOIN
-               TB_STATE_CATEGORY S ON (S.STATE_CODE = TA.STATE_CODE)
-		 WHERE
-		       DELETE_ASK = 'N'
-		   AND
-		       (IMG_LEVEL = 1 OR IMG_LEVEL IS NULL)
-		   AND
-		       (CATEGORY_NO = 3
-           OR
-               CATEGORY_NO IS NULL)
-		   AND
-		       ADDRESS_TYPE = 1
+		   FROM
+		        TB_FARM
+		   JOIN
+		        TB_MEMBER M ON (SELLER_NO = M.MEMBER_NO)
+		   JOIN
+		        TB_FARM_PRODUCT FP ON (FP.PRODUCT_NO = FARM_PRODUCT_NO) 
+		   JOIN
+		        TB_ADDRESS AD ON (AD.ADDRESS_NO = FARM_ADDRESS_NO)
+		   LEFT
+		   JOIN
+		        TB_IMAGE IM ON(IM.IMG_POST_NO = FARM_NO AND IM.CATEGORY_NO = 3)
+		  WHERE
+		        (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL OR IM.IMG_STATUS = 'Y' OR IM.IMG_STATUS IS NULL)
+		    AND
+		        DELETE_ASK = 'N'
 	</sql>
 
 
@@ -94,6 +87,7 @@
 		<result property="farmCreateDate" column="farmCreateDate" />
 		<result property="farmModifyDate" column="farmModifyDate" />
 		<result property="rating" column="rating" />
+		<result property="memberNo" column="memberNo" />
 		<collection property="imgList"  ofType="Image">
 			<result property="originImgName" column="originImgName" />
 			<result property="changeImgName" column="changeImgName" />
@@ -145,28 +139,35 @@
 			#{state}
 		</foreach>
 		</if>
-		<if test="product.size != 0">
+		<choose>
+		<when test="product.size != 0">
 			AND
 			    FARM_PRODUCT_NO IN
 			<foreach collection="product" item="pro" open="(" close=")" separator=",">
 				#{pro}
 			</foreach>
-		</if>
-		<if test="option == 'date'">
+		</when>
+		<when test="option == 'date'">
 			ORDER
 			   BY
 			      farmCreateDate DESC
-		</if>
-		<if test="option == 'rating'">
+		</when>
+		<when test="option == 'rating'">
 			ORDER
 			   BY
 			      rating DESC
-		</if>
-		<if test="option == 'price'">
+		</when>
+		<when test="option == 'price'">
 			ORDER
 			   BY
 			      farmPrice DESC
-		</if>
+		</when>
+		<otherwise>
+			ORDER
+			   BY
+			      farmCreateDate DESC
+		</otherwise>
+		</choose>
 	</select>
 	<select id="countSuchList" parameterType="map" resultType="_int">
 		SELECT
@@ -369,8 +370,10 @@
 		  INTO
 		      TB_FAC_BRIGE
 		VALUES
-		      (#{facilityNo},
-		       #{facilityName})
+		      (
+		      #{facilityName},
+		      #{facilityNo}
+		       )
 	</insert>
 
 	<update id="updateFarm" parameterType="farm">
@@ -398,5 +401,13 @@
 		   AND
 		       BR_FARM_NO = #{facilityName}
 	</delete>
+	<update id="deleteFarm" parameterType="long">
+		UPDATE
+		       TB_FARM
+		   SET 
+		       DELETE_ASK = 'Y'
+		 WHERE
+		       FARM_NO = #{farmNo}   
+	</update>
 
 </mapper>

@@ -240,7 +240,8 @@
         	imgList.change.push(change[i].value);
         	imgList.imgLevel.push(imgLevel[i].value);
         }
-        	imgList.path = ('/pugly/'+path[0].value);
+        	imgList.path = ('/pugly/resources/farm-img/');
+        	
         //console.log(imgList);
 		
         let uploadedImages = [];
@@ -262,7 +263,7 @@
                 imgList.origin = imgList.origin.filter(origin => origin !== e.target.alt)
                 imgList.change = imgList.change.filter(change => change !== e.target.src.split('/').pop())
                 imgList.imgLevel = imgList.imgLevel.filter((imgLevel, index) => index !== e.target.value)
-                console.log(imgList.imgLevel);
+                console.log(imgList.change);
                 uploadedImages = uploadedImages.filter(image => image !== file);
                 const originNames = document.getElementById('originNames');
                 originNames.value = JSON.stringify(imgList);

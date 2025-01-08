@@ -54,6 +54,7 @@ public class AjaxFarmController {
 		String option = (String)such.get("option");
 		double str = (double)such.get("plusNo");
 		int plusNo = (int)str;
+		log.info("{}", plusNo);
 		Map<String, Object> map = new HashMap();
 		map.put("state", state);
 		map.put("product", product);
@@ -61,7 +62,7 @@ public class AjaxFarmController {
 		map.put("plusNo", plusNo);
 		//log.info("{}", map);
 		Map<String, Object>list = fs.suchByKeyword(map);
-		log.info("{}", list);
+		//log.info("{}", list);
 		return list;
 		
 	}
@@ -71,16 +72,16 @@ public class AjaxFarmController {
 	@ResponseBody
 	public void updateFarm(Farm farm, MultipartFile[] files, HttpSession ssn, int[] facilityNo, Address ad, @RequestParam("originNames") String originNames) {
 		Map<String, Object> updateInfo = new HashMap<String, Object>();
-		if(!!!originNames.equals("")) {
 		Map<String, Object> map = gson.fromJson(originNames, Map.class);
-		List<String> changeImgName = (List<String>)map.get("change");
-		List<String> origin = (List<String>)map.get("origin");
-		List<String> imgLevel = (List<String>)map.get("imgLevel");
-		String path = (String)map.get("path");
-		updateInfo.put("changeImg", changeImgName);
-		updateInfo.put("origin", origin);
-		updateInfo.put("path", path);
-		updateInfo.put("imgLevel", imgLevel);
+		if(!(originNames.equals(""))) {
+			List<String> changeImgName = (List<String>)map.get("change");
+			List<String> origin = (List<String>)map.get("origin");
+			List<String> imgLevel = (List<String>)map.get("imgLevel");
+			String path = (String)map.get("path");
+			updateInfo.put("change", changeImgName);
+			updateInfo.put("origin", origin);
+			updateInfo.put("path", path);
+			updateInfo.put("imgLevel", imgLevel);
 		}
 		//log.info("{}", facilityNo);
 		Member member = (Member)ssn.getAttribute("loginUser");

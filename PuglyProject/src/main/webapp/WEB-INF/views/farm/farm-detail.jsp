@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <title>${ farm.farmTitle }</title>
     <style>
-        body{
+        #body{
             width: 1200px;
             margin: auto;
         }
@@ -77,9 +77,20 @@
             height: 598px;
         }
         .text-box{
-        	width : 100%;
+        	width : 90%;
         	height : 400px;
+        	margin : auto;
         }
+        #review {
+        	background-color: white;
+        }
+        #review  img{
+        	border : 0.5px solid gray;
+        }
+        .review-img-box div{
+       		widht : 100%;
+       		heigth : 100%;
+       }
     </style>
 </head>
 <body>
@@ -114,14 +125,14 @@
                             <c:if test="${ img.status eq 'Y' }">
                             	<c:choose>
                             		<c:when test="${ img.imgLevel eq 1 }">
-                              <div class="carousel-item active">
-                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
-                              </div>
+			                              <div class="carousel-item active">
+			                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
+			                              </div>
                             		</c:when>
                             		<c:when test="${ img.imgLevel eq 2 }">
-                              <div class="carousel-item">
-                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
-                              </div>
+			                              <div class="carousel-item">
+			                                <img src="/pugly/${ img.imgPath }${img.changeImgName}" class="d-block w-100" alt="${ img.originImgName }">
+			                              </div>
                             		</c:when>
                             	</c:choose>
                             </c:if>
@@ -175,6 +186,7 @@
                     	</c:if>
                     	<c:if test="${farm.seller eq sessionScope.loginUser.nickname }">
                     	<button type="button" id="modify">수정 하기</button>
+                    	<button type="button" id="delete-btn">삭제하기</button>
                     	</c:if>
                     </div>
                 </div>
@@ -190,14 +202,14 @@
             <div class="row">
                 <div class="col">
                     <div id="content-box">
-                        <textarea class="text-box" disabled>${ farm.farmContent }</textarea>
+                        <p class="text-box" >${ farm.farmContent }</p>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
                     <div id="beware-box">
-                        <textarea class="text-box" disabled>${ farm.bewareList }</textarea>
+                        <p class="text-box">${ farm.bewareList }</p>
                     </div>
                 </div>
             </div>
@@ -212,7 +224,34 @@
                             <div class="row">
                                 <div class="col-4">
                                     <div class="review-img-box">
-                                        <img src="/pugly/${ r.imgList[0].imgPath }${ r.imgList[0].changeImgName}" alt="${ r.imgList[0].originImgName}">
+                                        <div id="reviewImg" class="carousel slide">
+										  <div class="carousel-inner">
+	                                    	<c:forEach items="${ r.imgList }" var="i">
+	                                    	<c:choose>
+	                                    		<c:when test="${ i.imgLevel eq 1 && i.status eq 'Y' }">
+											    	<div class="carousel-item active">
+											      		<img src="${ i.imgPath }${ i.changeImgName }" class="d-block w-100" alt="${ i.originImgName }">
+											    	</div>
+	                                    		</c:when>
+	                                    		<c:when test="${ i.imgLevel eq 2 && i.status eq 'Y'}">
+												    <div class="carousel-item">
+												      <img src="${ i.imgPath }${ i.changeImgName }" class="d-block w-100" alt="${ i.originImgName }">
+												    </div>
+	                                    		</c:when>
+	                                    		<c:otherwise>
+	                                    		</c:otherwise>
+	                                    	</c:choose>
+	                                    	</c:forEach>
+										  </div>
+										  <button class="carousel-control-prev" type="button" data-bs-target="#reviewImg" data-bs-slide="prev">
+										    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+										    <span class="visually-hidden">Previous</span>
+										  </button>
+										  <button class="carousel-control-next" type="button" data-bs-target="#reviewImg" data-bs-slide="next">
+										    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+										    <span class="visually-hidden">Next</span>
+										  </button>
+										</div>
                                     </div>
                                 </div>
                                 <div class="col-8">
@@ -225,7 +264,10 @@
                                         	<p>${ r.rating }</p>
                                         </div>
                                         </div>
-                                        <div class="row"><p>${ r.reviewContent }</p></div>
+                                        <div class="row">
+                                        	<p>${ r.reviewTitle }</p>
+                                        	<button type="button" value="${ r.reviewContent }" class="btn btn-primary reviewContent" data-bs-toggle="modal" data-bs-target="#review-content">더보기</button>
+                                        </div>
                                         <div class="row"><p>${ r.reviewer }</p></div>
                                     </div>
                                 </div>
@@ -236,14 +278,33 @@
                     </c:forEach>
                     </div>
                     <div class="container">
-                        <div class="row col">
-                            <div id="more"><button id="more-btn">더보기</button></div>
+                        <div class="row">
+	                        <div class="col">
+	                            <div id="more"><button id="more-btn">더보기</button></div>
+	                        </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="review-content" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="review-content-box">
+	        ...
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
     <input type=hidden id="plus" value="${ plusNo }" />
 	<script>
 	window.onload = () => {
@@ -308,6 +369,26 @@
 		modifyBtn.addEventListener('click', () => {
 			location.href = `/pugly/modify/farm?farmNo=\${farmNo}`
 		})
+	</script>
+	<script>
+		const reviewContentBtn = document.getElementsByClassName('reviewContent');
+		for(let i of reviewContentBtn){
+			i.addEventListener('click', function (){
+				const contentBox = document.getElementById('review-content-box');
+				contentBox.innerText = i.value;
+			})
+		}
+	</script>
+	<script>
+		const deleteBtn = document.getElementById('delete-btn');
+		deleteBtn.onclick = () => {
+			let result = confirm("정말 삭제하시겠습니까?");
+			if(result){
+				const farm = document.getElementById('farmNo');
+				const farmNo = farm.value;
+				location.href = `/pugly/farms/${ farmNo }/delete.farm`;
+			}
+		}
 	</script>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

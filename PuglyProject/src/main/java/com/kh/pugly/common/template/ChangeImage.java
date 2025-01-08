@@ -27,51 +27,50 @@ public class ChangeImage {
 	
 	public List<Image> changeImgName(MultipartFile[] multi) {
 		List<Image> imgList = new ArrayList();
-		//log.info("{}", multi.length);
-		if(multi == null) {
-			return null;
-		}
 		int imgLevel = 2;
 		for(int i = 0; i < multi.length; i++) {
-			if(i == 0) {
-				imgLevel = 1;
-			} else {
-				imgLevel = 2;
-			}
 			String originName = multi[i].getOriginalFilename();
 			
 			if(!!!originName.equals("")) {
-				System.out.println(imgLevel);
-				String subOrigin = originName.substring(originName.indexOf('.'));
-				String currentTime = new SimpleDateFormat("yyMMddHHmm").format(new Date());
-				int randNo = (int)(Math.random() * 12354) + 12354; // 수식 진행 순서 파악하기
-				String changeName = "pugly" + randNo + currentTime + subOrigin;
-				String filePath = "resources/farm-img/";
-				String savePath = c.getRealPath(filePath);
-				//log.info("{} : {}", changeName, savePath);
-				Image img = Image.builder().originImgName(originName).changeImgName(changeName).imgPath(filePath).imgLevel(imgLevel).build();
-				imgList.add(img);
-				//log.info("{}", img);
-				try {
-					multi[i].transferTo(new File(savePath + changeName));
-				} catch (IllegalStateException | IOException e) {
-					e.printStackTrace();
+				List<MultipartFile> list = new ArrayList<MultipartFile>();
+					String subOrigin = originName.substring(originName.indexOf('.'));
+					String currentTime = new SimpleDateFormat("yyMMddHHmm").format(new Date());
+					int randNo = (int)(Math.random() * 12354) + 12354; // 수식 진행 순서 파악하기
+					String changeName = "pugly" + randNo + currentTime + subOrigin;
+					String filePath = "resources/farm-img/";
+					String savePath = c.getRealPath(filePath);
+					//log.info("{} : {}", changeName, savePath);
+					Image img = Image.builder().originImgName(originName).changeImgName(changeName).imgPath(filePath).build();
+					imgList.add(img);
+					//log.info("{}", img);
+					try {
+						multi[i].transferTo(new File(savePath + changeName));
+						break;
+					} catch (IllegalStateException | IOException e) {
+						e.printStackTrace();
+					}
 				}
 				
 			}
+		for(int i = 0; i < imgList.size(); i++) {
+			if(i == 0) {
+				imgLevel = 1;
+			}
+			imgList.get(i).setImgLevel(imgLevel);
 		}
-		
 		return imgList;
 	}
 	
 	public void deleteImage(List<Image> img) {
-		
-		for(int i = 0; i < img.size(); i++) {
+		if(img != null && !(img.isEmpty())) {
 			
-			if(!(new File(c.getRealPath(img.get(i).getImgPath()) + img.get(i).getChangeImgName()).delete())) {
+			for(int i = 0; i < img.size(); i++) {
 				
-				throw new FailDeleteObjectException("사진 삭제 실패");
-			} 
+				if(!(new File(c.getRealPath(img.get(i).getImgPath()) + img.get(i).getChangeImgName()).delete())) {
+					
+					throw new FailDeleteObjectException("사진 삭제 실패");
+				} 
+			}
 		}
 		
 	}

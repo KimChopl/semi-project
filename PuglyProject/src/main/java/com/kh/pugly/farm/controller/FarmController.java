@@ -36,9 +36,6 @@ public class FarmController {
 	private final FarmService fs;
 	private final ModelAndViewUtil mv;
 	
-	
-	
-	
 	@GetMapping("farms")
 	public ModelAndView farmsPage() {
 		Map<String, Object> farmAndMi = fs.selectFarmList(0);
@@ -77,7 +74,7 @@ public class FarmController {
 	@PostMapping("farm/regist.farm")
 	public String insertFarm(Farm farm, int[] facilityNo, HttpSession ssn, MultipartFile[] multi, Address ad) {
 		Member loginUser = (Member)ssn.getAttribute("loginUser");
-		log.info("{}", facilityNo);
+		//log.info("{}", facilityNo);
 		fs.insertFarm(farm, multi, loginUser, ad, facilityNo);
 		return "redirect:/farms";
 	}
@@ -87,6 +84,24 @@ public class FarmController {
 		//log.info("{}", farmNo);
 		Member member = (Member)ssn.getAttribute("loginUser");
 		return mv.setViewNameAndData("farm/update_form_farm", fs.selectUpdateForm(farmNo, member));
+	}
+	
+	@GetMapping("farms/{farmNo}/delete.farm")
+	public ModelAndView deleteFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
+		
+		fs.deleteFarm(farmNo, 3);
+		
+		Map<String, Object> farmAndMi = fs.selectFarmList(0);
+		Map<String, Object> farm = new HashMap();
+		List<StateCategory> state = fs.selectState();
+		FarmPrice mmPrice = fs.selectMmPrice();
+		List<FarmProduct> farmProduct = fs.selectFarmProduct();
+		farm.put("farm", farmAndMi);
+		farm.put("state", state);
+		farm.put("mmPrice", mmPrice);
+		farm.put("farmProduct", farmProduct);
+		ssn.setAttribute("alertMsg", "삭제에 성공하였습니다.");
+		return mv.setViewNameAndData("farm/farms", farm);
 	}
 
 	

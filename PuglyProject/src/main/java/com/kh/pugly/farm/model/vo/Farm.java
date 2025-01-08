@@ -19,6 +19,7 @@ import lombok.ToString;
 public class Farm {
 	private Long farmNo;
 	private String seller;
+	private Long memberNo;
 	private String categoryName;
 	private int categoryNo;
 	private String farmTitle;

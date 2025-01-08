@@ -8,11 +8,13 @@ import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ExistingMemberIdException;
 import com.kh.pugly.exception.FailDeleteAddressException;
+import com.kh.pugly.exception.FailDeleteException;
 import com.kh.pugly.exception.FailDeleteMemberException;
 import com.kh.pugly.exception.FailDeleteObjectException;
 import com.kh.pugly.exception.FailInsertAddressException;
 import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailInsertMemberException;
+import com.kh.pugly.exception.FailInsertObjectException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.FailUpdateAddressException;
 import com.kh.pugly.exception.FailUpdateException;
@@ -21,6 +23,8 @@ import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
+import com.kh.pugly.exception.NotFoundFarmListException;
+import com.kh.pugly.exception.NotFoundObjectException;
 import com.kh.pugly.exception.NotFoundDetailFarmException;
 import com.kh.pugly.exception.NotFoundFarmListException;
 import com.kh.pugly.exception.NotFoundProductException;
@@ -191,6 +195,21 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(NotFoundUserInfomation.class)
 	protected ModelAndView failFoundUserError(NotFoundUserInfomation e) {
 		return createErrorAlert("유저 정보가 없습니다. 로그인을 확인하세요.", e);
+	}
+	
+	@ExceptionHandler(FailDeleteException.class)
+	protected ModelAndView failDeleteError(FailDeleteException e) {
+		return createErrorResponse("삭제에 실패했습니다. 다시 시도하세요.", e);
+	}
+	
+	@ExceptionHandler(FailInsertObjectException.class)
+	protected ModelAndView failinsertError(FailInsertObjectException e) {
+		return createErrorResponse("등록 실패. 다시 시도해주세요.", e);
+	}
+	
+	@ExceptionHandler(NotFoundObjectException.class)
+	protected ModelAndView failFoundError(NotFoundObjectException e) {
+		return createErrorResponse("해당 게시글을 찾을 수 없습니다.", e);
 	}
 	
 }
