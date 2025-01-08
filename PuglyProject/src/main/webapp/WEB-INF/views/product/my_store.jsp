@@ -47,12 +47,12 @@
         background-color: rgb(218, 130, 44);
         color: white;
     }
-    .pro-img{width: 220px; height: 220px; display: inline-block;
+    .pro-img{width: 196px; height: 220px; display: inline-block;
         border-bottom: 1px solid black; }
 
     .pro-1{border: 1px solid black;
-        width: 222px;
-        height: 450px;
+        width: 198px;
+        height: 470px;
         display: inline-block;
         margin: 10px;
         background-color: white;
@@ -135,7 +135,7 @@
                     </form>
                 </div>
                 <div>
-                    <img src="${ image.changeImgName }" alt="내상점이미지" class="main-img">
+                    <img src="${ image.changeImgName }" alt="${ image.originImgName }" class="main-img">
                 </div>
                 <div class="row">
                 	<c:choose>
@@ -212,7 +212,6 @@
 
         <c:forEach items="${ products }" var="product">
 		    <div class="pro-1" onclick="datail('${product.productNo }')">
-		        <form>
 		           <div>
 		               <img src="${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
@@ -222,8 +221,23 @@
 			           <div style="font-size: 18px;">상품후기 :<span>★★★★☆</span></div>
 			           <div style="font-weight: 550;">배송비 : <span>${ product.deliveryPrice }</span></div>
 			           <div>등록일 : <span>${ product.productDate }</span></div>
+			           
+			           <div style="display: inline-block;">
+			           
+			           	<form action="/update.product" method="get" style="display:inline-block;">
+			           		<input type="hidden" name="productNo" value="${ product.productNo }">
+			           		<input type="hidden" name="changeImgName" value="${ product.image.changeImgName }">
+			           		<button type="submit" class="btn btn-success">수정</button>
+			           	</form>
+			           
+			            <form action="/pugly/delete.product" method="post" style="display: inline-block;">
+                        <input type="hidden" name="productNo" value="${ product.productNo }">
+                        <input type="hidden" name="changeImgName" value="${ product.image.changeImgName }">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    	</form>
+			           
+			           </div>
 			       </div>
-		         </form>
 		     </div>
 		</c:forEach>
 
@@ -241,7 +255,7 @@
             
             <c:choose>
             	<c:when test="${ pageInfo.currentPage ne 1 }" >
-                	<li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage - 1 }">이전</a></li>
+                	<li class="page-item"><a class="page-link" href="${ myStore.storeNo }?page=${ pageInfo.currentPage - 1 }">이전</a></li>
                 </c:when>
                 <c:otherwise>
                 	<li class="page-item disabled"><a class="page-link" href="#">이전</a></li>
@@ -249,12 +263,12 @@
             </c:choose>
             
             <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="num">
-            	<li class="page-item"><a class="page-link" href="products?page=${ num }">${ num }</a></li>
+            	<li class="page-item"><a class="page-link" href="${ myStore.storeNo }?page=${ num }">${ num }</a></li>
             </c:forEach>
             
             <c:choose>
             	<c:when test="${ pageInfo.currentPage != pageInfo.endPage }">
-                <li class="page-item"><a class="page-link" href="products?page=${ pageInfo.currentPage + 1 }">다음</a></li>
+                <li class="page-item"><a class="page-link" href="${ myStore.storeNo }?page=${ pageInfo.currentPage + 1 }">다음</a></li>
                 </c:when>
                 <c:otherwise>
                 	<li class="page-item disabled"><a class="page-link" href="#">다음</a></li>
@@ -276,19 +290,20 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
           <form action="/pugly/update.store" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="storeNo" value="${ myStore.storeNo }" />
         <div class="modal-body">
             <div class="row">
                 <div class="col">
                     <div class="img-fom">
                         <label>상점 이미지</label><br>
-                        <img src="${ product.image.changeImgName }" class="store-img" id="title-img">
+                        <img src="${ image.changeImgName }" class="store-img" id="title-img">
                     </div>
                     클릭하여 사진을 설정하세요.
                 </div>
                 <div class="col">
                     <label>상점명</label>
                     <input type="text" name="storeTitle" placeholder="${ myStore.storeTitle }">
-                    <label></label>
+                    <label>상점 소개글</label>
                     <textarea style="resize: none; width: 200px; height: 150px;" name="storeContent" placeholder="${ myStore.storeContent } "></textarea>
                 </div>
             </div>
@@ -304,9 +319,6 @@
         </div>
       </div>
     </div>
- 
-
-
 
   <script>
     function loadImg(inputFile, num){

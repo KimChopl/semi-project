@@ -23,6 +23,8 @@ public interface ProductService {
 	Map<String, Object> deatailMyStore(int currentPage, Long storeNo);
 	// 내상점 업데이트
 	void storeUpdate(MyStore myStore, MultipartFile upfile);
+	// 상품삭제
+	void deleteProduct(Long productNo, String changeImgName);
 	
 
 

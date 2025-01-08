@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.ServletContext;
 
+import org.apache.catalina.Store;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
-import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.product.model.dao.ProductMapper;
@@ -85,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 	// 내상점 이미지 저장
 	private Image myStoreSaveImg(MultipartFile upfile) {
+		
 		String fileName = upfile.getOriginalFilename();
 		String ext = fileName.substring(fileName.lastIndexOf("."));
 		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
@@ -113,10 +114,6 @@ public class ProductServiceImpl implements ProductService {
 	private int getTotalCount() {
 		
 		int totalCount = mapper.selectTotalCount();
-		
-		if(totalCount == 0) {
-			throw new BoardNotFoundException("게시글 없음");
-		}
 		return totalCount;
 	}
 	// 상점 숫자 체크
@@ -167,11 +164,16 @@ public class ProductServiceImpl implements ProductService {
 		List<Image> imageList = (List<Image>) mapper.findImagesByProductId(productNo);
 		return imageList;
 	}
+	// 유저번호 넣어서 상점 정보 빼오고
+	private Long getUserNoSelectStoreNo(Long userNo) {
+		return mapper.getUserNoSelectStoreNo(userNo);
+	}
+	
 	// 유저번호로 이용하여 상점번호 조회
 	public Long getStoreNoByMemberNo(Long memberNo) {
 		return mapper.selectStoreNoByMemberNo(memberNo);
+		
 	}
-
 	// 상품등록 메소드 
 	@Override
 	public void insertProduct(Product product, MultipartFile[] upfile) {
@@ -189,15 +191,13 @@ public class ProductServiceImpl implements ProductService {
 	public Map<String, Object>listProduct(int currentPage, Long userNo){
 		// 상품수
 		int totalCount = getTotalCount();
-		
-		// 상점번호 있는지 확인
-		Long storeNo = getMySotreNoList(userNo);
 		//페이지 정보
 		PageInfo pi = getPageInfo(totalCount, currentPage);
-		
 		// 상품리스트
 		List<Product> products = getProductList(pi);
 		
+		// 상점번호 있는지 확인
+		Long storeNo = getUserNoSelectStoreNo(userNo);
 		
 		Map<String, Object> map = new HashMap();
 		map.put("products", products);
@@ -232,7 +232,7 @@ public class ProductServiceImpl implements ProductService {
 	// 내상점 보여주기
 	@Override
 	public Map<String, Object> deatailMyStore(int currentPage, Long storeNo) {
-		
+		// 상품수, 페이지수
 		int totalCount = getTotalCount();
 		PageInfo pi = getStorePage(totalCount, currentPage);
 		
@@ -242,38 +242,90 @@ public class ProductServiceImpl implements ProductService {
 		
 		Map<String, Object> responseData = new HashMap();
 		responseData.put("products", products);
+		responseData.put("pageInfo", pi);
 		responseData.put("myStore", myStore);
 		responseData.put("image", image);
 		responseData.put("storeNo", storeNo);
 		
 		return responseData;
+		
+		/*
+		// 상품수
+		int totalCount = getTotalCount();
+		//페이지 정보
+		PageInfo pi = getPageInfo(totalCount, currentPage);
+		// 상품리스트
+		List<Product> products = getProductList(pi);
+		
+		// 상점번호 있는지 확인
+		Long storeNo = getUserNoSelectStoreNo(userNo);
+		
+		Map<String, Object> map = new HashMap();
+		map.put("products", products);
+		map.put("pageInfo", pi);
+		map.put("storeNo", storeNo);
+		map.put("userNo", userNo);
+		
+		return map;
+		  
+		 */
 	}
+	// 내상점 업데이트
 	@Override
 	public void storeUpdate(MyStore myStore, MultipartFile upfile) {
-		Image img = myStoreSaveImg(upfile);
+		
 		findMyStoreById(myStore.getStoreNo());
-		findImageByMyStore(img.getImgNo());
-		log.info("image: {}", img);
-		
-		if(upfile.getOriginalFilename().equals("")) {
+		Image image = findImageByMyStore(myStore.getStoreNo());
+		log.info("이거한번보자{}",image);
+		// 기존 사진정보 삭제해버려
+		mapper.storeImgDelete(image);
+		if(image != null && !upfile.getOriginalFilename().equals("")) {
 			
-			if(img.getChangeImgName() != null) {
-				new File(context.getRealPath(img.getChangeImgName())).delete();
+			String realPath = context.getRealPath(image.getChangeImgName());
+			// 가짜 경로 뽑아서  
+			if(realPath != null) {
+				int indexOfPugly = realPath.indexOf("pugly");
+				
+				if(indexOfPugly != -1) {
+					String fixePath = realPath.substring(0, indexOfPugly) + realPath.substring(indexOfPugly + "pugly".length());
+				// 서브스트링으로 진짜경로 만들기
+					File file = new File(fixePath);
+					file.delete();
+				}
 			}
-			myStoreSaveImg(upfile);
 		}
-		int result = mapper.storeUpdate(myStore);
-		
-		if(result < 1) {
-			System.out.println("스토어실패!");
-		}
+		// 새사진 다시넣어
+		Image img = myStoreSaveImg(upfile);
+		// 새로운 정보 다시 추가해
 		mapper.storeImgUpdate(img);
+		// 상점수정
+		mapper.storeUpdate(myStore);
+	}
+	// 상품삭제할꺼야~ 키키
+	@Override
+	public void deleteProduct(Long productNo, String changeImgName) {
+		
+		log.info("{}", changeImgName);
+		if(!("".equals(changeImgName))) {
+			try {
+				new File(context.getRealPath(changeImgName)).delete();
+				log.info("성공!");
+			} catch(RuntimeException e) {
+				log.info("실패!");
+			}
+		}
+		
+		log.info("작동잘해?!");
+		
+		Product product = findProductById(productNo);
+		
+		int result = mapper.deleteProduct(productNo);
+		
+		if(result <= 0) {
+			log.info("실패!");
+		}
 		
 		
-		
-		log.info("{}", myStore);
-		log.info("{}",img);
-			
 		
 	}
 

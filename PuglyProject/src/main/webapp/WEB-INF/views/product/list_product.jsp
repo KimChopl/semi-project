@@ -88,12 +88,11 @@
                 <c:if test="${ not empty sessionScope.loginUser and sessionScope.loginUser.categoryNo eq 2 }">
                 	<c:choose>
                 		<c:when test="${ (sessionScope.loginUser.memberNo eq sessionScope.userNo) and (empty sessionScope.storeNo) }">
-	                    	<a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save">상점등록</a>
+	                    	<a data-bs-toggle="modal" data-bs-target="#mystoreSave" class="mystore-save" href="#">상점등록</a>
 	                    </c:when>
 	                    <c:otherwise>
 		                    <a href="insert_form" class="product-save">상품등록</a>
 		                    <a href="stores/${ storeNo }"  class="mystore">내상점</a>
-		                    
 	                    </c:otherwise>
 	                </c:choose>
                 </c:if>
