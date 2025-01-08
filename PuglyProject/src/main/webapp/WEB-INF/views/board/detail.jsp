@@ -71,7 +71,7 @@
             <br>
 
             <div align="center">
-                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.nickname eq '관리자'}">
+                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.categoryNo eq 1}">
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
             	</c:if>
@@ -93,21 +93,8 @@
             	<!-- <input type="hidden" name="memberNo" value="${loginUser.memberNo}" /> -->
             </form>
             
-            <!-- 
-            	case 1 : 수정하기 누르면
-            		     수정할 수 있는 입력 양식이 있어야함
-            		     입력양식에는 원본 게시글 정보들이 들어 있어야함
-            		     
-            	case 2 : 삭제하기 누르면
-            		 	 Board테이블에 가서 STATUS 컬럼 'N'으로 바꾸고
-            		 	 혹시 첨부파일도 있었다면 같이 지워줌
-            
-            -->
-            
-            
             <br><br>
 
-            <!-- 댓글 기능은 나중에 ajax 배우고 나서 구현할 예정! 우선은 화면구현만 해놓음 -->
             <table id="replyArea" class="table" align="center">
                 <thead>
                 
@@ -158,8 +145,6 @@
     				},
     				success : function(result){
     					
-    					//console.log(result);
-    					
     					if(result.data === 1) {
     						$('#content').val('');
     					}
@@ -181,8 +166,6 @@
     				boardNo : ${board.boardNo}
     			},
     			success : function(result){
-    				//console.log(result);
-    				
     				const replies =[...result.data];
     				console.log(replies);
     				

@@ -62,10 +62,9 @@
             <br>
 
             <div align="center">
-                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-                
+            	 <c:if test="${sessionScope.loginUser.nickname eq inquiry.nickname or sessionScope.loginUser.categoryNo eq 1}">
 	                <a class="btn btn-danger"  onclick="postSubmit()">삭제하기</a>
-            	
+            	</c:if>
             </div>
             
             <script>
@@ -80,42 +79,66 @@
             	<!-- <input type="hidden" name="memberNo" value="${loginUser.memberNo}" /> -->
             </form>
             
-            <!-- 
-            	case 1 : 수정하기 누르면
-            		     수정할 수 있는 입력 양식이 있어야함
-            		     입력양식에는 원본 게시글 정보들이 들어 있어야함
-            		     
-            	case 2 : 삭제하기 누르면
-            		 	 Board테이블에 가서 STATUS 컬럼 'N'으로 바꾸고
-            		 	 혹시 첨부파일도 있었다면 같이 지워줌
-            
-            -->
-            
-            
             <br><br>
 
-            <!-- 댓글 기능은 나중에 ajax 배우고 나서 구현할 예정! 우선은 화면구현만 해놓음 -->
-            <table id="replyArea" class="table" align="center">
+            <table id="replyArea" class="table" >
                 <thead>
-                
+                	
                 	<c:choose>
-                		<c:when test="${empty sessionScope.loginUser}">
-		                    <tr>
-		                        <th colspan="2">
-		                            <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
-		                        </th>
-		                        <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
-		                    </tr>
-		                </c:when>
-		                <c:otherwise>    
-		                    <tr>
-		                        <th colspan="2">
-		                            <textarea class="form-control" name="" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
-		                        </th>
-		                        <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
-		                    </tr>
-		           		</c:otherwise>
-                   </c:choose> 
+					    <c:when test="${inquiry.inquiryGroup eq 2}">
+					        <c:choose>
+					            <c:when test="${empty sessionScope.loginUser}">
+					                <tr>
+					                    <th colspan="2">
+					                        <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
+					                    </th>
+					                    <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
+					                </tr>
+					            </c:when>
+					            <c:otherwise>
+					                <tr>
+					                    <th colspan="2">
+					                        <textarea class="form-control" name="content" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+					                    </th>
+					                    <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
+					                </tr>
+					            </c:otherwise>
+					        </c:choose>
+					    </c:when>
+					
+					    <c:otherwise>
+					        <c:choose>
+					            <c:when test="${empty sessionScope.loginUser}">
+					                <tr>
+					                    <th colspan="2">
+					                        <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">로그인 후 이용가능합니다.</textarea>
+					                    </th>
+					                    <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
+					                </tr>
+					            </c:when>
+					            <c:otherwise>
+					                <c:choose>
+					                    <c:when test="${sessionScope.loginUser.nickname eq inquiry.nickname or sessionScope.loginUser.categoryNo eq 1}">
+					                        <tr>
+					                            <th colspan="2">
+					                                <textarea class="form-control" name="content" id="content" cols="55" rows="2" style="resize:none; width:100%;"></textarea>
+					                            </th>
+					                            <th style="vertical-align:middle"><button class="btn btn-secondary" onclick="addReply();">등록하기</button></th> 
+					                        </tr>
+					                    </c:when>
+					                    <c:otherwise>    
+					                        <tr>
+					                            <th colspan="2">
+					                                <textarea class="form-control" readonly cols="55" rows="2" style="resize:none; width:100%;">작성자와 관리자만 입력가능합니다.</textarea>
+					                            </th>
+					                            <th style="vertical-align:middle"><button class="btn btn-secondary">등록하기</button></th> 
+					                        </tr>
+					                    </c:otherwise>
+					                </c:choose>
+					            </c:otherwise>
+					        </c:choose>
+					    </c:otherwise>
+					</c:choose>
                     <tr>
                         <td colspan="3">댓글(<span id="rcount">0</span>)</td>
                     </tr>
@@ -145,8 +168,6 @@
     				},
     				success : function(result){
     					
-    					//console.log(result);
-    					
     					if(result.data === 1) {
     						$('#content').val('');
     					}
@@ -168,8 +189,6 @@
     				inquiryNo : ${inquiry.inquiryNo}
     			},
     			success : function(result){
-    				//console.log(result);
-    				
     				const replies =[...result.data];
     				console.log(replies);
     				

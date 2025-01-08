@@ -12,16 +12,14 @@
 	 	  	   INQUIRY_ANSWER_NO,
     		   INQUIRY_ANSWER,
     		   NICKNAME,
-			   REF_INO,
-			   ANSWER_STATUSE
+			   REF_INO
 	 	  	   )
 	 	VALUES
 	 		   (
 	 		   SEQ_QANO.NEXTVAL,
 	 		   #{inquiryAnswer},
 	 		   #{nickname},
-	 		   #{refIno},
-	 		   'Y'
+	 		   #{refIno}
 	 		   )
 	 </insert>
 	 
@@ -41,17 +39,5 @@
 	 	 	BY
 	 	 	   INQUIRY_ANSWER_NO DESC
 	 </select>
-	 
-	 <update id="okAnswer">
-	 	UPDATE
-	 		   TB_INQUIRY_ANSWER
-	 	   SET
-	 	   	   ANSWER_STATUS = 'Y'
-	 	 WHERE
-	 	 	   INQUIRY_NO = ${inquiryNo}
-	 	   AND
-	 	   	   STATUS = 'N'
-	 
-	 </update>
 	 
 </mapper>

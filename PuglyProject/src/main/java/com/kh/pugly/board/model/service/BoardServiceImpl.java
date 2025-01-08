@@ -1,19 +1,26 @@
 package com.kh.pugly.board.model.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 import com.kh.pugly.board.model.dao.BoardMapper;
 import com.kh.pugly.board.model.vo.Board;
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
-
+import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 
 
@@ -25,12 +32,12 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardMapper mapper;
+	private final ServletContext context;
 	
 	private int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();
 		if(totalCount == 0) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
-			//예외처리
 		}
 		return totalCount;
 	}
@@ -69,14 +76,6 @@ public class BoardServiceImpl implements BoardService {
 				
 	}	
 
-	private Board findByBoard(Long boardNo) {
-		Board board = mapper.selectById(boardNo);
-		if(board == null) {
-			//예외처리
-		}
-		return board;
-	}
-
 	@Override
 	public Map<String, Object> selectBoardList(int currentPage, String sortType) {
 		int totalCount = getTotalCount();
@@ -89,17 +88,47 @@ public class BoardServiceImpl implements BoardService {
 		
 		return map;
 	}
+	
+	private Image boardSaveImg(MultipartFile upfile) {
+		String fileName = upfile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+		int randomNum = (int)(Math.random() * 90000) + 10000;
+		String changeName = "BoardImg" + currentTime + randomNum + ext;
+		String savePath = context.getRealPath("/resources/board-img/");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch(IOException | IllegalStateException e) {
+			throw new FailToFileUploadException("파일오류!");
+		}
+		
+		Image image = new Image();
+		image.setOriginImgName(fileName);
+		image.setChangeImgName("/pugly/resources/board-img/" + changeName);
+		image.setImgLevel(1);
+		image.setImgPath("/resources/board-img/");
+		
+		return image;	   
+	}
+	
+	private Image findImageByBoard(Long boardNo) {
+		Image img = mapper.findImageByBoard(boardNo);
+		return img;
+	}
 
 	@Override
 	public void insertBoard(Board board, MultipartFile upfile) {
 		validateBoard(board);
 		
+		Image img = null;
+		
 		if(!("".equals(upfile.getOriginalFilename()))) {
-			//예외처리
+			img = boardSaveImg(upfile);
 		}
 		
 		mapper.insertBoard(board);
-		
+		mapper.insertBoardImg(img);
 	}
 	
 	private void validateBoardNo(Long boardNo) {
@@ -128,6 +157,9 @@ public class BoardServiceImpl implements BoardService {
 		validateBoardNo(board.getBoardNo());
 		findByBoardId(board.getBoardNo());
 		
+		Image img = boardSaveImg(upfile);
+		
+		mapper.boardImgUpdate(img);
 		int result = mapper.updateBoard(board);
 		
 		if(result < 1) {
@@ -189,25 +221,6 @@ public class BoardServiceImpl implements BoardService {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        throw new InvalidParameterException("검색어를 입력해주세요.");
 	    }
-	}
-
-	@Override
-	public Map<String, Object> selectBoardListBySort(Map<String, Object> map) {
-		
-		int page = (int)map.get("page"); 
-		
-		int totalCount = getTotalCount();
-		PageInfo pi = getPageInfo(totalCount, page);
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Board> boardList = mapper.selectBoardListByCount(map, rowBounds);
-			
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		map.put("boardList", boardList);
-		map.put("pageInfo", pi);
-		
-		return resultMap;
 	}
 
 }

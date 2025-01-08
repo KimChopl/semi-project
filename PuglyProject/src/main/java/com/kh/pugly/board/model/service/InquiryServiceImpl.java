@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 
@@ -13,7 +15,6 @@ import com.kh.pugly.board.model.vo.Inquiry;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
-import com.kh.pugly.exception.ComparedPasswordException;
 import com.kh.pugly.exception.ProductValueException;
 import com.kh.pugly.exception.TooLargeValueException;
 import com.kh.pugly.member.model.service.PasswordEncoder;
@@ -75,19 +76,27 @@ public class InquiryServiceImpl implements InquiryService {
 	}
 	
 	private void validationPassword(Inquiry inquiry) {
-		if(inquiry.getInquiryPassword().length() > 25) {
+		if(inquiry.getInquiryPassword().length() > 100) {
 			throw new TooLargeValueException("비밀번호가 너무 깁니다.");
 		}
 	}
 	
 	@Override
-	public void insertInquiry(Inquiry inquiry) {
+	public void insertInquiry(Inquiry inquiry, HttpSession session) {
 		validatInquiry(inquiry);
-		encryptionPassword(inquiry);
-		validationPassword(inquiry);
 		
-		inquiryMapper.insertInquiry(inquiry);
+		Member loginUser = (Member)session.getAttribute("loginUser");
 		
+		int categoryNo = loginUser.getCategoryNo();
+		
+		if(categoryNo == 1) {
+			inquiryMapper.insertInquiryForAdmin(inquiry);
+		} else {
+			validationPassword(inquiry);
+			encryptionPassword(inquiry);
+			
+			inquiryMapper.insertInquiry(inquiry);
+		}
 	}
 	
 	private void validateInquiryNo(Long inquiryNo) {
@@ -121,12 +130,17 @@ public class InquiryServiceImpl implements InquiryService {
 	}
 
 	@Override
-	public List<Inquiry> selectInquiryList(int currentPage) {
+	public Map<String, Object> selectInquiryList(int currentPage) {
 		int totalCount = getTotalCount();
 		PageInfo pi = getPageInfo(totalCount, currentPage);
+
+		List<Inquiry> inquiries = getInquiryList(pi);
 		
-		List<Inquiry> inquiries = getInquiryList(pi);		
-		return inquiries;
+		Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("inquiries", inquiries);
+	    resultMap.put("pageInfo", pi);
+
+		return resultMap;
 	}
 
 	@Override
@@ -156,7 +170,6 @@ public class InquiryServiceImpl implements InquiryService {
 	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
 	    List<Inquiry> inquiryList = inquiryMapper.searchInquiryList(map, rowBounds);
 
-	    // 결과를 Map으로 반환
 	    Map<String, Object> resultMap = new HashMap<>();
 	    resultMap.put("inquiryList", inquiryList);
 	    resultMap.put("pageInfo", pageInfo);
@@ -168,6 +181,19 @@ public class InquiryServiceImpl implements InquiryService {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        throw new InvalidParameterException("검색어를 입력해주세요.");
 	    }
+	}
+
+	@Override
+	public boolean checkPassword(Long inquiryNo, String password) {
+		Inquiry inquiry = inquiryMapper.selectById(inquiryNo);
+	    
+	    if (inquiry == null) {
+	        throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
+	    }
+	    
+	    boolean isPasswordValid = passwordEncrypt.matches(password, inquiry.getInquiryPassword());
+	    
+	    return isPasswordValid;
 	}
 
 }
