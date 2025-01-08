@@ -12,6 +12,7 @@
 			   M.NICKNAME nickname,
 			   COUNT,
 			   TO_CHAR(I.CREATE_DATE, 'YYYY-MM-DD') as createDate,
+			   INQUIRY_GROUP inquiryGroup,
 			   INQUIRY_PASSWORD inquiryPassword
 		 FROM
 		 	  TB_INQUIRY I

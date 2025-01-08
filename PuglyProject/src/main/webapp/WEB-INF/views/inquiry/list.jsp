@@ -55,7 +55,6 @@
             	<a class="btn btn-secondary" style="float:right;" href="insertInquiryForm">글쓰기</a>
             </c:if>
             <br>
-            <br>
             <table id="inquiryList" class="table table-hover" style="text-align: center">
                 <thead>
                     <tr>
@@ -85,7 +84,7 @@
 	                        <td>${inquiry.count }</td>
 	                        <td>${inquiry.createDate}</td>
 	                        <td> 
-	                        	<c:if test="${inquiry.answerStatus eq 'Y'}"> 
+	                        	<c:if test="${inquiry.answerStatus eq 'Y' and inquiry.inquiryGroup eq 1}"> 
 	                        		✔️
 	                        	</c:if>	
 	                        </td>
@@ -251,7 +250,7 @@
 	       	const resultStr = inquiryList.map(e => {
 	       	    const style = `\${e.inquiryGroup === 2 ? 'background-color: lightgray;' : ''}`;
 	       	 	const title = `\${e.inquiryGroup === 2 ? e.inquiryTitle : '🔒고객 문의'}`;
-	       	    const answerStatus = `\${e.answerStatus === 'Y' ? '✔️' : ''}`;
+	       	    const answerStatus = `\${e.answerStatus === 'Y' &&e.inquiryGroup === 1 ? '✔️' : ''}`;
 	       	 	console.log('Style:', style);
 
 	       	    return `
