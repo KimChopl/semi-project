@@ -1,5 +1,7 @@
 package com.kh.pugly.board.model.vo;
 
+import com.kh.pugly.common.model.vo.Image;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,4 +25,5 @@ public class Board {
 	private int count;
 	private String createDate;
 	private String status;
+	private Image image;
 }

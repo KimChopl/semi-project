@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.board.model.vo.Board;
+import com.kh.pugly.common.model.vo.Image;
 
 @Mapper
 public interface BoardMapper {
@@ -21,12 +22,18 @@ public interface BoardMapper {
 
 	void insertBoard(Board board);
 
+	void insertBoardImg(Image img);
+
 	int updateBoard(Board board);
+
+	void boardImgUpdate(Image img);
 
 	int deleteBoard(Long boardNo);
 
 	int countSearchBoard(Map<String, Object> map);
 
 	List<Board> searchBoardList(Map<String, Object> map, RowBounds rowBounds);
+
+	Image findImageByBoard(Long boardNo);
 
 }

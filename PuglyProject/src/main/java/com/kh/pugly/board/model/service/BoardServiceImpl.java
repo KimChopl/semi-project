@@ -1,19 +1,26 @@
 package com.kh.pugly.board.model.service;
 
+import java.io.File;
+import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 import com.kh.pugly.board.model.dao.BoardMapper;
 import com.kh.pugly.board.model.vo.Board;
+import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
-
+import com.kh.pugly.exception.FailToFileUploadException;
 import com.kh.pugly.exception.ProductValueException;
 
 
@@ -25,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardMapper mapper;
+	private final ServletContext context;
 	
 	private int getTotalCount() {
 		int totalCount = mapper.selectTotalCount();
@@ -78,17 +86,47 @@ public class BoardServiceImpl implements BoardService {
 		
 		return map;
 	}
+	
+	private Image boardSaveImg(MultipartFile upfile) {
+		String fileName = upfile.getOriginalFilename();
+		String ext = fileName.substring(fileName.lastIndexOf("."));
+		String currentTime = new SimpleDateFormat("yyyymmddHHmmss").format(new Date());
+		int randomNum = (int)(Math.random() * 90000) + 10000;
+		String changeName = "BoardImg" + currentTime + randomNum + ext;
+		String savePath = context.getRealPath("/resources/board-img/");
+		
+		try {
+			upfile.transferTo(new File(savePath + changeName));
+		} catch(IOException | IllegalStateException e) {
+			throw new FailToFileUploadException("파일오류!");
+		}
+		
+		Image image = new Image();
+		image.setOriginImgName(fileName);
+		image.setChangeImgName("/pugly/resources/board-img/" + changeName);
+		image.setImgLevel(1);
+		image.setImgPath("/resources/board-img/");
+		
+		return image;	   
+	}
+	
+	private Image findImageByBoard(Long boardNo) {
+		Image img = mapper.findImageByBoard(boardNo);
+		return img;
+	}
 
 	@Override
 	public void insertBoard(Board board, MultipartFile upfile) {
 		validateBoard(board);
 		
+		Image img = null;
+		
 		if(!("".equals(upfile.getOriginalFilename()))) {
-			//예외처리
+			img = boardSaveImg(upfile);
 		}
 		
 		mapper.insertBoard(board);
-		
+		mapper.insertBoardImg(img);
 	}
 	
 	private void validateBoardNo(Long boardNo) {
@@ -117,6 +155,9 @@ public class BoardServiceImpl implements BoardService {
 		validateBoardNo(board.getBoardNo());
 		findByBoardId(board.getBoardNo());
 		
+		Image img = boardSaveImg(upfile);
+		
+		mapper.boardImgUpdate(img);
 		int result = mapper.updateBoard(board);
 		
 		if(result < 1) {
