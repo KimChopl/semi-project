@@ -18,6 +18,8 @@ public interface InquiryMapper {
 	Inquiry selectById(Long inquiryNo);
 
 	void insertInquiry(Inquiry inquiry);
+	
+	void insertInquiryForAdmin(Inquiry inquiry);
 
 	List<Inquiry> selectInquiryList(RowBounds rowBounds);
 
@@ -26,5 +28,7 @@ public interface InquiryMapper {
 	int countSearchInquiry(Map<String, Object> map);
 
 	List<Inquiry> searchInquiryList(Map<String, Object> map, RowBounds rowBounds);
+
+	void updateAnswerState(Long refIno);
 
 }

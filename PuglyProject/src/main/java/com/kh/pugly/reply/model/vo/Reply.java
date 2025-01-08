@@ -20,5 +20,4 @@ public class Reply {
 	private String replyContent;
 	private String createDate;
 	private String status;
-	private String modifyDate;
 }

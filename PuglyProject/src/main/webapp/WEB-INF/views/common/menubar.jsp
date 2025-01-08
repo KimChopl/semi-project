@@ -142,19 +142,27 @@
 
         <!-- 로그인/유저 메뉴 -->
         <div id="header_1_right">
-                   	<a href="/pugly/login_form.member" style = "color : white;">로그인</a>
-                    <div style="position: relative; display: inline-block;">
-                        <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" alt="기본이미지" onclick="toggleProfileMenu()">
+        	<c:choose>
+	        	<c:when test="${empty sessionScope.loginUser }">
+	                   	<a href="/pugly/login_form.member" style = "color : white;">로그인</a>
+	            </c:when>
+	            <c:otherwise>
+	                    <div style="position: relative; display: inline-block; z-index: 1000;">
+						    <img id="profile-pic" src="https://cdn2.iconfinder.com/data/icons/user-interface-169/32/about-128.png" 
+						         alt="기본이미지" 
+						         onclick="toggleProfileMenu()" 
+						         style="cursor: pointer;">
+						    <div id="profile-menu" style="position: absolute; background-color: white; z-index: 1001; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); display: none;">
+						        <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
+						        <a href="/pugly/my_page.member">마이페이지</a>
+						        <a href="/pugly/list.book">예약상태</a>
+						        <a href="장바구니핸들러">장바구니</a>
+						        <a href="/pugly/logout.member">로그아웃</a>
+						    </div>
+						</div>
+	         	</c:otherwise>
+         	</c:choose>
 
-                        <div id="profile-menu">
-                            <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
-                            <a href="/pugly/my_page.member">마이페이지</a>
-                            <a href="/pugly/list.book">예약상태</a>
-                            <a href="장바구니핸들러">장바구니</a>
-                            <a href="/pugly/logout.member">로그아웃</a>
-                        </div>
-
-                    </div>
          </div>
     </div>
 
