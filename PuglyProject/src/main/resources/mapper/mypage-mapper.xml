@@ -9,6 +9,7 @@
 	    <result property="productContent" column="productContent"/>
 	    <result property="productQuantity" column="productQuantity"/>
 	    <result property="productCount" column="productCount"/>
+	    <result property="productType" column="productType"/>
 	    <result property="unitName" column="unitName"/>
 	    <result property="deliveryPrice" column="deliveryPrice"/>
 	    <result property="productDate" column="productDate"/>
@@ -67,6 +68,7 @@
 	   AND
 	       DELETE_ASK = 'N'
 </select>
+
 <select id="selectMyFarmList" parameterType="long" resultType="farm">
 	SELECT
 	       FARM_NO farmNo,
@@ -84,7 +86,89 @@
        AND
            DELETE_ASK = 'N'
 </select>
-  
+<select id="selectMyReplyCount" parameterType="long" resultType="_int">
+	SELECT
+	       COUNT(*)
+	  FROM
+	       TB_REPLY R
+	  JOIN
+ 	       TB_MEMBER M ON(R.NICKNAME = M.NICKNAME)
+ 	 WHERE
+ 	 	   R.STATUS = 'Y'
+	   AND
+	       MEMBER_NO = #{memberNo}
+</select>
+
+<select id="selectMyReplyList" parameterType="long" resultType="reply">
+	SELECT
+ 		   REPLY_NO replyNo,
+ 		   REF_BNO refBno,
+ 		   R.NICKNAME nickname,
+ 		   RPAD(TRIM(SUBSTR(REPLY_CONTENT, 1, 5)), 15, '.') replyContent,
+ 		   TO_CHAR(R.CREATE_DATE, 'YYYY-MM-DD') createDate
+ 	  FROM
+ 	  	   TB_REPLY R
+ 	  JOIN
+ 	       TB_MEMBER M ON(R.NICKNAME = M.NICKNAME)
+ 	 WHERE
+ 	 	   R.STATUS = 'Y'
+	   AND
+	       M.MEMBER_NO = #{memberNo}
+	 ORDER
+	    BY
+	       createDate DESC	
+</select>
+
+<select id="selectMyProductCount" parameterType="long" resultType="_int">
+	SELECT
+	       COUNT(PRODUCT_NO)
+	  FROM
+	       TB_PRODUCT 
+	  JOIN
+	       TB_MY_STORE ON(STORE_NO = FK_STORE_NO)
+	  JOIN
+	       TB_MEMBER ON(MEMBER_NO = FK_MEMBER_NO)
+	  JOIN
+	       TB_IMAGE ON(IMG_POST_NO = PRODUCT_NO)
+	 WHERE
+	       TB_PRODUCT.STATUS = 'Y'
+	   AND
+	       CATEGORY_NO = 2
+	   AND
+	       IMG_STATUS = 'Y'
+	   AND
+	       MEMBER_NO = #{memberNo}
+</select>
+
+<select id="selectMyProductList" parameterType="long" resultMap="productWithImage">
+	SELECT
+	       PRODUCT_NO productNo,
+	       PRODUCT_NAME productName,
+	       PRODUCT_PRICE productPrice,
+	       PRODUCT_TYPE productType,
+	       PRODUCT_QUANTITY productQuantity,
+	       PRODUCT_COUNT productCount,
+	       TO_CHAR(PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
+	       UNIT_NAME unitName,
+	       ORIGIN_IMG_NAME originImgName,
+	       CHANGE_IMG_NAME changeImgName
+	  FROM
+	       TB_PRODUCT 
+	  JOIN
+	       TB_MY_STORE ON(STORE_NO = FK_STORE_NO)
+	  JOIN
+	       TB_MEMBER ON(MEMBER_NO = FK_MEMBER_NO)
+	  JOIN
+	       TB_IMAGE ON(IMG_POST_NO = PRODUCT_NO)
+	 WHERE
+	       TB_PRODUCT.STATUS = 'Y'
+	   AND
+	       CATEGORY_NO = 2
+	   AND
+	       IMG_STATUS = 'Y'
+	   AND
+	       MEMBER_NO = #{memberNo}
+</select>
 
 
 

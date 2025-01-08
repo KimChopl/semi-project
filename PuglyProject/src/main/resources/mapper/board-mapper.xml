@@ -215,5 +215,28 @@
      	BY
      	   BOARD_NO DESC
 	</select>
+	
+	
+	<!-- 페이징처리 -->
+	<select id="selectMyBoardCount" parameterType="long" resultType="_int">
+		SELECT
+		       COUNT(*)
+		  FROM
+		       TB_BOARD
+		 WHERE
+		       STATUS = 'Y'
+		   AND
+		       BOARD_WRITER = #{memberNo}
+	</select>	
+	
+	<!-- 마이페이지에서 내 게시글 조회 -->
+	<select id="selectMyBoardList" parameterType="long" resultType="board">
+		<include refid="selectList" />
+		  AND
+		      M.MEMBER_NO = #{memberNo}
+		ORDER
+		   BY
+		      createDate DESC
+	</select>
 
 </mapper>

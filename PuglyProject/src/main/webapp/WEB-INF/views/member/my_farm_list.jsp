@@ -104,7 +104,7 @@
 <br>
 	
 	
-	<c:forEach items="${ farmList }" var="f">
+	<c:forEach items="${ list }" var="f">
 	    <div class="wrap" onclick="detailFarm('${f.farmNo}')">
 	        <div id="farm-no">${ f.farmNo }</div>
 	        <div id="farm-modify-date"><c:if test="${ not empty f.farmModifyDate }">수정일 : ${ f.farmModifyDate }</c:if></div>

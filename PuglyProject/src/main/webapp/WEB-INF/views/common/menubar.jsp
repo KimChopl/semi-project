@@ -142,6 +142,7 @@
 
         <!-- 로그인/유저 메뉴 -->
         <div id="header_1_right">
+
         	<c:choose>
 	        	<c:when test="${empty sessionScope.loginUser }">
 	                   	<a href="/pugly/login_form.member" style = "color : white;">로그인</a>
@@ -156,7 +157,7 @@
 						        <label style="color: black;">${ sessionScope.loginUser.nickname }님</label>
 						        <a href="/pugly/my_page.member">마이페이지</a>
 						        <a href="/pugly/list.book">예약상태</a>
-						        <a href="장바구니핸들러">장바구니</a>
+						        <a href="/pugly/select.cart?memberNo=${ sessionScope.loginUser.memberNo }">장바구니</a>
 						        <a href="/pugly/logout.member">로그아웃</a>
 						    </div>
 						</div>

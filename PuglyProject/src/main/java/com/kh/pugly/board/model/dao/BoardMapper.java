@@ -36,4 +36,8 @@ public interface BoardMapper {
 
 	Image findImageByBoard(Long boardNo);
 
+	// 마이페이지 내 게시글 페이징처리
+	int selectMyBoardCount(Long memberNo);
+	// 마이페이지 내 게시글 리스트
+	List<Board> selectMyBoardList(Long memberNo, RowBounds rowBounds);
 }
