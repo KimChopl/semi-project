@@ -112,6 +112,8 @@
 	        	p.STATUS = 'Y' AND i.IMG_LEVEL = 1
 	      AND
 	      		i.CATEGORY_NO = p.FK_MAIN_NO	
+	      AND
+	      		p.STATUS = 'Y'
 	    ORDER 
 	       BY
 	        	p.PRODUCT_DATE DESC
@@ -247,8 +249,7 @@
             	TB_MY_STORE
         WHERE
             	FK_MEMBER_NO = #{userNo}
-          AND
-          		STORE_NO IS NOT NULL
+
          
     </select>
 	
@@ -305,20 +306,56 @@
 		 		STORE_NO = #{storeNo}		
 	</update>
 
-	<update id="storeImgUpdate" parameterType="image">
-		UPDATE
-				TB_IMAGE
-		   SET
-		   		ORIGIN_IMG_NAME = #{originImgName},
-		   		CHANGE_IMG_NAME = #{changeImgName},
-		   		IMG_PATH = #{imgPath}
+	<insert id="storeImgUpdate" parameterType="image">
+		INSERT
+		  INTO
+		  		TB_IMAGE
+		  		(
+		  		IMG_NO,
+		  		ORIGIN_IMG_NAME,
+		  		CHANGE_IMG_NAME,
+		  		IMG_PATH,
+		  		IMG_LEVEL,
+		  		IMG_POST_NO,
+		  		CATEGORY_NO
+		  		)
+		 VALUES
+		 		(
+		  		SEQ_INO.NEXTVAL,
+				#{originImgName},
+				#{changeImgName},
+				#{imgPath},
+				#{imgLevel},
+				SEQ_STORE.CURRVAL,
+				5
+				)
+	</insert>
+	
+	<delete id="storeImgDelete" parameterType="image">
+		DELETE FROM TB_IMAGE WHERE IMG_NO = #{imgNo}
+	</delete>
+
+	<select id="getUserNoSelectStoreNo" parameterType="long" resultType="Long">
+		SELECT
+				STORE_NO storeNo,
+				STORE_TITLE storeTitle,
+				STORE_CONTENT storeContent,
+				FK_MEMBER_NO userNo
+		  FROM
+		  		TB_MY_STORE
 		 WHERE
-		 		IMG_NO = #{imgNo}
-
+		 		FK_MEMBER_NO = #{userNo}
+			
+	</select>
+	
+	<update id="deleteProduct" parameterType="long">
+		UPDATE
+				TB_PRODUCT
+		   SET
+		   		STATUS = 'N'
+		 WHERE
+		   		PRODUCT_NO = #{productNo}
 	</update>
-
-
-
 
 
 </mapper>
