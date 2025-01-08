@@ -50,9 +50,9 @@
         <div class="innerOuter" style="padding:5% 10%;">
             <h2>게시판</h2>
             <br>
-            <!-- 로그인 후 상태일 경우만 보여지는 글쓰기 버튼 -->
+            <c:if test="${not empty sessionScope.loginUser }">
             	<a class="btn btn-secondary" style="float:right;" href="insertForm">글쓰기</a>
-
+			</c:if>
 			<div class="list_sort_wrap" style="clear:both;">
 			    <ul class="list_sort" style="list-style: none; display: flex; gap: 10px; float:right; margin-top : 10px;">
 			       <li>
@@ -125,7 +125,7 @@
 
             <br clear="both"><br>
 
-            <form id="searchForm" action="" method="get" align="center">
+            <form id="searchForm" action="" method="get" style="text-align:center">
                 <div class="select">
                     <select class="custom-select" name="condition" id="condition">
                         <option value="writer">작성자</option>
@@ -214,7 +214,7 @@
 										            <td>\${e.createDate}</td>
 										         </tr>`
 		    								).join('');
-		    boardListBody.html(resultStr);   
+		    boardListBody.html(resultStr);
 	    }
 	    
 	    function updatePageInfo(pageInfo) {

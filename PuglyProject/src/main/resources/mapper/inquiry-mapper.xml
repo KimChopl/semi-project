@@ -119,38 +119,16 @@
 		  	   TB_MEMBER M ON (INQUIRY_WRITER = M.MEMBER_NO)
 		 WHERE
 		 	   I.STATUS = 'Y'
-		 <if test="condition == 'content'">
 		   AND	
-		       INQUIRY_CONTENT
-		 </if>  
-		 <if test="condition == 'writer'">
-		   AND	
-		       M.NICKNAME
-		 </if>
-		 <if test="condition == 'title'">
-		   AND	
-		       INQUIRY_TITLE
-		 </if>  
-		 LIKE '%' || #{keyword} || '%'
+		       M.NICKNAME LIKE '%' || #{keyword} || '%'
 	</select>
 	
 	<select id="searchInquiryList" parameterType="map" resultType="inquiry">
     	<include refid="selectList" />
     	AND
-    	<choose>
-        	<when test="condition == 'writer'">
-            	M.NICKNAME
-        	</when>
-        	<when test="condition == 'title'">
-            	INQUIRY_TITLE
-	        </when>
-	        <otherwise>
-	            INQUIRY_CONTENT
-	        </otherwise>
-    	</choose>
-    	LIKE '%' || #{keyword} || '%'
-     ORDER
-		BY
+            M.NICKNAME LIKE '%' || #{keyword} || '%'
+      ORDER
+		 BY
 		   INQUIRY_GROUP DESC, INQUIRY_NO DESC
 	</select>
  

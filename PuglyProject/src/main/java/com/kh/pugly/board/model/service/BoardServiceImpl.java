@@ -30,7 +30,6 @@ public class BoardServiceImpl implements BoardService {
 		int totalCount = mapper.selectTotalCount();
 		if(totalCount == 0) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
-			//예외처리
 		}
 		return totalCount;
 	}
@@ -187,25 +186,6 @@ public class BoardServiceImpl implements BoardService {
 	    if (keyword == null || keyword.trim().isEmpty()) {
 	        throw new InvalidParameterException("검색어를 입력해주세요.");
 	    }
-	}
-
-	@Override
-	public Map<String, Object> selectBoardListBySort(Map<String, Object> map) {
-		
-		int page = (int)map.get("page"); 
-		
-		int totalCount = getTotalCount();
-		PageInfo pi = getPageInfo(totalCount, page);
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		List<Board> boardList = mapper.selectBoardListByCount(map, rowBounds);
-			
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		map.put("boardList", boardList);
-		map.put("pageInfo", pi);
-		
-		return resultMap;
 	}
 
 }

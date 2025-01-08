@@ -42,7 +42,7 @@
     <div class="content">
         <br><br>
         <div class="innerOuter">
-            <h2>게시글 작성하기</h2>
+        	<a class="btn btn-secondary" style="float:right;" href="/pugly/inquiries">목록으로</a>
             <br>
 
             <form id="enrollForm" method="post" action="inquiries" enctype="multipart/form-data">

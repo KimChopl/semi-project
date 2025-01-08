@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.pugly.board.model.service.InquiryService;
@@ -22,14 +23,15 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class InquiryController {
 	private final InquiryService inquiryService;
-	private final ModelAndView mv;
 	
 	@GetMapping("inquiries")
 	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {
 		List<Inquiry> inquiryList = inquiryService.selectInquiryList(page);
 				
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/list");
 		mv.addObject("inquiries", inquiryList);
+		mv.addObject("page", page);
 		
 		return mv;
 	}
@@ -38,8 +40,9 @@ public class InquiryController {
 	public ModelAndView selectById(@PathVariable(name="id") Long inquiryNo) {
 		Inquiry responsData = inquiryService.selectById(inquiryNo);
 
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/detail");
-	    mv.addObject("inquiry", responsData); // 모델에 데이터를 추가
+	    mv.addObject("inquiry", responsData);
 	    return mv;
 	}
 	
@@ -53,6 +56,7 @@ public class InquiryController {
 		inquiryService.insertInquiry(inquiry);
 		session.setAttribute("altMsg", "문의글 등록 성공");
 		
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		return mv;
 	}
@@ -60,15 +64,18 @@ public class InquiryController {
 	@PostMapping("inquiries/delete")
 	public ModelAndView deleteInquiry(Long inquiryNo) {
 		inquiryService.deleteInquiry(inquiryNo);
+		
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:inquiries");
 		
 		return mv;
 	}
 	
 	@GetMapping("inquiries/search")
+	@ResponseBody
 	public Map<String, Object> searchInquiry(@RequestParam("condition") String condition, 
-									@RequestParam("keyword") String keyword,
-									@RequestParam(value = "page", defaultValue = "1") int page) {
+											 @RequestParam("keyword") String keyword,
+											 @RequestParam(value = "page", defaultValue = "1") int page) {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 	    map.put("page", page);

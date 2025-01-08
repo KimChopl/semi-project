@@ -156,7 +156,6 @@ public class InquiryServiceImpl implements InquiryService {
 	    RowBounds rowBounds = new RowBounds(offset, pageInfo.getBoardLimit());
 	    List<Inquiry> inquiryList = inquiryMapper.searchInquiryList(map, rowBounds);
 
-	    // 결과를 Map으로 반환
 	    Map<String, Object> resultMap = new HashMap<>();
 	    resultMap.put("inquiryList", inquiryList);
 	    resultMap.put("pageInfo", pageInfo);
