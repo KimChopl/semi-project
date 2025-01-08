@@ -116,9 +116,11 @@ public class ProductController {
 		return mv.setViewNameAndData("redirect:/stores/" + storeNo, null);
 	}
 	// 상품 업데이트할꺼야~
-	@GetMapping("updateProduct")
-	public String productUpdatePage() {
+	@PostMapping("/update.product")
+	public String productUpdatePage(Long productNo, Long storeNo, String changeImgName) {
+		
 		return "product/update_product";
+		
 	}
 	
 	

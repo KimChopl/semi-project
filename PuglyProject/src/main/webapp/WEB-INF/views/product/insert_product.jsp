@@ -186,18 +186,39 @@
                     <option value="못난이야채">못난이 야채</option>
                 </select>
                 <br><br>
-                <span class="title">배송정보</span> 
+                          <span class="title">배송정보</span> 
                 
-                
-                <input type="radio" value="무료" name="deliveryPrice" id="deliver-btn1" checked>
+                <input type="radio" value="무료" name="delivery-type" id="deliver-btn1" checked>
                 <label>무료배송</label>
                 
-                <input type="radio" value="배송비포함" name="deliveryPrice" id="deliver-btn2">
+                <input type="radio" name="delivery-type" id="deliver-btn2">
                 <label>배송비</label>
                 
+                <br>
                 
-                <input type="number" class="text-title" name=""> 
+                <div style="display: none;" id="delivery-text">
+                <input type="text" class="text-title" name="deliveryPrice" id="deliver-no" placeholder="가격을 입력해주세요"> 
                 <label>배송비 입력</label>
+                </div>
+        
+        <script>
+        
+        $('#deliver-btn2').change(function(){
+        	$('#delivery-text').show();
+        });
+        
+        $('#deliver-btn1').change(function(){
+        	$('#delivery-text').hide();
+        	
+        	$('#deliver-no').val('');
+        });
+        
+        </script>
+                
+                
+                
+                
+                
                 
                 <br><br>
                 <hr>

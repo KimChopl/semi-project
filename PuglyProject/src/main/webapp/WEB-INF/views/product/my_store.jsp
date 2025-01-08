@@ -92,8 +92,15 @@
         margin-top: 10px;
     }
 
-
+	
     #pagingArea {width:fit-content; margin:auto;}
+    
+    .update-img{
+    	width: 200px;
+    }
+	.img-update-fom{
+		display: inline-block;
+	}   
     </style>
 </head>
 <body>  
@@ -211,7 +218,7 @@
         <br>
 
         <c:forEach items="${ products }" var="product">
-		    <div class="pro-1" onclick="datail('${product.productNo }')">
+		    <div class="pro-1" ondblclick="datail('${product.productNo }')">
 		           <div>
 		               <img src="${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
@@ -224,11 +231,9 @@
 			           
 			           <div style="display: inline-block;">
 			           
-			           	<form action="/update.product" method="get" style="display:inline-block;">
-			           		<input type="hidden" name="productNo" value="${ product.productNo }">
-			           		<input type="hidden" name="changeImgName" value="${ product.image.changeImgName }">
-			           		<button type="submit" class="btn btn-success">수정</button>
-			           	</form>
+			           		<button type="button" class="btn btn-success modal-xl" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+			           		수정
+			           		</button>
 			           
 			            <form action="/pugly/delete.product" method="post" style="display: inline-block;">
                         <input type="hidden" name="productNo" value="${ product.productNo }">
@@ -240,13 +245,14 @@
 			       </div>
 		     </div>
 		</c:forEach>
-
+		
+		
         <script>
         	function datail(num){
-				location.href = `products/\${num}`;        		
+				location.href = `/pugly/products/\${num}`;        		
         	}
         </script>
-       
+        
 
         <br><br><br>
 
@@ -353,6 +359,164 @@
 </script>  
 
 
+
+<!-- 상품 수정 모달입니다 -->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">수정하기</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="/pugly/update.product" method="post" enctype="multipart/form-data">
+      <div class="modal-body">
+        <!-- 실질적 모달 필드 -->
+        <div>
+            <div class="img-update-fom">
+                <label>대표 이미지</label><br>
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="update-img" id="title-updateimg">
+            </div>
+            <div class="img-update-fom">
+                <label>이미지-1</label><br>
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="update-img" id="sub-img1">
+            </div>
+            <div class="img-update-fom">
+                <label>이미지-2</label><br>
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="update-img" id="sub-img2">
+            </div>
+            <div class="img-update-fom">
+                <label>이미지-3</label><br>
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="update-img" id="sub-img3">
+            </div>
+            <div class="img-update-fom">
+                <label>이미지-4</label><br>
+                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="update-img" id="sub-img4">
+            </div>
+            
+	        <div id="file-update">
+                <input type="file" name="upfile" id="update1" required onchange="updateImg(this, 1);">
+                <input type="file" name="upfile" id="update2" onchange="updateImg(this, 2);">
+                <input type="file" name="upfile" id="update3" onchange="updateImg(this, 3);">
+                <input type="file" name="upfile" id="update4" onchange="updateImg(this, 4);">
+                <input type="file" name="upfile" id="update5" onchange="updateImg(this, 5);">
+            </div>         
+            
+             <script>
+            	function updateImg(inputFile, num){
+            	
+            		console.log(inputFile.files);
+            		
+            		if(inputFile.files.length === 1){
+            			const reader = new FileReader();
+            			reader.readAsDataURL(inputFile.files[0]);
+            			reader.onload = function(e){
+            			
+            				const url = e.target.result;
+            				console.log(url);
+            				switch(num){
+            				case 1 : $('#title-updateimg').attr('src', url); break;
+            				case 2 : $('#sub-img1').attr('src', url); break;
+            				case 3 : $('#sub-img2').attr('src', url); break;
+            				case 4 : $('#sub-img3').attr('src', url); break;
+            				case 5 : $('#sub-img4').attr('src', url); break;
+            				}
+            			}
+            		} else {
+            			const crapImg = 'https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1veWFv.img?w=800&h=435&q=60&m=2&f=jpg';
+            			switch(num){
+            			case 1 : $('#title-updateimg').attr('src',crapImg); break;
+            			case 2 : $('#sub-img1').attr('src',crapImg); break;
+            			case 3 : $('#sub-img2').attr('src',crapImg); break;
+            			case 4 : $('#sub-img3').attr('src',crapImg); break;
+            			case 5 : $('#sub-img4').attr('src',crapImg); break;
+            			}
+            		}
+            	};
+            	$(function(){
+            		$('#file-update').hide();
+            		$('#title-updateimg').click(function(){
+            			$('#update1').click();
+            		});
+            		$('#sub-img1').click(function(){
+            			$('#update2').click();
+            		});
+            		$('#sub-img2').click(function(){
+            			$('#update3').click();
+            		});
+            		$('#sub-img3').click(function(){
+            			$('#update4').click();
+            		});
+            		$('#sub-img4').click(function(){
+            			$('#update5').click();
+            		});
+            	})
+            	
+            </script>   
+            
+            
+         </div>
+         <br>
+                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
+                <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
+                <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
+                <select style="width: 80px; height: 30px; font-size: 20px" name="unitName" id="unitName">
+                    <option value="kg">kg</option>
+                    <option value="개">개</option>
+                    <option value="box">box</option>
+                </select>
+                <br><br>
+                <span class="title">상품설명</span><br> <textarea name="productContent" id="productContent"></textarea> <br><br>
+                <span class="title">상품 카테고리</span> 
+                <select name="productType" id="productType">
+                    <option value="유기농과일">유기농 과일</option>
+                    <option value="유기농야채">유기농 야채</option>
+                    <option value="못난이과일">못난이 과일</option>
+                    <option value="못난이야채">못난이 야채</option>
+                </select>
+                <br><br>
+                <span class="title">배송정보</span> 
+                
+                <input type="radio" value="무료" name="deliveryPrice" id="deliver-btn1" checked>
+                <label>무료배송</label>
+                
+                <input type="radio" value="배송비포함" name="deliveryPrice" id="deliver-btn2">
+                <label>배송비</label>
+                
+                <br>
+                
+                <div style="display: none;" id="delivery-text">
+                <input type="number" class="text-title" name="deliverPrice" id="deliver-no" placeholder="가격을 입력해주세요"> 
+                <label>배송비 입력</label>
+                </div>
+        
+        <script>
+        
+        $('#deliver-btn2').change(function(){
+        	$('#delivery-text').show();
+        });
+        
+        $('#deliver-btn1').change(function(){
+        	$('#delivery-text').hide();
+        	
+        	$('#deliver-no').val('');
+        });
+        
+        </script>
+        
+        
+        
+        
+        <!-- 실질적 모달 필드 -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="submit" class="btn btn-primary">수정하기</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 
