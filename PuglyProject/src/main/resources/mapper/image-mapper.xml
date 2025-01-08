@@ -64,4 +64,23 @@
 		       CHANGE_IMG_NAME = #{changeImgName}
 	</update>
 	
+	<update id="deleteFarmImg" parameterType="map">
+		UPDATE
+		       TB_IMAGE
+		   SET
+		       IMG_STATUS = 'N'
+		 WHERE
+		       IMG_POST_NO = #{farmNo}
+		   AND
+		       CATEGORY_NO = #{categoryNo}
+	</update>
+	
+	<update id="deleteImgNo" parameterType="long">
+		UPDATE
+		       TB_IMAGE
+		   SET
+		       IMG_STATUS = 'N'
+		 WHERE
+		       IMG_NO = #{imgNo}
+	</update>
 </mapper>

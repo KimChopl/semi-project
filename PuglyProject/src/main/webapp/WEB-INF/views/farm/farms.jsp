@@ -101,7 +101,7 @@
 	                                            <c:forEach items="${ state }" var="state">
 	                                            	<div class="cover-box">
 	                                             	<label class="label-font">${ state.stateName } </label>
-	                                             	<input class="box-size" type="checkbox" name="suchState" value="${ state.stateCode }">
+	                                             	<input class="box-size states" type="checkbox" name="suchState" value="${state.stateCode}">
 	                                            	</div>
 	                                            </c:forEach>
 	                                        </div>
@@ -111,16 +111,16 @@
 	                                            <c:forEach items="${ farmProduct }" var="product">
 	                                            	<div class="cover-box">
 	                                            		<label class="label-font">${ product.productName }</label>
-	                                            		<input type="checkbox" class="box-size" name="suchProduct" value="${ product.productNo }" step="1000">
+	                                            		<input type="checkbox" class="box-size product" name="suchProduct" value="${ product.productNo }" step="1000">
 	                                            	</div>
 	                                            </c:forEach>
 	                                        </div>
 	                                    </div>
 	                                    <div class="row">
 	                                        <div class="optionbar">
-	                                          	<div>최신순<input type="radio" id="newest" name="option" value="date"></div>
-	                                          	<div>평점순<input type="radio" id="rating" name="option" value="rating"></div>
-	                                          	<div>가격오름차순<input type="radio" id="upPrice" name="option" value="price"></div>
+	                                          	<div>최신순<input class="option" type="radio" id="newest" name="option" value="date"></div>
+	                                          	<div>평점순<input class="option" type="radio" id="rating" name="option" value="rating"></div>
+	                                          	<div>가격오름차순<input class="option" type="radio" id="upPrice" name="option" value="price"></div>
 	                                        </div>
 	                                    </div>
 	                                </div>
@@ -144,6 +144,8 @@
 	                                                <c:choose>
 	        		                                    <c:when test="${ img.status eq 'Y' && img.imgLevel eq 1}">
 	                		                                <img src="/pugly/${img.imgPath }${ img.changeImgName }" alt="${img.originImgName }">
+			                                            </c:when>
+			                                            <c:when test="${ img.status eq 'N' }">
 			                                            </c:when>
 			                                            <c:otherwise>
 			                                            	<img src="" alt="이미지 없음">
@@ -178,10 +180,14 @@
             </div>
         </div>
 		<div id="btn-more-div">
-        	<button id="btn">더보기</button>
-        	<button id="more-btn" style="display : none;">더보기</button>
+        	<button class="more-btn btn btn-sm btn-info" onclick="suchFarms()">더보기</button>
         	<input type="hidden" id="user-category" value="${ sessionScope.loginUser.categoryNo }">
+        	<c:if test="${ seessionScope.loginUser.memberNo eq farm.memberNo }">
+        	<button class="btn btn-sm" id="regist-farm">체험 등록하기</button>
+        	</c:if>
+        	<c:if test="${ seessionScope.loginUser.memberNo ne farm.memberNo }">
        		<button class="btn btn-sm" id="regist-farm" style="display:none;">체험 등록하기</button>
+        	</c:if>
 		</div>   
     </div>
     
@@ -197,184 +203,88 @@
     </script>
     
 	<script>
-		function createDiv(r){
-			for(let o in r.farm){
-				r.farm[o].farmPrice = r.farm[o].farmPrice === 0 ? "무료체험" : r.farm[o].farmPrice;
-			}
-			const replies = [...r.farm]
-			const result = replies.map(e =>
-					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
-	                     <div class="farms-content">
-			             \${e.imgList.length === 1 && e.imgList.status === 'y'
-	                    	? 
-	                        	`<div class="img"><img src="/pugly/\${e.imgList[0]?.imgPath}\${e.imgList[0]?.changeImgName}" alt="\${e.imgList[0]?.originImgName}"></div>`
-	                        :  
-	                    			`<div class="img"><img src="" alt="이미지 없음"></div>`
-	                     }
-	                        <div class="farm-explain">
-	                             <div class="title">\${ e.farmTitle }</div>
-	                             <div class="score">
-	                             	<div class="price">\${ e.farmPrice }</div>
-	                                 <div class="like">\${ e.rating }</div>
-	                                 <div class="attention"> \${ e.like }</div>
-	                             </div>
-	                         </div>
-	                     </div>
-	                 </div>`
-			).join('');
-			return result
-		}
-		
-	</script>
-	<script>
-	window.onload = () =>{
-		
-		const plusNo = document.getElementById('plusNo');
-		let no = plusNo.value;
-		
-		const btn = document.getElementById('btn');
-		
-			btn.onclick = () => {
-				//console.log(plusNo.value)
-				$.ajax({
-					url : "/pugly/plus",
-					type : "get",
-					data : {
-						plusNo : plusNo.value
-					},
-					success : function(r){
-						document.getElementById('plusNo').value = r.mi.plusNo;
-						
-						//console.log(result);
-						document.getElementById('farm-list').innerHTML += createDiv(r);
-						document.getElementById('body').style.height = 'auto';
-						if(r.mi.lastNo === r.mi.listCount){
-							btn.style.display = 'none';
-						}
-						//console.log(btn);
-						
-					}
-				
-				})
-			}
-	}
-			
-			
-	</script>
-	<script>
 		let such = {
-			
-			state : [],
-			product : [],
-			option : '',
-			plusNo : 0
-		}	
-		
-	//console.log(such);
-	const stateInput = document.querySelectorAll('input[name=suchState]');
-	for(let s of stateInput){
-		s.addEventListener('click', function(){
-			let value = s.value
-			if(this.checked){
-				such.state.push(value);
-				
-				//console.log(such);
-			} else{
-				const index = such.state.indexOf(this.value);
-				such.state.splice(index, 1);
-			}
-			such.plusNo = 0;
-		//console.log(such);
-		ajaxSuch();
-		})
-	}
-	const productInput = document.querySelectorAll('input[name=suchProduct]');
-	for(let p of productInput){
-		p.addEventListener("click", function(){
-			if(this.checked){
-				let value = this.value;
-				such.product.push(value);
-				//console.log(such);
-			} else{
-				const index = such.product.indexOf(this.value);
-				such.product.splice(index, 1);
-			}
-			such.plusNo = 0;
-			ajaxSuch();
-		})
-	}
-	const optionInput = document.querySelectorAll('input[name=option]');
-	for(let o of optionInput){
-		o.addEventListener("click", function(){
-			such.option = o.value;
-			//console.log(such);
-			such.plusNo = 0;
-			ajaxSuch();
-		})
-	}
-	</script>
-	
-	<script>
-		const moreBtn = document.getElementById('more-btn');
-		moreBtn.onclick = () => {
-		such.plusNo = such.plusNo + 6;
-		$.ajax({
-			url : "/pugly/plus",
-			type : "post",
-			dataType : 'json',
-			contentType : 'application/json; charset=UTF-8',
-			data : JSON.stringify(such),
-			//data : {
-				//'state' : state,
-				//'product' : product,
-				//'option' : option
-			//},
-			success : function(r){
-				btn.style.display = 'none';
-				moreBtn.style.display = 'inline'
-				//console.log(result);
-				document.getElementById('farm-list').innerHTML += createDiv(r);
-				document.getElementById('body').style.height = 'auto';
-				//console.log(btn);
-				if(r.mi.lastNo === r.mi.listCount){
-					moreBtn.style.display = 'none';
-				}
-			}
-		})
+				'state' : [],
+				'product' : [],
+				'option' : '',
+				'plusNo' : 6
 		}
+		const state = document.getElementsByClassName('states');
+		for(let i of state){
+			i.addEventListener('click', function(){
+				if(i.checked){
+					such.state.push(i.value)
+				} else {
+					such.state = such.state.filter(value => value !== this.value);
+				}
+			})
+		}
+		
+		const product = document.getElementsByClassName('product');
+		for(let i of product){
+			i.addEventListener('click', function(){
+				if(i.checked){
+					such.product.push(i.value)
+				} else {
+					such.product = such.product.filter(value => value !== this.value);
+				}
+				console.log(such.product)
+			})
+		}
+		
+		const option = document.getElementsByClassName('option');
+		for(let i of option){
+			i.addEventListener('click', function(){
+				such.option = i.value;
+				console.log(such.option)
+			})
+		}
+		
+		let jsonData = JSON.stringify(such);
+		
+		function suchFarms() {
+			$.ajax({
+				url : 'plus',
+				type : 'post',
+				contentType : 'application/json',
+				data : jsonData,
+				success : function(r){
+				such.plusNo += r.plusNo
+				jsonData = JSON.stringify(such)
+				const relipes = [...r.farm];
+				const img = relipes.map(e => {
+					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
+                    	<div class="farms-content">	
+                    		<div class="img">`
+								if(e.imgList && e.status === 'Y'){
+									`<img src="/pugly/\${e.imgPath }\${ e.changeImgName }" alt="\${e.originImgName }">`
+								} else{
+									`<img src="" alt="이미지 없음">`
+								}
+                    		`</div>
+			                    <div class="farm-explain">
+			                    <div class="title">\${ e.farmTitle }</div>
+			                    <div class="score">`
+			                    	if(e.farmPrice === 0){
+			                    		`<div class="price">무료 체험</div>`
+			                    	} else {
+				                        `<div class="price">\${ e.farmPrice }</div>`
+			                    	}
+			                        `<div class="like">\${ e.rating }</div>
+			                        <div class="attention">\${ e.like }</div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>`
+					
+				}).join();
+				console.log(img);
+				}
+			})
+		}
+		
 	</script>
 	
-	<script>
-	function ajaxSuch(){
-		//console.log(such);
-		$.ajax({
-			url : "/pugly/plus",
-			type : "post",
-			dataType : 'json',
-			contentType : 'application/json; charset=UTF-8',
-			data : JSON.stringify(such),
-			//data : {
-				//'state' : state,
-				//'product' : product,
-				//'option' : option
-			//},
-			success : function(r){
-				btn.style.display = 'none';
-				moreBtn.style.display = 'inline';
-				
-				//console.log(result);
-				document.getElementById('farm-list').innerHTML = createDiv(r);
-				document.getElementById('body').style.height = 'auto';
-				//console.log(btn);
-				console.log(r.mi.lastNo);
-				console.log(r.mi.listCount);
-				if(r.mi.lastNo === r.mi.listCount){
-					moreBtn.style.display = 'none';
-				}
-			}
-		})
-	}
-	</script>
 	<script>
 		function farms(num){
 			location.href = `/pugly/farms/\${num}`

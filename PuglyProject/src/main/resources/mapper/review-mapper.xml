@@ -26,10 +26,11 @@
  			<result property="originImgName" column="originImgName" />
  			<result property="changeImgName" column="changeImgName" />
  			<result property="imgPath" column="imgPath" />
+ 			<result property="status" column="status" />
  		</collection>
  	</resultMap>
  	
- 	<select id="selectReviewList" parameterType="_int" resultMap="reviewMap">
+ 	<select id="selectReviewList" parameterType="long" resultMap="reviewMap">
  		SELECT
 		       REVIEW_NO reviewNo,
 		       NICKNAME reviewer,
@@ -42,7 +43,8 @@
 		       ORIGIN_IMG_NAME originImgName,
 		       CHANGE_IMG_NAME changeImgName,
 		       IMG_LEVEL imgLevel,
-		       IMG_PATH imgPath
+		       IMG_PATH imgPath,
+		       IMG_STATUS status
 		  FROM
 		       TB_REVIEW
 		  JOIN
@@ -53,10 +55,7 @@
 		  JOIN
 		       TB_FARM ON (FARM_NO = REVIEW_POST_NO)
 		 WHERE
-		       
 		       TB_IMAGE.CATEGORY_NO = 4
-		   AND
-		       IMG_LEVEL = 1
 		   AND
 		       REVIEW_POST_NO = ${farmNo}
  	</select>
@@ -88,4 +87,14 @@
  		       #{postCategoryNo}
  		       )
  	</insert>
+ 	<update id="deleteReview" parameterType="long">
+ 		UPDATE
+ 		       TB_REVIEW
+ 		   SET
+ 		       REVIEW_STATUS = 'N'
+ 		 WHERE
+ 		       REVIEW_POST_NO = #{farmNo}
+ 		  AND
+ 		      POST_CATEGORY_NO = 3
+ 	</update>
  </mapper>

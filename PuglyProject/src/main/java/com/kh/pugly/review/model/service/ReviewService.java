@@ -22,7 +22,9 @@ public interface ReviewService {
 	Map<String, Object> loadReivew(Long farmNo, Long bookNo, Member member);
 
 	void insertReview(Review review, MultipartFile[] files, Member member);
+
+	List<Review> selectReviewAll(Long farmNo);
 	
-	
+	void deleteReview(Long farmNo);
 
 }
