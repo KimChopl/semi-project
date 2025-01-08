@@ -170,7 +170,7 @@
 	                page: currentPage
 	            },
 	            success: function(searchResult) {
-	            	
+	            	 
 	            	const inquiryList = searchResult.inquiryList;
 	            	const pageInfo = searchResult.pageInfo;
 	            	

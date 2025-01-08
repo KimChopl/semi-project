@@ -27,4 +27,6 @@ public interface InquiryMapper {
 
 	List<Inquiry> searchInquiryList(Map<String, Object> map, RowBounds rowBounds);
 
+	void updateAnswerState(Long refIno);
+
 }
