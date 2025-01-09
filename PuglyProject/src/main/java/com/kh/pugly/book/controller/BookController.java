@@ -31,8 +31,8 @@ public class BookController {
 	private final FarmService fs;
 	private final BookService bs;
 	
-	@PostMapping("book")
-	public ModelAndView insertBook(Long farmNo, int kid, int adult, String bookDate) {
+	@PostMapping("book/byfarm")
+	public ModelAndView insertBook(Long farmNo, String kid, String adult, String bookDate) {
 		//System.out.println(farmNo + ", " + kid + ", " + adult + ", " + bookDate);
 		Map<String, Object> map = new HashMap();
 		Farm farm = fs.selectBookFarm(farmNo);
@@ -55,7 +55,7 @@ public class BookController {
 	@GetMapping("list.book")
 	public ModelAndView bookList(HttpSession ssn) {
 		Member m = (Member)ssn.getAttribute("loginUser");
-		Map<String, Object> map = bs.selectBookList(m);
+		Map<String, Object> map = bs.selectBookList(m, 0);
 		//log.info("{}", map);
 		return mv.setViewNameAndData("book/list-book", map);
 	}
@@ -77,6 +77,10 @@ public class BookController {
 		return "redirect:/list.book";
 	}
 	
-	
+	@GetMapping("book/deleteBook")
+	public String deleteBook(Long bookNo) {
+		log.info("{}", bookNo);
+		return null;
+	}
 	
 }

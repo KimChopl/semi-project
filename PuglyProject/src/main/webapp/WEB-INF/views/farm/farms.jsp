@@ -180,7 +180,7 @@
             </div>
         </div>
 		<div id="btn-more-div">
-        	<button class="more-btn btn btn-sm btn-info" onclick="suchFarms()">더보기</button>
+        	<button id="moreBtn" class="btn btn-sm btn-info" onclick="suchFarms()">더보기</button>
         	<input type="hidden" id="user-category" value="${ sessionScope.loginUser.categoryNo }">
         	<c:if test="${ seessionScope.loginUser.memberNo eq farm.memberNo }">
         	<button class="btn btn-sm" id="regist-farm">체험 등록하기</button>
@@ -217,6 +217,7 @@
 				} else {
 					such.state = such.state.filter(value => value !== this.value);
 				}
+				settingJson()
 			})
 		}
 		
@@ -228,7 +229,7 @@
 				} else {
 					such.product = such.product.filter(value => value !== this.value);
 				}
-				console.log(such.product)
+				settingJson()
 			})
 		}
 		
@@ -236,11 +237,69 @@
 		for(let i of option){
 			i.addEventListener('click', function(){
 				such.option = i.value;
-				console.log(such.option)
+				settingJson()
 			})
 		}
 		
 		let jsonData = JSON.stringify(such);
+		
+		function settingJson(){
+			such.plusNo = 0
+			jsonData = JSON.stringify(such)
+			suchFarms()
+			
+		}
+		
+		function createDiv(r){
+			const imgSet = [...r.farm];
+			const divImg = imgSet.map(e => {
+					
+				const el1 = document.createElement('div')
+				el1.classList.add('col-4', 'farms')
+				el1.setAttribute('onclick', `farms(\${e.farmNo})`)
+				const el2 = document.createElement('div')
+				el2.classList.add('farms-content')
+				const el3 = document.createElement('div')
+				el3.classList.add('img')
+				const el4 = document.createElement('img')
+				if(e.imgList.length > 0) {
+					el4.src = `/pugly/\${e.imgList[0].imgPath}\${e.imgList[0].changeImgName}`
+					el4.alt = `\${e.imgList[0].originImgName}`
+				} else {
+					el4.alt = '이미지 없음'				
+				}
+				const el5 = document.createElement('div')
+				el5.classList.add('farm-explain')
+				const el6 = document.createElement('div')
+				el6.classList.add('title')
+				el6.innerText = `\${e.farmTitle}`
+				const el7 = document.createElement('div')
+				el7.classList.add('score')
+				const el8 = document.createElement('div')
+				el8.classList.add('price')
+				el8.innerText = `\${e.farmPrice}`
+				const el9 = document.createElement('div')
+				el9.classList.add('like')
+				el9.innerText = `\${e.rating}`
+				const el10 = document.createElement('div')
+				el10.classList.add('attention')
+				el10.innerText = `\${e.like}`
+				
+				el7.appendChild(el8)
+				el7.appendChild(el9)
+				el7.appendChild(el10)
+				el5.appendChild(el6)
+				el5.appendChild(el7)
+				el3.appendChild(el4)
+				el2.appendChild(el3)
+				el2.appendChild(el5)
+				el1.appendChild(el2)
+				
+				return el1.outerHTML
+			});
+			const result = divImg.join('');
+			return result;
+		}
 		
 		function suchFarms() {
 			$.ajax({
@@ -249,36 +308,24 @@
 				contentType : 'application/json',
 				data : jsonData,
 				success : function(r){
-				such.plusNo += r.plusNo
-				jsonData = JSON.stringify(such)
-				const relipes = [...r.farm];
-				const img = relipes.map(e => {
-					`<div class="col-4 farms" onclick="farms(\${e.farmNo})">
-                    	<div class="farms-content">	
-                    		<div class="img">`
-								if(e.imgList && e.status === 'Y'){
-									`<img src="/pugly/\${e.imgPath }\${ e.changeImgName }" alt="\${e.originImgName }">`
-								} else{
-									`<img src="" alt="이미지 없음">`
-								}
-                    		`</div>
-			                    <div class="farm-explain">
-			                    <div class="title">\${ e.farmTitle }</div>
-			                    <div class="score">`
-			                    	if(e.farmPrice === 0){
-			                    		`<div class="price">무료 체험</div>`
-			                    	} else {
-				                        `<div class="price">\${ e.farmPrice }</div>`
-			                    	}
-			                        `<div class="like">\${ e.rating }</div>
-			                        <div class="attention">\${ e.like }</div>
-			                    </div>
-			                </div>
-			            </div>
-			        </div>`
-					
-				}).join();
-				console.log(img);
+					console.log(r)
+					const body = document.getElementById('body')
+					body.style.height = 'auto'
+					such.plusNo = such.plusNo + 6
+					jsonData = JSON.stringify(such)
+					const insertDiv = document.getElementById('farm-list')
+					if(such.plusNo === 6){
+						insertDiv.innerHTML = createDiv(r)
+					} else{
+						insertDiv.innerHTML += createDiv(r)
+					}
+					const moreBtn = document.getElementById('moreBtn')
+					if(r.mi.lastNo === r.mi.listCount){
+						moreBtn.style.display = 'none'
+					} else{
+						moreBtn.style.display = 'inline-block'
+					}
+				
 				}
 			})
 		}

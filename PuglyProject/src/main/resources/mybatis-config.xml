@@ -41,6 +41,7 @@
 
 		<typeAlias type="com.kh.pugly.book.model.vo.Book" alias="book"/>
 		<typeAlias type="com.kh.pugly.book.model.vo.BookStatus" alias="bookStatus"/>
+		<typeAlias type="com.kh.pugly.book.model.dto.BookCondition" alias="bookCondition"/>
 	</typeAliases>
 	 
 	 <mappers>

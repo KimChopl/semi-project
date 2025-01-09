@@ -34,7 +34,12 @@
 		</interceptor>
 	</interceptors>
 	
-
+	<interceptors>
+		<interceptor>
+			<mapping path="/book/booking"/>
+			<beans:bean id="BookContentInterceptor" class="com.kh.pugly.common.interceptor.CheckBookConetentInterceptor"></beans:bean>
+		</interceptor>
+	</interceptors>
 	
 	
 	</beans:beans>

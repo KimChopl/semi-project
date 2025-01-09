@@ -36,15 +36,6 @@ public class AjaxFarmController {
 	private final FarmService fs;
 	private final Gson gson = new Gson();
 	
-	@GetMapping(value="plus", produces="application/json; charset=UTF-8")
-	@ResponseBody
-	public Map<String, Object> selectMoreFarm(int plusNo){
-		//log.info("{}", plusNo);
-		plusNo += 6;
-		Map<String, Object> map = fs.selectFarmList(plusNo);
-		//log.info("{} : " , map);
-		return map;
-	}
 	
 	@PostMapping(value="plus", produces="application/json; charset=UTF-8")
 	@ResponseBody

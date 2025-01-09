@@ -15,11 +15,11 @@ public interface BookService {
 	
 	void insertPay(BookCondition condition);
 	
-	void insertCancel(BookCondition condition);
-	
 	void insertPlay(Long bookNo, Member member);
 	
-	Map<String, Object> selectBookList(Member loginUser);
+	Map<String, Object> selectBookList(Member loginUser, int plusNo);
 
 	Book selectByNo(Long bookNo, Member member);
+
+	void insertCancel(Long bookNo, String content, Member member);
 }

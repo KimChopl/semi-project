@@ -60,7 +60,7 @@
 		   JOIN
 		        TB_IMAGE IM ON(IM.IMG_POST_NO = FARM_NO AND IM.CATEGORY_NO = 3)
 		  WHERE
-		        (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL OR IM.IMG_STATUS = 'Y' OR IM.IMG_STATUS IS NULL)
+		        (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL OR IM.IMG_STATUS = 'Y' AND IM.IMG_STATUS IS NULL)
 		    AND
 		        DELETE_ASK = 'N'
 	</sql>
@@ -134,7 +134,7 @@
 		<include refid="farmColumn" />
 		<if test="state.size != 0">
 		AND
-		    S.STATE_CODE IN
+		    AD.STATE_CODE IN
 		<foreach collection="state" item="state" open="(" close=")" separator=",">
 			#{state}
 		</foreach>
@@ -173,29 +173,38 @@
 		SELECT
 		       COUNT(FARM_NO)
 		  FROM
-		       TB_FARM
-		  JOIN
-		       TB_ADDRESS TA ON(SELLER_NO = TA.MEMBER_NO)
-		  JOIN
-		       TB_STATE_CATEGORY TSC ON (TA.STATE_CODE = TSC.STATE_CODE)
-		 WHERE
-		       DELETE_ASK = 'N'
-		   AND
-		       ADDRESS_TYPE = 1
+		        TB_FARM
+		   JOIN
+		        TB_MEMBER M ON (SELLER_NO = M.MEMBER_NO)
+		   JOIN
+		        TB_FARM_PRODUCT FP ON (FP.PRODUCT_NO = FARM_PRODUCT_NO) 
+		   JOIN
+		        TB_ADDRESS AD ON (AD.ADDRESS_NO = FARM_ADDRESS_NO)
+		   LEFT
+		   JOIN
+		        TB_IMAGE IM ON(IM.IMG_POST_NO = FARM_NO AND IM.CATEGORY_NO = 3)
+		  WHERE
+		        (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL AND IM.IMG_STATUS = 'Y' OR IM.IMG_STATUS IS NULL)
+		    AND
+		        DELETE_ASK = 'N'
 	  		<if test="state.size != 0">
 			AND
-			    TSC.STATE_CODE IN
+			    AD.STATE_CODE IN
 			<foreach collection="state" item="state" open="(" close=")" separator=",">
 				#{state}
 			</foreach>
 			</if>
-			<if test="product.size != 0">
+			<choose>
+			<when test="product.size != 0">
 				AND
 				    FARM_PRODUCT_NO IN
 				<foreach collection="product" item="pro" open="(" close=")" separator=",">
 					#{pro}
 				</foreach>
-			</if>
+			</when>
+			<otherwise>
+			</otherwise>
+			</choose>
 	</select>
 	
 	<resultMap id="detailFarm" type="farm">

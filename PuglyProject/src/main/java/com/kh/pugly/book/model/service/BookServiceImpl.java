@@ -78,10 +78,6 @@ public class BookServiceImpl implements BookService {
 
 	}
 
-	@Override
-	public void insertCancel(BookCondition condition) {
-
-	}
 
 	@Override
 	public void insertPlay(Long bookNo, Member member) {
@@ -113,18 +109,16 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	private Map<String, Object> selectbookStatus(List<Book> books) {
-		log.info("{}", books);
 		Map<String, Object> bookStatus = new HashMap<String, Object>();
 		bookStatus.put("books", books);
 		
 		return bookStatus;
 	}
 	
-	private MoreInfo checkedType(Member member) {
+	private MoreInfo checkedType(Member member, int moreNo) {
 		int category = member.getCategoryNo();
 		int listCount = 0;
 		int bookLimit = 5;
-		int moreNo = 0;
 		Long memberNo = member.getMemberNo();
 		if(category == 2) {
 			listCount = bm.selectBookCountFarmer(memberNo);
@@ -140,6 +134,7 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = null;
 		if(category == 2) {
 			books = selectBookListFarmer(memberNo, rb);
+			log.info("{}", books);
 		} else {
 			books = selectBookListBooker(memberNo, rb);
 		}
@@ -156,9 +151,9 @@ public class BookServiceImpl implements BookService {
 	}
 	
 	@Override
-	public Map<String, Object> selectBookList(Member loginUser) {
+	public Map<String, Object> selectBookList(Member loginUser, int plusNo) {
 		checkedMember(loginUser);
-		MoreInfo mi = checkedType(loginUser);
+		MoreInfo mi = checkedType(loginUser, plusNo);
 		RowBounds rb = makeRowBounds(mi);
 		Map<String, Object> map = selectbookStatus(makeTitle(checkedMember(loginUser, rb)));
 		map.put("mi", mi);
@@ -183,11 +178,33 @@ public class BookServiceImpl implements BookService {
 
 	private Book checkedContent(Long bookNo) {
 		Book book = bm.selectByNo(bookNo);
-		log.info("{}", book);
 		if(book == null) {
 			// Exception
 		}
 		return book;
+	}
+	
+	private int insertCancel(BookCondition cancel) {
+		return bm.insertCancel(cancel);
+	}
+
+	private void checkedCancel(BookCondition cancel) {
+		if(cancel == null || cancel.getBookNo() < 0) {
+			
+		}
+		int result = insertCancel(cancel);
+		if(result < 1) {
+			
+		}
+	}
+
+	@Override
+	public void insertCancel(Long bookNo, String content, Member member) {
+		checkedMember(member);
+		BookCondition cancel = BookCondition.builder().bookNo(bookNo).content(xss.changeInsertFormat(content)).build();
+		log.info("{}", cancel);
+		checkedCancel(cancel);
+		
 	}
 
 }

@@ -19,5 +19,6 @@ public class BookCondition {
 
 	private Long bookNo;
 	private Date date;
+	private String content;
 	
 }
