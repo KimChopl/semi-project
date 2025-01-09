@@ -24,6 +24,7 @@ import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
 import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.NotFoundFarmListException;
+import com.kh.pugly.exception.NotFoundImgException;
 import com.kh.pugly.exception.NotFoundObjectException;
 import com.kh.pugly.exception.NotFoundDetailFarmException;
 import com.kh.pugly.exception.NotFoundFarmListException;
@@ -210,6 +211,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(NotFoundObjectException.class)
 	protected ModelAndView failFoundError(NotFoundObjectException e) {
 		return createErrorResponse("해당 게시글을 찾을 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(NotFoundImgException.class)
+	protected ModelAndView failFoundError(NotFoundImgException e) {
+		return createErrorResponse("해당 이미지를 찾을 수 없습니다.", e);
 	}
 	
 }
