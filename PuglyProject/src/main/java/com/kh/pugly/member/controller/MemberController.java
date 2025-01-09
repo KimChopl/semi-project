@@ -135,7 +135,7 @@ public class MemberController {
 	
 	@GetMapping("update_enroll_form.member")
 	public ModelAndView updateEnrollForm() {
-		// session에 값이 있어서 따로 뽑을 필요가 없음 (회원정보수정)
+		// session에 값이 있어서 따로 뽑을 필요가 없음 (회원 정보 수정 폼)
 		return mv.setViewNameAndData("member/update_enroll_form", null);
 	}
 	@PostMapping("update.memberInfo")

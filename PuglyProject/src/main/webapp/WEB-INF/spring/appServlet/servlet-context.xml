@@ -37,6 +37,7 @@
 			<mapping path="/update.seller"/>
 			<mapping path="/select.cart/**"/>
 			<mapping path="/enroll_form.address"/>
+			<mapping path="/farm/regist"/>
 			<beans:bean id="LoginInterceptor" class="com.kh.pugly.common.interceptor.LoginInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>

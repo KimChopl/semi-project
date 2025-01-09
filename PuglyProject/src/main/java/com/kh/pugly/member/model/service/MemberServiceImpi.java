@@ -121,7 +121,7 @@ public class MemberServiceImpi implements MemberService {
 		validateUser.validationMember(member);
 		
 		Member loginUser = mapper.selectMember(member);
-		if("정지".equals(member.getCategoryName())) {
+		if("정지".equals(loginUser.getCategoryName())) {
 			throw new InvalidRequestException("정지된 사용자입니다.");
 		}
 		
