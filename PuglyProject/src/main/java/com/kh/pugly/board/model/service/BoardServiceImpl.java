@@ -213,7 +213,7 @@ public class BoardServiceImpl implements BoardService {
 	            if (file.exists()) {
 	            	file.delete();
 	            } else {
-	                throw new NotFoundImgException("이미지 파일을 찾을 수 없습니다: ");
+	                throw new NotFoundImgException("이미지 파일을 찾을 수 없습니다.");
 	            }
 	        } catch (Exception e) {
 	            throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다.");
