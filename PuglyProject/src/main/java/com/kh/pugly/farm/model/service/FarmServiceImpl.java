@@ -107,6 +107,7 @@ public class FarmServiceImpl implements FarmService {
 	
 	private MoreInfo getSuchPageInfo(Map<String, Object> map, int boardLimit) {
 		int listCount = fm.countSuchList(map);
+		log.info("{}", listCount);
 		return MoreInfomation.getMoreInfo(listCount, (int)map.get("plusNo"), boardLimit);
 	}
 	
@@ -173,8 +174,8 @@ public class FarmServiceImpl implements FarmService {
 		int boardLimit = 6;
 		MoreInfo mi = getSuchPageInfo(suchMap, boardLimit);
 		int plusNo = (int)suchMap.get("plusNo");
-		log.info("{}", mi.getPlusNo());
-		RowBounds rowNum = new RowBounds(mi.getPlusNo(), mi.getBoardLimit());
+		log.info("{}", mi.getStartNo());
+		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getBoardLimit());
 		List<Farm> list = checkedSelectListFormat(fm.suchByKeyword(suchMap, rowNum));
 		Map<String, Object> map = checkedMap(list, mi);
 		map.put("plusNo", plusNo);

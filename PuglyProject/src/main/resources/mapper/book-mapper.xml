@@ -190,4 +190,18 @@
   		       #{bookNo}
   		       )
   	</insert>
+  	<insert id="insertCancel" parameterType="bookCondition">
+  		INSERT
+  		  INTO
+  		       TB_BOOK_CANCEL
+  		       (
+  		       BOOK_NO,
+  		       CANCEL_CONTENT
+  		       )
+  		VALUES
+  		       (
+  		       #{bookNo},
+  		       #{content}
+  		       )
+  	</insert>
   </mapper>

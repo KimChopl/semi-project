@@ -1,6 +1,7 @@
 package com.kh.pugly.book.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,6 +34,18 @@ public class AjaxBookController {
 		return book;
 	}
 	
+	@PostMapping(value="book/cancel", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public void cancelBook(Long bookNo, String content, HttpSession ssn) {
+		Member member = (Member)ssn.getAttribute("loginUser");
+		bs.insertCancel(bookNo, content, member);
+	}
 	
+	@PostMapping(value="more/book", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public Map<String, Object> moreBook(HttpSession ssn, int plusNo){
+		Member m = (Member)ssn.getAttribute("loginUser");
+		return bs.selectBookList(m, plusNo);
+	}
 	
 }

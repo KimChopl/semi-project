@@ -30,6 +30,7 @@
 <div id="body">
 <jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 		<form action="/pugly/book/booking" method="post">
+		<input type="hidden" name="farmNo" value="${farm.farmNo }">
 	    <div class="container">
 	        <div class="row">
 	            <div class="col">
@@ -46,13 +47,28 @@
 	                            <div class="container">
 	                                <div class="row">
 	                                    <div class="col-4">
-	                                        <label>예약일 : <input type="date" value="${ bookDate }" name="playDate"></label> 
+	                                    	<c:if test="${ empty bookDate }" > 
+	                                    	<label>예약일 : <input type="date" name="playDate" required></label>
+	                                    	</c:if>
+	                                    	<c:if test="${ not empty bookDate }">
+	                                        <label>예약일 : <input type="date" value="${ bookDate }" name="playDate" required></label> 
+	                                        </c:if>
 	                                    </div>
 	                                    <div class="col-4">
-	                                        <label>성인 : <input type="number" value="${ adult }" name="adultNo"> 명</label> 
+	                                    	<c:if test="${ empty adult }"> 
+	                                    	<label>성인 : <input type="number" value="0" name="adultNo" required> 명</label> 
+	                                    	</c:if>
+	                                    	<c:if test="${ not empty adult }"> 
+	                                        <label>성인 : <input type="number" value="${ adult }" name="adultNo" required> 명</label> 
+	                                        </c:if>
 	                                    </div>
 	                                    <div class="col-4">
-	                                        <label>어린이 : <input type="number" value="${ kid }" name="kidNo"> 명</label> 
+	                                    <c:if test="${ empty kid }"> 
+	                                    	<label>어린이 : <input type="number" value="0" name="kidNo" required> 명</label> 
+	                                    </c:if>
+	                                     <c:if test="${ not empty kid }"> 
+	                                        <label>어린이 : <input type="number" value="${ kid }" name="kidNo" required> 명</label> 
+	                                        </c:if>
 	                                    </div>
 	                                </div>
 	                            </div>
@@ -60,7 +76,7 @@
 	                                
 	                                <div class="row">
 	                                    <div class="col-4">
-	                                        <label>전화번호 :</label> 
+	                                        <label>전화번호 : <input type="text" name="phone" value="${ sessionScope.loginUser.phone }" required></label> 
 	                                    </div>
 	                                    <div class="col-8">
 	                                        에붸붸붸뷉 뭐넣지
@@ -114,6 +130,9 @@
         const textFormat = `어쩌구 저쩌구 여기에 양식 작성해주시면 됩니다.`;
         const textArea = document.getElementById('text-booker');
         textArea.value = textFormat;
+        textArea.addEventListener('click', function(){
+        	textArea.value = "";
+        }, {once: true})
     }
 
 </script>

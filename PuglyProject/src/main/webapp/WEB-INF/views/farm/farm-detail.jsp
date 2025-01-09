@@ -161,7 +161,7 @@
                     <a href="#beware-box"><p>주의사항</p></a>
                 </div>
             </div>
-            <form action="/pugly/book" method="post" name="book">
+            <form action="/pugly/book/byfarm" method="post" name="book">
             <div class="row">
                 <div class="col-6">
                     <div id="check-day">
@@ -216,10 +216,9 @@
             <div class="row">
                 <div class="col">
                     <div id="review">
-                    <c:forEach items="${ review }" var="r">
-                   
                     <c:choose>
                     <c:when test="${ not empty r }">
+                    <c:forEach items="${ review }" var="r">
                         <div class="container">
                             <div class="row">
                                 <div class="col-4">
@@ -273,14 +272,23 @@
                                 </div>
                             </div>
                         </div>
-                    </c:when>
-                    </c:choose>
                     </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                    	<div class="container">
+                            <div class="row">
+                            <div class="col">
+                            <h2 style="text-align: center;">등록된 리뷰가 없습니다.</h2>
+                            </div>
+                         </div>
+                       </div>
+                    </c:otherwise>
+                    </c:choose>
                     </div>
                     <div class="container">
                         <div class="row">
 	                        <div class="col">
-	                            <div id="more"><button id="more-btn">더보기</button></div>
+	                            <div id="more"><button id="more-btn" style="display:none;">더보기</button></div>
 	                        </div>
                         </div>
                     </div>
@@ -311,6 +319,9 @@
 		const moreBtn = document.getElementById('more-btn');
 		const plusNo = document.getElementById('plus');
 		const farmNo = document.getElementById('farmNo');
+		if(review.length > 5){
+			moreBtn.style.display = 'inline-block'
+		}
 		moreBtn.onclick = () => {
 			console.log(farmNo.value);
 			console.log(plusNo.value);
