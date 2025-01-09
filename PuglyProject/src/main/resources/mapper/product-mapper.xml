@@ -370,8 +370,8 @@
 		
 		UPDATE
 				TB_IMAGE
+		   <foreach collection="list" item="image" separator=";">
 		   SET
-		   <foreach collection="list" item="image">
 		   		ORIGIN_IMG_NAME = #{image.originImgName},
 		   		CHANGE_IMG_NAME = #{image.changeImgName}
 		  WHERE

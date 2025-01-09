@@ -84,23 +84,23 @@
             <div>                
             <div class="img-fom">
                 <label>대표이미지</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="main-img" id="title-img">
+                <img src="resources/img/mainImg.png" class="main-img" id="title-img">
             </div>
             <div class="img-fom">
                 <label>상세이미지-1</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img1">
+                <img src="resources/img/img.png" class="img" id="sub-img1">
             </div>
             <div class="img-fom">
                 <label>상세이미지-2</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img2">
+                <img src="resources/img/img.png" class="img" id="sub-img2">
             </div>
             <div class="img-fom">
                 <label>상세이미지-3</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img3">
+                <img src="resources/img/img.png" class="img" id="sub-img3">
             </div>
             <div class="img-fom">
                 <label>상세이미지-4</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="img" id="sub-img4">
+                <img src="resources/img/img.png" class="img" id="sub-img4">
             </div>
                 <br><br>
             
