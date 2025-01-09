@@ -63,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
 				int randomNum = (int)(Math.random() * 90000) + 10000;
 				
 				String changeName = "ProductImg" + currentTime + randomNum + ext;
-				String savePath = context.getRealPath("/resources/upload_files/");
+				String savePath = context.getRealPath("resources/upload_files/");
 				
 				try {
 					file.transferTo(new File(savePath + changeName));
@@ -73,9 +73,9 @@ public class ProductServiceImpl implements ProductService {
 				
 				Image image = new Image();
 				image.setOriginImgName(fileName);
-				image.setChangeImgName("/pugly/resources/upload_files/" + changeName);
+				image.setChangeImgName(changeName);
 				image.setImgLevel(firstFile ? 1 : 2);	// 첫번째 사진만 1번으로 받는다.
-				image.setImgPath("/resources/upload_files/");
+				image.setImgPath("resources/upload_files/");
 						
 				imagesList.add(image);
 				firstFile = false;	// 반복문을 통해 2번째 사진부터는 false
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
 		int randomNum = (int)(Math.random() * 90000) + 10000;
 		
 		String changeName = "StoreImg" + currentTime + randomNum + ext;
-		String savePath = context.getRealPath("/resources/mystore_profile/");
+		String savePath = context.getRealPath("resources/mystore_profile/");
 		
 		try {
 			upfile.transferTo(new File(savePath + changeName));
@@ -103,9 +103,9 @@ public class ProductServiceImpl implements ProductService {
 		
 		Image image = new Image();
 		image.setOriginImgName(fileName);
-		image.setChangeImgName("/pugly/resources/mystore_profile/" + changeName);
+		image.setChangeImgName(changeName);
 		image.setImgLevel(1);
-		image.setImgPath("/resources/mystore_profile/");
+		image.setImgPath("resources/mystore_profile/");
 		
 		return image;	   
 	}
@@ -249,7 +249,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public void storeUpdate(MyStore myStore, MultipartFile upfile) {
 		
-		findMyStoreById(myStore.getStoreNo());
+		
+		MyStore store = findMyStoreById(myStore.getStoreNo());
+		Long storeNo =store.getStoreNo();
+		
 		Image image = findImageByMyStore(myStore.getStoreNo());
 		log.info("이거한번보자{}",image);
 		// 기존 사진정보 삭제해버려
@@ -271,8 +274,16 @@ public class ProductServiceImpl implements ProductService {
 		}
 		// 새사진 다시넣어
 		Image img = myStoreSaveImg(upfile);
+		
+		
+		Map<String, Object> map = new HashMap();
+		map.put("storeNo", storeNo);
+		map.put("originImgName", img.getOriginImgName());
+		map.put("changeImgName", img.getChangeImgName());
+		map.put("imgPath", img.getImgPath());
+		
 		// 새로운 정보 다시 추가해
-		mapper.storeImgUpdate(img);
+		mapper.storeImgUpdate(map);
 		// 상점수정
 		mapper.storeUpdate(myStore);
 	}
@@ -331,14 +342,30 @@ public class ProductServiceImpl implements ProductService {
 						log.info("삭제했니?");
 					}
 				}
-				productSaveImg(upfile);
-			}
-			int result = mapper.updateImgProduct(imgList);
-			if(result < 1) {
-				log.info("응업뎃 실패~");
+				
+				List<Image> img = productSaveImg(upfile);
+				
+				for(int i = 0; i < img.size(); i++) {
+					log.info("{}", imgList.get(i).getImgNo());
+					img.get(i).setImgNo(imgList.get(i).getImgNo());
+					
+					log.info("{}", img);
+					
+					
+					
+				}
+				log.info("{}", img);
+				int result = mapper.updateImgProduct(img);
+				if(result < 1) {
+					log.info("응업뎃 실패~");
+				
+				}
 			}
 		}
-		mapper.productUpdate(product);
+		if(mapper.productUpdate(product) > 0) {
+			
+			log.info("상품업뎃 실패~");
+		}
 		
 	}
 

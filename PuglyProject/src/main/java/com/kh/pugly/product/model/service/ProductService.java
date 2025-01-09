@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
 

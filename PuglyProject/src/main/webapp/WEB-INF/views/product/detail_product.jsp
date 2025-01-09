@@ -143,7 +143,7 @@
 				<c:forEach var="img" items="${ imageList }">
                     <div class="mySlides">
                     <div class="numbertext">${ img.imgLevel } / ${ product.imageList.size() }</div>
-                    <img src="${ img.changeImgName }">
+                    <img src="/pugly/${ img.imgPath }${ img.changeImgName }">
                     </div>
                 </c:forEach>
                     
@@ -170,7 +170,18 @@
                 <br>
                 <div class="product-quantity">수량 : ${ product.productQuantity } ${ product.unitName }</div>
                 <br>
-                <div class="delivery-price">배송비 : ${ product.deliveryPrice }</div>
+                <div class="delivery-price">배송비 : 
+                
+                      <c:choose>
+				           <c:when test="${ product.deliveryPrice ne '무료' }">
+				           	${ product.deliveryPrice }원
+				           </c:when>
+				           <c:otherwise>
+				           	${ product.deliveryPrice }
+				           </c:otherwise>
+			           </c:choose>
+                
+                </div>
                 <br>
                 <div class="product-date">등록일 : ${ product.productDate }</div>
             </div>

@@ -142,7 +142,7 @@
                     </form>
                 </div>
                 <div>
-                    <img src="${ image.changeImgName }" alt="${ image.originImgName }" class="main-img">
+                    <img src="/pugly/${ image.imgPath }${ image.changeImgName }" alt="${ image.originImgName }" class="main-img">
                 </div>
                 <div class="row">
                 	<c:choose>
@@ -220,13 +220,22 @@
         <c:forEach items="${ products }" var="product">
 		    <div class="pro-1" ondblclick="datail('${product.productNo }')">
 		           <div>
-		               <img src="${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
+		               <img src="/pugly/${ product.image.imgPath }${ product.image.changeImgName }" alt="상품이미지" class="pro-img">
 		           </div>
 			       <div class="pro-2">
 			           <div style="font-size: 20px; height: 60px;">${ product.productName }</div>
-			           <div style="font-size: 20px; font-weight: 550;">가격 : <span>${ product.productPrice }</span></div>
+			           <div style="font-size: 20px; font-weight: 550;">가격 : <span>${ product.productPrice }원</span></div>
 			           <div style="font-size: 18px;">상품후기 :<span>★★★★☆</span></div>
-			           <div style="font-weight: 550;">배송비 : <span>${ product.deliveryPrice }</span></div>
+			           <div style="font-weight: 550;">배송비 : <span>
+			           <c:choose>
+				           <c:when test="${ product.deliveryPrice ne '무료' }">
+				           	${ product.deliveryPrice }원
+				           </c:when>
+				           <c:otherwise>
+				           	${ product.deliveryPrice }
+				           </c:otherwise>
+			           </c:choose>
+			           </span></div>
 			           <div>등록일 : <span>${ product.productDate }</span></div>
 			           
 			           <div style="display: inline-block;">
