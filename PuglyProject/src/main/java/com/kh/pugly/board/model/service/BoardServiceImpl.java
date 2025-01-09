@@ -188,7 +188,7 @@ public class BoardServiceImpl implements BoardService {
 	                }
 	            }
 	        }
-	        
+	        deleteFileIfExists(image.getChangeImgName());
 	        mapper.deleteBoardImg(image);
 	    }
 	    
@@ -203,29 +203,28 @@ public class BoardServiceImpl implements BoardService {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
 		}
 	}
+	
+	private void deleteFileIfExists(String changeImgName) {
+	    if (changeImgName != null && !changeImgName.isEmpty()) {
+	        try {
+	            String realPath = context.getRealPath(changeImgName);
+	            File file = new File(realPath);
 
+	            if (file.exists()) {
+	            	file.delete();
+	            } else {
+	                throw new NotFoundImgException("이미지 파일을 찾을 수 없습니다: ");
+	            }
+	        } catch (Exception e) {
+	            throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다.");
+	        }
+	    }
+	}
+	
 	@Override
 	public void deleteBoard(Long boardNo, String changeImgName) {
 		
-		if (changeImgName != null && !changeImgName.isEmpty()) {
-		    try {
-		        String realPath = context.getRealPath(changeImgName);
-		        File newFile = new File(realPath);
-		        
-		        if (newFile.exists()) { 
-		            boolean deleted = newFile.delete(); 
-		            if (!deleted) {
-		                throw new RuntimeException("파일 삭제에 실패했습니다.");
-		            } else {
-		                System.out.println("파일이 성공적으로 삭제되었습니다: " + realPath);
-		            }
-		        } else {
-		            throw new NotFoundImgException("이미지 파일을 찾을 수 없습니다.");
-		        }
-		    } catch (Exception e) {
-		        throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다.", e);
-		    }
-		}
+		deleteFileIfExists(changeImgName);
 		
 		int result = mapper.deleteBoard(boardNo);
 		
