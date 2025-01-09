@@ -21,6 +21,7 @@ import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
 import com.kh.pugly.exception.FailToFileUploadException;
+import com.kh.pugly.exception.NotFoundImgException;
 import com.kh.pugly.exception.ProductValueException;
 
 
@@ -105,7 +106,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		Image image = new Image();
 		image.setOriginImgName(fileName);
-		image.setChangeImgName("/pugly/resources/board-img/" + changeName);
+		image.setChangeImgName("/resources/board-img/" + changeName);
 		image.setImgLevel(1);
 		image.setImgPath("/resources/board-img/");
 		
@@ -123,12 +124,13 @@ public class BoardServiceImpl implements BoardService {
 		
 		Image img = null;
 		
-		if(!("".equals(upfile.getOriginalFilename()))) {
-			img = boardSaveImg(upfile);
-		}
-		
 		mapper.insertBoard(board);
-		mapper.insertBoardImg(img);
+		
+		if (upfile != null && !upfile.getOriginalFilename().isEmpty()) {
+	        img = boardSaveImg(upfile);
+	        mapper.insertBoardImg(img);
+	    }
+		
 	}
 	
 	private void validateBoardNo(Long boardNo) {
@@ -145,22 +147,57 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	private Board findByBoardId(Long boardNo) {
-		Board board = mapper.selectById(boardNo);
+		Board board = null;
+		board = mapper.selectById(boardNo);
+		
 		if(board == null) {
-			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
+			board = mapper.selectByIdWithoutImg(boardNo);
+			
+			if(board == null) {
+				throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
+			} else {
+				return board;
+			}
+		} else {
+			return board;
 		}
-		return board;
+		
 	}
 
 	@Override
 	public void updateBoard(Board board, MultipartFile upfile) {
-		validateBoardNo(board.getBoardNo());
-		findByBoardId(board.getBoardNo());
-		
-		Image img = boardSaveImg(upfile);
-		
-		mapper.boardImgUpdate(img);
-		int result = mapper.updateBoard(board);
+		 
+	    validateBoard(board);
+	    Board boardResult = findByBoardId(board.getBoardNo());
+	    
+	    mapper.updateBoard(boardResult);
+	    
+	    Image image = findImageByBoard(boardResult.getBoardNo());
+	    
+	    if (image != null) {
+	        String realPath = context.getRealPath(image.getChangeImgName());
+	        
+	        if (realPath != null) {
+	            int indexOfPugly = realPath.indexOf("pugly");
+	            
+	            if (indexOfPugly != -1) {
+	                String fixePath = realPath.substring(0, indexOfPugly) + realPath.substring(indexOfPugly + "pugly".length());
+	                File file = new File(fixePath);
+	                if (file.exists()) {
+	                    file.delete();
+	                }
+	            }
+	        }
+	        
+	        mapper.deleteBoardImg(image);
+	    }
+	    
+	    int result = 0;
+	    if (upfile != null && !upfile.getOriginalFilename().isEmpty()) {
+	        Image newImage = boardSaveImg(upfile);
+	        mapper.boardImgUpdate(newImage);
+	        result = mapper.updateBoard(boardResult);	        
+	    }
 		
 		if(result < 1) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
@@ -168,15 +205,33 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public void deleteBoard(Long boardNo) {
+	public void deleteBoard(Long boardNo, String changeImgName) {
+		
+		if (changeImgName != null && !changeImgName.isEmpty()) {
+		    try {
+		        String realPath = context.getRealPath(changeImgName);
+		        File newFile = new File(realPath);
+		        
+		        if (newFile.exists()) { 
+		            boolean deleted = newFile.delete(); 
+		            if (!deleted) {
+		                throw new RuntimeException("파일 삭제에 실패했습니다.");
+		            } else {
+		                System.out.println("파일이 성공적으로 삭제되었습니다: " + realPath);
+		            }
+		        } else {
+		            throw new NotFoundImgException("이미지 파일을 찾을 수 없습니다.");
+		        }
+		    } catch (Exception e) {
+		        throw new RuntimeException("이미지 삭제 중 오류가 발생했습니다.", e);
+		    }
+		}
 		
 		int result = mapper.deleteBoard(boardNo);
 		
 		if(result <= 0) {
 			throw new BoardNotFoundException("게시글이 존재하지 않습니다.");
 		}
-		
-		// 파일 삭제
 		
 	}
 

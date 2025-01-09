@@ -3,19 +3,22 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kh.pugly.board.model.dao.BoardMapper">
+
 <resultMap type="board" id="boardAndImg">
-	<id column="boardNo" property="boardNo"/>
-	<result column="boardTitle" property="boardTitle"/>
-	<result column="boardWriter" property="boardWriter"/>
-	<result column="boardContent" property="boardContent"/>
-	<result column="createDate" property="createDate"/>
-	<result column="count" property="count"/>
-	<association property="image" javaType="Image">
-	        <result property="originImgName" column="originImgName"/>
-	        <result property="changeImgName" column="changeImgName"/>
-	        <result property="imgPath" column="imgPath"/>
-	        <result property="imgLevel" column="imgLevel"/>
-	</association>
+    <id column="boardNo" property="boardNo"/>
+    <result column="boardTitle" property="boardTitle"/>
+    <result column="boardWriter" property="boardWriter"/>
+    <result column="nickname" property="nickname"/>
+    <result column="boardContent" property="boardContent"/>
+    <result column="createDate" property="createDate"/>
+    <result column="count" property="count"/>
+    
+    <association property="image" javaType="Image">
+        <result property="originImgName" column="originImgName"/>
+        <result property="changeImgName" column="changeImgName"/>
+        <result property="imgPath" column="imgPath"/>
+        <result property="imgLevel" column="imgLevel"/>
+    </association>
 </resultMap>
 
 	<sql id="boardColumn">
@@ -27,7 +30,7 @@
 			   COUNT,
 			   I.ORIGIN_IMG_NAME originImgName,
 		       I.CHANGE_IMG_NAME changeImgName,
-		       I.IMG_LEVEL,
+		       I.IMG_LEVEL imgLevel,
 			   TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') as createDate
 		 FROM
 		 	  TB_BOARD B
@@ -97,6 +100,24 @@
 	        I.CATEGORY_NO = B.MAIN_CATEGORY_NO
 	</select>
 	
+	<select id="selectByIdWithoutImg" resultType="board" parameterType="long">
+		SELECT
+			   BOARD_NO boardNo,
+			   BOARD_TITLE boardTitle,
+			   BOARD_CONTENT boardContent,
+			   M.NICKNAME nickname,
+			   COUNT,
+			   TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD') as createDate
+		 FROM
+		 	  TB_BOARD B
+		 JOIN
+		 	  TB_MEMBER M ON (M.MEMBER_NO = B.BOARD_WRITER)
+		WHERE
+			  B.STATUS = 'Y'
+		  AND
+		  	  BOARD_NO = #{boardNo}
+	</select>
+	
 	<select id="findImageByBoard" parameterType="long" resultType="Image">
 		<include refid="boardColumn" />
 		AND
@@ -159,6 +180,39 @@
 		   AND
 		   	   BOARD_NO = #{boardNo}
 	</delete>
+	
+	<delete id="deleteBoardImg" parameterType="image">
+		DELETE 
+		  FROM 
+		  	   TB_IMAGE 
+		 WHERE 
+		 	   IMG_NO = #{imgNo}
+	</delete>
+	
+	<insert id="boardImgUpdate" parameterType="image">
+		INSERT
+		  INTO
+		  		TB_IMAGE
+		  		(
+		  		IMG_NO,
+		  		ORIGIN_IMG_NAME,
+		  		CHANGE_IMG_NAME,
+		  		IMG_PATH,
+		  		IMG_LEVEL,
+		  		IMG_POST_NO,
+		  		CATEGORY_NO
+		  		)
+		 VALUES
+		 		(
+		  		SEQ_INO.NEXTVAL,
+				#{originImgName},
+				#{changeImgName},
+				#{imgPath},
+				#{imgLevel},
+				SEQ_BNO.CURRVAL,
+				1
+				)
+	</insert>
 	
 	<update id="updateBoard" parameterType="board">
 		UPDATE

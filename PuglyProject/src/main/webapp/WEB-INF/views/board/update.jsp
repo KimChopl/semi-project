@@ -53,6 +53,12 @@
                         <td>
                             <input type="file" id="upfile" class="form-control-file border" name="upfile">
                             
+                            <c:if test="${not empty board.image}">
+                            	현재 업로드된 파일 :
+                            	<a href="${board.image.changeImgName}" download="${board.image.originImgName}">${board.image.originImgName }</a>
+                            	<input type="hidden" value="${board.image.originImgName}" name="originName" />
+                            	<input type="hidden" value="${board.image.changeImgName}" name="changeName" />
+                            </c:if>
                         </td>
                     </tr>
                     <tr>

@@ -52,26 +52,29 @@
                     <td>${board.createDate}</td>
                 </tr>
                 <tr>
-                    <th>첨부파일</th>
-	                    <td colspan="3">
-	                    	첨부파일이 존재하지 않습니다.
-	                    </td>
-	                    <td colspan="3">
-	                        <a href="" download=""></a>
-	                    </td>
-                </tr>
-                <tr>
-                    <th>내용</th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <td colspan="4"><p style="height:150px;">${board.boardContent}</p></td>
-                </tr>
+				    <th>내용</th>
+				    <td colspan="3"></td>
+				</tr>
+				<tr>
+				    <td colspan="4">
+				        <p style="height:auto; line-height: 1.6;">
+				            <c:choose>
+				                <c:when test="${not empty board.image}">
+				                    <br/>
+				                    <div style="text-align: center; margin-bottom: 20px;">
+				                        <img src="/pugly/${board.image.changeImgName}" alt="${board.image.originImgName}" style="max-width: 100%; max-height: 300px;" />
+				                    </div>
+				                </c:when>
+				            </c:choose>
+				            ${board.boardContent}
+				        </p>
+				    </td>
+				</tr>
             </table>
             <br>
 
             <div align="center">
-                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.categoryNo eq 1}">
+                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.categoryNo eq 1 or not empty sessionScope.loginUser}">
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
             	</c:if>
@@ -90,7 +93,7 @@
             
             <form action="" method="post" id="postForm">
             	<input type="hidden" name="boardNo" value="${board.boardNo}" />
-            	<!-- <input type="hidden" name="memberNo" value="${loginUser.memberNo}" /> -->
+				<input type="hidden" name="changeImgName" value="${board.image.changeImgName}" />            	
             </form>
             
             <br><br>

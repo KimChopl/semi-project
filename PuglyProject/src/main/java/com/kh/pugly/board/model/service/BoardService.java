@@ -15,7 +15,7 @@ public interface BoardService {
 	void updateBoard(Board board, MultipartFile upfile);
 	
 	// 게시판 삭제
-	void deleteBoard(Long boardNo);
+	void deleteBoard(Long boardNo, String changeImgName);
 	
 	// 리스트 조회
 	Map<String, Object> selectBoardList(int currentPage, String sortType);

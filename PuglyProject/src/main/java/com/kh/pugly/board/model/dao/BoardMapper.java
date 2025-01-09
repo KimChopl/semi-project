@@ -40,4 +40,8 @@ public interface BoardMapper {
 	int selectMyBoardCount(Long memberNo);
 	// 마이페이지 내 게시글 리스트
 	List<Board> selectMyBoardList(Long memberNo, RowBounds rowBounds);
+
+	Board selectByIdWithoutImg(Long boardNo);
+
+	void deleteBoardImg(Image image);
 }
