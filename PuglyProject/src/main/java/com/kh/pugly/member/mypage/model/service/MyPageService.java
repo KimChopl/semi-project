@@ -16,4 +16,6 @@ public interface MyPageService {
 	Map<String, Object> selectMyReplyList(Long memberNo, int currentPage);
 	
 	Map<String, Object> selectMyProductList(Long memberNo, int currentPage);
+	
+	Map<String, Object> selectMyAttentionList(Long memberNo, int currentPage);
 }

@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>내 찜 목록</title>
 
     <style>
         div{
@@ -101,22 +101,26 @@
 
 	    <div id="body">
 	        <br>
-	        <div id="wrap">
-	            <div id="img"></div>
-	            <div id="farm-title">농장이름 : </div>
-	            <div id="farm-address">주소 : </div>
-	            <div id="attention">찜 : </div>
-	            <div id="like">좋아요 : </div>
-	        </div>
+	        <c:forEach items="${ list }" var="f">
+		        <div id="wrap">
+		            <div id="img"><img src="${ f.imgList.imgPath }${ f.imgList.changeImgName }" class="img"></div>
+		            <div id="farm-title">농장이름 : ${ f.farmTitle }</div>
+		            <div id="farm-address">주소 : ${ f.address }</div>
+		            <div id="attention">찜 : ${ f.attention }</div>
+		            <div id="like">좋아요 : ${ f.like }</div>
+		        </div>
+	        </c:forEach>
 	        <div class="text-center">
-	            <ul class="pagination">
-	                <li class="page-item"><a class="page-link" href="#">이전</a></li>
-	                <li class="page-item"><a class="page-link" href="#">1</a></li>
-	                <li class="page-item"><a class="page-link" href="#">2</a></li>
-	                <li class="page-item"><a class="page-link" href="#">3</a></li>
-	                <li class="page-item"><a class="page-link" href="#">다음</a></li>
-	            </ul>
-	        </div>
+	        <ul class="pagination">
+		            <li class="page-item" id="pro"><a class="page-link" href="select.myFarmList?memberNo=${ sessionScope.loginUser.memberNo }">이전</a></li>
+		        <c:forEach begin="${ pageInfo.startPage }" end="${ pageInfo.endPage }" var="i">
+		        
+		            <li class="page-item"><a class="page-link" href="select.myFarmList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${i}">${ i }</a></li>
+		        
+		        </c:forEach>
+		            <li class="page-item" id="next"><a class="page-link" href="select.myFarmList?memberNo=${ sessionScope.loginUser.memberNo }&currentPage=${pageInfo.endPage + 1 }">다음</a></li>
+	        </ul>
+        </div>
 	    </div>
 	    <script>
 	    	let endPage = "${pageInfo.endPage}";

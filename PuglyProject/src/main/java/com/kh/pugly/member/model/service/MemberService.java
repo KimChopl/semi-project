@@ -36,10 +36,5 @@ public interface MemberService {
 	Map<String, Object> selectMemberInfo(Long memberNo);
 
 	void deleteAddress(Long memberNo, Long userNo, Long addressNo);
-
-	
-
-
-
 	
 }

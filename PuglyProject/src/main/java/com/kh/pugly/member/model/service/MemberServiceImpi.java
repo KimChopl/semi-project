@@ -119,7 +119,11 @@ public class MemberServiceImpi implements MemberService {
 	public Member selectMember(Member member) {
 		// 잠시 테스트
 		validateUser.validationMember(member);
+		
 		Member loginUser = mapper.selectMember(member);
+		if("정지".equals(member.getCategoryName())) {
+			throw new InvalidRequestException("정지된 사용자입니다.");
+		}
 		
 		validateUser.noExistingMember(loginUser);
 		

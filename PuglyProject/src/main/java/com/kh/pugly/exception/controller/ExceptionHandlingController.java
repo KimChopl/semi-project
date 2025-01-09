@@ -22,6 +22,7 @@ import com.kh.pugly.exception.FailUpdateMemberException;
 import com.kh.pugly.exception.InvalidParameterException;
 import com.kh.pugly.exception.InvalidRequestException;
 import com.kh.pugly.exception.NoExistentMemberException;
+import com.kh.pugly.exception.NotFoundAttentionException;
 import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.NotFoundFarmListException;
 import com.kh.pugly.exception.NotFoundObjectException;
@@ -141,6 +142,11 @@ public class ExceptionHandlingController {
 	@ExceptionHandler(NotFoundProductException.class)
 	protected ModelAndView noSearchProductListError(NotFoundProductException e) {
 		return createErrorResponse("상품목록을 찾을 수 없습니다.", e);
+	}
+	
+	@ExceptionHandler(NotFoundAttentionException.class)
+	protected ModelAndView noSearchAttentionListError(NotFoundAttentionException e) {
+		return createErrorResponse("찜목록을 찾을 수 없습니다.", e);
 	}
 	//---------------------------------------------------------------------
 

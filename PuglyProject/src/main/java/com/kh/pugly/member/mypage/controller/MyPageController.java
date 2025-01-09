@@ -24,8 +24,6 @@ public class MyPageController {
 	
 	@GetMapping("select.cart")
 	public ModelAndView selectCartList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		//log.info("{}", currentPage);
-		
 		Map<String, Object> map = myPageService.selectCart(memberNo, currentPage);
 		return mv.setViewNameAndData("member/my_cart", map);
 	}
@@ -42,8 +40,8 @@ public class MyPageController {
 	}
 	@GetMapping("select.attention")
 	public ModelAndView selectMyattention(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {
-		
-		return mv.setViewNameAndData("member/my_attention_list", null);
+		Map<String, Object> map = myPageService.selectMyAttentionList(memberNo, currentPage);
+		return mv.setViewNameAndData("member/my_attention_list", map);
 	}
 	@GetMapping("select.myBoardList")
 	public ModelAndView selectMyboardList(Long memberNo, @RequestParam(defaultValue="1") int currentPage) {

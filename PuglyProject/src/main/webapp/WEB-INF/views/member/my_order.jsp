@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>내 주문 목록</title>
     
     <style>
 	    div{
@@ -161,10 +161,7 @@
 	                <div id="order-quantity">
 	                    <span class="span">개수</span>
 	                </div>
-	                <form action="insert.cart" method="post">
-	                    <input type="hidden" name="productNo" value="상품번호" />
-	                    <button type="submit" class="button">장바구니에 추가</button>
-	                </form>
+                    <button class="button">장바구니에 추가</button>
 	            </div>
 	            <div id="wrap">
 	                <div id="img"><img src="" class="img"></div>
@@ -183,10 +180,7 @@
 	                <div id="order-quantity">
 	                    <span class="span">개수</span>
 	                </div>
-	                <form action="insert.cart" method="post">
-	                    <input type="hidden" name="productNo" value="상품번호" />
-	                    <button type="submit" class="button">장바구니에 추가</button>
-	                </form>
+                    <button type="submit" class="button">장바구니에 추가</button>
 	            </div>
 	            <div id="wrap">
 	                <div id="img"><img src="" class="img"></div>
@@ -205,10 +199,7 @@
 	                <div id="order-quantity">
 	                    <span class="span">개수</span>
 	                </div>
-	                <form action="insert.cart" method="post">
-	                    <input type="hidden" name="productNo" value="상품번호" />
-	                    <button type="submit" class="button">장바구니에 추가</button>
-	                </form>
+                    <button type="submit" class="button">장바구니에 추가</button>
 	            </div>
 	        <div class="text-center">
 		        <ul class="pagination">

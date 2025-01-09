@@ -2,6 +2,8 @@ package com.kh.pugly.book.model.vo;
 
 import java.sql.Date;
 
+import com.kh.pugly.common.model.vo.Image;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +32,6 @@ public class Book {
 	private String cancel;
 	private String play;
 	private String pay;
+	
+	private Image image;
 }
