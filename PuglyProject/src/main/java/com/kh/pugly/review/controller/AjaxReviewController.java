@@ -21,7 +21,6 @@ public class AjaxReviewController {
 	@GetMapping(value="review", produces="application/json; charset=UTF-8") //일로 와야할게(12.31)
 	@ResponseBody
 	public Map<String, Object> selectMoreReview(int plusNo, Long farmNo) {
-		//log.info("{} : {}", plusNo, farmNo);
 		return rs.selectMoreReview(plusNo, farmNo);
 	}
 	

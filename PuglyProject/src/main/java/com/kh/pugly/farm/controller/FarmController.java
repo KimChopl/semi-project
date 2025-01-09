@@ -56,9 +56,7 @@ public class FarmController {
 	
 	@GetMapping("farms/{farmNo}") // 일로 들어옴(12.31)
 	public ModelAndView detailFarm(@PathVariable(name="farmNo") Long farmNo, HttpSession ssn) {
-		//log.info("{}",farmNo);
 		Map<String, Object> detail = fs.selectDetailFarm(farmNo);
-		//log.info("{}", detail);
 		return mv.setViewNameAndData("/farm/farm-detail", detail);
 	}
 	
@@ -66,7 +64,6 @@ public class FarmController {
 	public ModelAndView registFarm(HttpSession ssn) {
 		Member member = (Member)ssn.getAttribute("loginUser");
 		Map<String, Object> map = fs.getRegistInfo(member);
-		//log.info("{}", map);
 		
 		return mv.setViewNameAndData("/farm/regist-farm", map);
 	}
@@ -74,14 +71,12 @@ public class FarmController {
 	@PostMapping("farm/regist.farm")
 	public String insertFarm(Farm farm, int[] facilityNo, HttpSession ssn, MultipartFile[] multi, Address ad) {
 		Member loginUser = (Member)ssn.getAttribute("loginUser");
-		//log.info("{}", facilityNo);
 		fs.insertFarm(farm, multi, loginUser, ad, facilityNo);
 		return "redirect:/farms";
 	}
 	
 	@GetMapping("modify/farm")
 	public ModelAndView modifyFarm(Long farmNo, HttpSession ssn) {
-		//log.info("{}", farmNo);
 		Member member = (Member)ssn.getAttribute("loginUser");
 		return mv.setViewNameAndData("farm/update_form_farm", fs.selectUpdateForm(farmNo, member));
 	}

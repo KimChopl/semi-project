@@ -82,7 +82,6 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		RowBounds rb = getRowBounds(mi);
 		List<Review> review = rm.selectReviewList(farmNo, rb);
-		//log.info("{}", mi);
 		checkedReview(review);
 		return review;
 	}

@@ -33,7 +33,6 @@ public class BookController {
 	
 	@PostMapping("book/byfarm")
 	public ModelAndView insertBook(Long farmNo, String kid, String adult, String bookDate) {
-		//System.out.println(farmNo + ", " + kid + ", " + adult + ", " + bookDate);
 		Map<String, Object> map = new HashMap();
 		Farm farm = fs.selectBookFarm(farmNo);
 		map.put("farm", farm);
