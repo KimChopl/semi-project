@@ -28,6 +28,7 @@
 			   BOARD_CONTENT boardContent,
 			   M.NICKNAME nickname,
 			   COUNT,
+			   I.IMG_NO imgNo,
 			   I.ORIGIN_IMG_NAME originImgName,
 		       I.CHANGE_IMG_NAME changeImgName,
 		       I.IMG_LEVEL imgLevel,
