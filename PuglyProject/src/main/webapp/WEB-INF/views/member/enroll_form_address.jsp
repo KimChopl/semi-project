@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주소수정</title>
+    <title>내 주소</title>
     <style>
     
         div{
@@ -136,8 +136,8 @@
 	            <form action="insert.address" method="post">
 	                <input type="hidden" name="memberNo" value="${ sessionScope.loginUser.memberNo }" />
 	                <select name="addressType" class="select">
-	                	<option value="2">서브배송지</option>
-	                	<option value="1">메인배송지</option>
+	                	<option value="2">서브주소</option>
+	                	<option value="1">메인주소</option>
 	                </select>
 	                <br>
 	                <select name="stateCode" class="select">

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.kh.pugly.book.model.vo.Book;
 import com.kh.pugly.farm.model.vo.Farm;
 import com.kh.pugly.product.model.vo.Product;
 import com.kh.pugly.reply.model.vo.Reply;
@@ -27,4 +28,10 @@ public interface MyPageMapper {
 	int selectMyProductCount(Long memberNo);
 
 	List<Product> selectMyProductList(Long memberNo, RowBounds rowBounds);
+	
+	List<Book> selectMyBookList(Long memberNo, RowBounds rowBounds);
+	
+	int selectMyAttentionCount(Long memberNo);
+	
+	List<Farm> selectMyAttentionList(Long memberNo, RowBounds rowBounds);
 }

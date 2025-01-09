@@ -69,22 +69,51 @@
 	       DELETE_ASK = 'N'
 </select>
 
-<select id="selectMyFarmList" parameterType="long" resultType="farm">
+<resultMap type="Farm" id="farmAndImage">
+	<id property="farmNo" column="farmNo"/>
+	<result property="farmTitle" column="farmTitle"/>
+	<result property="farmCount" column="farmCount"/>
+	<result property="farmPrice" column="farmPrice"/>
+	<result property="attention" column="ATT" />
+	<result property="like" column="FARM_LIKE" />
+	<result property="address" column="address" />
+	<result property="farmModifyDate" column="farmModifyDate"/>
+	<collection property="imgList"  ofType="Image">
+		<result property="originImgName" column="originImgName" />
+		<result property="changeImgName" column="changeImgName" />
+		<result property="imgNo" column="imgNo" />
+		<result property="imgLevel" column="imgLevel"/>
+		<result property="imgPath" column="imgPath" />
+		<result property="status" column="status" />
+	</collection>
+</resultMap>
+
+<select id="selectMyFarmList" parameterType="long" resultMap="farmAndImage">
 	SELECT
 	       FARM_NO farmNo,
            FARM_TITLE farmTitle,
            FARM_COUNT farmCount,
            FARM_PRICE farmPrice,
            FARM_MODIFY_DATE farmModifyDate,
-           NICKNAME seller
+           ORIGIN_IMG_NAME originImgName,
+           CHANGE_IMG_NAME changeImgName,
+           IMG_PATH imgPath
       FROM
            TB_FARM
       JOIN
            TB_MEMBER ON (SELLER_NO = MEMBER_NO)
+      JOIN
+           TB_IMAGE ON (IMG_POST_NO = FARM_NO)
      WHERE
            TB_MEMBER.MEMBER_NO = #{memberNo}
        AND
            DELETE_ASK = 'N'
+       AND
+           IMG_STATUS = 'Y'
+       AND
+           IMG_LEVEL = 1
+       AND
+           CATEGORY_NO = 3
 </select>
 <select id="selectMyReplyCount" parameterType="long" resultType="_int">
 	SELECT
@@ -110,10 +139,15 @@
  	  	   TB_REPLY R
  	  JOIN
  	       TB_MEMBER M ON(R.NICKNAME = M.NICKNAME)
+ 	  LEFT
+ 	  JOIN
+ 	       TB_BOARD B ON (BOARD_NO = REF_BNO)
  	 WHERE
  	 	   R.STATUS = 'Y'
 	   AND
 	       M.MEMBER_NO = #{memberNo}
+	   AND
+	       B.STATUS = 'Y'
 	 ORDER
 	    BY
 	       createDate DESC	
@@ -170,7 +204,149 @@
 	       MEMBER_NO = #{memberNo}
 </select>
 
-
+<resultMap type="Book" id="bookAndImage">
+	<id property="bookNo" column="bookNo"/>
+        <result property="farmNo" column="farmNo"/>
+        <result property="farmTitle" column="farmTitle"/>
+        <result property="memberNo" column="memberNo"/>
+        <result property="nickname" column="nickname"/>
+        <result property="bookDate" column="bookDate"/>
+        <result property="playDate" column="playDate"/>
+        <result property="adultNo" column="adultNo"/>
+        <result property="kidNo" column="kidNo"/>
+        <result property="decide" column="decide"/>
+        <result property="cancel" column="cancel"/>
+        <result property="play" column="play"/>
+        <result property="pay" column="pay"/>
+        <association property="image" javaType="Image">
+            <result property="originImgName" column="originImgName"/>
+            <result property="changeImgName" column="changeImgName"/>
+            <result property="imgPath" column="imgPath"/>
+        </association>
+</resultMap>
+<select id="selectMyBookList" parameterType="long" resultMap="bookAndImage">
+	SELECT
+	       B.BOOK_NO bookNo,
+	       BOOK_FARM_NO farmNo,
+	       FARM_TITLE farmTitle,
+	       BOOK_USER_NO memberNo,
+	       NICKNAME nickname,
+	       BOOK_DATE bookDate,
+	       PLAY_DATE playDate,
+	       BOOK_CONTENT bookContent,
+	       ADULT adultNo,
+	       KID kidNo,
+		   D.BOOK_NO as "decide",
+		   C.BOOK_NO as "cancel",
+		   PL.BOOK_NO as "play",
+		   PY.BOOK_NO as "pay",
+		   ORIGIN_IMG_NAME originImgName,
+		   CHANGE_IMG_NAME changeImgName,
+		   IMG_PATH imgPath		      
+	  FROM
+	       TB_BOOK B
+	  JOIN
+	       TB_MEMBER ON(MEMBER_NO = BOOK_USER_NO)
+	  JOIN
+	       TB_FARM ON(FARM_NO = BOOK_FARM_NO)
+	  JOIN
+	       TB_IMAGE ON(FARM_NO = IMG_POST_NO)
+	  LEFT
+	  JOIN
+	       TB_BOOK_DECIDE D ON (D.BOOK_NO = B.BOOK_NO)
+	  LEFT
+	  JOIN
+	       TB_BOOK_CANCEL C ON (C.BOOK_NO = B.BOOK_NO)
+	  LEFT
+	  JOIN
+	       TB_BOOK_PLAY PL ON (PL.BOOK_NO = B.BOOK_NO)
+	  LEFT
+	  JOIN
+	       TB_BOOK_PAY PY ON (PY.BOOK_NO = B.BOOK_NO)
+	 WHERE
+	       IMG_LEVEL = 1
+	   AND
+	       CATEGORY_NO = 3
+       AND
+           IMG_STATUS = 'Y'
+       AND
+           MEMBER_NO = #{memberNo}
+</select>
+<select id="selectMyAttentionCount" parameterType="long" resultType="_int">
+	SELECT
+		   COUNT(*)
+	  FROM
+	       TB_FARM F
+	  JOIN
+	       TB_MEMBER M ON (SELLER_NO = M.MEMBER_NO)
+	  JOIN
+	       TB_ADDRESS A ON (SELLER_NO = A.MEMBER_NO)
+	  JOIN
+	       TB_STATE_CATEGORY S ON (A.STATE_CODE = S.STATE_CODE)
+	  JOIN
+	       TB_FARM_ATTENTION ON(FARM_NO = ATT_BY_FARM)
+	  LEFT
+	  JOIN
+	       TB_IMAGE IM ON(IM.IMG_POST_NO = FARM_NO AND IM.CATEGORY_NO = 3)
+	 WHERE
+	       (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL OR IM.IMG_STATUS = 'Y' OR IM.IMG_STATUS IS NULL)
+	   AND
+	       DELETE_ASK = 'N'
+	   AND
+	       ADDRESS_TYPE = 1
+	   AND
+	       ATT_USER_NO = #{memberNo}
+</select>
+<select id="selectMyAttentionList" parameterType="long" resultMap="farmAndImage">
+	SELECT
+	       FARM_TITLE farmTitle,
+	       NVL((SELECT
+	                   COUNT(ATT_BY_FARM)
+			      FROM
+			           TB_FARM_ATTENTION
+			     WHERE
+			           ATT_BY_FARM = F.FARM_NO
+			     GROUP
+			        BY
+			           ATT_BY_FARM),0) ATT,
+			NVL((SELECT
+			            COUNT(LIKE_BY_FARM)
+			       FROM
+			            TB_FARM_LIKE
+			      WHERE
+			            LIKE_BY_FARM = F.FARM_NO
+			      GROUP
+			         BY
+			            LIKE_BY_FARM),0) AS "FARM_LIKE",
+	        STATE_NAME || ' ' || DISTRICT address,
+	        IMG_PATH imgPath,
+			ORIGIN_IMG_NAME originImgName,
+			CHANGE_IMG_NAME changeImgName
+	   FROM
+	        TB_FARM F
+	   JOIN
+	        TB_MEMBER M ON (SELLER_NO = M.MEMBER_NO)
+	   JOIN
+	        TB_ADDRESS A ON (SELLER_NO = A.MEMBER_NO)
+	   JOIN
+	        TB_STATE_CATEGORY S ON (A.STATE_CODE = S.STATE_CODE)
+	   JOIN
+	        TB_FARM_ATTENTION ON(FARM_NO = ATT_BY_FARM)
+	   LEFT
+	   JOIN
+	        TB_IMAGE IM ON(IM.IMG_POST_NO = FARM_NO AND IM.CATEGORY_NO = 3)
+	  WHERE
+	        (IM.IMG_LEVEL = 1 OR IM.IMG_LEVEL IS NULL OR IM.IMG_STATUS = 'Y' OR IM.IMG_STATUS IS NULL)
+	    AND
+	        DELETE_ASK = 'N'
+	    AND
+	        ADDRESS_TYPE = 1
+	    AND
+	        ATT_USER_NO = #{memberNo}
+	  ORDER
+	     BY
+	        ATT_DATE DESC
+</select>
 
 
 

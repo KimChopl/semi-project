@@ -27,9 +27,17 @@
 		<interceptor>
 			<mapping path="/my_page.member"/>
 			<mapping path="/update_enroll_form.member"/>
-			<mapping path="/update_enroll_form.member"/>
+			<mapping path="/select.myBook/**"/>
+			<mapping path="/select.myOrder/**"/>
+			<mapping path="/select.attention/**"/>
+			<mapping path="/select.myBoardList/**"/>
+			<mapping path="/select.myReplyList/**"/>
+			<mapping path="/select.myFarmList/**"/>
+			<mapping path="/select.myProductList/**"/>
+			<mapping path="/update.seller"/>
 			<mapping path="/select.cart/**"/>
 			<mapping path="/enroll_form.address"/>
+			<mapping path="/farm/regist"/>
 			<beans:bean id="LoginInterceptor" class="com.kh.pugly.common.interceptor.LoginInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>

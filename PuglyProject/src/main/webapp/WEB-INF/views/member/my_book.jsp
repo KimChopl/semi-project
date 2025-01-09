@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>내 예약 목록</title>
 
 <style>
     	div{
@@ -32,7 +32,7 @@
         
 
         #wrap{
-            width: 550px;
+            width: 600px;
             height: 180px;
             margin: auto;
             margin-top: 10px;
@@ -46,8 +46,8 @@
             width: 110px;
             height: 50px;
             position: relative;
-            bottom: 20px;
-            left: 300px;
+            top: 35px;
+            left: 350px;
         }
 		
 
@@ -55,40 +55,40 @@
             width: 110px;
             height: 50px;
             position: relative;
-            bottom: 70px;
-            left: 420px;
+            top: 40px;
+            left: 350px;
         }
         
 		#decide{
 			width: 50px;
             height: 50px;
             position: relative;
-            bottom: 85px;
-            left: 10px;		
+            bottom: 195px;
+            left: 405px;		
 		}
 		
         #pay{
             width: 50px;
             height: 50px;
             position: relative;
-            bottom: 235px;
-            left: 70px;
+            bottom: 345px;
+            left: 350px;
         }
         
         #play{
             width: 50px;
             height: 50px;
             position: relative;
-            bottom: 185px;
-            left: 230px;
+            bottom: 295px;
+            left: 475px;
         }
 
         #cancel{
         	width: 50px;
             height: 50px;
             position: relative;
-            bottom: 135px;
-            left: 170px;
+            bottom: 245px;
+            left: 530px;
         }
 
         
@@ -96,8 +96,8 @@
             width: 150px;
             height: 25px;
             position: relative;
-            left: 25px;
-            top: 10px;
+            left: 190px;
+            top:25px;
             text-align: left;
         }
         
@@ -105,33 +105,37 @@
             width: 90px;
             height: 25px;
             position: relative;
-            bottom: 50px;
-            left: 400px;
+            bottom: 55px;
+            left: 470px;
         }
 
         #adult{
             width: 80px;
             height: 25px;
             position: relative;
-            bottom: 35px;
-            left: 360px;
+            bottom: 50px;
+            left: 475px;
         }
 
         #kid{
             width: 80px;
             height: 25px;
             position: relative;
-            bottom: 60px;
-            left: 450px;
+            bottom: 45px;
+            left: 475px;
         }
         
-        #content{
-        	width: 250px;
-            height: 70px;
+        #img{
+        	width: 150px;
+            height: 150px;
             position: relative;
-            bottom: 360px;
-            left: 25px;
-            text-align: left;
+            bottom: 390px;
+            left: 10px;
+        }
+        
+        .img{
+        	width: 100%;
+        	height: 100%;
         }
 
 
@@ -230,8 +234,8 @@
 	                </c:choose>
                 </span>
             </div>
-            <div id="content">
-            	<span class="span">${ b.bookContent }</span>
+            <div id="img">
+            		<img src="${ b.image.imgPath }${ b.image.changeImgName }" class="img">
             </div>
         </div>
     </c:forEach>

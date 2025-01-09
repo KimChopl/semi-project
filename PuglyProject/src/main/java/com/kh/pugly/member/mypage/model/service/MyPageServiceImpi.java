@@ -14,6 +14,7 @@ import com.kh.pugly.book.model.vo.Book;
 import com.kh.pugly.common.model.vo.PageInfo;
 import com.kh.pugly.common.template.PagiNation;
 import com.kh.pugly.exception.BoardNotFoundException;
+import com.kh.pugly.exception.NotFoundAttentionException;
 import com.kh.pugly.exception.NotFoundBookException;
 import com.kh.pugly.exception.NotFoundCartListException;
 import com.kh.pugly.exception.NotFoundFarmListException;
@@ -93,7 +94,7 @@ public class MyPageServiceImpi implements MyPageService {
 		}
 		PageInfo pi = getPageInfo(pageCount, currentPage, 2, 3);
 		RowBounds rowBounds = getRowBounds(pi);
-		List<Book> list = bookMapper.selectBookList(rowBounds, memberNo);
+		List<Book> list = mapper.selectMyBookList(memberNo, rowBounds);
 		//log.info("{}", list);
 		return getResponseData(pi, list);
 	}
@@ -135,6 +136,20 @@ public class MyPageServiceImpi implements MyPageService {
 		PageInfo pi = getPageInfo(pageCount, currentPage, 8, 5);
 		RowBounds rowBounds = getRowBounds(pi);
 		List<Product> list = mapper.selectMyProductList(memberNo, rowBounds);
+		
+		return getResponseData(pi, list);
+	}
+
+	@Override
+	public Map<String, Object> selectMyAttentionList(Long memberNo, int currentPage) {
+		int pageCount = mapper.selectMyAttentionCount(memberNo);
+		log.info("{}", pageCount);
+		if(pageCount == 0) {
+			throw new NotFoundAttentionException("찜 목록을 찾을 수 없습니다.");
+		}
+		PageInfo pi = getPageInfo(pageCount, currentPage, 3, 5);
+		RowBounds rowBounds = getRowBounds(pi);
+		List<Farm> list = mapper.selectMyAttentionList(memberNo, rowBounds);
 		
 		return getResponseData(pi, list);
 	}

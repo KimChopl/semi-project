@@ -1,12 +1,10 @@
 package com.kh.pugly.member.model.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.pugly.common.model.vo.Address;
-import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.member.model.vo.Member;
 
 public interface MemberService {
@@ -36,10 +34,5 @@ public interface MemberService {
 	Map<String, Object> selectMemberInfo(Long memberNo);
 
 	void deleteAddress(Long memberNo, Long userNo, Long addressNo);
-
-	
-
-
-
 	
 }
