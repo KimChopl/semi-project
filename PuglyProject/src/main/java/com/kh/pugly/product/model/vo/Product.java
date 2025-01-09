@@ -28,6 +28,7 @@ public class Product {
 	private String productDate;				// 상품 등록일
 	private String unitName;				// 상품단위
 	private String deliveryPrice;			// 배송비
+	private String deliveryFree;			// 무료배송비
 	private String productType;				// 상품타입
 	
 	private Long storeNo;					// 상점외래키

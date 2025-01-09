@@ -2,6 +2,8 @@ package com.kh.pugly.common.model.vo;
 
 import java.sql.Date;
 
+import com.kh.pugly.product.model.vo.MyStore;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -28,4 +30,6 @@ public class Image {
 	private Long postNo;
 	private Long categoryNo;
 	private String status;
+	
+	private Long storeNo;
 }

@@ -186,18 +186,53 @@
                     <option value="못난이야채">못난이 야채</option>
                 </select>
                 <br><br>
+                
+                
                 <span class="title">배송정보</span> 
                 
-                
-                <input type="radio" value="무료" name="deliveryPrice" id="deliver-btn1" checked>
+                <input type="radio" name="delivery" id="deliver-btn1">
                 <label>무료배송</label>
                 
-                <input type="radio" value="배송비포함" name="deliveryPrice" id="deliver-btn2">
+                <input type="radio" name="delivery" id="deliver-btn2">
                 <label>배송비</label>
                 
+                <br>
                 
-                <input type="number" class="text-title" name=""> 
+                <div style="display: none;" id="delivery-text">
+                <input type="number" class="text-title" id="deliver-no" placeholder="가격을 입력해주세요"> 
                 <label>배송비 입력</label>
+                </div>
+                
+                <input type="hidden" id="tq" value="무료">
+                
+        		
+        <script>
+        
+        // 배송비 선택했을때
+        $('#deliver-btn2').change(function(){
+        	$('#delivery-text').show();
+        	$('#deliver-no').attr('name', 'deliveryPrice');
+        	$('#deliver').val('원');
+        	$('#tq').removeAttr('name');
+        	$('#tq').removeAttr('value');
+        });
+        
+        
+        // 무료햇을때
+        $('#deliver-btn1').change(function(){
+        	$('#delivery-text').hide();
+        	$('#tq').attr('name', 'deliveryPrice');
+        	$('#tq').val('무료');
+        	$('#deliver-no').removeAttr('name');
+        	$('#deliver-no').removeAttr('value');
+        });
+        
+        </script>
+                
+                
+                
+                
+                
                 
                 <br><br>
                 <hr>

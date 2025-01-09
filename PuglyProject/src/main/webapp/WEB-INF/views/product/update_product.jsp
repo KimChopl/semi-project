@@ -69,7 +69,7 @@
 
     <div class="content">
         <div>
-            <h2>상품 등록</h2>
+            <h2>상품 수정</h2>
             <hr>
             <div class="상품 이미지 보여주는 칸">
                 
@@ -84,7 +84,7 @@
             <div>                
             <div class="img-fom">
                 <label>대표이미지</label><br>
-                <img src="https://img1.daumcdn.net/thumb/R1280x0.fpng/?fname=http://t1.daumcdn.net/brunch/service/user/6n45/image/vPp4Yy5ZpPK75WFv7uJKbcLBTM4.png" class="main-img" id="title-img">
+                <img src="${ product.image.changeImgName }" class="main-img" id="title-img">
             </div>
             <div class="img-fom">
                 <label>상세이미지-1</label><br>
@@ -168,7 +168,7 @@
          </div>
          <hr>
          <br>
-                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="최대 20글자" name="productName" id="productName"> <br><br>
+                <span class="title"> 상품명 </span> <input type="text" class="text-name" maxlength="20" placeholder="${ product.productName }" name="productName" id="productName"> <br><br>
                 <span class="title">상품가격</span> <input type="number" class="text-title" name="productPrice" id="productPrice"> <br><br>
                 <span class="title">상품수량</span> <input type="number" class="text-title" name="productQuantity" id="productQuantity">
                 <select style="width: 80px; height: 30px; font-size: 20px" name="unitName" id="unitName">

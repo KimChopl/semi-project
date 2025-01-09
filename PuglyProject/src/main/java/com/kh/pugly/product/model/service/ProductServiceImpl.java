@@ -116,12 +116,7 @@ public class ProductServiceImpl implements ProductService {
 		int totalCount = mapper.selectTotalCount();
 		return totalCount;
 	}
-	// 상점 숫자 체크
-	private Long getMySotreNoList(Long userNo) {
-		Long storeNo = mapper.getStoreByuserNo(userNo);
-		return storeNo;
-		
-	}
+
 	// 페이지 수
 	private PageInfo getPageInfo(int totalCount, int page) {
 		return PagiNation.getPageInfo(totalCount, page, 10, 5);
@@ -168,7 +163,7 @@ public class ProductServiceImpl implements ProductService {
 	private Long getUserNoSelectStoreNo(Long userNo) {
 		return mapper.getUserNoSelectStoreNo(userNo);
 	}
-	
+	// 상품 번호로 사진 검색하기
 	// 유저번호로 이용하여 상점번호 조회
 	public Long getStoreNoByMemberNo(Long memberNo) {
 		return mapper.selectStoreNoByMemberNo(memberNo);
@@ -248,27 +243,7 @@ public class ProductServiceImpl implements ProductService {
 		responseData.put("storeNo", storeNo);
 		
 		return responseData;
-		
-		/*
-		// 상품수
-		int totalCount = getTotalCount();
-		//페이지 정보
-		PageInfo pi = getPageInfo(totalCount, currentPage);
-		// 상품리스트
-		List<Product> products = getProductList(pi);
-		
-		// 상점번호 있는지 확인
-		Long storeNo = getUserNoSelectStoreNo(userNo);
-		
-		Map<String, Object> map = new HashMap();
-		map.put("products", products);
-		map.put("pageInfo", pi);
-		map.put("storeNo", storeNo);
-		map.put("userNo", userNo);
-		
-		return map;
-		  
-		 */
+
 	}
 	// 내상점 업데이트
 	@Override
@@ -317,7 +292,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		log.info("작동잘해?!");
 		
-		Product product = findProductById(productNo);
+		findProductById(productNo);
 		
 		int result = mapper.deleteProduct(productNo);
 		
@@ -326,6 +301,44 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		
+		
+	}
+	@Override
+	public void productUpdate(Product product, MultipartFile[] upfile) {
+		
+		log.info("상품이요{}",product);
+		
+		findProductById(product.getProductNo());
+		List<Image> imgList = findImagesByProductId(product.getProductNo());
+		
+		if(imgList != null && ! imgList.isEmpty()) {
+			String imgName = imgList.get(0).getChangeImgName();
+			System.out.println("이미지 이름 : " + imgName);
+		}
+		
+		for(MultipartFile file : upfile) {
+			
+			
+			if(!file.getOriginalFilename().equals("")) {
+				log.info("{}",file);
+				
+				
+				for(Image img : imgList) {
+					log.info("{}",img);
+				
+					if(img.getChangeImgName() != null){
+						new File(context.getRealPath(img.getChangeImgName())).delete();
+						log.info("삭제했니?");
+					}
+				}
+				productSaveImg(upfile);
+			}
+			int result = mapper.updateImgProduct(imgList);
+			if(result < 1) {
+				log.info("응업뎃 실패~");
+			}
+		}
+		mapper.productUpdate(product);
 		
 	}
 

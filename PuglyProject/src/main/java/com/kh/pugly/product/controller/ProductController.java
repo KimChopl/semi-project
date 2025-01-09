@@ -116,9 +116,16 @@ public class ProductController {
 		return mv.setViewNameAndData("redirect:/stores/" + storeNo, null);
 	}
 	// 상품 업데이트할꺼야~
-	@GetMapping("updateProduct")
-	public String productUpdatePage() {
-		return "product/update_product";
+	@PostMapping("update.product")
+	public ModelAndView productUpdate(Product product, MultipartFile[] upfile, HttpSession session) {
+		log.info("{} / {} ", product, upfile);
+		
+		productService.productUpdate(product, upfile);
+		
+		// 이건 수정한곳으로 돌아가기위한 세션!
+		Long storeNo = (Long) session.getAttribute("storeNo");
+		return mv.setViewNameAndData("redirect:/stores/" + storeNo , null);
+		
 	}
 	
 	
