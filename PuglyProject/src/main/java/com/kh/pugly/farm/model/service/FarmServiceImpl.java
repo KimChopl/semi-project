@@ -26,6 +26,7 @@ import com.kh.pugly.exception.FailInsertFarmException;
 import com.kh.pugly.exception.FailInsertObjectException;
 import com.kh.pugly.exception.FailUpdateException;
 import com.kh.pugly.exception.InvalidRequestException;
+import com.kh.pugly.exception.NotFoundObjectException;
 import com.kh.pugly.exception.NotFoundUserInfomation;
 import com.kh.pugly.exception.NotMatchUserInfomationException;
 import com.kh.pugly.farm.model.dao.FarmMapper;
@@ -66,7 +67,6 @@ public class FarmServiceImpl implements FarmService {
 	private int deleteFacility(Farm farm) {
 		int result = 1;
 		for(int i = 0; i < farm.getFacility().size(); i++) {
-			//log.info("{}", farm.getFacility().get(i));
 			farm.getFacility().get(i).setFacilityName(String.valueOf(farm.getFarmNo()));
 			result = result * fm.deleteFacility(farm.getFacility().get(i));
 		}
@@ -79,7 +79,6 @@ public class FarmServiceImpl implements FarmService {
 			Facility facility = new Facility();
 			facility.setFacilityNo(facilityNo[i]);
 			facility.setFacilityName(String.valueOf(farm.getFarmNo()));
-			//log.info("{}", facility);
 			result = result * fm.insertFacility(facility);
 		}
 		return result;
@@ -107,7 +106,6 @@ public class FarmServiceImpl implements FarmService {
 	
 	private MoreInfo getSuchPageInfo(Map<String, Object> map, int boardLimit) {
 		int listCount = fm.countSuchList(map);
-		log.info("{}", listCount);
 		return MoreInfomation.getMoreInfo(listCount, (int)map.get("plusNo"), boardLimit);
 	}
 	
@@ -142,12 +140,10 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Farm checkedDetailFarm(Long farmNo) {
-		//log.info("{}", farmNo);
 		Farm farm = fm.selectDetailFarm(farmNo);
 		if(farm == null) {
-			return null;
+			throw new NotFoundObjectException("농장 없는데?");
 		}
-		//log.info("{}", farm);
 		return farm;
 	}
 	
@@ -156,7 +152,6 @@ public class FarmServiceImpl implements FarmService {
 		checkedFarmNo(farmNo);
 		checkedFarm(farmNo);
 		Farm farm =  checkedSelectFormat(checkedDetailFarm(farmNo));
-		//log.info("{}", farm);
 		int moreNo = 0;
 		List<Review> review = rs.selectReviewList(moreNo, farmNo);
 		moreNo += 3;
@@ -213,7 +208,7 @@ public class FarmServiceImpl implements FarmService {
 	public void attetionFarm(LikeAndAttention attention) {
 		Farm farm = fm.selectDetailFarm(attention.getFarmNo());
 		if(farm == null) {
-			// Exception
+			throw new NotFoundObjectException("관심목록 넣을 농장 없음");
 		}
 		List<LikeAndAttention> list = fm.checkLike(attention.getMemberNo());
 		if(!!!list.isEmpty()) {
@@ -245,7 +240,6 @@ public class FarmServiceImpl implements FarmService {
 	}
 	
 	private Farm plusFarm(Farm farm, Long addressNo) {
-		//log.info("{}", addressNo);
 		farm.setAddress(String.valueOf(addressNo));
 		return farm;
 	}
@@ -257,7 +251,6 @@ public class FarmServiceImpl implements FarmService {
 			ci.deleteImage(list);
 			throw new FailInsertObjectException("농장 등록 실패");
 		}
-		//log.info("{}", newFarm.getFarmNo());
 		return newFarm.getFarmNo();
 	}
 	
@@ -281,7 +274,6 @@ public class FarmServiceImpl implements FarmService {
 	
 	private void insertFac(int[] facilityNo, Farm farm, List<Image> list) {
 		int result = 0;
-		log.info("{} : {}", facilityNo, farm);
 		for(int i = 0; i < facilityNo.length; i++) {
 			Facility fac = new Facility();
 			fac.setFacilityName(String.valueOf(facilityNo[i]));
@@ -437,7 +429,6 @@ public class FarmServiceImpl implements FarmService {
 			img.setImgLevel(num);
 			imgList.add(img);
 		}
-		//log.info("{}", imgList);
 		return imgList;
 	}
 	
@@ -562,14 +553,12 @@ public class FarmServiceImpl implements FarmService {
 	@Override
 	public void updateFarm(Map<String, Object> map) {
 		Member member = (Member)map.get("member");
-		//log.info("{}", member);
 		checkedMember(member);
 		Farm farm = (Farm)map.get("farm");
 		SelectImageByFarm no = new SelectImageByFarm();
 		no.setFarmNo(farm.getFarmNo());
 		no.setCategoryNo(3);
 		List<Image> beforeImg = im.selectByFarmNo(no);
-		//log.info("{}",beforeFarm);
 		List<String> change = (List<String>)map.get("change");
 		List<String> origin = (List<String>)map.get("origin");
 		List<String> imgLevel = (List<String>)map.get("imgLevel");
@@ -578,7 +567,6 @@ public class FarmServiceImpl implements FarmService {
 		MultipartFile[] files = (MultipartFile[])map.get("files");
 		Address ad = (Address)map.get("address");
 		farm.setAddressNo(checkedNewAddress(ad, member));
-		//log.info("{} : {}", imgList, newImgList);
 		int[] facility = (int[])map.get("facilityNo");
 		processImage(change, origin, path, imgLevel, files, beforeImg, beFarm);
 		updateFacility(facility, beFarm);
