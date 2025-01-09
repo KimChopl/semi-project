@@ -25,6 +25,8 @@ public interface ProductService {
 	void storeUpdate(MyStore myStore, MultipartFile upfile);
 	// 상품삭제
 	void deleteProduct(Long productNo, String changeImgName);
+	// 상품 업데이트!
+	void productUpdate(Product product, MultipartFile[] upfile);
 	
 
 

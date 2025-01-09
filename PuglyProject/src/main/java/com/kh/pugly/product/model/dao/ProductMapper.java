@@ -44,6 +44,9 @@ public interface ProductMapper {
 	void storeImgDelete(Image image);
 	// 상품삭제
 	int deleteProduct(Long productNo);
+	// 상품 업데이트
+	void productUpdate(Product product);
+	int updateImgProduct(List<Image> imgList);
 	
 	
 

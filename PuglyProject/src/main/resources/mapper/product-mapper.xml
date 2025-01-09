@@ -271,6 +271,8 @@
 		 WHERE
 		    	i.IMG_STATUS = 'Y'
 		   AND
+                i.CATEGORY_NO = 5
+		   AND
 		    	m.STORE_NO = #{storeNo}
 	</select>
 	
@@ -292,6 +294,8 @@
 		    	TB_IMAGE i ON (i.IMG_POST_NO = m.STORE_NO)  
 		 WHERE
 		    	i.IMG_STATUS = 'Y'
+		   AND
+              	i.CATEGORY_NO = 5
 		   AND
 		    	m.STORE_NO = #{storeNo}
 	</select>
@@ -326,7 +330,7 @@
 				#{changeImgName},
 				#{imgPath},
 				#{imgLevel},
-				SEQ_STORE.CURRVAL,
+				#{storeNo},
 				5
 				)
 	</insert>
@@ -356,6 +360,32 @@
 		 WHERE
 		   		PRODUCT_NO = #{productNo}
 	</update>
-
+	
+	<update id="updateImgProduct" parameterType="image">
+		
+		UPDATE
+				TB_IMAGE
+		   SET
+		   		ORIGIN_IMG_NAME = #{originImgName},
+		   		CHANGE_IMG_NAME = #{changeImgName}
+		  WHERE
+		  		IMG_POST_NO = #{productNo}
+			
+	</update>
+	
+	<update id="productUpdate" parameterType="product">
+		UPDATE
+				TB_PRODUCT
+		   SET
+		   		PRODUCT_NAME = #{productName},
+		   		PRODUCT_PRICE = #{productPrice},
+		   		PRODUCT_CONTENT = #{productContent},
+		   		PRODUCT_QUANTITY = #{productQuantity},
+		   		UNIT_NAME = #{unitName},
+		   		DELIVERY_PRICE = #{deliveryPrice},
+		   		PRODUCT_TYPE = #{productType}
+		  WHERE
+		  		PRODUCT_NO = #{productNo}
+	</update>
 
 </mapper>
