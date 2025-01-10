@@ -28,9 +28,10 @@ public class InquiryController {
 	@GetMapping("inquiries")
 	public ModelAndView selectinquiryList(@RequestParam(value = "page", defaultValue = "1")int page) {		
 	  
+		Map<String, Object> result = inquiryService.selectInquiryList(page);
 		
-	  List<Inquiry> inquiries = (List<Inquiry>)result.get("inquiries");
-	  PageInfo pageInfo = (PageInfo)result.get("pageInfo");
+		List<Inquiry> inquiries = (List<Inquiry>)result.get("inquiries");
+		PageInfo pageInfo = (PageInfo)result.get("pageInfo");
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("inquiry/list");

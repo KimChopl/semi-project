@@ -420,17 +420,16 @@
 </div>           
 			           
 			           
-		           
+		           <c:if test="${(sessionScope.loginUser.memberNo eq sessionScope.myStore.userNo) and (not empty sessionScope.myStore.storeNo) }">
 			           <button type="button" class="btn btn-success modal-xl" data-bs-toggle="modal" data-bs-target="#staticBackdrop-${ product.productNo }">
 			           	수정
 			           	</button>
-           
-			           
 			            <form action="/pugly/delete.product" method="post" style="display: inline-block;">
                         <input type="hidden" name="productNo" value="${ product.productNo }">
                         <input type="hidden" name="changeImgName" value="${ product.image.changeImgName }">
                         <button type="submit" class="btn btn-danger">삭제</button>
                     	</form>
+                   </c:if>
 			           
 			           </div>
 			       </div>
@@ -493,7 +492,7 @@
                 <div class="col">
                     <div class="img-fom">
                         <label>상점 이미지</label><br>
-                        <img src="${ image.changeImgName }" class="store-img" id="title-img">
+                        <img src="/pugly/${ image.imgPath }${ image.changeImgName }" class="store-img" id="title-img">
                     </div>
                     클릭하여 사진을 설정하세요.
                 </div>

@@ -27,6 +27,16 @@
            AND
                MEMBER_ID = #{memberId}
 	</select>
+	<select id="checkMemberId" parameterType="member" resultType="_int">
+		SELECT
+               COUNT(*)
+          FROM
+               TB_MEMBER me
+          JOIN
+               TB_MEMBER_TYPE my ON (me.FK_CATEGORY_NO = my.MB_CATEGORY_NO)
+         WHERE
+               MEMBER_ID = #{memberId}
+	</select>
 
 	
 	<select id="selectAddresses" parameterType="long" resultType="address">
@@ -154,16 +164,14 @@
 		       MEMBER_IMG_NO,
 		       MEMBER_NO,
 		       ORIGIN_IMG_NAME,
-		       CHANGE_IMG_NAME,
-		       IMG_PATH
+		       CHANGE_IMG_NAME
 		       )
 		VALUES
 		       (
 		       SEQ_MINO.NEXTVAL,
 		       SEQ_MNO.CURRVAL,
 		       #{originImgName},
-		       #{changeImgName},
-		       #{imgPath}
+		       #{changeImgName}
 		       )
 	</insert>
 	

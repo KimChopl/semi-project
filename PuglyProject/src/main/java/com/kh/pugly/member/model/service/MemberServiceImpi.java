@@ -68,8 +68,7 @@ public class MemberServiceImpi implements MemberService {
 			// 이미지 파일 정보
 			Image image = new Image();
 			image.setOriginImgName(fileName); // 원본 파일
-			image.setChangeImgName(changeName);
-			image.setImgPath("resources/member_profile/");
+			image.setChangeImgName("resources/member_profile/" + changeName);
 			return image;
 		}
 		return null;
@@ -123,6 +122,7 @@ public class MemberServiceImpi implements MemberService {
 			}
 		}
 	}
+	
 	
 	@Override
 	public Member selectMember(Member member) {
