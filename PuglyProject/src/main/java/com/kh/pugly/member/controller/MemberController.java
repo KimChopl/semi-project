@@ -58,7 +58,7 @@ public class MemberController {
 	@PostMapping("find_id.member")// 아이디찾기
 	public ModelAndView findMemberId(Member member) {
 		Map<String, Object> responseData = memberService.findMemberId(member);
-		return mv.setViewNameAndData("/member/find_member_id_form", responseData);
+		return mv.setViewNameAndData("member/find_member_id_form", responseData);
 	}
 	
 	@GetMapping("find_pwd.member")

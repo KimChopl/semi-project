@@ -259,7 +259,7 @@ public class MemberServiceImpi implements MemberService {
 	@Override
 	public Map<String, Object> findMemberId(Member member) {
 		Map<String, Object> map = new HashMap();
-		List<Member> memberId = mapper.findMemberId(member);
+		String memberId = mapper.findMemberId(member);
 		
 		if(memberId == null) {
 			throw new NoExistentMemberException("회원을 찾을 수 없습니다.");
