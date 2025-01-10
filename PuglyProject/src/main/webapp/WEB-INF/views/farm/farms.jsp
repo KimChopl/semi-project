@@ -182,11 +182,11 @@
 		<div id="btn-more-div">
         	<button id="moreBtn" class="btn btn-sm btn-info" onclick="suchFarms()">더보기</button>
         	<input type="hidden" id="user-category" value="${ sessionScope.loginUser.categoryNo }">
-        	<c:if test="${ seessionScope.loginUser.memberNo eq farm.memberNo }">
-        	<button class="btn btn-sm" id="regist-farm">체험 등록하기</button>
-        	</c:if>
-        	<c:if test="${ seessionScope.loginUser.memberNo ne farm.memberNo }">
+        	<c:if test="${ empty sessionScope.loginUser.memberNo }">
        		<button class="btn btn-sm" id="regist-farm" style="display:none;">체험 등록하기</button>
+        	</c:if>
+        	<c:if test="${ sessionScope.loginUser.categoryNo eq '2' }">
+        	<button class="btn btn-sm" id="regist-farm">체험 등록하기</button>
         	</c:if>
 		</div>   
     </div>

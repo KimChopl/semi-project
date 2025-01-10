@@ -103,10 +103,10 @@
                                     	<c:if test="${ empty b.cancel  && empty b.play}">
                                         <button value="${ b.bookNo }" data-bs-toggle="modal" data-bs-target="#cancel" class="btn btn-danger cancel-btn">취소하기</button>
                                         <c:if test="${ sessionScope.loginUser.categoryNo eq 2 && empty b.decide && empty b.play}">
-                                        <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" data-bs-target="#acceptance-btn" class="btn btn-primary decide-btn">확정하기</button>
+                                        <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" data-bs-target="#book-decide" class="btn btn-primary decide-btn">확정하기</button>
                                         </c:if>
                                         <c:if test="${ sessionScope.loginUser.categoryNo eq 2 && not empty b.decide && empty b.play }">
-                                        <button value="${ b.bookNo }" type="button" data-bs-toggle="modal" class="btn btn-primary play-btn">체험 진행 확인</button>
+                                        <button value="${ b.bookNo }" type="button" class="btn btn-primary play-btn">체험 진행 확인</button>
                                         </c:if>
                                         <c:if test="${ not empty b.play && sessionScope.loginUser.categoryNo eq 3}">
                                         <button value="${ b.farmNo }" type="button" class="btn btn-sm btn-success review-btn">리뷰하기</button>
@@ -134,7 +134,7 @@
         </div>
     </div>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-<div class="modal" tabindex="-1" id="acceptance-btn">
+<div class="modal" tabindex="-1" id="book-decide">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -334,7 +334,7 @@
                  el26.value = `\${e.bookNo}`
                  el26.classList.add('btn', 'btn-danger', 'cancel-btn')
                  el26.setAttribute('data-bs-toggle', 'modal')
-                 el26.setAttribute('data-bs-target', '#acceptance-btn')
+                 el26.setAttribute('data-bs-target', '#cancel')
                  el26.type = 'button'
                  el26.innerText = '취소하기'
                  el24.appendChild(el26)
@@ -344,7 +344,7 @@
                      el27.type = 'button'
                      el27.classList.add('btn', 'btn-primary', 'decide-btn')
                      el27.setAttribute('data-bs-toggle', 'modal')
-                     el27.setAttribute('data-bs-target', '#acceptance-btn')
+                     el27.setAttribute('data-bs-target', '#book-decide')
                      el27.innerText = '확정하기'
                      el24.appendChild(el27)
                  }
@@ -352,7 +352,7 @@
                  if(categoryNo === '3' && e.decide === e.booNo && !e.play){
                      el28.value = `\${e.bookNo}`
                      el28.type = 'button'
-                     el28.classList.add('btn', 'btn-promary', 'play-btn')
+                     el28.classList.add('btn', 'btn-primary', 'play-btn')
                      el28.innerText = '체험 완료'
                      el24.appendChild(el28)
                  }
@@ -377,6 +377,66 @@
          const result = bookDiv.join('')
          return result
 	}
+  	
+  		const decide = document.getElementsByClassName('decide-btn');
+	  	for(let i = 0; i < decide.length; i ++){
+	  		decide[i].addEventListener('click', function(e) {
+	  			console.log(e)
+	  			$.ajax({
+	  				url : "book.content",
+	  				type : "get",
+	  				data : {
+	  					bookNo : e.target.value
+	  				},
+	  				success : function(r){
+	  					console.log(r)
+	  					const result = `<div class="container">
+						                        <div class="row">
+						                        <div class="col">
+						                            농장 제목 : \${r.farmTitle}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col-4">
+						                            예약일 : \${r.playDate}
+						                        </div>
+						                        <div class="col-4">
+						                            성인 : \${r.adultNo}
+						                        </div>
+						                        <div class="col-4">
+						                            어린이 : \${r.kidNo}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col-4">
+						                            예약자 : \${r.nickname}
+						                        </div>
+						                        <div class="col-8">
+						                            전화번호 : \${r.phone}
+						                        </div>
+						                    </div>
+						                    <div class="row">
+						                        <div class="col">
+						                            \${r.bookContent}
+						                        </div>
+						                    </div>
+						                </div>
+						                <input type="hidden" value="\${r.bookNo}" id="d">`;
+						const inner = document.getElementById('decide-content');
+						inner.innerHTML = result;
+						const decidePlay = document.getElementById('d');
+						const bookNo = decidePlay.value;
+						consollog(bookNo)
+						const decideBtn = document.getElementById('decide');
+						decideBtn.onclick = () => {
+							location.href=`decide/play/\${bookNo}`;
+					  	
+						 }
+		  			}
+		  			
+		  		})
+		  	})
+	  	}
   	
   	function suchBook(){
   		const lastNo = document.getElementById('lastNo')
@@ -448,65 +508,6 @@
 	  		bookContent.innerText = e.target.value;
   		})
   	}
-  </script>
-  <script>
-		
-	  	const decide = document.getElementsByClassName('decide-btn');
-	  	for(let i = 0; i < decide.length; i ++){
-	  		decide[i].addEventListener('click', function(e) {
-	  			$.ajax({
-	  				url : "book.content",
-	  				type : "get",
-	  				data : {
-	  					bookNo : e.target.value
-	  				},
-	  				success : function(r){
-	  					const result = `<div class="container">
-						                        <div class="row">
-						                        <div class="col">
-						                            농장 제목 : \${r.farmTitle}
-						                        </div>
-						                    </div>
-						                    <div class="row">
-						                        <div class="col-4">
-						                            예약일 : \${r.playDate}
-						                        </div>
-						                        <div class="col-4">
-						                            성인 : \${r.adultNo}
-						                        </div>
-						                        <div class="col-4">
-						                            어린이 : \${r.kidNo}
-						                        </div>
-						                    </div>
-						                    <div class="row">
-						                        <div class="col-4">
-						                            예약자 : \${r.nickname}
-						                        </div>
-						                        <div class="col-8">
-						                            전화번호 : \${r.phone}
-						                        </div>
-						                    </div>
-						                    <div class="row">
-						                        <div class="col">
-						                            \${r.bookContent}
-						                        </div>
-						                    </div>
-						                </div>
-						                <input type="hidden" value="\${r.bookNo}" id="d">`;
-						const inner = document.getElementById('decide-content');
-						inner.innerHTML = result;
-						const decidePlay = document.getElementById('d');
-						const bookNo = decidePlay.value;
-						const decideBtn = document.getElementById('decide');
-						decideBtn.onclick = () => {
-							location.href=`decide/play/\${bookNo}`;
-						}
-					  	
-					 }
-	  			})
-	  			
-	  		})
-	  	}
   </script>
   <script>
 		const cancelBtn = document.getElementsByClassName('cancel-btn');
