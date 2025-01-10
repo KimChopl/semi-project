@@ -68,7 +68,8 @@ public class MemberServiceImpi implements MemberService {
 			// 이미지 파일 정보
 			Image image = new Image();
 			image.setOriginImgName(fileName); // 원본 파일
-			image.setChangeImgName("/pugly/resources/member_profile/" + changeName);
+			image.setChangeImgName(changeName);
+			image.setImgPath("resources/member_profile/");
 			return image;
 		}
 		return null;
@@ -113,6 +114,14 @@ public class MemberServiceImpi implements MemberService {
 	
 	private PageInfo getPageInfo(int totalCount, int page, int boardLimit, int pageLimit) {
 		return PagiNation.getPageInfo(totalCount, page, boardLimit, pageLimit);
+	}
+	
+	private void changeAddressType(Long memberNo, int addressType) {
+		if(mapper.selectMemberInfo(memberNo).getCategoryNo() != 2) {
+			if(addressType == 1) {
+				mapper.updateAddressType(memberNo);
+			}
+		}
 	}
 	
 	@Override
@@ -234,6 +243,8 @@ public class MemberServiceImpi implements MemberService {
 		
 		validateUser.invalidRequestMemberNo(memberNo, userNo);
 		
+		changeAddressType(memberNo, address.getAddressType());
+		
 		Map<String, Object> map = new HashMap();
 		
 		processUpdateAddress(map, memberNo, address);
@@ -289,6 +300,8 @@ public class MemberServiceImpi implements MemberService {
 		// memberNo와 loginUser의 memberNo가 일치하지 않을 때
 		
 		validateUser.invalidRequestMemberNo(memberNo, userNo);
+		
+		changeAddressType(memberNo, address.getAddressType());
 		
 		Map<String, Object> map = new HashMap();
 		

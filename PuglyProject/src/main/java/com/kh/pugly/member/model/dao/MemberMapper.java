@@ -57,6 +57,8 @@ public interface MemberMapper {
 	int insertNewAddress(Map<String, Object> address);
 	// 주소 삭제
 	int deleteAddress(Map<String, Object> map);
+	// 메인주소로 바뀔 때 필요한 작업
+	int updateAddressType(Long memberNo);
 	
 	List<Address> selectAddresses(Long memberNo);
 	// 회원탈퇴
