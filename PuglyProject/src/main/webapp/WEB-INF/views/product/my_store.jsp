@@ -493,7 +493,7 @@
                 <div class="col">
                     <div class="img-fom">
                         <label>상점 이미지</label><br>
-                        <img src="${ image.changeImgName }" class="store-img" id="title-img">
+                        <img src="/pugly/${ image.imgPath }${ image.changeImgName }" class="store-img" id="title-img">
                     </div>
                     클릭하여 사진을 설정하세요.
                 </div>

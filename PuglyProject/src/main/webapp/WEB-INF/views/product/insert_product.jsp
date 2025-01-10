@@ -68,7 +68,7 @@
 	<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
 
     <div class="content">
-        <div>
+    
             <h2>상품 등록</h2>
             <hr>
             <div class="상품 이미지 보여주는 칸">
@@ -247,7 +247,7 @@
             </form>
          <br><br><br>
     </div>
-    
+    </div>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
