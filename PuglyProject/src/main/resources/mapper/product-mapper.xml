@@ -103,7 +103,8 @@
 		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
 		        i.ORIGIN_IMG_NAME originImgName,
 		        i.CHANGE_IMG_NAME changeImgName,
-		        i.IMG_LEVEL
+		        i.IMG_LEVEL imgLevel,
+		        i.IMG_PATH imgPath
 	    FROM
 	        	TB_PRODUCT p
 	    JOIN
@@ -128,7 +129,8 @@
 		        TO_CHAR(p.PRODUCT_DATE, 'YYYY-MM-DD') as productDate,
 		        i.ORIGIN_IMG_NAME originImgName,
 		        i.CHANGE_IMG_NAME changeImgName,
-		        i.IMG_LEVEL
+		         i.IMG_LEVEL imgLevel,
+		        i.IMG_PATH imgPath
 	    FROM
 	        	TB_PRODUCT p
 	    JOIN
@@ -157,7 +159,8 @@
 		        p.PRODUCT_CONTENT productContent,
 		        i.ORIGIN_IMG_NAME originImgName,
 		        i.CHANGE_IMG_NAME changeImgName,
-		        i.IMG_LEVEL
+		        i.IMG_LEVEL imgLevel,
+		        i.IMG_PATH imgPath
 	    FROM
 	        	TB_PRODUCT p
 	    LEFT 
@@ -183,7 +186,9 @@
 		        p.PRODUCT_CONTENT productContent,
 		        i.ORIGIN_IMG_NAME originImgName,
 		        i.CHANGE_IMG_NAME changeImgName,
-		        i.IMG_LEVEL
+		        i.IMG_LEVEL imgLevel,
+		        i.IMG_NO imgNo,
+		        i.IMG_PATH imgPath
 	    FROM
 	        	TB_PRODUCT p
 	    LEFT 
@@ -260,7 +265,7 @@
 		    	m.STORE_CONTENT storeContent,     
 		    	i.CHANGE_IMG_NAME changeImgName,  
 		    	i.ORIGIN_IMG_NAME originImgName,
-		    	i.IMG_PATH,
+		    	i.IMG_PATH imgPath,
 		    	m.FK_MEMBER_NO userNo             
 		  FROM
 		    	TB_MY_STORE m                       
@@ -310,7 +315,7 @@
 		 		STORE_NO = #{storeNo}		
 	</update>
 
-	<insert id="storeImgUpdate" parameterType="image">
+	<insert id="storeImgUpdate" parameterType="map">
 		INSERT
 		  INTO
 		  		TB_IMAGE
@@ -329,7 +334,7 @@
 				#{originImgName},
 				#{changeImgName},
 				#{imgPath},
-				#{imgLevel},
+				1,
 				#{storeNo},
 				5
 				)
@@ -361,15 +366,17 @@
 		   		PRODUCT_NO = #{productNo}
 	</update>
 	
-	<update id="updateImgProduct" parameterType="image">
+	<update id="updateImgProduct" parameterType="java.util.List">
 		
 		UPDATE
 				TB_IMAGE
+		   <foreach collection="list" item="image" separator=";">
 		   SET
-		   		ORIGIN_IMG_NAME = #{originImgName},
-		   		CHANGE_IMG_NAME = #{changeImgName}
+		   		ORIGIN_IMG_NAME = #{image.originImgName},
+		   		CHANGE_IMG_NAME = #{image.changeImgName}
 		  WHERE
-		  		IMG_POST_NO = #{productNo}
+		  		IMG_NO = #{image.imgNo}
+		   </foreach>
 			
 	</update>
 	

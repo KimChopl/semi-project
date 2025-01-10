@@ -2,16 +2,14 @@ package com.kh.pugly.product.model.dao;
 
 
 import java.util.List;
+import java.util.Map;
 
-import org.apache.catalina.Store;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.kh.pugly.common.model.vo.Image;
 import com.kh.pugly.product.model.vo.MyStore;
 import com.kh.pugly.product.model.vo.Product;
-
-import lombok.extern.slf4j.Slf4j;
 @Mapper
 public interface ProductMapper {
 
@@ -40,12 +38,12 @@ public interface ProductMapper {
 	List<Product> myStoreProduct(RowBounds rowBounds, Long storeNo);
 	// 상점업데이트
 	int storeUpdate(MyStore myStore);
-	void storeImgUpdate(Image image);
+	void storeImgUpdate(Map<String, Object> map);
 	void storeImgDelete(Image image);
 	// 상품삭제
 	int deleteProduct(Long productNo);
 	// 상품 업데이트
-	void productUpdate(Product product);
+	int productUpdate(Product product);
 	int updateImgProduct(List<Image> imgList);
 	
 	
