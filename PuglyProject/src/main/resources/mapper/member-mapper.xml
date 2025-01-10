@@ -154,16 +154,14 @@
 		       MEMBER_IMG_NO,
 		       MEMBER_NO,
 		       ORIGIN_IMG_NAME,
-		       CHANGE_IMG_NAME,
-		       IMG_PATH
+		       CHANGE_IMG_NAME
 		       )
 		VALUES
 		       (
 		       SEQ_MINO.NEXTVAL,
 		       SEQ_MNO.CURRVAL,
 		       #{originImgName},
-		       #{changeImgName},
-		       #{imgPath}
+		       #{changeImgName}
 		       )
 	</insert>
 	
