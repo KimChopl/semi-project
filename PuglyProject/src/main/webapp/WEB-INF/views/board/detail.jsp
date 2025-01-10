@@ -74,7 +74,7 @@
             <br>
 
             <div align="center">
-                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.categoryNo eq 1 or not empty sessionScope.loginUser}">
+                <c:if test="${sessionScope.loginUser.nickname eq board.nickname or sessionScope.loginUser.categoryNo eq 1 and not empty sessionScope.loginUser}">
 	                <a class="btn btn-primary" onclick="postSubmit(1)">수정하기</a>
 	                <a class="btn btn-danger"  onclick="postSubmit(2)">삭제하기</a>
             	</c:if>
