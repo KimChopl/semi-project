@@ -79,7 +79,7 @@ public class BookController {
 	@GetMapping("book/deleteBook")
 	public String deleteBook(Long bookNo) {
 		log.info("{}", bookNo);
-		return null;
+		return "redicrect:/list.book";
 	}
 	
 }
