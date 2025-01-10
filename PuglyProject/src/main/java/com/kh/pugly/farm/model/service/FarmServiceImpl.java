@@ -169,7 +169,6 @@ public class FarmServiceImpl implements FarmService {
 		int boardLimit = 6;
 		MoreInfo mi = getSuchPageInfo(suchMap, boardLimit);
 		int plusNo = (int)suchMap.get("plusNo");
-		log.info("{}", mi.getStartNo());
 		RowBounds rowNum = new RowBounds(mi.getStartNo(), mi.getBoardLimit());
 		List<Farm> list = checkedSelectListFormat(fm.suchByKeyword(suchMap, rowNum));
 		Map<String, Object> map = checkedMap(list, mi);
@@ -530,10 +529,7 @@ public class FarmServiceImpl implements FarmService {
 		List<Image> newImgList = checkedImage(files);
 		List<Image> restImg = settingImage(change, origin, deletePath(path), imgLevel);
 		List<Image> delete = checkedFarm(restImg, beImg);
-		log.info("delete : {}", delete);
-		log.info("change : {}", change);
 		if(delete != null && !(delete.isEmpty())) { // 삭제할 사진이 있을 때
-			log.info("delete : {}", delete);
 			if(newImgList != null && !(newImgList.isEmpty())) {
 				checkedNewImage(settingImgLevel(delete, newImgList), farm); // 지우기 체우기 둘 다
 			}

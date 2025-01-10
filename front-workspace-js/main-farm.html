@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <title>Pugly Farm</title>
-    <style>
-        div{
-            border: 0.5px solid gray;
+    
+ 
+<style>
+       div{
             margin : auto;
-            
+            border : 1px solid gray;
         }
         #body{
             width: 1200px;
@@ -20,9 +25,11 @@
         #suchbar{
             position : fixed;
         }
+        
         .optionbar{
             height: 120px;
         }
+        
         .farms{
             height: 350px;
         }
@@ -41,102 +48,110 @@
             height: 30px;
             text-align: center;
         }
-        .score > div{
+        .price{
             height: 100%;
             width: 50%;
             float : left;
         }
-        #such-detail{
-            margin-left: 140px;
-            margin-top: 10px;
-        }
         #checkbox-div{
             height: 240px;
-            width: 250px;
+            width: 230px;
+        }
+        .label-font{
+        	font-size : 12px;
+        }
+        .box-size{
+        	width : 12px;
+        	height : 12px;
+        }
+        .cover-box{
+        	display : inline-block
+        }
+        #btn-more-div{
+        	width : 100%;
+        	height : 70px
+        }
+        .like, .attention{
+        	height : 100%;
+        	width : 25%;
+        	float : left;
+        }
+        .img > img{
+        width : 100%;
+        height : 100%;
         }
     </style>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/menubar.jsp" />
     <div id="body">
         <div class="container">
             <div class="row">
                 <div class="col-3 out-frame">
-                            <form action="" method="get">
-                                <div id="suchbar">
-                                <div class="container" >
-                                    <div class="row">
-                                        <div class="col">
-                                                <div class="container" >
-                                                    <div class="row">
-                                                        <div id="checkbox-div">
-                                                            <label for="">qweqwerqwrqwe</label><input type="checkbox">
-                                                            <label for="">sadqweasdzx</label><input type="checkbox">
-                                                            <label for="">qweqwrasd</label><input type="checkbox">
-                                                            <label for="">qweqrfasd</label><input type="checkbox">
-                                                            <label for="">qweqweasd</label><input type="checkbox">
-                                                            <label for="">qweqwerqwrqwe</label><input type="checkbox">
-                                                            <label for="">sadqweasdzx</label><input type="checkbox">
-                                                            <label for="">qweqwrasd</label><input type="checkbox">
-                                                            <label for="">qweqrfasd</label><input type="checkbox">
-                                                            <label for="">qweqweasd</label><input type="checkbox">
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="optionbar">
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="optionbar">
-                                                            
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="optionbar">
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button id="such-detail">조회하기</button>
-                                <div class="col" id="suchbar">
-                                    <div class="container">
-                                        <div class="row optionbar">
-                                            <div class="checkbox-div">
-                                            </div>
-                                            <div class="checkbox-div">
-                                            </div>
-                                        </div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
-                                        <div class="row optionbar"></div>
-                                    </div>
-                                    <button id="such-detail">조회하기</button>
-                                </div>
-                            </form>
+	                <div id="suchbar">
+	                	<div class="container" >
+	                    	<div class="row">
+	                        	<div class="col">
+	                                <div class="container" >
+	                                    <div class="row">
+	                                        <div id="checkbox-div">
+	                                            <c:forEach items="${ state }" var="state">
+	                                            	<div class="cover-box">
+	                                             	<label class="label-font">${ state.stateName } </label>
+	                                             	<input class="box-size states" type="checkbox" name="suchState" value="${state.stateCode}">
+	                                            	</div>
+	                                            </c:forEach>
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <div class="optionbar">
+	                                            <c:forEach items="${ farmProduct }" var="product">
+	                                            	<div class="cover-box">
+	                                            		<label class="label-font">${ product.productName }</label>
+	                                            		<input type="checkbox" class="box-size product" name="suchProduct" value="${ product.productNo }" step="1000">
+	                                            	</div>
+	                                            </c:forEach>
+	                                        </div>
+	                                    </div>
+	                                    <div class="row">
+	                                        <div class="optionbar">
+	                                          	<div>최신순<input class="option" type="radio" id="newest" name="option" value="date"></div>
+	                                          	<div>평점순<input class="option" type="radio" id="rating" name="option" value="rating"></div>
+	                                          	<div>가격오름차순<input class="option" type="radio" id="upPrice" name="option" value="price"></div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
                 </div>
                 <div class="col-9 out-frame">
                     <div class="container">
                         <div class="row">
                             <div class="col">
+                            <input type="hidden" id="plusNo" name="plusNo" value="${ farm.mi.plusNo }">
                                 <div class="container">
-                                    <div class="row">
-                                        <div class="col-4 farms">
+                                    <div class="row" id="farm-list">
+                                    <c:forEach items="${ farm.farm }" var="farm">
+                                        <div class="col-4 farms" onclick="farms10">
                                             <div class="farms-content">
-                                                <div class="img"><img src="" alt=""></div>
+                                                <div class="img">
+	                		                                <img src="/pugly/${img.imgPath }${ img.changeImgName }" alt="${img.originImgName }">
+			                                            	<img src="" alt="이미지 없음">
+                                                </div>
                                                 <div class="farm-explain">
-                                                    <div class="title">농장제목</div>
+                                                    <div class="title">${ farm.farmTitle }</div>
                                                     <div class="score">
-                                                        <div class="price"></div>
-                                                        <div class="like-attention"></div>
+                                                    	<div class="price">무료 체험</div>
+                                                        <div class="price">${ farm.farmPrice }</div>
+                                                        <div class="like">${ farm.rating }</div>
+                                                        <div class="attention"> ${ farm.like }</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 farms">
-                                            <div class="farms-content"></div>
-                                        </div>
-                                        
+                                    </c:forEach>
                                     </div>
                                 </div>
                             </div>
@@ -145,9 +160,164 @@
                 </div>
             </div>
         </div>
+		<div id="btn-more-div">
+        	<button id="moreBtn" class="btn btn-sm btn-info" onclick="suchFarms()">더보기</button>
+        	<input type="hidden" id="user-category" value="${ sessionScope.loginUser.categoryNo }">
+        	<c:if test="${ seessionScope.loginUser.memberNo eq farm.memberNo }">
+        	<button class="btn btn-sm" id="regist-farm">체험 등록하기</button>
+        	</c:if>
+        	<c:if test="${ seessionScope.loginUser.memberNo ne farm.memberNo }">
+       		<button class="btn btn-sm" id="regist-farm" style="display:none;">체험 등록하기</button>
+        	</c:if>
+		</div>   
     </div>
+    
     <script>
-        document.get
+    	const registFarm = document.getElementById('regist-farm');
+    	const category = document.getElementById('user-category');
+    	if( category.value === '2'){
+    		registFarm.style.display = 'inline-block';
+    	}
+    	registFarm.onclick = () => {
+    		location.href = "/pugly/farm/regist";
+    	}
     </script>
+    
+	<script>
+		let such = {
+				'state' : [],
+				'product' : [],
+				'option' : '',
+				'plusNo' : 6
+		}
+		const state = document.getElementsByClassName('states');
+		for(let i of state){
+			i.addEventListener('click', function(){
+				if(i.checked){
+					such.state.push(i.value)
+				} else {
+					such.state = such.state.filter(value => value !== this.value);
+				}
+				settingJson()
+			})
+		}
+		
+		const product = document.getElementsByClassName('product');
+		for(let i of product){
+			i.addEventListener('click', function(){
+				if(i.checked){
+					such.product.push(i.value)
+				} else {
+					such.product = such.product.filter(value => value !== this.value);
+				}
+				settingJson()
+			})
+		}
+		
+		const option = document.getElementsByClassName('option');
+		for(let i of option){
+			i.addEventListener('click', function(){
+				such.option = i.value;
+				settingJson()
+			})
+		}
+		
+		let jsonData = JSON.stringify(such);
+		
+		function settingJson(){
+			such.plusNo = 0
+			jsonData = JSON.stringify(such)
+			suchFarms()
+			
+		}
+		
+		function createDiv(r){
+			const imgSet = [...r.farm];
+			const divImg = imgSet.map(e => {
+					
+				const el1 = document.createElement('div')
+				el1.classList.add('col-4', 'farms')
+				el1.setAttribute('onclick', `farms(\${e.farmNo})`)
+				const el2 = document.createElement('div')
+				el2.classList.add('farms-content')
+				const el3 = document.createElement('div')
+				el3.classList.add('img')
+				const el4 = document.createElement('img')
+				if(e.imgList.length > 0) {
+					el4.src = `/pugly/\${e.imgList[0].imgPath}\${e.imgList[0].changeImgName}`
+					el4.alt = `\${e.imgList[0].originImgName}`
+				} else {
+					el4.alt = '이미지 없음'				
+				}
+				const el5 = document.createElement('div')
+				el5.classList.add('farm-explain')
+				const el6 = document.createElement('div')
+				el6.classList.add('title')
+				el6.innerText = `\${e.farmTitle}`
+				const el7 = document.createElement('div')
+				el7.classList.add('score')
+				const el8 = document.createElement('div')
+				el8.classList.add('price')
+				el8.innerText = `\${e.farmPrice}`
+				const el9 = document.createElement('div')
+				el9.classList.add('like')
+				el9.innerText = `\${e.rating}`
+				const el10 = document.createElement('div')
+				el10.classList.add('attention')
+				el10.innerText = `\${e.like}`
+				
+				el7.appendChild(el8)
+				el7.appendChild(el9)
+				el7.appendChild(el10)
+				el5.appendChild(el6)
+				el5.appendChild(el7)
+				el3.appendChild(el4)
+				el2.appendChild(el3)
+				el2.appendChild(el5)
+				el1.appendChild(el2)
+				
+				return el1.outerHTML
+			});
+			const result = divImg.join('');
+			return result;
+		}
+		
+		function suchFarms() {
+			$.ajax({
+				url : 'plus',
+				type : 'post',
+				contentType : 'application/json',
+				data : jsonData,
+				success : function(r){
+					console.log(r)
+					const body = document.getElementById('body')
+					body.style.height = 'auto'
+					such.plusNo = such.plusNo + 6
+					jsonData = JSON.stringify(such)
+					const insertDiv = document.getElementById('farm-list')
+					if(such.plusNo === 6){
+						insertDiv.innerHTML = createDiv(r)
+					} else{
+						insertDiv.innerHTML += createDiv(r)
+					}
+					const moreBtn = document.getElementById('moreBtn')
+					if(r.mi.lastNo === r.mi.listCount){
+						moreBtn.style.display = 'none'
+					} else{
+						moreBtn.style.display = 'inline-block'
+					}
+				
+				}
+			})
+		}
+		
+	</script>
+	
+	<script>
+		function farms(num){
+			location.href = `/pugly/farms/\${num}`
+		}
+	</script>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 </html>

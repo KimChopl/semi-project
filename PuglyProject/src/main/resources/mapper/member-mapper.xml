@@ -154,14 +154,16 @@
 		       MEMBER_IMG_NO,
 		       MEMBER_NO,
 		       ORIGIN_IMG_NAME,
-		       CHANGE_IMG_NAME
+		       CHANGE_IMG_NAME,
+		       IMG_PATH
 		       )
 		VALUES
 		       (
 		       SEQ_MINO.NEXTVAL,
 		       SEQ_MNO.CURRVAL,
 		       #{originImgName},
-		       #{changeImgName}
+		       #{changeImgName},
+		       #{imgPath}
 		       )
 	</insert>
 	
@@ -245,6 +247,14 @@
                MEMBER_NO = #{memberNo}
            AND
                ADDRESS_NO = #{addressNo}
+	</update>
+	<update id="updateAddressType" parameterType="long">
+		UPDATE
+               TB_ADDRESS
+           SET
+               ADDRESS_TYPE = 2
+         WHERE
+               MEMBER_NO = #{memberNo}
 	</update>
 	
 	<insert id="insertNewAddress" parameterType="map">

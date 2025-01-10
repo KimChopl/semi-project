@@ -51,9 +51,7 @@ public class AjaxFarmController {
 		map.put("product", product);
 		map.put("option", option);
 		map.put("plusNo", plusNo);
-		//log.info("{}", map);
 		Map<String, Object>list = fs.suchByKeyword(map);
-		//log.info("{}", list);
 		return list;
 		
 	}
@@ -74,14 +72,11 @@ public class AjaxFarmController {
 			updateInfo.put("path", path);
 			updateInfo.put("imgLevel", imgLevel);
 		}
-		//log.info("{}", facilityNo);
 		Member member = (Member)ssn.getAttribute("loginUser");
 		updateInfo.put("member", member);
 		updateInfo.put("facilityNo", facilityNo);
 		updateInfo.put("address", ad);
 		updateInfo.put("farm", farm);
-		updateInfo.put("files", files);
-		//log.info("{}", updateInfo.get("facilityNo"));
 		fs.updateFarm(updateInfo);
 	}
 

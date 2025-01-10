@@ -39,10 +39,8 @@ public class ChangeImage {
 					String changeName = "pugly" + randNo + currentTime + subOrigin;
 					String filePath = "resources/farm-img/";
 					String savePath = c.getRealPath(filePath);
-					//log.info("{} : {}", changeName, savePath);
 					Image img = Image.builder().originImgName(originName).changeImgName(changeName).imgPath(filePath).build();
 					imgList.add(img);
-					//log.info("{}", img);
 					try {
 						multi[i].transferTo(new File(savePath + changeName));
 						break;

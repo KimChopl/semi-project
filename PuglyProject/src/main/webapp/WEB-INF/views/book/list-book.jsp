@@ -209,78 +209,100 @@
 	function createDiv(r){
          const books = [...r.books]
 	    const bookDiv = books.map(e => {
-	    	const categoryNo = document.getElementById('category-no').value
+	    	 const categoryNo = document.getElementById('category-no').value
              const el1 = document.createElement('div')
              el1.classList.add('container')
+             
              const el2 = document.createElement('div')
              el2.classList.add('row')
              el1.appendChild(el2)
+             
              const el3 = document.createElement('div')
              el3.classList.add('col')
              el2.appendChild(el3)
+             
              const el4 = document.createElement('div')
              el4.classList.add('book-box') // this
              el3.appendChild(el4)
+             
              const el5 = document.createElement('div')
              el5.classList.add('container')
              el4.appendChild(el5)
+             
              const el6 = document.createElement('div')
              el6.classList.add('row') 
              el5.appendChild(el6)
+             
              const el7 = document.createElement('div')
              el7.classList.add('col-3')
              el6.appendChild(el7)
+             
              const el8 = document.createElement('div')
              el8.classList.add('book-user')
              el7.appendChild(el8)
+             
              const el9 = document.createElement('label')
              el9.id = `name-\${e.bookNo}`
              el9.innerText = `\${e.nickname}`
              el8.appendChild(el9) // end
+             
              const el10 = document.createElement('div')
              el10.classList.add('col-9')
              el6.appendChild(el10)
+             
              const el11 = document.createElement('div')
              el11.classList.add('container')
              el10.appendChild(el11)
+             
              const el12 = document.createElement('div')
              el12.classList.add('row') // end
              el11.appendChild(el12)
+             
              const el13 = document.createElement('div')
              el13.classList.add('col-4')
              el13.innerText = `\${e.playDate}`
              el12.appendChild(el13)
+             
              const el14 = document.createElement('div')
              el14.classList.add('col-4')
              el14.innerText = `\${e.adultNo}`
              el12.appendChild(el14)
+             
              const el15 = document.createElement('div')
              el15.classList.add('col-4')
              el15.innerText = `\${e.kidNo}`
              el12.appendChild(el15)
+             
              const el16 = document.createElement('div')
              el16.classList.add('container')
              el4.appendChild(el16)
+             
              const el17 = document.createElement('div')
              el17.classList.add('row')
              el16.appendChild(el17)
+             
              const el18 = document.createElement('div')
              el18.classList.add('col-3')
              el17.appendChild(el18)
+             
              const el19 = document.createElement('div')
              el19.classList.add('farm-title')
              el18.appendChild(el19)
+             
              const el20 = document.createElement('label')
              el20.id = `title-\${e.bookNo}`
              el20.innerText = `\${e.farmTitle}`
              el19.appendChild(el20)
+             
              const el21 = document.createElement('div')
              el21.classList.add('col-9')
              el17.appendChild(el21)
+             
              const el22 = document.createElement('div')
              el22.classList.add('bookContent')
              el22.innerText = `\${e.bookSub}`
              el21.appendChild(el22)
+             
              const el23 = document.createElement('button')
              el23.classList.add('btn', 'btn-sm', 'btn-outline-dark', 'book-content')
              el23.value = `\${e.bookContent}`
@@ -288,9 +310,11 @@
              el23.setAttribute('data-bs-target', '#booker-content')
              el23.innerText = '더보기'
              el22.appendChild(el23)
+             
              const el24 = document.createElement('div')
              el24.classList.add('btn-cover')
              el4.appendChild(el24)
+             
              const el25 = document.createElement('input')
              el25.value = `\${e.bookNo}`
              el25.type = 'hidden'
@@ -314,7 +338,7 @@
                  el26.type = 'button'
                  el26.innerText = '취소하기'
                  el24.appendChild(el26)
-                 console.log(`\${e.decide} : \${e.bookNo} : \${e.play} : \${categoryNo}`)
+                 
                  if(categoryNo === '2' && !e.decied && !e.play ){
                      el27.value = `\${e.bookNo}`
                      el27.type = 'button'
@@ -324,6 +348,7 @@
                      el27.innerText = '확정하기'
                      el24.appendChild(el27)
                  }
+                 
                  if(categoryNo === '3' && e.decide === e.booNo && !e.play){
                      el28.value = `\${e.bookNo}`
                      el28.type = 'button'
@@ -331,6 +356,7 @@
                      el28.innerText = '체험 완료'
                      el24.appendChild(el28)
                  }
+                 
                  if(categoryNo === '3' && e.play === e.booNo){
                      el29.value = `\${e.bookNo}`
                      el29.type = 'button'
@@ -338,6 +364,7 @@
                      el29.innerText = '리뷰하기'
                      el24.appendChild(el29)
                  }
+                 
              } else{
                  el30.type = 'button'
                  el30.classList.add('btn', 'btn-danger', 'btn-sm', 'delete-btn')
@@ -481,7 +508,7 @@
 	  		})
 	  	}
   </script>
-	<script>
+  <script>
 		const cancelBtn = document.getElementsByClassName('cancel-btn');
 		const decideCancel = document.getElementById('cancel-btn');
 		for(let i = 0; i < cancelBtn.length; i++){

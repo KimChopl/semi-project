@@ -100,7 +100,7 @@ public class BookServiceImpl implements BookService {
 		for(int i = 0; i < books.size(); i++) {
 			String bookSub = books.get(i).getBookContent();
 			if(bookSub.length() > 30) {
-				books.get(i).setBookSub(bookSub.substring(0, 30));
+				books.get(i).setBookSub(bookSub.substring(0, 30) + "...");
 			} else {
 				books.get(i).setBookSub(bookSub);
 			}
@@ -134,7 +134,6 @@ public class BookServiceImpl implements BookService {
 		List<Book> books = null;
 		if(category == 2) {
 			books = selectBookListFarmer(memberNo, rb);
-			log.info("{}", books);
 		} else {
 			books = selectBookListBooker(memberNo, rb);
 		}
@@ -157,10 +156,6 @@ public class BookServiceImpl implements BookService {
 		RowBounds rb = makeRowBounds(mi);
 		Map<String, Object> map = selectbookStatus(makeTitle(checkedMember(loginUser, rb)));
 		map.put("mi", mi);
-		//log.info("{}", map);
-		
-		
-		
 		return map;
 	}
 
@@ -202,7 +197,6 @@ public class BookServiceImpl implements BookService {
 	public void insertCancel(Long bookNo, String content, Member member) {
 		checkedMember(member);
 		BookCondition cancel = BookCondition.builder().bookNo(bookNo).content(xss.changeInsertFormat(content)).build();
-		log.info("{}", cancel);
 		checkedCancel(cancel);
 		
 	}
