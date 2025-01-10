@@ -53,9 +53,8 @@ public class ValidateMember {
 	}
 	
 	public void existingMemberId(Member member) {
-		Member checkMember = mapper.selectMember(member);
-		if(checkMember != null) {
-			throw new ExistingMemberIdException("이미 존재하는 아이디입니다.");
+		if(mapper.checkMemberId(member) != 0) {
+			throw new ExistingMemberIdException("이미 있는 아이디 입니다.");
 		}
 	}
 	

@@ -27,6 +27,16 @@
            AND
                MEMBER_ID = #{memberId}
 	</select>
+	<select id="checkMemberId" parameterType="member" resultType="_int">
+		SELECT
+               COUNT(*)
+          FROM
+               TB_MEMBER me
+          JOIN
+               TB_MEMBER_TYPE my ON (me.FK_CATEGORY_NO = my.MB_CATEGORY_NO)
+         WHERE
+               MEMBER_ID = #{memberId}
+	</select>
 
 	
 	<select id="selectAddresses" parameterType="long" resultType="address">

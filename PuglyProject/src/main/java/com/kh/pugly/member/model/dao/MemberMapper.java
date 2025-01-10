@@ -31,6 +31,8 @@ public interface MemberMapper {
 	// 로그인 유저의 리스트(마이페이지 출력)
 	List<Address> selectInfoAddresses(Long memberNo);
 	
+	int checkMemberId(Member member);
+	
 	// 페이징 처리(주소)
 	int selectAddressCount(Long memberNo);
 	

@@ -123,6 +123,7 @@ public class MemberServiceImpi implements MemberService {
 		}
 	}
 	
+	
 	@Override
 	public Member selectMember(Member member) {
 		// 잠시 테스트
