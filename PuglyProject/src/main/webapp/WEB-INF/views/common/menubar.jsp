@@ -132,7 +132,6 @@
         <!-- 네비게이션 -->
         <div id="header_1_center">
             <ul>
-                <li><a href="/pugly">HOME</a></li>
                 <li><a href="/pugly/products">농산물</a></li>
                 <li><a href="/pugly/farms">농장</a></li>
                 <li><a href="/pugly/boards">게시판</a></li>
