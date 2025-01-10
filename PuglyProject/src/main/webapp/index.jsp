@@ -232,7 +232,7 @@
 
         <!-- Body 1: 검색 영역 -->
         <div id="body1">
-            <div class="selected-text" id="selectedText" style="color:white; size : 20px;">농사! 여러분도 할 수 있어요!</div>
+            <div class="selected-text" id="selectedText" style="color:white; font-size : 50px;">농사! 여러분도 할 수 있어요!</div>
             <div class="top-buttons">
                 <button class="category-button" onclick="changeText('농장')">농장</button>
                 <button class="category-button" onclick="changeText('농산물')">농산물</button>
