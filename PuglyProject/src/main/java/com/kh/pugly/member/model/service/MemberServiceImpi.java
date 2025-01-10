@@ -116,10 +116,8 @@ public class MemberServiceImpi implements MemberService {
 	}
 	
 	private void changeAddressType(Long memberNo, int addressType) {
-		if(mapper.selectMemberInfo(memberNo).getCategoryNo() != 2) {
-			if(addressType == 1) {
-				mapper.updateAddressType(memberNo);
-			}
+		if(addressType == 1) {
+			mapper.updateAddressType(memberNo);
 		}
 	}
 	
