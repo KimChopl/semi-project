@@ -133,11 +133,6 @@ public class MemberServiceImpi implements MemberService {
 		}
 		
 		validateUser.noExistingMember(loginUser);
-		
-		if(member.getCategoryNo() != loginUser.getCategoryNo()) {
-			throw new NoExistentMemberException("존재하지 않는 회원입니다.");
-		}
-		
 		validateUser.checkPwd(member, loginUser);
 		
 		// 아이디가 20자가 넘는다.
